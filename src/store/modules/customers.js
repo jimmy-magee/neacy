@@ -240,7 +240,7 @@ const actions = {
             })
     },
     loadCustomerQuotationSummary({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         console.log('Loading all customer invoices ' + payload)
         console.log('for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
 
@@ -258,7 +258,7 @@ const actions = {
             })
     },
     loadCustomerQuotations({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         console.log('Loading all Quotations with customer id ' + payload)
         console.log('for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
 
@@ -323,7 +323,7 @@ const actions = {
             })
     },
     loadCustomerInvoices({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         console.log('Loading all Invoices with supplier id ' + payload)
         //console.log('for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
         webClient.get(`/api/resource/clients/` + localStorage.clientId + `/customers/` + payload + '/invoices')

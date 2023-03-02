@@ -11,18 +11,17 @@
         <!--<div>{{ customer.address }}</div>-->
 
         <v-tabs v-model="tab" show-arrows>
-          <v-tabs-slider color="green"></v-tabs-slider>
 
-          <v-tab href="#tab-1">
+          <v-tab :key="1" :value="1">
             Customer Details
           </v-tab>
-          <v-tab href="#tab-3">
+          <v-tab  :key="3" :value="3">
             Quotations
           </v-tab>
-          <v-tab href="#tab-4">
+          <v-tab :key="4" :value="4">
             Contracts
           </v-tab>
-          <v-tab href="#tab-5">
+          <v-tab :key="5" :value="5">
             Invoices
           </v-tab>
           <!--
@@ -31,11 +30,11 @@
       </v-tab> -->
         </v-tabs>
 
-        <v-tabs-items v-model="tab">
+        <v-window v-model="tab">
 
           <!-- Customer Details -->
 
-          <v-tab-item key="1" :value="'tab-' + 1">
+          <v-window-item key="1" :value="1">
             <v-card>
               <v-card-title>
                 Customer Details
@@ -50,7 +49,6 @@
                 </v-layout>
 
                 <v-layout row v-if="customer">
-                  <v-flex xs12>
                     <form @submit.prevent="onUpdateCustomer">
                       <v-layout row>
                         <!--
@@ -134,16 +132,14 @@
 
                       </v-layout>
                     </form>
-                  </v-flex>
                 </v-layout>
 
 
               </v-card-text>
             </v-card>
-          </v-tab-item>
+          </v-window-item>
 
-          <v-tab-item key="3" :value="'tab-' + 3">
-
+          <v-window-item key="3" :value="3">
             <v-card>
               <v-card-title>
 
@@ -162,47 +158,47 @@
                     <v-card-text>
                       <v-container>
                         <v-layout row>
-                          <v-flex xs12 sm6 offset-sm1>
+                       
                             <v-select :items="projectListSelection" v-model="editedCustomerQuotation.projectId"
                               label="Select Project" single></v-select>
-                          </v-flex>
+                    
                         </v-layout>
                         <v-layout row>
-                          <v-flex xs12 sm9 offset-sm1>
+                         
                             <v-text-field v-model="editedCustomerQuotation.quotationRef" label="Reference"></v-text-field>
-                          </v-flex>
+                        
                         </v-layout>
                         <v-layout row v-show="editedCustomerQuotationIndex >= 0">
-                          <v-flex xs12 sm9 offset-sm1>
+                         
                             <v-text-field v-model="editedCustomerQuotation.status" label="Status"></v-text-field>
-                          </v-flex>
+                       
                         </v-layout>
                         <v-layout row>
-                          <v-flex xs12 sm9 offset-sm1>
+                         
                             <v-textarea name="description" label="Description" id="description"
                               v-model="editedCustomerQuotation.description" required>
                             </v-textarea>
-                          </v-flex>
+                          
                         </v-layout>
                         <v-layout row>
-                          <v-flex xs12 sm9 offset-sm1>
+                         
                             <v-text-field v-model="editedCustomerQuotation.currency" label="Currency"></v-text-field>
-                          </v-flex>
+                       
                         </v-layout>
                         <v-layout row>
-                          <v-flex xs12 sm9 offset-sm1>
+                         
                             <v-text-field v-model="editedCustomerQuotation.grossAmount"
                               label="Gross Amount"></v-text-field>
-                          </v-flex>
+                    
                         </v-layout>
                         <v-layout row>
-                          <v-flex xs12 sm9 offset-sm1>
+                        
                             <v-text-field v-model="editedCustomerQuotation.netAmount" label="Net Amount"></v-text-field>
-                          </v-flex>
+                       
                         </v-layout>
 
                         <v-layout row>
-                          <v-flex xs12 sm9 offset-sm1>
+                        
                             <v-dialog ref="customerQuotationDateDialog" v-model="customerQuotationDateModal"
                               v-modal="date" persistent width="50%">
                               <template v-slot:[`activator`]="{ on }">
@@ -216,10 +212,10 @@
                                   @click="$refs.customerQuotationDateDialog.save(date)">OK</v-btn>
                               </v-date-picker>
                             </v-dialog>
-                          </v-flex>
+                     
                         </v-layout>
                         <v-layout row v-if="editedCustomerQuotationIndex >= 0">
-                          <v-flex xs12 sm9 offset-sm1>
+                      
                             <v-dialog ref="customerQuotationDateReceivedDialog"
                               v-model="customerQuotationDateReceivedModal" v-modal="date" persistent width="50%">
                               <template v-slot:[`activator`]="{ on }">
@@ -234,13 +230,13 @@
                                   @click="$refs.customerQuotationDateReceivedDialog.save(date)">OK</v-btn>
                               </v-date-picker>
                             </v-dialog>
-                          </v-flex>
+                     
                         </v-layout>
                         <v-layout row v-if="editedCustomerQuotationIndex < 0">
-                          <v-flex xs12 sm9 offset-sm1>
+                        
                             <v-file-input v-model="editedCustomerQuotation.quotationFile" label="Upload Quotation" filled
                               prepend-icon="mdi-camera"></v-file-input>
-                          </v-flex>
+                      
                         </v-layout>
 
                       </v-container>
@@ -257,15 +253,13 @@
               <v-card-text>
                 <h3>Quotation Summary</h3>
                 <v-layout row v-if="customerQuotationSummary">
-                  <v-flex xs4 sm3 offset-sm1>
+                
                     <v-text-field v-model="customerQuotationSummary.totalQuotationCount" label="Quotations Submitted"
                       readonly></v-text-field>
-                  </v-flex>
+       
                 </v-layout>
                 <v-layout row v-else>
-                  <v-flex xs4 sm3 offset-sm1>
                     <span>Quotation Count 0</span>
-                  </v-flex>
                 </v-layout>
                 <h3>Quotation Details</h3>
                 <v-data-table :headers="customerQuotationTableHeaders" :calculate-widths="true"
@@ -299,12 +293,10 @@
               </v-card-text>
 
             </v-card>
-
-
-          </v-tab-item>
+          </v-window-item>
 
           <!-- Customer Invoices-->
-          <v-tab-item key="5" :value="'tab-' + 5">
+          <v-window-item key="5" :value="5">
             <v-card>
               <v-card-title>
 
@@ -323,43 +315,41 @@
                     <v-card-text>
                       <v-container>
                         <v-layout row>
-                          <v-flex xs12 sm12 offset-sm1>
+                         
                             <v-select :items="projectListSelection" v-model="editedCustomerInvoice.projectId"
                               label="Select Project" single></v-select>
-                          </v-flex>
+                       
                         </v-layout>
                         <v-layout row>
-                          <v-flex xs4 sm5 offset-sm1>
+                        
                             <v-text-field v-model="editedCustomerInvoice.invoiceRef" label="Reference"></v-text-field>
-                          </v-flex>
+                         
 
-                          <v-flex xs4 sm5 offset-sm1>
+                        
                             <v-select :items="invoiceStatusListSelection" v-model="editedCustomerInvoice.status"
                               label="Status" single></v-select>
-                          </v-flex>
+                        
                         </v-layout>
                         <v-layout row>
-                          <v-flex xs12 sm12 offset-sm1>
+                         
                             <v-textarea name="description" label="Description" id="description"
                               v-model="editedCustomerInvoice.description" required>
                             </v-textarea>
-                          </v-flex>
+                         
                         </v-layout>
                         <v-layout row>
-                          <v-flex xs12 sm3 offset-sm1>
+                        
                             <v-text-field v-model="editedCustomerInvoice.currency" label="Currency"></v-text-field>
-                          </v-flex>
-                          <v-flex xs12 sm3 offset-sm1>
+                          
                             <v-text-field v-model="editedCustomerInvoice.grossAmount" label="Gross Amount"></v-text-field>
-                          </v-flex>
-                          <v-flex xs12 sm3 offset-sm1>
+                        
                             <v-text-field v-model="editedCustomerInvoice.netAmount" label="Net Amount"></v-text-field>
-                          </v-flex>
+                         
                         </v-layout>
 
 
                         <v-layout row>
-                          <v-flex xs4 sm5 offset-sm1>
+                         
                             <v-dialog ref="customerInvoiceDateDialog" v-model="customerInvoiceDateModal" v-modal="date"
                               persistent width="50%">
                               <template v-slot:[`activator`]="{ on }">
@@ -372,8 +362,7 @@
                                 <v-btn text color="primary" @click="$refs.customerInvoiceDateDialog.save(date)">OK</v-btn>
                               </v-date-picker>
                             </v-dialog>
-                          </v-flex>
-                          <v-flex xs4 sm5 offset-sm1>
+                      
                             <v-dialog ref="customerInvoicePaymentDueDateDialog"
                               v-model="customerInvoicePaymentDueDateModal" v-modal="date" persistent width="50%">
                               <template v-slot:[`activator`]="{ on }">
@@ -388,14 +377,14 @@
                                   @click="$refs.customerInvoicePaymentDueDateDialog.save(date)">OK</v-btn>
                               </v-date-picker>
                             </v-dialog>
-                          </v-flex>
+                      
                         </v-layout>
 
                         <v-layout row v-if="editedCustomerInvoiceIndex < 0">
-                          <v-flex xs12 sm12 offset-sm1>
+                     
                             <v-file-input v-model="editedCustomerInvoice.invoiceFile" label="Upload Invoice" filled
                               prepend-icon="mdi-camera"></v-file-input>
-                          </v-flex>
+              
                         </v-layout>
 
                       </v-container>
@@ -413,38 +402,35 @@
               <v-card-text>
                 <h3>Customer Invoice Summary</h3>
                 <v-layout row v-if="customerInvoiceSummary">
-                  <v-flex xs4 sm3 offset-sm1>
+              
                     <v-text-field v-model="customerInvoiceSummary.totalInvoiceCount" label="Total Invoice Count"
                       readonly></v-text-field>
-                  </v-flex>
-                  <v-flex xs4 sm3 offset-sm1>
+               
+               
                     <v-text-field v-model="customerInvoiceSummary.paidInvoicesCount" label="Paid Invoices"
                       readonly></v-text-field>
-                  </v-flex>
-                  <v-flex xs4 sm3 offset-sm1>
+                 
                     <v-text-field v-model="customerInvoiceSummary.unPaidInvoicesCount" label="Un Paid Invoices"
                       readonly></v-text-field>
-                  </v-flex>
+              
                 </v-layout>
                 <v-layout row v-if="customerInvoiceSummary">
-                  <v-flex xs4 sm3 offset-sm1>
+                  
                     <v-text-field v-model="customerInvoiceSummary.unPaidInvoicesGrossAmount"
                       label="Invoice Total Gross (to Pay)" readonly prefix="€"></v-text-field>
-                  </v-flex>
-                  <v-flex xs4 sm3 offset-sm1>
+                  
                     <v-text-field v-model="customerInvoiceSummary.unPaidInvoicesNetAmount"
                       label="Invoice Total Net (to Pay)" readonly prefix="€"></v-text-field>
-                  </v-flex>
+                  
                 </v-layout>
                 <v-layout row v-if="customerInvoiceSummary">
-                  <v-flex xs4 sm3 offset-sm1>
+                
                     <v-text-field v-model="customerInvoiceSummary.paidInvoicesGrossAmount"
                       label="Invoice Total Gross (Paid)" readonly prefix="€"></v-text-field>
-                  </v-flex>
-                  <v-flex xs4 sm3 offset-sm1>
+                
                     <v-text-field v-model="customerInvoiceSummary.paidInvoicesNetAmount" label="Invoice Total Net (Paid)"
                       readonly prefix="€"></v-text-field>
-                  </v-flex>
+            
                 </v-layout>
 
                 <h3>Invoice Details</h3>
@@ -479,14 +465,13 @@
               </v-card-text>
 
             </v-card>
-          </v-tab-item>
+          </v-window-item>
 
 
 
           <!-- Customer Payments -->
 
-          <v-tab-item key="6" :value="'tab-' + 6">
-
+          <v-window-item key="6" :value="6">
 
             <!--
 
@@ -666,10 +651,9 @@
 
 
        -->
+          </v-window-item>
 
-          </v-tab-item>
-
-        </v-tabs-items>
+        </v-window>
         {{ customer }}
         <br>
         editedCustomer: {{ editedCustomer }}
