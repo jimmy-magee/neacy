@@ -6,114 +6,109 @@
         <v-spacer></v-spacer>
         <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
         <v-spacer></v-spacer>
-        <v-dialog v-model="customerDialog">
-          <template v-slot:[`activator`] = "{ props }">
-            <v-btn absolute right fab dark color="indigo" v-bind="props"><v-icon dark>add</v-icon></v-btn>
-          </template>
+       <v-btn>
+        <v-dialog v-model="customerDialog" activator="parent">
+       
           <v-card>
             <v-card-title>
               <span>Customer Details</span>
             </v-card-title>
             <v-card-text>
               <v-container>
-                {{ editedCustomer.raw.id }}
-                <v-layout row>
-                  <v-sheet>
+                {{ editedCustomer.id }}
+      
+      
                     <v-layout row>
-                      <v-sheet>
                         <v-text-field name="customerCategory" label="Category" id="customerCategory"
                           v-model="editedCustomer.category">
                         </v-text-field>
-                      </v-sheet>
                     </v-layout>
                     <v-layout row>
-                      <v-sheet xs12 sm6 offset-sm3>
                         <v-text-field name="customerName" label="Customer Name" id="customerName"
                           v-model="editedCustomer.name" required></v-text-field>
-                      </v-sheet>
                     </v-layout>
                     <v-layout row>
-                      <v-sheet xs12 sm6 offset-sm3>
+           
                         <v-text-field name="customerDescription" label="Customer Description" id="customerDescription"
                           v-model="editedCustomer.description" required></v-text-field>
-                      </v-sheet>
+
                     </v-layout>
                     <v-layout row>
-                      <v-sheet xs12 sm6 offset-sm3>
+       
                         <v-text-field name="customerAddress" label="Customer Address" id="customerAddress"
                           v-model="editedCustomer.address" required></v-text-field>
-                      </v-sheet>
+ 
                     </v-layout>
                     <v-layout row>
-                      <v-sheet xs12 sm6 offset-sm3>
+              
                         <v-text-field name="customerContactName" label="Customer Contact Name" id="customerContactName"
                           v-model="editedCustomer.contactName" required></v-text-field>
-                      </v-sheet>
+      
                     </v-layout>
                     <v-layout row>
-                      <v-sheet xs12 sm6 offset-sm3>
+       
                         <v-text-field name="customerContactNumber" label="Customer Contact Number"
                           id="customerContactNumber" v-model="editedCustomer.contactNumber" required></v-text-field>
-                      </v-sheet>
+ 
                     </v-layout>
                     <v-layout row>
-                      <v-sheet xs12 sm6 offset-sm3>
+             
                         <v-text-field name="customerWebsite" label="Customer Website" id="customerWebsite"
                           v-model="editedCustomer.website">
                         </v-text-field>
-                      </v-sheet>
+        
                     </v-layout>
                     <v-layout row>
-                      <v-sheet xs12 sm6 offset-sm3>
+             
                         <v-text-field name="customerEmail" label="Customer Email" id="customerEmail"
                           v-model="editedCustomer.contactEmail">
                         </v-text-field>
-                      </v-sheet>
+
                     </v-layout>
                     <v-layout row>
-                      <v-sheet xs12 sm6 offset-sm3>
+           
                         <v-text-field name="customerHeadOfficeTelephoneNumber" label="Head Office TelephoneNumber"
                           id="customerHeadOfficeTelephoneNumber" v-model="editedCustomer.headOfficeTelephoneNumber">
                         </v-text-field>
-                      </v-sheet>
+            
                     </v-layout>
                     <v-layout row>
-                      <v-sheet xs12 sm6 offset-sm3>
+           
                         <v-text-field name="customerCompanyRegistrationNumber" label="Company Registration Number"
                           id="customerCompanyRegistrationNumber" v-model="editedCustomer.companyRegistrationNumber">
                         </v-text-field>
-                      </v-sheet>
+         
                     </v-layout>
                     <v-layout row>
-                      <v-sheet xs12 sm6 offset-sm3>
+            
                         <v-text-field name="customerVatNumber" label="Company Vat Number" id="customerVatNumber"
                           v-model="editedCustomer.vatNumber">
                         </v-text-field>
-                      </v-sheet>
+ 
                     </v-layout>
                     <v-layout row>
-                      <v-sheet xs12 sm6 offset-sm3>
+    
                         <v-text-field name="customerBillingName" label="Billing Name" id="customerBillingName"
                           v-model="editedCustomer.billingName">
                         </v-text-field>
-                      </v-sheet>
+        
                     </v-layout>
                     <v-layout row>
-                      <v-sheet xs12 sm6 offset-sm3>
+               
                         <v-text-field name="customerBillingAddress" label="Billing Address" id="customerBillingAddress"
                           v-model="editedCustomer.billingAddress">
                         </v-text-field>
-                      </v-sheet>
+           
                     </v-layout>
                     <v-layout row>
-                      <v-sheet xs12 sm6 offset-sm3>
+                 
                         <v-text-field name="customerBillingEmail" label="Billing Email" id="customerBillingEmail"
                           v-model="editedCustomer.billingEmail">
                         </v-text-field>
-                      </v-sheet>
+          
                     </v-layout>
-                  </v-sheet>
-                </v-layout>
+       
+
               </v-container>
             </v-card-text>
 
@@ -124,6 +119,7 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+      </v-btn>
       </v-card-title>
       <v-card-text>
 

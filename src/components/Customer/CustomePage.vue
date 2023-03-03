@@ -12,16 +12,16 @@
 
         <v-tabs v-model="tab" show-arrows>
 
-          <v-tab :key="1" :value="1">
+          <v-tab value="one">
             Customer Details
           </v-tab>
-          <v-tab  :key="3" :value="3">
+          <v-tab  value="two">
             Quotations
           </v-tab>
-          <v-tab :key="4" :value="4">
+          <v-tab value="three">
             Contracts
           </v-tab>
-          <v-tab :key="5" :value="5">
+          <v-tab value="five">
             Invoices
           </v-tab>
           <!--
@@ -34,7 +34,7 @@
 
           <!-- Customer Details -->
 
-          <v-window-item key="1" :value="1">
+          <v-window-item value="one">
             <v-card>
               <v-card-title>
                 Customer Details
@@ -48,7 +48,7 @@
                   </v-snackbar>
                 </v-layout>
 
-                <v-layout row v-if="customer">
+         
                     <form @submit.prevent="onUpdateCustomer">
                       <v-layout row>
                         <!--
@@ -132,14 +132,14 @@
 
                       </v-layout>
                     </form>
-                </v-layout>
+         
 
 
               </v-card-text>
             </v-card>
           </v-window-item>
 
-          <v-window-item key="3" :value="3">
+          <v-window-item value="three">
             <v-card>
               <v-card-title>
 
@@ -296,7 +296,7 @@
           </v-window-item>
 
           <!-- Customer Invoices-->
-          <v-window-item key="5" :value="5">
+          <v-window-item value="five">
             <v-card>
               <v-card-title>
 
@@ -471,7 +471,7 @@
 
           <!-- Customer Payments -->
 
-          <v-window-item key="6" :value="6">
+          <v-window-item value="6">
 
             <!--
 
@@ -692,7 +692,7 @@ export default {
 
     });
 
-    const tab = null;
+    const tab = ref(null);
     const date = new Date().toISOString().substr(0, 10);
     const search = '';
     var snack = ref(false);
