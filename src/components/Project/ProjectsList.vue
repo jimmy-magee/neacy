@@ -65,7 +65,7 @@
 
 <script>
 
-import { computed, ref, onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 export default {
 
@@ -75,11 +75,6 @@ export default {
     const error = computed(() => store.getters['error', { root: true }]);
     const userIsAuthenticatedAndHasRoleAdmin = computed(() => store.getters['users/userIsAuthenticatedAndHasRoleAdmin']);
 
-    const id = ref('');
-    const name = ref('');
-    const address = ref('');
-    const expiryDate = ref('');
-    const userId = ref('');
 
     onMounted(() => {
       store.dispatch('projects/loadProjects')
@@ -92,11 +87,6 @@ export default {
     return {
       projects,
       userIsAuthenticatedAndHasRoleAdmin,
-      id,
-      name,
-      address,
-      expiryDate,
-      userId,
       onDismissed,
       error
     }

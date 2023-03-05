@@ -26,28 +26,33 @@ const routes = [
   {
     path: '/signup',
     name: 'SignupComponent',
-    component: () => import(/* webpackChunkName: "signin" */ './components/User/SignupForm.vue'),
+    component: () => import(/* webpackChunkName: "signupForm" */ './components/User/SignupForm.vue'),
   },
   {
     path: '/customers/:customerId',
     name: 'CustomerPage',
-    component: () => import(/* webpackChunkName: "signin" */ './components/Customer/CustomePage.vue'),
+    component: () => import(/* webpackChunkName: "customerPage" */ './components/Customer/CustomePage.vue'),
   },
   {
     path: '/customers',
     name: 'CustomersPage',
-    component: () => import(/* webpackChunkName: "signin" */ './components/Customer/CustomersPage.vue'),
+    component: () => import(/* webpackChunkName: "customersPage" */ './components/Customer/CustomersPage.vue'),
   },
   {
     path: '/projects',
     name: 'ProjectsList',
-    component: () => import(/* webpackChunkName: "signin" */ './components/Project/ProjectsList.vue'),
+    component: () => import(/* webpackChunkName: "projectsPage" */ './components/Project/ProjectsList.vue'),
   },
   {
     path: '/projects/new',
     name: 'ProjectForm',
-    component: () => import(/* webpackChunkName: "signin" */ './components/Project/CreateProject.vue'),
-  }
+    component: () => import(/* webpackChunkName: "createProject" */ './components/Project/CreateProject.vue'),
+  },
+  {
+    path: '/projects/:id',
+    name: 'ProjectPage',
+    component: () => import(/* webpackChunkName: "projectPage" */ './components/Project/ProjectPage.vue'),
+  },
 ]
 
 

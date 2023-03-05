@@ -139,7 +139,7 @@
             </v-card>
           </v-window-item>
 
-          <v-window-item value="three">
+          <v-window-item value="two">
             <v-card>
               <v-card-title>
 

@@ -3,6 +3,7 @@ import axios from 'axios'
 
 const state = {
     loadedProjects: [],
+    loadProject: null,
     loadedProjectOrders: [],
     loadedProjectStatusList: [],
     loadedProjectContacts: [],
@@ -148,6 +149,9 @@ const mutations = {
     },
     setLoadedProjects(state, payload) {
         state.loadedProjects = payload
+    },
+    setLoadedProject(state, payload) {
+        state.loadedProject = payload
     },
     setLoadedProjectStatusList(state, payload) {
         state.loadedProjectStatusList = payload
@@ -316,74 +320,74 @@ const mutations = {
 }
 const actions = {
     createProjectDrawingCategory({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         webClient.post(`/api/resource/clients/` + localStorage.clientId + `/drawing_categories`, payload)
             .then(response => {
                 console.log('Received saved ProjectDrawing Category from server..')
                 commit('createProjectDrawingCategory', response.data)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(error => {
                 commit('setError', error.response)
             })
     },
     updateProjectDrawingCategory({ commit}, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         webClient.post(`/api/resource/clients/` + localStorage.clientId + `/drawing_categories/` + payload.id, payload)
             .then(response => {
                 console.log('Received updated ProjectDrawing Category from server..')
                 commit('updateProjectDrawingCategory', response.data)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(error => {
                 commit('setError', error.response)
             })
     },
     deleteProjectDrawingCategory({ commit}, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         webClient.delete(`/api/resource/clients/` + localStorage.clientId + `/drawing_categories/` + payload.id)
             .then(() => {
                 commit('deleteProjectDrawingCategory', payload)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(error => {
-                commit('setError', error.response)
+                commit('setError', error, { root: true })
             })
     },
     loadSupplierCategories({ commit }) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         webClient.get(`/api/resource/clients/` + localStorage.clientId + `/supplier_categories`)
             .then(response => {
                 console.log('Received Suppliers Categories...')
                 commit('setLoadedSupplierCategories', response.data)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
-            .catch(e => {
-                this.errors.push(e)
+            .catch(error => {
+                commit('setError', error, { root: true })
             })
     },
     createProjectProductOrder({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         webClient.post(`/api/resource/clients/` + localStorage.clientId + `/suppliers/` + payload.supplierId + '/quotations/' + payload.quotationId + '/order', payload)
             .then(response => {
                 console.log('Received saved Supplier Project Order confirmation from server..')
                 console.log(response.data)
                 //commit('createSupplierCategory', response.data)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(error => {
                 commit('setError', error.response)
             })
     },
     loadProjectStatusList({ commit }) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         webClient.get('/api/resource/clients/' + localStorage.clientId + '/projects/status/list')
             .then(response => {
                 const list = response.data
                 console.log('Received project status enum from server ')
                 console.log(list)
                 commit('setLoadedProjectStatusList', list)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(error => {
                 commit('setError', error.response)
@@ -399,6 +403,23 @@ const actions = {
                 console.log('Received Projects')
                 console.log(response.data)
                 commit('setLoadedProjects', response.data)
+                commit('setLoading', false, { root: true })
+            })
+            .catch(error => {
+                console.log('Received error getting projects..')
+                console.log(error.response)
+                commit('setLoading', false, { root: true })
+                commit('setError', error.response, { root: true })
+            })
+    },
+    loadProject({ commit }, payload) {
+        commit('setLoading', true, { root: true })
+        console.log('Loading Project for user with authorization token ' + localStorage.authHeader)
+        webClient.get(`/api/resource/clients/` + localStorage.clientId + `/projects/`+payload)
+            .then(response => {
+                console.log('Received Project')
+                console.log(response.data)
+                commit('setLoadedProject', response.data)
                 commit('setLoading', false, { root: true })
             })
             .catch(error => {
@@ -473,7 +494,7 @@ const actions = {
             })
     },
     loadProjectTasks({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         console.log('Loading all Projects Tasks for user with authorization token ' + localStorage.authHeader)
         webClient.get(`/api/client/` + localStorage.clientId + `/projects/` + payload + '/tasks')
             .then(response => {
@@ -481,10 +502,10 @@ const actions = {
                 console.log(response.data)
                 const data = response.data
                 commit('setLoadedProjectTasks', data)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
-            .catch(e => {
-                this.errors.push(e)
+            .catch(error => {
+                commit('setError', error, { root: true })
             })
     },
     createProjectTask({ commit }, payload) {
@@ -501,8 +522,8 @@ const actions = {
                 })
             })
             .catch((error) => {
-                commit('setLoading', false)
-                commit('setError', error)
+                commit('setLoading', false, { root: true })
+                commit('setError', error, { root: true })
                 console.log('Oops ' + error.message)
                 console.log(error)
             })
@@ -521,8 +542,8 @@ const actions = {
                 })
             })
             .catch((error) => {
-                commit('setLoading', false)
-                commit('setError', error)
+                commit('setLoading', false, { root: true })
+                commit('setError', error, { root: true })
                 console.log('Oops ' + error.message)
                 console.log(error)
             })
@@ -539,7 +560,7 @@ const actions = {
             })
     },
     loadProjectContacts({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         console.log('Loading all Projects Contacts for user with authorization token ' + localStorage.authHeader)
         webClient.get(`/api/client/` + localStorage.clientId + `/projects/` + payload + '/contacts')
             .then(response => {
@@ -547,10 +568,10 @@ const actions = {
                 console.log(response.data)
                 const data = response.data
                 commit('setLoadedProjectContacts', data)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
-                this.errors.push(e)
+                commit('setError', e, { root: true })
             })
     },
     createProjectContact({ commit }, payload) {
@@ -567,7 +588,7 @@ const actions = {
                 })
             })
             .catch((error) => {
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
                 commit('setError', error)
                 console.log('Oops error creating project contact ' + error.message)
                 console.log(error)
@@ -587,7 +608,7 @@ const actions = {
                 })
             })
             .catch((error) => {
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
                 commit('setError', error)
                 console.log('Oops error updating project contact ' + error.message)
                 console.log(error)
@@ -605,19 +626,19 @@ const actions = {
             })
     },
     loadProjectRFIs({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         console.log('Loading all Projects for user with authorization token ' + localStorage.authHeader)
         webClient.get(`/api/resource/clients/` + localStorage.clientId + '/projects/' + payload + '/rfis')
             .then(response => {
                 console.log('Received Projects RFIs')
                 console.log(response.data)
                 commit('setLoadedProjectRFIs', response.data)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(error => {
                 console.log('Received error getting project RFIs..')
                 console.log(error.response)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
                 commit('setError', error.response)
             })
     },
@@ -638,8 +659,8 @@ const actions = {
                 })
             })
             .catch((error) => {
-                commit('setLoading', false)
-                commit('setError', error.response)
+                commit('setLoading', false, { root: true })
+                commit('setError', error.response, { root: true })
                 console.log(error.response)
             })
     },
@@ -670,20 +691,20 @@ const actions = {
             })
     },
     loadProjectRooms({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         console.log('Loading project room schedule for user with authorization token ' + localStorage.authHeader)
         webClient.get(`/api/resource/clients/` + localStorage.clientId + `/projects/` + payload + `/schedules/rooms`)
             .then(response => {
                 console.log('Received Projects Rooms')
                 console.log(response.data)
                 commit('setLoadedProjectRooms', response.data)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(error => {
                 console.log('Received error getting project room schedule..')
                 console.log(error.response)
-                commit('setLoading', false)
-                commit('setError', error.response)
+                commit('setLoading', false, { root: true })
+                commit('setError', error.response, { root: true })
             })
     },
     createProjectRoom({ commit }, payload) {
@@ -699,8 +720,8 @@ const actions = {
                 commit('createProjectRoom', savedProjectRoom)
             })
             .catch((error) => {
-                commit('setLoading', false)
-                commit('setError', error.response)
+                commit('setLoading', false, { root: true })
+                commit('setError', error.response, { root: true })
                 console.log(error.response)
             })
     },
@@ -731,7 +752,7 @@ const actions = {
             })
     },
     loadProjectDrawingMetadata({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         commit('setLoadedProjectDrawings', [])
 
         console.log('Loading project drawings for user ' + localStorage.authHeader + ' for project ' + payload)
@@ -742,14 +763,14 @@ const actions = {
                 console.log('Received dwgs from server ')
                 console.log(dwgs)
                 commit('setLoadedProjectDrawings', dwgs)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
-                this.errors.push(e)
+                commit('setError', e, { root: true })
             })
     },
     loadProjectImageMetadata({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         commit('setLoadedProjectImageMetadata', [])
         commit('setLoadedProjectImages', [])
 
@@ -775,7 +796,7 @@ const actions = {
             })
             .catch(e => {
                 console.log(e)
-                this.errors.push(e)
+                commit('setError', e, { root: true })
             })
     },
     setSelectedProjectBoQItem({ commit, dispatch }, payload) {
@@ -789,7 +810,7 @@ const actions = {
         commit('setSelectedProjectBoQItem', payload)
     },
     loadProjectBoQItemMeasures({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         commit('setLoadedProjectBoQItemMeasures', [])
 
         console.log('Loading project bill item measures for user ' + localStorage.authHeader + ' for project ' + payload)
@@ -799,10 +820,10 @@ const actions = {
                 console.log('Received bill item measures from server.. ')
                 console.log(items)
                 commit('setLoadedProjectBoQItemMeasures', items)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
-                this.errors.push(e)
+                commit('setError', e, { root: true })
             })
     },
     createProjectImage({ commit }, payload) {
@@ -828,7 +849,7 @@ const actions = {
             })
             .catch(e => {
                 console.log(e)
-                this.errors.push(e)
+                commit('setError', e, { root: true })
             })
     },
     saveProjectImageMetaData({ commit }, payload) {
@@ -844,7 +865,7 @@ const actions = {
             })
             .catch(e => {
                 console.log(e)
-                this.errors.push(e)
+                commit('setError', e, { root: true })
             })
     },
     uploadProjectDrawings({ commit }, payload) {
@@ -876,7 +897,7 @@ const actions = {
             })
             .catch(e => {
                 console.log(e)
-                this.errors.push(e)
+                commit('setError', e, { root: true })
             })
     },
     updateProjectDrawingMetaData({ commit }, payload) {
@@ -954,11 +975,11 @@ const actions = {
             })
             .catch(e => {
                 console.log(e)
-                this.errors.push(e)
+                commit('setError', e, { root: true })
             })
     },
     loadProjectBoQItems({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         commit('setLoadedProjectBoQ', [])
         console.log('Loading project bill of quantities for user ' + localStorage.authHeader + ' for project ' + payload)
 
@@ -968,16 +989,16 @@ const actions = {
                 console.log('Received bill of quantites from server ')
                 console.log(items)
                 commit('setLoadedProjectBoQ', items)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
                 console.log('errror getting project boqitems')
                 console.log(e)
-                this.errors.push(e)
+                
             })
     },
     loadProjectBoQSummary({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         console.log('Loading all project boq ' + payload)
         console.log('for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
 
@@ -987,10 +1008,10 @@ const actions = {
                 console.log(response.data)
                 const data = response.data
                 commit('setLoadedProjectBoQSummary', data)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
-                this.errors.push(e)
+                commit('setError', e, { root: true })
                 console.log(e)
             })
     },
@@ -1009,8 +1030,8 @@ const actions = {
                 })
             })
             .catch((error) => {
-                commit('setLoading', false)
-                commit('setError', error)
+                commit('setLoading', false, { root: true })
+                commit('setError', error, { root: true })
                 console.log('Oops ' + error.message)
                 console.log(error)
             })
@@ -1031,8 +1052,8 @@ const actions = {
                     dispatch('loadProjectProcurementPackageSummary', payload.projectId)
                 }, 150)
             ).catch((error) => {
-                commit('setLoading', false)
-                commit('setError', error)
+                commit('setLoading', false, { root: true })
+                commit('setError', error, { root: true })
                 console.log('Oops ' + error.message)
                 console.log(error)
             })
@@ -1047,14 +1068,14 @@ const actions = {
                 commit('deleteProjectBoQItem', payload)
             })
             .catch((error) => {
-                commit('setLoading', false)
-                commit('setError', error)
+                commit('setLoading', false, { root: true })
+                commit('setError', error, { root: true })
                 console.log('Oops ' + error.message)
                 console.log(error)
             })
     },
     loadProjectProcurementPackages({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         commit('setLoadedProjectProcurementPackages', [])
         console.log('Loading project procurement packages for user ' + localStorage.authHeader + ' for project ' + payload)
 
@@ -1064,14 +1085,14 @@ const actions = {
                 console.log('Received project procurement pacakges from server ')
                 console.log(items)
                 commit('setLoadedProjectProcurementPackages', items)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
-                this.errors.push(e)
+                commit('setError', e, { root: true })
             })
     },
     loadProjectProcurementPackageSummary({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         console.log('Loading project procurement package summary ' + payload)
         console.log('for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
         webClient.get(`/api/resource/clients/` + localStorage.clientId + `/projects/` + payload + '/procurement/account/summary')
@@ -1080,16 +1101,16 @@ const actions = {
                 console.log(response.data)
                 const data = response.data
                 commit('setLoadedProjectProcurementPackageSummary', data)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
-                this.errors.push(e)
+                commit('setError', e, { root: true })
                 console.log('error access project procurement summary for projectId ' + payload)
                 console.log(e)
             })
     },
     loadProjectProcurementPackage({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         commit('setLoadedProjectProcurementPackage', {})
         console.log('Loading project procurement packages for user ' + localStorage.authHeader + ' for project ' + payload)
 
@@ -1099,10 +1120,10 @@ const actions = {
                 console.log('Received project procurement pacakge from server ')
                 console.log(item)
                 commit('setLoadedProjectProcurementPackage', item)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
-                this.errors.push(e)
+                commit('setError', e, { root: true })
             })
     },
     createProjectProcurementPackage({ commit }, payload) {
@@ -1119,8 +1140,8 @@ const actions = {
                 })
             })
             .catch((error) => {
-                commit('setLoading', false)
-                commit('setError', error)
+                commit('setLoading', false, { root: true })
+                commit('setError', error, { root: true })
                 console.log('Oops ' + error.message)
                 console.log(error)
             })
@@ -1141,8 +1162,8 @@ const actions = {
                 }, 300)
             )
             .catch((error) => {
-                commit('setLoading', false)
-                commit('setError', error)
+                commit('setLoading', false, { root: true })
+                commit('setError', error, { root: true })
                 console.log('Oops ' + error.message)
                 console.log(error)
             })
@@ -1157,8 +1178,8 @@ const actions = {
                 commit('deleteProjectProcurementPackage', payload)
             })
             .catch((error) => {
-                commit('setLoading', false)
-                commit('setError', error)
+                commit('setLoading', false, { root: true })
+                commit('setError', error, { root: true })
                 console.log('Oops ' + error.message)
                 console.log(error)
             })
@@ -1177,8 +1198,8 @@ const actions = {
                     id: savedProjectBoQItemMeasure.id
                 })
             }).catch((error) => {
-                commit('setLoading', false)
-                commit('setError', error)
+                commit('setLoading', false, { root: true })
+                commit('setError', error, { root: true })
                 console.log('Oops ' + error.message)
                 console.log(error)
             })
@@ -1197,7 +1218,7 @@ const actions = {
                     id: updatedProjectBoQItemMeasure.id
                 })
             }).catch((error) => {
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
                 commit('setError', error)
                 console.log('Oops ' + error.message)
                 console.log(error)
@@ -1212,14 +1233,14 @@ const actions = {
                 commit('deleteProjectBoQItemMeasure', payload)
             })
             .catch((error) => {
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
                 commit('setError', error)
                 console.log('Oops ' + error.message)
                 console.log(error)
             })
     },
     loadProjectSubContractTenders({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         commit('setLoadedProjectSubContractTenders', [])
 
         console.log('Loading project subcontract tenders for user ' + localStorage.authHeader + ' for project ' + payload)
@@ -1230,7 +1251,7 @@ const actions = {
                 console.log('Received project subcontractor tenders from server.. ')
                 console.log(items)
                 commit('setLoadedProjectSubContractTenders', items)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(error => {
                 this.errors.push(error)
@@ -1254,8 +1275,8 @@ const actions = {
                 })
             })
             .catch((error) => {
-                commit('setLoading', false)
-                commit('setError', error)
+                commit('setLoading', false, { root: true })
+                commit('setError', error, { root: true })
                 console.log('Oops ' + error.message)
                 console.log(error)
             })
@@ -1273,21 +1294,21 @@ const actions = {
                 commit('updateProjectSubContractTender', updatedProjectSubContractTender)
             })
             .catch((error) => {
-                commit('setLoading', false)
-                commit('setError', error)
+                commit('setLoading', false, { root: true })
+                commit('setError', error, { root: true })
                 console.log('Oops ' + error.message)
                 console.log(error)
             })
     },
     loadSubContractorProcurementPackage({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         console.log('Setting subcontractor procurement package bill items for ' + payload.name)
         console.log(payload.billItems)
         commit('setLoadedSubContractorProcurementPackageBillItems', payload.billItems)
-        commit('setLoading', false)
+        commit('setLoading', false, { root: true })
     },
     loadProjectSubContractorProcurementPackages({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         //commit('setLoadedProjectProcurementPackages', [])
         console.log('Loading project subcontractor procurement packages for user ' + localStorage.authHeader + ' for project ' + payload.projectId)
 
@@ -1297,10 +1318,10 @@ const actions = {
                 console.log('Received project subcontractor procurement packages from server ')
                 console.log(items)
                 commit('setLoadedProjectSubContractorProcurementPackages', items)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
-                this.errors.push(e)
+                commit('setError', e, { root: true })
             })
     },
     createProjectSubContractorProcurementPackages({ commit }, payload) {
@@ -1320,7 +1341,7 @@ const actions = {
                 commit('updateProjectProcurementPackage', savedSubContractorProjectProcurementPackage)
             })
             .catch((error) => {
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
                 commit('setError', error)
                 console.log('Oops error creating subContractorProjectProcurementPackage ' + error.message)
                 console.log(error)
@@ -1347,14 +1368,14 @@ const actions = {
                 }, 300)
             )
             .catch((error) => {
-                commit('setLoading', false)
-                commit('setError', error)
+                commit('setLoading', false, { root: true })
+                commit('setError', error, { root: true })
                 console.log('Oops error creating subContractorProjectProcurementPackage ' + error.message)
                 console.log(error)
             })
     },
     loadProjectCustomerInvoiceSummary({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         console.log('Loading all customer invoices ' + payload)
         console.log('for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
         webClient.get(`/api/resource/clients/` + localStorage.clientId + `/projects/` + payload + '/customers/invoices/summary')
@@ -1363,15 +1384,15 @@ const actions = {
                 console.log(response.data)
                 const data = response.data
                 commit('setLoadedProjectCustomerInvoiceSummary', data)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
-                this.errors.push(e)
+                commit('setError', e, { root: true })
                 console.log(e)
             })
     },
     loadProjectCustomerInvoices({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         console.log('Loading all Customer Invoices with project id ' + payload)
         console.log('for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
 
@@ -1381,15 +1402,14 @@ const actions = {
                 console.log(response.data)
                 const data = response.data
                 commit('setLoadedProjectCustomerInvoices', data)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
-                this.errors.push(e)
                 console.log(e)
             })
     },
     loadProjectSubContractorInvoiceSummary({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         console.log('Loading all subcontractor invoices ' + payload)
         console.log('for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
         webClient.get(`/api/resource/clients/` + localStorage.clientId + `/projects/` + payload + '/subcontractors/invoices/summary')
@@ -1398,15 +1418,15 @@ const actions = {
                 console.log(response.data)
                 const data = response.data
                 commit('setLoadedProjectSubContractorInvoiceSummary', data)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
-                this.errors.push(e)
+                commit('setError', e, { root: true })
                 console.log(e)
             })
     },
     loadProjectSubContractorInvoices({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         console.log('Loading all SubContractor Invoices with project id ' + payload)
         console.log('for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
 
@@ -1416,15 +1436,15 @@ const actions = {
                 console.log(response.data)
                 const data = response.data
                 commit('setLoadedProjectSubContractorInvoices', data)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
-                this.errors.push(e)
+                
                 console.log(e)
             })
     },
     loadProjectSupplierInvoiceSummary({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         console.log('Loading all supplier invoices summary ' + payload)
         console.log('for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
         webClient.get(`/api/resource/clients/` + localStorage.clientId + `/projects/` + payload + '/suppliers/invoices/summary')
@@ -1432,15 +1452,15 @@ const actions = {
                 console.log('Received Project Supplier Invoice Summary from server.')
                 console.log(response.data)
                 commit('setLoadedProjectSupplierInvoiceSummary', response.data)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
-                this.errors.push(e)
+                commit('setError', e, { root: true })
                 console.log(e)
             })
     },
     loadProjectSupplierInvoices({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         console.log('Loading all Supplier Invoices with project id ' + payload)
         console.log('for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
 
@@ -1450,15 +1470,15 @@ const actions = {
                 console.log(response.data)
                 const data = response.data
                 commit('setLoadedProjectSupplierInvoices', data)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
-                this.errors.push(e)
+              
                 console.log(e)
             })
     },
     loadProjectQuotationSummary({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         console.log('Loading all project invoices ' + payload)
         console.log('for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
 
@@ -1468,15 +1488,15 @@ const actions = {
                 console.log(response.data)
                 const data = response.data
                 commit('setLoadedProjectQuotationSummary', data)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
-                this.errors.push(e)
+                commit('setError', e, { root: true })
                 console.log(e)
             })
     },
     loadProjectQuotations({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         console.log('Loading all Quotations for project id ' + payload)
         console.log('for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
 
@@ -1486,10 +1506,10 @@ const actions = {
                 console.log(response.data)
                 const data = response.data
                 commit('setLoadedProjectQuotations', data)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
-                this.errors.push(e)
+                commit('setError', e, { root: true })
                 console.log(e)
             })
     },
@@ -1501,11 +1521,7 @@ const getters = {
         })
     },
     loadedProject(state) {
-        return (projectId) => {
-            return state.loadedProjects.find((project) => {
-                return project.id === projectId
-            })
-        }
+        return state.loadedProject
     },
     loadedProjectDrawingCategories(state) {
         return state.loadedProjectDrawingCategories.sort((A, B) => {
