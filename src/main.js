@@ -53,6 +53,11 @@ const routes = [
     name: 'ProjectPage',
     component: () => import(/* webpackChunkName: "projectPage" */ './components/Project/ProjectPage.vue'),
   },
+  {
+    path: '/boqitem_categories',
+    name: 'BoQItemCategoriesPage',
+    component: () => import(/* webpackChunkName: "projectPage" */ './components/BoQ/BoQItemCategories.vue'),
+  },
 ]
 
 

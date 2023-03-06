@@ -1293,7 +1293,7 @@
                       <v-text-field v-model="searchProjectBoQ" append-icon="search" label="Search" single-line
                         hide-details></v-text-field>
                       <v-spacer></v-spacer>
-                      <v-btn absolute right fab dark color="indigo" v-on="on">
+                      <v-btn @click="dialogBoQItem.value = true">
                       <v-dialog v-model="dialogBoQItem" activator="parent">
                   
                         <v-card>
@@ -1665,7 +1665,7 @@
 
                           <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn color="blue darken-1" @click="closeBoQItemDialog">Cancel</v-btn>
+                            <v-btn color="blue darken-1" @click="dialogBoQItem = false">Cancel</v-btn>
                             <v-btn color="blue darken-1" @click="saveProjectBoQItem">Save</v-btn>
                           </v-card-actions>
                         </v-card>
@@ -4550,11 +4550,11 @@ export default {
           actualStartDate: editedBoQItem.actualStartDate,
           actualCompletionDate: editedBoQItem.actualCompletionDate
         }
-        store.dispatch('createProjectBoQItem', formData)
+        store.dispatch('projects/createProjectBoQItem', formData)
           .then(
-            store.dispatch('loadProjectProcurementPackages', id)
+            store.dispatch('projects/loadProjectProcurementPackages', id)
           ).then(
-            store.dispatch('loadProjectBoQSummary', id)
+            store.dispatch('projects/loadProjectBoQSummary', id)
           )
 
       }
@@ -4707,7 +4707,7 @@ export default {
       }, 300)
     });*/
     const closeBoQItemDialog = (() => {
-      dialogBoQItem.value = false
+      Object.assign(dialogBoQItem, false);
       setTimeout(() => {
         Object.assign(editedBoQItem, defaultBoQItem)
         editedBoQItemIndex.value = -1

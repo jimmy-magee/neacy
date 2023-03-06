@@ -674,10 +674,8 @@ export default {
 
   setup() {
     const store = useStore();
-    //const router = useRouter();
+   
     const route = useRoute();
-
-    //const id = computed(props.customerId);
 
     const id = route.params.customerId;
     console.log('id is ' + route.params.customerId);
