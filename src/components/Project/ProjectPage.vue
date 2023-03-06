@@ -1251,7 +1251,7 @@
 
 
                 </v-window-item>
-                <v-window-item value="financeTab-11)">
+                <v-window-item value="financeTab-11">
 
                   <v-card>
                     <v-text-field v-model="searchProjectQuotations" label="Search Quotations" flat solo-inverted
@@ -1275,7 +1275,7 @@
 
                 </v-window-item>
 
-                <v-window-item value="'financeTab-1">
+                <v-window-item value="financeTab-1">
 
                   <v-card>
                     <v-card-title>
@@ -1697,6 +1697,7 @@
                       </v-text-field>
 
                     </v-layout>
+        
                     <v-data-table :headers="boqTableHeaders" :items="boq" :search="searchProjectBoQ" show-select>
                       <template v-slot:[`item.total`]="{ item }">
                         {{ (item.quantity * item.contractRate).toFixed(2) }}
@@ -1787,7 +1788,7 @@
 
                 </v-window-item>
 
-                <v-window-item value="'financeTab-2">
+                <v-window-item value="financeTab-2">
 
                   <v-card>
                     <v-card-title>
@@ -2200,7 +2201,7 @@
 
                 </v-window-item>
 
-                <v-window-item value="'financeTab-31">
+                <v-window-item value="financeTab-31">
 
                   <v-card>
                     <v-card-title></v-card-title>
@@ -2212,7 +2213,7 @@
 
                 </v-window-item>
 
-                <v-window-item value="'financeTab-3">
+                <v-window-item value="financeTab-3">
 
                   <v-card>
                     <v-card-title>
