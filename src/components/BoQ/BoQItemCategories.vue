@@ -86,7 +86,7 @@ export default {
 
 
     onMounted(() => {
-      store.dispatch('loadBoQItemCategories')
+      store.dispatch('projects/loadBoQItemCategories')
     });
 
     const search = ref('');
@@ -107,29 +107,29 @@ export default {
     });
     const boQItemCategoryTableHeaders = [
       {
-        text: 'ID',
+        title: 'ID',
         align: 'left',
         sortable: true,
-        value: 'id'
+        key: 'id'
       },
       {
-        text: 'Name',
+        title: 'Name',
         align: 'left',
         sortable: true,
-        value: 'name'
+        key: 'name'
       },
       {
-        text: 'Code',
+        title: 'Code',
         align: 'left',
         sortable: true,
-        value: 'code'
+        key: 'code'
       },
-      { text: 'Description', value: 'description' },
-      { text: 'Edit', align: 'left', value: 'actionEdit' },
-      { text: 'Delete', align: 'left', value: 'actionDelete' }
+      { title: 'Description', key: 'description' },
+      { title: 'Edit', align: 'left', key: 'actionEdit' },
+      { title: 'Delete', align: 'left', key: 'actionDelete' }
     ];
 
-    const boQItemCategories = computed(() => { return store.getters.loadedBoQItemCategories });
+    const boQItemCategories = computed(() => { return store.getters['projects/loadedBoQItemCategories']});
     const formTitle = computed(() => editedIndex.value === -1 ? 'New BoQItemCategory' : 'Edit BoQItemCategory');
     const loading = computed(() => store.getters['loading', { root: true }]);
     const error = computed(() => store.getters['error', { root: true }]);
@@ -144,12 +144,12 @@ export default {
     const updateBoQItemCategory = (() => {
         if (editedIndex.value === -1) {
           console.log('Creating  boQItem category')
-          console.log(this.editedItem)
-          store.dispatch('projects/createBoQItemCategory', this.editedItem)
+          console.log(editedItem)
+          store.dispatch('projects/createBoQItemCategory', editedItem)
         } else {
           console.log('Updating  boQItem category')
-          console.log(this.editedItem)
-          store.dispatch('projects/updateBoQItemCategory', this.editedItem)
+          console.log(editedItem)
+          store.dispatch('projects/updateBoQItemCategory', editedItem)
         }
         close()
       });
@@ -157,13 +157,13 @@ export default {
       const deleteBoQItemCategory = ((item) => {
         console.log('Delete BoQItemCategory Event Received..')
         console.log(item)
-        store.dispatch('projects/deleteBoQItemCategory', item)
+        store.dispatch('projects/deleteBoQItemCategory', item.value)
       });
 
       const close = (() => {
         dialog.value = false
         setTimeout(() => {
-          Object.assign(editedItem, this.defaultItem)
+          Object.assign(editedItem, defaultItem)
           editedIndex.value = -1
         }, 300)
       });
@@ -173,6 +173,7 @@ export default {
       });
 
       return {
+        boQItemCategories,
         search,
         dialog,
         editedIndex,
@@ -186,6 +187,7 @@ export default {
         editBoQItemCategory,
         updateBoQItemCategory,
         deleteBoQItemCategory,
+        close,
         onDismissed
 
       }

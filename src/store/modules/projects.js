@@ -2,6 +2,7 @@ import webClient from './webclient'
 import axios from 'axios'
 
 const state = {
+    loadedBoQItemCategories: [],
     loadedProjects: [],
     loadProject: null,
     loadedProjectOrders: [],
@@ -316,9 +317,25 @@ const mutations = {
         const index = state.loadedProjectSubContractorProcurementPackages.indexOf(payload)
         state.loadedProjectSubContractorProcurementPackages.splice(index, 1)
     },
+    setLoadedBoQItemCategories(state, payload) {
+        state.loadedBoQItemCategories = payload
+    },
+    createBoQItemCategory(state, payload) {
+        state.loadedBoQItemCategories.push(payload)
+    },
+    updateBoQItemCategory(state, payload) {
+        state.loadedBoQItemCategories = [
+            ...state.loadedBoQItemCategories.filter(u => u.id !== payload.id), payload
+        ]
+    },
+    deleteBoQItemCategory(state, payload) {
+        const index = state.loadedBoQItemCategories.indexOf(payload)
+        state.loadedBoQItemCategories.splice(index, 1)
+    },
 
 }
 const actions = {
+
     createProjectDrawingCategory({ commit }, payload) {
         commit('setLoading', true, { root: true })
         webClient.post(`/api/resource/clients/` + localStorage.clientId + `/drawing_categories`, payload)
@@ -328,10 +345,10 @@ const actions = {
                 commit('setLoading', false, { root: true })
             })
             .catch(error => {
-                commit('setError', error.response)
+                commit('setError', error.response, { root: true })
             })
     },
-    updateProjectDrawingCategory({ commit}, payload) {
+    updateProjectDrawingCategory({ commit }, payload) {
         commit('setLoading', true, { root: true })
         webClient.post(`/api/resource/clients/` + localStorage.clientId + `/drawing_categories/` + payload.id, payload)
             .then(response => {
@@ -340,10 +357,10 @@ const actions = {
                 commit('setLoading', false, { root: true })
             })
             .catch(error => {
-                commit('setError', error.response)
+                commit('setError', error.response, { root: true })
             })
     },
-    deleteProjectDrawingCategory({ commit}, payload) {
+    deleteProjectDrawingCategory({ commit }, payload) {
         commit('setLoading', true, { root: true })
         webClient.delete(`/api/resource/clients/` + localStorage.clientId + `/drawing_categories/` + payload.id)
             .then(() => {
@@ -376,7 +393,7 @@ const actions = {
                 commit('setLoading', false, { root: true })
             })
             .catch(error => {
-                commit('setError', error.response)
+                commit('setError', error.response, { root: true })
             })
     },
     loadProjectStatusList({ commit }) {
@@ -390,7 +407,7 @@ const actions = {
                 commit('setLoading', false, { root: true })
             })
             .catch(error => {
-                commit('setError', error.response)
+                commit('setError', error.response, { root: true })
                 console.log('Oops ' + error.message)
                 console.log(error)
             })
@@ -415,7 +432,7 @@ const actions = {
     loadProject({ commit }, payload) {
         commit('setLoading', true, { root: true })
         console.log('Loading Project for user with authorization token ' + localStorage.authHeader)
-        webClient.get(`/api/resource/clients/` + localStorage.clientId + `/projects/`+payload)
+        webClient.get(`/api/resource/clients/` + localStorage.clientId + `/projects/` + payload)
             .then(response => {
                 console.log('Received Project')
                 console.log(response.data)
@@ -994,7 +1011,7 @@ const actions = {
             .catch(e => {
                 console.log('errror getting project boqitems')
                 console.log(e)
-                
+
             })
     },
     loadProjectBoQSummary({ commit }, payload) {
@@ -1439,7 +1456,7 @@ const actions = {
                 commit('setLoading', false, { root: true })
             })
             .catch(e => {
-                
+
                 console.log(e)
             })
     },
@@ -1473,7 +1490,7 @@ const actions = {
                 commit('setLoading', false, { root: true })
             })
             .catch(e => {
-              
+
                 console.log(e)
             })
     },
@@ -1511,6 +1528,54 @@ const actions = {
             .catch(e => {
                 commit('setError', e, { root: true })
                 console.log(e)
+            })
+    },
+    loadBoQItemCategories({ commit }) {
+        commit('setLoading', true, { root: true })
+        webClient.get(`/api/resource/clients/` + localStorage.clientId + `/boqitem_categories`)
+            .then(response => {
+                console.log('Received BoQItem Categories...')
+                commit('setLoadedBoQItemCategories', response.data)
+                commit('setLoading', false, { root: true })
+            })
+            .catch(e => {
+                commit('setError', e, { root: true })
+            })
+    },
+    createBoQItemCategory({ commit }, payload) {
+        commit('setLoading', true, { root: true })
+        webClient.post(`/api/resource/clients/` + localStorage.clientId + `/boqitem_categories`, payload)
+            .then(response => {
+                console.log('Received saved BoQItem Categories from server..')
+                commit('createBoQItemCategory', response.data)
+                commit('setLoading', false, { root: true })
+            })
+            .catch(error => {
+                commit('setError', error, { root: true })
+            })
+    },
+    updateBoQItemCategory({ commit }, payload) {
+        commit('setLoading', true, { root: true })
+        webClient.post(`/api/resource/clients/` + localStorage.clientId + `/boqitem_categories/` + payload.id, payload)
+            .then(response => {
+                console.log('Received updated BoQItem Category from server..')
+                commit('updateBoQItemCategory', response.data)
+                commit('setLoading', false, { root: true })
+            })
+            .catch(error => {
+                commit('setError', error, { root: true })
+            })
+    },
+    deleteBoQItemCategory({ commit }, payload) {
+        commit('setLoading', true, { root: true })
+        webClient.delete(`/api/resource/clients/` + localStorage.clientId + `/boqitem_categories/` + payload)
+            .then(response => {
+                console.log(response)
+                commit('deleteBoQItemCategory', payload)
+                commit('setLoading', false, { root: true })
+            })
+            .catch(error => {
+                commit('setError', error, { root: true })
             })
     },
 }
@@ -1670,6 +1735,9 @@ const getters = {
             })
         }
     },
+    loadedBoQItemCategories (state) {
+        return state.loadedBoQItemCategories
+      },
 }
 
 export default {
