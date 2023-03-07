@@ -103,7 +103,7 @@
                           <v-layout row>
 
                             <v-select v-model="editedProjectDetails.customerId" :items="customers" item-value="id"
-                              item-text="name" label="Project Client">
+                              item-title="name" label="Project Client">
                             </v-select>
 
                           </v-layout>
@@ -293,7 +293,7 @@
 
 
                             <v-select v-model="editedItem.categoryId" :items="projectDrawingCategories" item-value="id"
-                              item-text="name" label="Drawing Category">
+                              item-title="name" label="Drawing Category">
                             </v-select>
 
                           </v-layout>
@@ -1307,14 +1307,14 @@
                               <v-layout row>
 
                                 <v-select :items="boQItemCategories" v-model="editedBoQItem.categoryId" item-value="id"
-                                  item-text="name" label="BoQ Item Category"
+                                  item-title="name" label="BoQ Item Category"
                                   v-on:change="loadBoQItemsByCategory"></v-select>
 
                               </v-layout>
 
                               <v-layout row>
 
-                                <v-select :items="loadedCategoryBoQItems" item-text="name" return-object label="BoQ Item"
+                                <v-select :items="loadedCategoryBoQItems" item-title="name" return-object label="BoQ Item"
                                   v-on:change="updateNewBoQItem"></v-select>
                                 <v-text-field name="ref" label="Bill Reference" id="ref" v-model="editedBoQItem.ref"
                                   required></v-text-field>
