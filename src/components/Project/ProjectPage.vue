@@ -1257,7 +1257,7 @@
                     <v-text-field v-model="searchProjectQuotations" label="Search Quotations" flat solo-inverted
                       hide-details clearable clear-icon="mdi-close-circle-outline"></v-text-field>
 
-                    <v-data-table :headers="projectQuotationTableHeaders" :calculate-widths="true"
+                    <v-data-table :headers="title" :calculate-widths="true"
                       :items="projectQuotations" :search="searchProjectQuotations">
 
                       <template v-slot:[`item.actionDownloadProjectQuotation`]="{ item }">
@@ -3080,77 +3080,77 @@ export default {
     const fileCount = ref(0);
     const accessControlListHeaders = [
       {
-        text: 'Username',
+        title: 'Username',
         align: 'left',
         sortable: false,
-        value: 'username'
+        key: 'username'
       },
       {
-        text: 'Role',
+        title: 'Role',
         align: 'left',
         sortable: false,
-        value: 'roles'
+        key: 'roles'
       }
     ];
     const projectContactHeaders = [
-      { text: 'Company', value: 'companyId' },
-      { text: 'Name', value: 'name' },
-      { text: 'Description', value: 'description' },
-      { text: 'Email', value: 'emailAddress' },
-      { text: 'Mobile', value: 'mobileNumber', width: 150 },
-      { text: 'Edit', align: 'left', value: 'actionEdit' },
-      { text: 'Delete', align: 'left', value: 'actionDelete' }
+      { title: 'Company', key: 'companyId' },
+      { title: 'Name', key: 'name' },
+      { title: 'Description', key: 'description' },
+      { title: 'Email', key: 'emailAddress' },
+      { title: 'Mobile', key: 'mobileNumber', width: 150 },
+      { title: 'Edit', align: 'left', key: 'actionEdit' },
+      { title: 'Delete', align: 'left', key: 'actionDelete' }
     ];
     const drawingTableHeaders = [
-      { text: 'Category', value: 'categoryName' },
-      { text: 'Title', value: 'title' },
-      { text: 'Description', value: 'description' },
-      { text: 'Status', value: 'status' },
-      { text: 'Revision', value: 'revision' },
-      { text: 'Dowload', align: 'left', value: 'actionDownload' },
-      { text: 'Edit', align: 'left', value: 'actionEdit' },
-      { text: 'Delete', align: 'left', value: 'actionDelete' }
+      { title: 'Category', key: 'categoryName' },
+      { title: 'Title', key: 'title' },
+      { title: 'Description', key: 'description' },
+      { title: 'Status', key: 'status' },
+      { title: 'Revision', key: 'revision' },
+      { title: 'Dowload', align: 'left', key: 'actionDownload' },
+      { title: 'Edit', align: 'left', key: 'actionEdit' },
+      { title: 'Delete', align: 'left', key: 'actionDelete' }
     ];
     const drawingMeasureTableHeaders = [
-      { text: 'Category', value: 'categoryName' },
-      { text: 'Title', value: 'title' },
-      { text: 'Description', value: 'description' },
-      { text: 'Status', value: 'status' },
-      { text: 'Revision', value: 'revision' },
-      { text: 'Dowload', align: 'left', value: 'actionDownload' }
+      { title: 'Category', key: 'categoryName' },
+      { title: 'Title', key: 'title' },
+      { title: 'Description', key: 'description' },
+      { title: 'Status', key: 'status' },
+      { title: 'Revision', key: 'revision' },
+      { title: 'Dowload', align: 'left', key: 'actionDownload' }
     ];
     const projectRFITableHeaders = [
-      { text: 'Status', value: 'status' },
-      { text: 'Reference', value: 'name' },
-      { text: 'AssignedTo', value: 'assignedTo' },
-      { text: 'Date Required', value: 'dateRequired' },
-      { text: 'Edit', align: 'left', value: 'actionEdit' },
-      { text: 'Delete', align: 'left', value: 'actionDelete' }
+      { title: 'Status', key: 'status' },
+      { title: 'Reference', key: 'name' },
+      { title: 'AssignedTo', key: 'assignedTo' },
+      { title: 'Date Required', key: 'dateRequired' },
+      { title: 'Edit', align: 'left', key: 'actionEdit' },
+      { title: 'Delete', align: 'left', key: 'actionDelete' }
     ];
     const projectRoomTableHeaders = [
-      { text: 'Id', value: 'id' },
-      { text: 'Room Name', value: 'name' },
-      { text: 'Edit', align: 'left', value: 'actionEdit' },
-      { text: 'Delete', align: 'left', value: 'actionDelete' }
+      { title: 'Id', key: 'id' },
+      { title: 'Room Name', key: 'name' },
+      { title: 'Edit', align: 'left', key: 'actionEdit' },
+      { title: 'Delete', align: 'left', key: 'actionDelete' }
     ];
     const projectRoomMeasureTableHeaders = [
-      { text: 'Room Name', value: 'name' },
-      { text: 'Quantity', value: 'quantity', default: 0 },
+      { title: 'Room Name', key: 'name' },
+      { title: 'Quantity', key: 'quantity', default: 0 },
     ];
     const projectBoQCategoryCostsTableHeaders = [
-      { text: 'Category', value: 'category' },
-      { text: 'Cost', value: 'cost', default: 0 },
+      { title: 'Category', key: 'category' },
+      { title: 'Cost', key: 'cost', default: 0 },
     ];
     const projectRoomScheduleBoQTableHeaders = [
-      { text: 'Room Name', value: 'roomName' },
-      { text: 'Category', value: 'boqItemCategory' },
-      { text: 'Name', value: 'boqItemName' },
+      { title: 'Room Name', key: 'roomName' },
+      { title: 'Category', key: 'boqItemCategory' },
+      { title: 'Name', key: 'boqItemName' },
 
-      { text: 'Quantity', value: 'quantity' },
-      { text: 'Unit', value: 'unit', default: 0 },
-      { text: 'Cost', value: 'boqItemContractRate' },
-      { text: 'Cost', value: 'cost' },
-      { text: 'BoQ', value: 'boqItems' },
+      { title: 'Quantity', key: 'quantity' },
+      { title: 'Unit', key: 'unit', default: 0 },
+      { title: 'Cost', key: 'boqItemContractRate' },
+      { title: 'Cost', key: 'cost' },
+      { title: 'BoQ', key: 'boqItems' },
     ];
     const rfiStatus = [
       'Open',
@@ -3158,41 +3158,41 @@ export default {
     ];
     const productTableHeaders = [
       {
-        text: 'Product',
+        title: 'Product',
         align: 'left',
         sortable: true,
-        value: 'productName'
+        key: 'productName'
       },
       {
-        text: 'Supplier',
+        title: 'Supplier',
         align: 'left',
         sortable: true,
-        value: 'supplierName'
+        key: 'supplierName'
       },
-      { text: 'units', value: 'units' },
-      { text: 'Cost', value: 'cost' },
-      { text: 'Product Code', value: 'productCode' },
-      { text: 'leadInTimeInDays', value: 'leadInTimeInDays' },
-      { text: 'Status', value: 'status' },
+      { title: 'units', key: 'units' },
+      { title: 'Cost', key: 'cost' },
+      { title: 'Product Code', key: 'productCode' },
+      { title: 'leadInTimeInDays', key: 'leadInTimeInDays' },
+      { title: 'Status', key: 'status' },
     ];
     const orderTableHeaders = [
       {
-        text: 'Product',
+        title: 'Product',
         align: 'left',
         sortable: true,
-        value: 'productName'
+        key: 'productName'
       },
       {
-        text: 'Supplier',
+        title: 'Supplier',
         align: 'left',
         sortable: true,
-        value: 'supplierName'
+        key: 'supplierName'
       },
-      { text: 'Quantity', value: 'quantity' },
-      { text: 'Unit Cost', value: 'unitCost' },
-      { text: 'Total Cost', value: 'totalCost' },
-      { text: 'Delivery Date', value: 'deliveryDate' },
-      { text: 'Status', value: 'status' },
+      { title: 'Quantity', key: 'quantity' },
+      { title: 'Unit Cost', key: 'unitCost' },
+      { title: 'Total Cost', key: 'totalCost' },
+      { title: 'Delivery Date', key: 'deliveryDate' },
+      { title: 'Status', key: 'status' },
     ];
     const boqTableHeaders = [
       { title: 'Ref', key: 'ref' },
@@ -3215,152 +3215,152 @@ export default {
     const projectBoQItemMeasureDialog = ref(false);
     const searchBoQItemMeasures = ref('');
     const measureTableHeaders = [
-      { text: 'Ref', value: 'roomName' },
-      { text: 'Measured', value: 'quantityMeasured' },
-      { text: 'Delivered', value: 'quantityDelivered' },
-      { text: 'Update', align: 'left', value: 'actionEdit' },
-      { text: 'Delete', align: 'left', value: 'actionDelete' }
+      { title: 'Ref', key: 'roomName' },
+      { title: 'Measured', key: 'quantityMeasured' },
+      { title: 'Delivered', key: 'quantityDelivered' },
+      { title: 'Update', align: 'left', key: 'actionEdit' },
+      { title: 'Delete', align: 'left', key: 'actionDelete' }
     ];
     const boqItemQuotationTableHeaders = [
-      { text: 'Company', value: 'subContractorName' },
-      { text: 'Quantity', value: 'quantity' },
-      { text: 'Unit', value: 'unit' },
-      { text: 'Rate', value: 'rate' },
-      { text: 'Comments', value: 'subContractorComments' }
+      { title: 'Company', key: 'subContractorName' },
+      { title: 'Quantity', key: 'quantity' },
+      { title: 'Unit', key: 'unit' },
+      { title: 'Rate', key: 'rate' },
+      { title: 'Comments', key: 'subContractorComments' }
     ];
     const projectProcurementPackagesTableHeaders = [
-      { text: 'Status', value: 'status' },
-      { text: 'Name', value: 'name' },
-      { text: 'Contract Value', value: 'totalContractValue' },
-      { text: 'SubContract Value', value: 'totalSubContractValue' },
-      { text: 'Margin', value: 'margin' },
-      { text: 'AnticipatedStartDate', value: 'anticipatedStartDate' },
-      { text: 'AnticipatedCompletionDate', value: 'anticipatedCompletionDate', align: ' d-none' },
-      { text: 'ActualStartDate', value: 'actualStartDate', align: ' d-none' },
-      { text: 'ActualCompletionDate', value: 'actualCompletionDate', align: ' d-none' },
-      { text: 'Edit', align: 'left', value: 'actionEditProjectProcurementPackage' },
-      { text: 'Delete', align: 'left', value: 'actionDeleteProjectProcurementPackage' }
+      { title: 'Status', key: 'status' },
+      { title: 'Name', key: 'name' },
+      { title: 'Contract Value', key: 'totalContractValue' },
+      { title: 'SubContract Value', key: 'totalSubContractValue' },
+      { title: 'Margin', key: 'margin' },
+      { title: 'AnticipatedStartDate', key: 'anticipatedStartDate' },
+      { title: 'AnticipatedCompletionDate', key: 'anticipatedCompletionDate', align: ' d-none' },
+      { title: 'ActualStartDate', key: 'actualStartDate', align: ' d-none' },
+      { title: 'ActualCompletionDate', key: 'actualCompletionDate', align: ' d-none' },
+      { title: 'Edit', align: 'left', key: 'actionEditProjectProcurementPackage' },
+      { title: 'Delete', align: 'left', key: 'actionDeleteProjectProcurementPackage' }
     ];
     const projectSubContractorProcurementPackagesTableHeaders = [
-      { text: 'Company', value: 'subContractorName' },
-      { text: 'Address', value: 'subContractorAddress' },
-      { text: 'DateIssued', value: 'dateIssued' },
-      { text: 'SubContract Value', value: 'subContractTotalValue' },
-      { text: 'Comments', value: 'comments' },
-      { text: 'View', align: 'left', value: 'actionViewSubContractorProcurementPackageBillItems' },
-      { text: 'Delete', align: 'left', value: 'actionDeleteSubContractorProcurementPackage' }
+      { title: 'Company', key: 'subContractorName' },
+      { title: 'Address', key: 'subContractorAddress' },
+      { title: 'DateIssued', key: 'dateIssued' },
+      { title: 'SubContract Value', key: 'subContractTotalValue' },
+      { title: 'Comments', key: 'comments' },
+      { title: 'View', align: 'left', key: 'actionViewSubContractorProcurementPackageBillItems' },
+      { title: 'Delete', align: 'left', key: 'actionDeleteSubContractorProcurementPackage' }
     ];
     const subContractorProcurementPackageBillItemsTableHeaders = [
-      { text: 'Name', value: 'name' },
-      { text: 'Description', value: 'description' },
-      { text: 'Quantity', value: 'quantity' },
-      { text: 'Rate', value: 'rate' },
-      { text: 'Comments', value: 'comments' },
+      { title: 'Name', key: 'name' },
+      { title: 'Description', key: 'description' },
+      { title: 'Quantity', key: 'quantity' },
+      { title: 'Rate', key: 'rate' },
+      { title: 'Comments', key: 'comments' },
     ];
     const projectProcurementSubContractBoQItemsTableHeaders = [
-      { text: 'Ref', value: 'ref' },
+      { title: 'Ref', key: 'ref' },
       {
-        text: 'Section',
+        title: 'Section',
         align: 'left',
         sortable: true,
-        value: 'category'
+        key: 'category'
       },
-      { text: 'Name', value: 'name' },
-      { text: 'Description', value: 'description', width: '200px' },
-      { text: 'Quantity', value: 'quantity' },
-      { text: 'Unit', value: 'unit' },
-      { text: 'Contract Rate', value: 'contractRate' },
-      { text: 'SubContract Rate', value: 'subContractRate' },
-      { text: 'Total', value: 'total' },
-      // { text: 'Edit', align: 'left', value: 'actionEditBoQItem'}
+      { title: 'Name', key: 'name' },
+      { title: 'Description', key: 'description', width: '200px' },
+      { title: 'Quantity', key: 'quantity' },
+      { title: 'Unit', key: 'unit' },
+      { title: 'Contract Rate', key: 'contractRate' },
+      { title: 'SubContract Rate', key: 'subContractRate' },
+      { title: 'Total', key: 'total' },
+      // { title: 'Edit', align: 'left', key: 'actionEditBoQItem'}
     ];
     const projectProcurementSubContractDrawingsTableHeaders = [
       {
-        text: 'Category',
+        title: 'Category',
         align: 'left',
         sortable: true,
-        value: 'categoryName'
+        key: 'categoryName'
       },
-      { text: 'Title', value: 'title' },
-      { text: 'Description', value: 'description' },
-      { text: 'Revision', value: 'revision' },
-      { text: 'Status', value: 'status' },
+      { title: 'Title', key: 'title' },
+      { title: 'Description', key: 'description' },
+      { title: 'Revision', key: 'revision' },
+      { title: 'Status', key: 'status' },
 
 
-      // { text: 'Edit', align: 'left', value: 'actionEditBoQItem'}
+      // { title: 'Edit', align: 'left', key: 'actionEditBoQItem'}
     ];
     const subContractorId = ref('');
     const taskTableHeaders = [
-      { text: 'Category', value: 'category', width: 150 },
-      { text: 'Name', value: 'name' },
-      { text: 'Description', value: 'description' },
-      { text: 'AnticipatedStartDate', value: 'anticipatedStartDate' },
-      { text: 'AnticipatedCompletionDate',  value: 'anticipatedCompletionDate', align: ' d-none' },
-      { text: 'ActualStartDate', value: 'actualStartDate', align: ' d-none' },
-      { text: 'ActualCompletionDate', value: 'actualCompletionDate', align: ' d-none' },
-      { text: 'Status', value: 'status' },
-      { text: 'Edit', align: 'left', value: 'actionEditTask' },
-      { text: 'Delete', align: 'left', value: 'actionDeleteTask' }
+      { title: 'Category', key: 'category', width: 150 },
+      { title: 'Name', key: 'name' },
+      { title: 'Description', key: 'description' },
+      { title: 'AnticipatedStartDate', key: 'anticipatedStartDate' },
+      { title: 'AnticipatedCompletionDate',  key: 'anticipatedCompletionDate', align: ' d-none' },
+      { title: 'ActualStartDate', key: 'actualStartDate', align: ' d-none' },
+      { title: 'ActualCompletionDate', key: 'actualCompletionDate', align: ' d-none' },
+      { title: 'Status', key: 'status' },
+      { title: 'Edit', align: 'left', key: 'actionEditTask' },
+      { title: 'Delete', align: 'left', key: 'actionDeleteTask' }
     ];
     const imageMetadataTableHeaders = [
-      { text: 'Title', value: 'title' },
-      { text: 'Description', value: 'description' },
-      { text: 'Location', value: 'location' },
-      { text: 'Category', value: 'categoryId' },
-      { text: 'Image', value: 'image' },
-      { text: 'Edit', align: 'left', value: 'actionEditImageMetadata' },
-      { text: 'Delete', align: 'left', value: 'actionDeleteImageMetadata' }
+      { title: 'Title', key: 'title' },
+      { title: 'Description', key: 'description' },
+      { title: 'Location', key: 'location' },
+      { title: 'Category', key: 'categoryId' },
+      { title: 'Image', key: 'image' },
+      { title: 'Edit', align: 'left', key: 'actionEditImageMetadata' },
+      { title: 'Delete', align: 'left', key: 'actionDeleteImageMetadata' }
     ];
     const projectSubContractorInvoiceTableHeaders = [
-      { text: 'Company', value: 'subContractorName' },
-      { text: 'Status', value: 'status' },
-      { text: 'InvoiceRef', value: 'invoiceRef' },
-      // { text: 'Description', value: 'description' },
-      { text: 'Currency', value: 'currency' },
-      { text: 'Gross', value: 'grossAmount', width: 150 },
-      { text: 'Net', value: 'netAmount', width: 150 },
-      { text: 'Issued', value: 'invoiceDate', width: "125px" },
-      { text: 'Payment', value: 'paymentDueDate', width: "125px" },
-      { text: 'Download', align: 'left', value: 'actionDownloadProjectInvoice' },
-      { text: 'Approve', align: 'left', value: 'actionApproveProjectInvoice' },
-      { text: 'Edit', align: 'left', value: 'actionEdit' },
-      { text: 'Delete', align: 'left', value: 'actionDelete' }
+      { title: 'Company', key: 'subContractorName' },
+      { title: 'Status', key: 'status' },
+      { title: 'InvoiceRef', key: 'invoiceRef' },
+      // { title: 'Description', key: 'description' },
+      { title: 'Currency', key: 'currency' },
+      { title: 'Gross', key: 'grossAmount', width: 150 },
+      { title: 'Net', key: 'netAmount', width: 150 },
+      { title: 'Issued', key: 'invoiceDate', width: "125px" },
+      { title: 'Payment', key: 'paymentDueDate', width: "125px" },
+      { title: 'Download', align: 'left', key: 'actionDownloadProjectInvoice' },
+      { title: 'Approve', align: 'left', key: 'actionApproveProjectInvoice' },
+      { title: 'Edit', align: 'left', key: 'actionEdit' },
+      { title: 'Delete', align: 'left', key: 'actionDelete' }
     ];
     const projectCustomerInvoiceTableHeaders = [
-      { text: 'Company', value: 'customerName' },
-      { text: 'Status', value: 'status' },
-      { text: 'InvoiceRef', value: 'invoiceRef' },
-      { text: 'Currency', value: 'currency' },
-      { text: 'Gross', value: 'grossAmount', width: 150 },
-      { text: 'Net', value: 'netAmount', width: 150 },
-      { text: 'Issued', value: 'invoiceDate', width: "125px" },
-      { text: 'Payment', value: 'paymentDueDate', width: "125px" },
-      { text: 'Download', align: 'left', value: 'actionDownloadProjectInvoice' },
-      { text: 'Edit', align: 'left', value: 'actionEdit' },
-      { text: 'Delete', align: 'left', value: 'actionDelete' }
+      { title: 'Company', key: 'customerName' },
+      { title: 'Status', key: 'status' },
+      { title: 'InvoiceRef', key: 'invoiceRef' },
+      { title: 'Currency', key: 'currency' },
+      { title: 'Gross', key: 'grossAmount', width: 150 },
+      { title: 'Net', key: 'netAmount', width: 150 },
+      { title: 'Issued', key: 'invoiceDate', width: "125px" },
+      { title: 'Payment', key: 'paymentDueDate', width: "125px" },
+      { title: 'Download', align: 'left', key: 'actionDownloadProjectInvoice' },
+      { title: 'Edit', align: 'left', key: 'actionEdit' },
+      { title: 'Delete', align: 'left', key: 'actionDelete' }
     ];
     const projectSupplierInvoiceTableHeaders = [
-      { text: 'Company', value: 'supplierName' },
-      { text: 'Status', value: 'status' },
-      { text: 'InvoiceRef', value: 'invoiceRef' },
-      { text: 'Currency', value: 'currency' },
-      { text: 'Gross', value: 'grossAmount', width: 150 },
-      { text: 'Net', value: 'netAmount', width: 150 },
-      { text: 'Issued', value: 'invoiceDate', width: "125px" },
-      { text: 'Payment', value: 'paymentDueDate', width: "125px" },
-      { text: 'Download', align: 'left', value: 'actionDownloadProjectInvoice' },
-      { text: 'Edit', align: 'left', value: 'actionEdit' },
-      { text: 'Delete', align: 'left', value: 'actionDelete' }
+      { title: 'Company', key: 'supplierName' },
+      { title: 'Status', key: 'status' },
+      { title: 'InvoiceRef', key: 'invoiceRef' },
+      { title: 'Currency', key: 'currency' },
+      { title: 'Gross', key: 'grossAmount', width: 150 },
+      { title: 'Net', key: 'netAmount', width: 150 },
+      { title: 'Issued', key: 'invoiceDate', width: "125px" },
+      { title: 'Payment', key: 'paymentDueDate', width: "125px" },
+      { title: 'Download', align: 'left', key: 'actionDownloadProjectInvoice' },
+      { title: 'Edit', align: 'left', key: 'actionEdit' },
+      { title: 'Delete', align: 'left', key: 'actionDelete' }
     ];
     const subContractorTableHeaders = [
-      { text: 'Category', value: 'subContractorCategoryName' },
-      { text: 'Name', value: 'name' },
-      { text: 'Description', value: 'description' },
-      { text: 'Contact Name', value: 'contactName' },
-      { text: 'Number', value: 'headOfficeTelephoneNumber' },
-      { text: 'Email', value: 'email' },
-      { text: 'Edit', align: 'left', value: 'actionEditSubContractor' },
-      { text: 'View', align: 'left', value: 'actionShowSubContractorDetails' }
+      { title: 'Category', key: 'subContractorCategoryName' },
+      { title: 'Name', key: 'name' },
+      { title: 'Description', key: 'description' },
+      { title: 'Contact Name', key: 'contactName' },
+      { title: 'Number', key: 'headOfficeTelephoneNumber' },
+      { title: 'Email', key: 'email' },
+      { title: 'Edit', align: 'left', key: 'actionEditSubContractor' },
+      { title: 'View', align: 'left', key: 'actionShowSubContractorDetails' }
     ];
     const projectRFIDialog = ref(false);
     const projectRoomDialog = ref(false);
@@ -3724,13 +3724,13 @@ export default {
       imageMetadata: null
     });
     const projectQuotationTableHeaders = [
-      { text: 'Comapny', value: 'companyName' },
-      { text: 'Type', value: 'type' },
-      { text: 'Ref', value: 'quotationRef' },
-      { text: 'Gross Value', value: 'grossAmount' },
-      { text: 'Currency', value: 'currency' },
-      { text: 'Received', value: 'quotationDate', width: "125px" },
-      { text: 'Download', align: 'left', value: 'actionDownloadProjectQuotation' }
+      { title: 'Comapny', key: 'companyName' },
+      { title: 'Type', key: 'type' },
+      { title: 'Ref', key: 'quotationRef' },
+      { title: 'Gross Value', key: 'grossAmount' },
+      { title: 'Currency', key: 'currency' },
+      { title: 'Received', key: 'quotationDate', width: "125px" },
+      { title: 'Download', align: 'left', key: 'actionDownloadProjectQuotation' }
     ];
     const projectQuotationDialog = ref(false);
     const projectQuotationDateDialog = ref(false);
