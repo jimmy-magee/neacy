@@ -3195,22 +3195,22 @@ export default {
       { text: 'Status', value: 'status' },
     ];
     const boqTableHeaders = [
-      { text: 'Ref', value: 'ref' },
+      { title: 'Ref', key: 'ref' },
       {
-        text: 'Category',
+        title: 'Category',
         align: 'left',
         sortable: true,
-        value: 'categoryName'
+        key: 'categoryName'
       },
-      { text: 'Name', value: 'name' },
-      { text: 'Qty (Contract)', value: 'quantity' },
-      { text: 'Unit', value: 'unit' },
-      { text: 'Material', value: 'materialCost' },
-      { text: 'Labour', value: 'labourCost' },
-      { text: 'Rate', value: 'contractRate' },
-      { text: 'Total Contracted', value: 'total', sortable: true },
-      { text: 'Edit', align: 'left', value: 'actionEditBoQItem' },
-      { text: 'Delete', align: 'left', value: 'actionDeleteBoQItem' }
+      { title: 'Name', key: 'name' },
+      { title: 'Qty (Contract)', key: 'quantity' },
+      { title: 'Unit', key: 'unit' },
+      { title: 'Material', key: 'materialCost' },
+      { title: 'Labour', key: 'labourCost' },
+      { title: 'Rate', key: 'contractRate' },
+      { title: 'Total Contracted', key: 'total', sortable: true },
+      { title: 'Edit', align: 'left', key: 'actionEditBoQItem' },
+      { title: 'Delete', align: 'left', key: 'actionDeleteBoQItem' }
     ];
     const projectBoQItemMeasureDialog = ref(false);
     const searchBoQItemMeasures = ref('');
