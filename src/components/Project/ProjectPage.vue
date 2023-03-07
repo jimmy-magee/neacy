@@ -4707,7 +4707,9 @@ export default {
       }, 300)
     });*/
     const closeBoQItemDialog = (() => {
-      Object.assign(dialogBoQItem, false);
+      //Object.assign(dialogBoQItem, false);
+      console.log('close boq item dialog')
+      dialogBoQItem.value = false;
       setTimeout(() => {
         Object.assign(editedBoQItem, defaultBoQItem)
         editedBoQItemIndex.value = -1
@@ -5130,6 +5132,7 @@ export default {
       modal2,
       dialog1,
       modal1,
+      dialog,
       projectRFIDateAssignedDialog,
       projectRFIDateAssignedModal,
       projectRFIDateRequiredDialog,
