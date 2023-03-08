@@ -8,635 +8,634 @@
       
     </v-layout>
     -->
-  
-      <v-card v-if="editedProjectDetails">
-        <v-card-title>
-          <h3 class="primary--text">{{ editedProjectDetails.name }}</h3>
-        </v-card-title>
-        <v-card-text>
-          <h3 class="primary--text">Status: {{ editedProjectDetails.status }}</h3>
-          <div>{{ editedProjectDetails.description }}</div>
-          <div>{{ editedProjectDetails.address }}</div>
 
-          <v-tabs v-model="outerTab" show-arrows>
-            
-            <v-tab value="one"> Project Details
-            </v-tab>
-            <v-tab value="two"> Design
-            </v-tab>
-            <v-tab value="three"> Build
-            </v-tab>
-            <v-tab value="four"> Finance
-            </v-tab>
-            <v-tab value="five" > Admin
-            </v-tab>
-          </v-tabs>
+    <v-card v-if="editedProjectDetails">
+      <v-card-title>
+        <h3 class="primary--text">{{ editedProjectDetails.name }}</h3>
+      </v-card-title>
+      <v-card-text>
+        <h3 class="primary--text">Status: {{ editedProjectDetails.status }}</h3>
+        <div>{{ editedProjectDetails.description }}</div>
+        <div>{{ editedProjectDetails.address }}</div>
+
+        <v-tabs v-model="outerTab" show-arrows>
+
+          <v-tab value="one"> Project Details
+          </v-tab>
+          <v-tab value="two"> Design
+          </v-tab>
+          <v-tab value="three"> Build
+          </v-tab>
+          <v-tab value="four"> Finance
+          </v-tab>
+          <v-tab value="five"> Admin
+          </v-tab>
+        </v-tabs>
 
 
-          <v-window v-model="outerTab">
-            <v-window-item value="one">
+        <v-window v-model="outerTab">
+          <v-window-item value="one">
 
-              <v-tabs v-model="detailsTab" show-arrows>
-              
+            <v-tabs v-model="detailsTab" show-arrows>
 
-                <v-tab value="detailsTab-1">
-                  Details
-                </v-tab>
-                <v-tab value="detailsTab-2">
-                  Contact List
-                </v-tab>
 
-              </v-tabs>
+              <v-tab value="detailsTab-1">
+                Details
+              </v-tab>
+              <v-tab value="detailsTab-2">
+                Contact List
+              </v-tab>
 
-              <v-window v-model="detailsTab">
+            </v-tabs>
 
-                <!-- Project Details -->
+            <v-window v-model="detailsTab">
 
-                <v-window-item value="detailsTab-1">
+              <!-- Project Details -->
 
+              <v-window-item value="detailsTab-1">
+
+                <v-card>
+                  <v-card-title>
+                    Project Details
+                    <v-spacer></v-spacer>
+                  </v-card-title>
+                  <v-card-text>
+
+
+                    <v-layout row>
+
+                      <form @submit.prevent="onUpdateProject">
+                        <v-layout row>
+
+                          <v-text-field name="projectName" label="Project Name" id="projectName"
+                            v-model="editedProjectDetails.name" required></v-text-field>
+
+                        </v-layout>
+                        <v-layout row>
+
+                          <v-text-field name="siteId" label="Site ID" id="projectSiteId"
+                            v-model="editedProjectDetails.siteId">
+                          </v-text-field>
+
+                        </v-layout>
+                        <v-layout row>
+
+                          <v-textarea name="projectDescription" label="Project Description" id="projectDescription"
+                            v-model="editedProjectDetails.description" required>
+                          </v-textarea>
+
+                        </v-layout>
+                        <v-layout row>
+
+                          <v-text-field name="projectAddress" label="Project Address" id="projectAddress"
+                            v-model="editedProjectDetails.address" required></v-text-field>
+
+                        </v-layout>
+                        <v-layout row>
+
+
+                          <v-select v-model="editedProjectDetails.status" :items="projectStatusList" item-value="id"
+                            item-title="name" label="Project Status">
+                          </v-select>
+
+
+                        </v-layout>
+                        <v-layout row>
+
+                          <v-select v-model="editedProjectDetails.customerId" :items="customers" item-value="id"
+                            item-title="name" label="Project Client">
+                          </v-select>
+
+                        </v-layout>
+                        <v-layout row>
+
+                          <v-text-field name="projectClientQuantitySurveyor" label="PQS"
+                            id="projectClientQuantitySurveyor"
+                            v-model="editedProjectDetails.clientQuantitySurveyor"></v-text-field>
+
+                        </v-layout>
+                        <v-layout row>
+
+                          <v-text-field name="projectArchitect" label="Project Architect" id="projectArchitect"
+                            v-model="editedProjectDetails.architect"></v-text-field>
+
+                        </v-layout>
+                        <v-layout row>
+
+                          <v-text-field name="projectStructuralEngineer" label="Project Structural Engineer"
+                            id="projectStructuralEngineer" v-model="editedProjectDetails.structuralEngineer">
+                          </v-text-field>
+
+                        </v-layout>
+                        <v-layout row>
+
+                          <v-text-field name="status" label="Project Mechanical & Electrical Engineer"
+                            id="projectMechanicalAndElectricalEngineer"
+                            v-model="editedProjectDetails.mechanicalAndElectricalEngineer"></v-text-field>
+
+                        </v-layout>
+                        <v-layout row>
+
+                          <v-text-field name="projectQuantitySurveyor" label="Project Quantity Surveyor"
+                            id="projectQuantitySurveyor" v-model="editedProjectDetails.projectQuantitySurveyor">
+                          </v-text-field>
+
+                        </v-layout>
+                        <v-layout row>
+
+                          <v-text-field name="projectManager" label="Project Manager" id="projectManager"
+                            v-model="editedProjectDetails.projectManager"></v-text-field>
+
+                        </v-layout>
+                        <v-layout row>
+
+                          <v-text-field name="siteSafetyOfficer" label="Site Safety Officer" id="siteSafetyOfficerr"
+                            v-model="editedProjectDetails.siteSafetyOfficer">
+                          </v-text-field>
+
+                        </v-layout>
+                        <v-layout row>
+
+                          <v-text-field name="siteEngineer" label="Site Engineer" id="siteEngineer"
+                            v-model="editedProjectDetails.siteEngineer"></v-text-field>
+
+                        </v-layout>
+                        <v-layout row>
+
+                          <v-text-field name="projectSupervisorDesignProcess"
+                            label="Project H & S Supervisor Design Process" id="projectSupervisorDesignProcess"
+                            v-model="editedProjectDetails.projectSupervisorDesignProcess"></v-text-field>
+
+                        </v-layout>
+                        <v-layout row>
+
+                          <v-text-field name="projectSupervisorConstruction" label="Project H & S Supervisor Construction"
+                            id="projectSupervisorConstruction"
+                            v-model="editedProjectDetails.projectSupervisorConstruction"></v-text-field>
+
+                        </v-layout>
+
+                        <v-layout row>
+
+                          <v-btn class="primary" :disabled="!formIsValid" type="submit">Update Project</v-btn>
+
+                        </v-layout>
+                      </form>
+
+                    </v-layout>
+
+
+                  </v-card-text>
+                </v-card>
+
+              </v-window-item>
+
+            </v-window>
+
+
+          </v-window-item>
+
+          <v-window-item value="two">
+
+            <v-tabs v-model="tab" show-arrows>
+
+
+              <v-tab value="tab-1">
+                Drawings
+              </v-tab>
+              <v-tab value="tab-3">
+                Room Schedules
+              </v-tab>
+              <v-tab value="tab-2">
+                RFI Schedule
+              </v-tab>
+
+
+
+            </v-tabs>
+
+            <v-window v-model="tab">
+
+              <!-- Drawings -->
+              <v-window-item value="tab-1">
+
+                <v-card>
+                  <v-card-title>
+                    Drawings
+                    <v-spacer></v-spacer>
+                    <v-text-field v-model="searchProjectDrawings" append-icon="search" label="Search" single-line
+                      hide-details></v-text-field>
+                    <v-spacer></v-spacer>
+                    <v-btn>
+                    <v-dialog v-model="dialog" activator="parent">
+                      <v-card>
+                        <v-card-title>
+                          <span class="headline">Upload Project Drawings</span>
+                        </v-card-title>
+                        <v-card-text>
+                          <v-container>
+
+                            <v-layout row>
+
+                              <v-file-input v-model="drawingFiles" label="Upload Drawing Files" filled multiple
+                                prepend-icon="mdi-camera"></v-file-input>
+
+                            </v-layout>
+                          </v-container>
+                        </v-card-text>
+
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn color="blue darken-1" @click="close">Cancel</v-btn>
+                          <v-btn color="blue darken-1" @click="uploadProjectDrawings">Save</v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
+                    </v-btn>
+                  </v-card-title>
+                  <v-data-table :headers="drawingTableHeaders" :calculate-widths="true" :items="drawings"
+                    :search="searchProjectDrawings">
+                    <template v-slot:[`item.actionDownload`]="{ item }">
+                      <v-btn icon @click="downloadProjectDrawing(item)">
+                        <v-icon>
+                          cloud_download
+                        </v-icon>
+                      </v-btn>
+                    </template>
+                    <template v-slot:[`item.actionEdit`]="{ item }">
+                      <v-btn icon @click="editItem(item)">
+                        <v-icon>
+                          edit
+                        </v-icon>
+                      </v-btn>
+                    </template>
+                    <template v-slot:[`item.actionDelete`]="{ item }">
+                      <v-btn icon @click="deleteProjectDrawing(item)">
+                        <v-icon>
+                          delete
+                        </v-icon>
+                      </v-btn>
+                    </template>
+                  </v-data-table>
+                </v-card>
+
+                <v-dialog v-model="projectDrawingMetaDataDialog" activator="parent">
                   <v-card>
                     <v-card-title>
-                      Project Details
-                      <v-spacer></v-spacer>
+                      <span class="headline">Edit Project Drawing</span>
                     </v-card-title>
                     <v-card-text>
+                      <v-container>
+                        <v-layout row>
 
 
-                      <v-layout row>
+                          <v-select v-model="editedItem.categoryId" :items="projectDrawingCategories" item-value="id"
+                            item-title="name" label="Drawing Category">
+                          </v-select>
 
-                        <form @submit.prevent="onUpdateProject">
-                          <v-layout row>
+                        </v-layout>
+                        <v-layout row>
 
-                            <v-text-field name="projectName" label="Project Name" id="projectName"
-                              v-model="editedProjectDetails.name" required></v-text-field>
+                          <v-text-field v-model="editedItem.title" label="Title"></v-text-field>
 
-                          </v-layout>
-                          <v-layout row>
+                        </v-layout>
+                        <v-layout row>
 
-                            <v-text-field name="siteId" label="Site ID" id="projectSiteId"
-                              v-model="editedProjectDetails.siteId">
-                            </v-text-field>
+                          <v-textarea name="description" label="Description" id="description"
+                            v-model="editedItem.description" required>
+                          </v-textarea>
 
-                          </v-layout>
-                          <v-layout row>
+                        </v-layout>
+                        <v-layout row>
 
-                            <v-textarea name="projectDescription" label="Project Description" id="projectDescription"
-                              v-model="editedProjectDetails.description" required>
-                            </v-textarea>
-
-                          </v-layout>
-                          <v-layout row>
-
-                            <v-text-field name="projectAddress" label="Project Address" id="projectAddress"
-                              v-model="editedProjectDetails.address" required></v-text-field>
-
-                          </v-layout>
-                          <v-layout row>
+                        </v-layout>
+                        <v-layout>
+                        </v-layout>
+                        <v-layout row>
 
 
-                            <v-select v-model="editedProjectDetails.status" :items="projectStatusList"
-                              label="Project Status">
-                            </v-select>
+                          <v-select :items="drawingStatusTypes" v-model="editedItem.status" item-value="id"
+                            item-title="name" label="Status">
+                          </v-select>
 
 
-                          </v-layout>
-                          <v-layout row>
-
-                            <v-select v-model="editedProjectDetails.customerId" :items="customers" item-value="id"
-                              item-title="name" label="Project Client">
-                            </v-select>
-
-                          </v-layout>
-                          <v-layout row>
-
-                            <v-text-field name="projectClientQuantitySurveyor" label="PQS"
-                              id="projectClientQuantitySurveyor"
-                              v-model="editedProjectDetails.clientQuantitySurveyor"></v-text-field>
-
-                          </v-layout>
-                          <v-layout row>
-
-                            <v-text-field name="projectArchitect" label="Project Architect" id="projectArchitect"
-                              v-model="editedProjectDetails.architect"></v-text-field>
-
-                          </v-layout>
-                          <v-layout row>
-
-                            <v-text-field name="projectStructuralEngineer" label="Project Structural Engineer"
-                              id="projectStructuralEngineer" v-model="editedProjectDetails.structuralEngineer">
-                            </v-text-field>
-
-                          </v-layout>
-                          <v-layout row>
-
-                            <v-text-field name="status" label="Project Mechanical & Electrical Engineer"
-                              id="projectMechanicalAndElectricalEngineer"
-                              v-model="editedProjectDetails.mechanicalAndElectricalEngineer"></v-text-field>
-
-                          </v-layout>
-                          <v-layout row>
-
-                            <v-text-field name="projectQuantitySurveyor" label="Project Quantity Surveyor"
-                              id="projectQuantitySurveyor" v-model="editedProjectDetails.projectQuantitySurveyor">
-                            </v-text-field>
-
-                          </v-layout>
-                          <v-layout row>
-
-                            <v-text-field name="projectManager" label="Project Manager" id="projectManager"
-                              v-model="editedProjectDetails.projectManager"></v-text-field>
-
-                          </v-layout>
-                          <v-layout row>
-
-                            <v-text-field name="siteSafetyOfficer" label="Site Safety Officer" id="siteSafetyOfficerr"
-                              v-model="editedProjectDetails.siteSafetyOfficer">
-                            </v-text-field>
-
-                          </v-layout>
-                          <v-layout row>
-
-                            <v-text-field name="siteEngineer" label="Site Engineer" id="siteEngineer"
-                              v-model="editedProjectDetails.siteEngineer"></v-text-field>
-
-                          </v-layout>
-                          <v-layout row>
-
-                            <v-text-field name="projectSupervisorDesignProcess"
-                              label="Project H & S Supervisor Design Process" id="projectSupervisorDesignProcess"
-                              v-model="editedProjectDetails.projectSupervisorDesignProcess"></v-text-field>
-
-                          </v-layout>
-                          <v-layout row>
-
-                            <v-text-field name="projectSupervisorConstruction"
-                              label="Project H & S Supervisor Construction" id="projectSupervisorConstruction"
-                              v-model="editedProjectDetails.projectSupervisorConstruction"></v-text-field>
-
-                          </v-layout>
-
-                          <v-layout row>
-
-                            <v-btn class="primary" :disabled="!formIsValid" type="submit">Update Project</v-btn>
-
-                          </v-layout>
-                        </form>
-
-                      </v-layout>
 
 
+
+                        </v-layout>
+                        <v-layout row>
+
+                          <v-text-field v-model="editedItem.revision" label="Revision"></v-text-field>
+
+                        </v-layout>
+                      </v-container>
                     </v-card-text>
+
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="blue darken-1" @click="closeProjectDrawingMetaDataDialog">Cancel</v-btn>
+                      <v-btn color="blue darken-1" @click="saveProjectDrawingMetaData">Save</v-btn>
+                    </v-card-actions>
                   </v-card>
+                </v-dialog>
+              </v-window-item>
 
-                </v-window-item>
+              <!--Schedules-->
 
-              </v-window>
+              <v-window-item value="tab-2">
 
+                <v-card>
+                  <v-card-title>
+                    RFI Schedule
+                    <v-spacer></v-spacer>
+                    <v-text-field v-model="searchProjectRFIs" append-icon="search" label="Search" single-line
+                      hide-details></v-text-field>
+                    <v-spacer></v-spacer>
+                    <v-btn absolute right fab dark color="indigo" v-on="on">
+                      <v-dialog v-model="projectRFIDialog" activator="parent">
 
-            </v-window-item>
-
-            <v-window-item value="two">
-
-              <v-tabs v-model="tab" show-arrows>
-              
-
-                <v-tab value="tab-1">
-                  Drawings
-                </v-tab>
-                <v-tab value="tab-3">
-                  Room Schedules
-                </v-tab>
-                <v-tab value="tab-2">
-                  RFI Schedule
-                </v-tab>
-
-
-
-              </v-tabs>
-
-              <v-window v-model="tab">
-
-                <!-- Drawings -->
-                <v-window-item value="tab-1">
-
-                  <v-card>
-                    <v-card-title>
-                      Drawings
-                      <v-spacer></v-spacer>
-                      <v-text-field v-model="searchProjectDrawings" append-icon="search" label="Search" single-line
-                        hide-details></v-text-field>
-                      <v-spacer></v-spacer>
-                      <v-dialog v-model="dialog" activator="parent">
-                        <template v-slot:activator="{ on }">
-                          <v-btn absolute right fab dark color="indigo" v-on="on">
-                            <v-icon dark>add</v-icon>
-                          </v-btn>
-                        </template>
                         <v-card>
                           <v-card-title>
-                            <span class="headline">Upload Project Drawings</span>
+                            <span class="headline">Project RFI</span>
                           </v-card-title>
                           <v-card-text>
                             <v-container>
 
                               <v-layout row>
 
-                                <v-file-input v-model="drawingFiles" label="Upload Drawing Files" filled multiple
-                                  prepend-icon="mdi-camera"></v-file-input>
+                                <v-text-field v-model="editedProjectRFI.name" label="Reference"></v-text-field>
 
                               </v-layout>
+
+                              <v-layout row>
+
+                                <v-textarea v-model="editedProjectRFI.description" label="Description"></v-textarea>
+
+                              </v-layout>
+
+                              <v-layout row>
+
+                                <v-text-field v-model="editedProjectRFI.location" label="Location"></v-text-field>
+
+                              </v-layout>
+
+                              <v-layout row>
+
+                                <v-select :items="rfiStatus" v-model="editedProjectRFI.status" item-value="id"
+                                  item-title="name" label="Status">
+                                </v-select>
+
+                              </v-layout>
+
+                              <v-layout row>
+
+                                <v-text-field v-model="editedProjectRFI.assignedTo" label="Assigned To">
+                                </v-text-field>
+
+                              </v-layout>
+
+                              <v-layout row>
+
+                                <v-dialog ref="projectRFIDateAssignedDialog" v-model="projectRFIDateAssignedModal"
+                                  persistent activator="parent">
+                                  <template v-slot:activator="{ on }">
+                                    <v-text-field v-model="editedProjectRFI.dateAssigned" label="Date Assigned"
+                                      prepend-icon="event" readonly v-on="on"></v-text-field>
+                                  </template>
+                                  <v-date-picker v-model="editedProjectRFI.dateAssigned" scrollable>
+                                    <v-spacer></v-spacer>
+                                    <v-btn text color="primary" @click="projectRFIDateAssignedModal = false">Cancel
+                                    </v-btn>
+                                    <v-btn text color="primary"
+                                      @click="$refs.projectRFIDateAssignedDialog.save(date)">OK</v-btn>
+                                  </v-date-picker>
+                                </v-dialog>
+
+
+                              </v-layout>
+
+                              <v-layout row>
+
+                                <v-dialog ref="projectRFIDateRequiredDialog" v-model="projectRFIDateRequiredModal"
+                                  persistent activator="parent">
+                                  <template v-slot:activator="{ on }">
+                                    <v-text-field v-model="editedProjectRFI.dateRequired" label="Date Required By"
+                                      prepend-icon="event" readonly v-on="on"></v-text-field>
+                                  </template>
+                                  <v-date-picker v-model="editedProjectRFI.dateRequired" scrollable>
+                                    <v-spacer></v-spacer>
+                                    <v-btn text color="primary" @click="projectRFIDateRequiredModal = false">Cancel
+                                    </v-btn>
+                                    <v-btn text color="primary"
+                                      @click="$refs.projectRFIDateRequiredDialog.save(date)">OK</v-btn>
+                                  </v-date-picker>
+                                </v-dialog>
+
+                              </v-layout>
+
+                              <v-layout row>
+
+                                <v-textarea v-model="editedProjectRFI.response" label="Response"></v-textarea>
+
+                              </v-layout>
+
+                              <v-layout row>
+
+                                <v-dialog ref="projectRFIDateAnsweredDialog" v-model="projectRFIDateAnsweredModal"
+                                  persistent activator="parent">
+                                  <template v-slot:activator="{ on }">
+                                    <v-text-field v-model="editedProjectRFI.dateAnswered" label="Date Answered"
+                                      prepend-icon="event" readonly v-on="on"></v-text-field>
+                                  </template>
+                                  <v-date-picker v-model="editedProjectRFI.dateAnswered" scrollable>
+                                    <v-spacer></v-spacer>
+                                    <v-btn text color="primary" @click="projectRFIDateAnsweredModal = false">Cancel
+                                    </v-btn>
+                                    <v-btn text color="primary"
+                                      @click="$refs.projectRFIDateAnsweredDialog.save(date)">OK</v-btn>
+                                  </v-date-picker>
+                                </v-dialog>
+
+                              </v-layout>
+
+                              <v-layout row>
+
+                                <v-textarea v-model="editedProjectRFI.comments" label="Comments"></v-textarea>
+
+                              </v-layout>
+
                             </v-container>
                           </v-card-text>
 
                           <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn color="blue darken-1" @click="close">Cancel</v-btn>
-                            <v-btn color="blue darken-1" @click="uploadProjectDrawings">Save</v-btn>
+                            <v-btn color="blue darken-1" @click="closeProjectRFIDialog">Cancel</v-btn>
+                            <v-btn color="blue darken-1" @click="saveOrUpdateProjectRFI">Save</v-btn>
                           </v-card-actions>
                         </v-card>
                       </v-dialog>
-                    </v-card-title>
-                    <v-data-table :headers="drawingTableHeaders" :calculate-widths="true" :items="drawings"
-                      :search="searchProjectDrawings">
-                      <template v-slot:[`item.actionDownload`]="{ item }">
-                        <v-btn icon @click="downloadProjectDrawing(item)">
-                          <v-icon>
-                            cloud_download
-                          </v-icon>
-                        </v-btn>
-                      </template>
-                      <template v-slot:[`item.actionEdit`]="{ item }">
-                        <v-btn icon @click="editItem(item)">
-                          <v-icon>
-                            edit
-                          </v-icon>
-                        </v-btn>
-                      </template>
-                      <template v-slot:[`item.actionDelete`]="{ item }">
-                        <v-btn icon @click="deleteProjectDrawing(item)">
-                          <v-icon>
-                            delete
-                          </v-icon>
-                        </v-btn>
-                      </template>
-                    </v-data-table>
-                  </v-card>
-
-                  <v-dialog v-model="projectDrawingMetaDataDialog" activator="parent">
-                    <v-card>
-                      <v-card-title>
-                        <span class="headline">Edit Project Drawing</span>
-                      </v-card-title>
-                      <v-card-text>
-                        <v-container>
-                          <v-layout row>
-
-
-                            <v-select v-model="editedItem.categoryId" :items="projectDrawingCategories" item-value="id"
-                              item-title="name" label="Drawing Category">
-                            </v-select>
-
-                          </v-layout>
-                          <v-layout row>
-
-                            <v-text-field v-model="editedItem.title" label="Title"></v-text-field>
-
-                          </v-layout>
-                          <v-layout row>
-
-                            <v-textarea name="description" label="Description" id="description"
-                              v-model="editedItem.description" required>
-                            </v-textarea>
-
-                          </v-layout>
-                          <v-layout row>
-
-                          </v-layout>
-                          <v-layout>
-                          </v-layout>
-                          <v-layout row>
-
-
-                            <v-select :items="drawingStatusTypes" v-model="editedItem.status" label="Status">
-                            </v-select>
-
-
-
-
-
-                          </v-layout>
-                          <v-layout row>
-
-                            <v-text-field v-model="editedItem.revision" label="Revision"></v-text-field>
-
-                          </v-layout>
-                        </v-container>
-                      </v-card-text>
-
-                      <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" @click="closeProjectDrawingMetaDataDialog">Cancel</v-btn>
-                        <v-btn color="blue darken-1" @click="saveProjectDrawingMetaData">Save</v-btn>
-                      </v-card-actions>
-                    </v-card>
-                  </v-dialog>
-                </v-window-item>
-
-                <!--Schedules-->
-
-                <v-window-item value="tab-2">
-
-                  <v-card>
-                    <v-card-title>
-                      RFI Schedule
-                      <v-spacer></v-spacer>
-                      <v-text-field v-model="searchProjectRFIs" append-icon="search" label="Search" single-line
-                        hide-details></v-text-field>
-                      <v-spacer></v-spacer>
-                      <v-btn absolute right fab dark color="indigo" v-on="on">
-                        <v-dialog v-model="projectRFIDialog" activator="parent">
-
-                          <v-card>
-                            <v-card-title>
-                              <span class="headline">Project RFI</span>
-                            </v-card-title>
-                            <v-card-text>
-                              <v-container>
-
-                                <v-layout row>
-
-                                  <v-text-field v-model="editedProjectRFI.name" label="Reference"></v-text-field>
-
-                                </v-layout>
-
-                                <v-layout row>
-
-                                  <v-textarea v-model="editedProjectRFI.description" label="Description"></v-textarea>
-
-                                </v-layout>
-
-                                <v-layout row>
-
-                                  <v-text-field v-model="editedProjectRFI.location" label="Location"></v-text-field>
-
-                                </v-layout>
-
-                                <v-layout row>
-
-                                  <v-select :items="rfiStatus" v-model="editedProjectRFI.status" label="Status">
-                                  </v-select>
-
-                                </v-layout>
-
-                                <v-layout row>
-
-                                  <v-text-field v-model="editedProjectRFI.assignedTo" label="Assigned To">
-                                  </v-text-field>
-
-                                </v-layout>
-
-                                <v-layout row>
-
-                                  <v-dialog ref="projectRFIDateAssignedDialog" v-model="projectRFIDateAssignedModal"
-                                    persistent activator="parent">
-                                    <template v-slot:activator="{ on }">
-                                      <v-text-field v-model="editedProjectRFI.dateAssigned" label="Date Assigned"
-                                        prepend-icon="event" readonly v-on="on"></v-text-field>
-                                    </template>
-                                    <v-date-picker v-model="editedProjectRFI.dateAssigned" scrollable>
-                                      <v-spacer></v-spacer>
-                                      <v-btn text color="primary" @click="projectRFIDateAssignedModal = false">Cancel
-                                      </v-btn>
-                                      <v-btn text color="primary"
-                                        @click="$refs.projectRFIDateAssignedDialog.save(date)">OK</v-btn>
-                                    </v-date-picker>
-                                  </v-dialog>
-
-
-                                </v-layout>
-
-                                <v-layout row>
-
-                                  <v-dialog ref="projectRFIDateRequiredDialog" v-model="projectRFIDateRequiredModal"
-                                    persistent activator="parent">
-                                    <template v-slot:activator="{ on }">
-                                      <v-text-field v-model="editedProjectRFI.dateRequired" label="Date Required By"
-                                        prepend-icon="event" readonly v-on="on"></v-text-field>
-                                    </template>
-                                    <v-date-picker v-model="editedProjectRFI.dateRequired" scrollable>
-                                      <v-spacer></v-spacer>
-                                      <v-btn text color="primary" @click="projectRFIDateRequiredModal = false">Cancel
-                                      </v-btn>
-                                      <v-btn text color="primary"
-                                        @click="$refs.projectRFIDateRequiredDialog.save(date)">OK</v-btn>
-                                    </v-date-picker>
-                                  </v-dialog>
-
-                                </v-layout>
-
-                                <v-layout row>
-
-                                  <v-textarea v-model="editedProjectRFI.response" label="Response"></v-textarea>
-
-                                </v-layout>
-
-                                <v-layout row>
-
-                                  <v-dialog ref="projectRFIDateAnsweredDialog" v-model="projectRFIDateAnsweredModal"
-                                    persistent activator="parent">
-                                    <template v-slot:activator="{ on }">
-                                      <v-text-field v-model="editedProjectRFI.dateAnswered" label="Date Answered"
-                                        prepend-icon="event" readonly v-on="on"></v-text-field>
-                                    </template>
-                                    <v-date-picker v-model="editedProjectRFI.dateAnswered" scrollable>
-                                      <v-spacer></v-spacer>
-                                      <v-btn text color="primary" @click="projectRFIDateAnsweredModal = false">Cancel
-                                      </v-btn>
-                                      <v-btn text color="primary"
-                                        @click="$refs.projectRFIDateAnsweredDialog.save(date)">OK</v-btn>
-                                    </v-date-picker>
-                                  </v-dialog>
-
-                                </v-layout>
-
-                                <v-layout row>
-
-                                  <v-textarea v-model="editedProjectRFI.comments" label="Comments"></v-textarea>
-
-                                </v-layout>
-
-                              </v-container>
-                            </v-card-text>
-
-                            <v-card-actions>
-                              <v-spacer></v-spacer>
-                              <v-btn color="blue darken-1" @click="closeProjectRFIDialog">Cancel</v-btn>
-                              <v-btn color="blue darken-1" @click="saveOrUpdateProjectRFI">Save</v-btn>
-                            </v-card-actions>
-                          </v-card>
-                        </v-dialog>
+                    </v-btn>
+                  </v-card-title>
+                  <v-data-table :headers="projectRFITableHeaders" :calculate-widths="true" :items="projectRFIs"
+                    :search="searchProjectRFIs">
+                    <template v-slot:[`item.actionEdit`]="{ item }">
+                      <v-btn icon @click="openProjectRFIDialog(item)">
+                        <v-icon>
+                          edit
+                        </v-icon>
                       </v-btn>
-                    </v-card-title>
-                    <v-data-table :headers="projectRFITableHeaders" :calculate-widths="true" :items="projectRFIs"
-                      :search="searchProjectRFIs">
-                      <template v-slot:[`item.actionEdit`]="{ item }">
-                        <v-btn icon @click="openProjectRFIDialog(item)">
-                          <v-icon>
-                            edit
-                          </v-icon>
-                        </v-btn>
-                      </template>
-                      <template v-slot:[`item.actionDelete`]="{ item }">
-                        <v-btn icon @click="deleteProjectRFI(item)">
-                          <v-icon>
-                            delete
-                          </v-icon>
-                        </v-btn>
-                      </template>
-                    </v-data-table>
-                  </v-card>
-
-                </v-window-item>
-
-                <v-window-item value="tab-3">
-
-                  <v-card>
-                    <v-card-title>
-                      Room Schedule
-                      <v-spacer></v-spacer>
-                      <v-text-field v-model="searchProjectRooms" append-icon="search" label="Search" single-line
-                        hide-details></v-text-field>
-                      <v-spacer></v-spacer>
-                      <v-btn absolute right fab dark color="indigo" v-on="on">
-                        <v-dialog v-model="projectRoomDialog" activator="parent">
-
-                          <v-card>
-                            <v-card-title>
-                              <span class="headline">Project Room Schedule</span>
-                            </v-card-title>
-                            <v-card-text>
-                              <v-container>
-
-                                <v-layout row>
-
-                                  <v-text-field v-model="editedProjectRoom.name" label="Name"></v-text-field>
-
-                                </v-layout>
-
-                                <v-layout row>
-
-                                  <v-textarea v-model="editedProjectRoom.description" label="Description">
-                                  </v-textarea>
-
-                                </v-layout>
-
-                                <v-layout row>
-
-                                  <v-text-field v-model="editedProjectRoom.level" label="Level"></v-text-field>
-
-                                </v-layout>
-                                <v-layout row>
-
-                                  <v-textarea v-model="editedProjectRoom.comments" label="Comments"></v-textarea>
-
-                                </v-layout>
-
-                              </v-container>
-                            </v-card-text>
-
-                            <v-card-actions>
-                              <v-spacer></v-spacer>
-                              <v-btn color="blue darken-1" @click="closeProjectRoomDialog">Cancel</v-btn>
-                              <v-btn color="blue darken-1" @click="saveOrUpdateProjectRoom">Save</v-btn>
-                            </v-card-actions>
-                          </v-card>
-                        </v-dialog>
+                    </template>
+                    <template v-slot:[`item.actionDelete`]="{ item }">
+                      <v-btn icon @click="deleteProjectRFI(item)">
+                        <v-icon>
+                          delete
+                        </v-icon>
                       </v-btn>
-                    </v-card-title>
-                    <v-data-table :headers="projectRoomTableHeaders" :calculate-widths="true" :items="projectRoomsX"
-                      :search="searchProjectRooms">
-                      <template v-slot:[`item.actionEdit`]="{ item }">
-                        <v-btn icon @click="openProjectRoomDialog(item)">
-                          <v-icon>
-                            edit
-                          </v-icon>
-                        </v-btn>
-                      </template>
-                      <template v-slot:[`item.actionDelete`]="{ item }">
-                        <v-btn icon @click="deleteProjectRoom(item)">
-                          <v-icon>
-                            delete
-                          </v-icon>
-                        </v-btn>
-                      </template>
-                    </v-data-table>
-                  </v-card>
+                    </template>
+                  </v-data-table>
+                </v-card>
 
-                </v-window-item>
+              </v-window-item>
 
-              </v-window>
+              <v-window-item value="tab-3">
+
+                <v-card>
+                  <v-card-title>
+                    Room Schedule
+                    <v-spacer></v-spacer>
+                    <v-text-field v-model="searchProjectRooms" append-icon="search" label="Search" single-line
+                      hide-details></v-text-field>
+                    <v-spacer></v-spacer>
+                    <v-btn absolute right fab dark color="indigo" v-on="on">
+                      <v-dialog v-model="projectRoomDialog" activator="parent">
+
+                        <v-card>
+                          <v-card-title>
+                            <span class="headline">Project Room Schedule</span>
+                          </v-card-title>
+                          <v-card-text>
+                            <v-container>
+
+                              <v-layout row>
+
+                                <v-text-field v-model="editedProjectRoom.name" label="Name"></v-text-field>
+
+                              </v-layout>
+
+                              <v-layout row>
+
+                                <v-textarea v-model="editedProjectRoom.description" label="Description">
+                                </v-textarea>
+
+                              </v-layout>
+
+                              <v-layout row>
+
+                                <v-text-field v-model="editedProjectRoom.level" label="Level"></v-text-field>
+
+                              </v-layout>
+                              <v-layout row>
+
+                                <v-textarea v-model="editedProjectRoom.comments" label="Comments"></v-textarea>
+
+                              </v-layout>
+
+                            </v-container>
+                          </v-card-text>
+
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="blue darken-1" @click="closeProjectRoomDialog">Cancel</v-btn>
+                            <v-btn color="blue darken-1" @click="saveOrUpdateProjectRoom">Save</v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </v-dialog>
+                    </v-btn>
+                  </v-card-title>
+                  <v-data-table :headers="projectRoomTableHeaders" :calculate-widths="true" :items="projectRoomsX"
+                    :search="searchProjectRooms">
+                    <template v-slot:[`item.actionEdit`]="{ item }">
+                      <v-btn icon @click="openProjectRoomDialog(item)">
+                        <v-icon>
+                          edit
+                        </v-icon>
+                      </v-btn>
+                    </template>
+                    <template v-slot:[`item.actionDelete`]="{ item }">
+                      <v-btn icon @click="deleteProjectRoom(item)">
+                        <v-icon>
+                          delete
+                        </v-icon>
+                      </v-btn>
+                    </template>
+                  </v-data-table>
+                </v-card>
+
+              </v-window-item>
+
+            </v-window>
 
 
-            </v-window-item>
+          </v-window-item>
 
 
-            <v-window-item value="three">
+          <v-window-item value="three">
 
-              <v-tabs v-model="buildTab" show-arrows>
-             
+            <v-tabs v-model="buildTab" show-arrows>
 
-                <v-tab value="buildTab-1">
-                  Project Plan
-                </v-tab>
-                <v-tab value="buildTab-2">
-                  Gallery
-                </v-tab>
-                <v-tab value="buildTab-3">
-                  Health and Safety
-                </v-tab>
-              </v-tabs>
 
-              <v-window v-model="buildTab">
+              <v-tab value="buildTab-1">
+                Project Plan
+              </v-tab>
+              <v-tab value="buildTab-2">
+                Gallery
+              </v-tab>
+              <v-tab value="buildTab-3">
+                Health and Safety
+              </v-tab>
+            </v-tabs>
 
-                <!-- Project Details -->
+            <v-window v-model="buildTab">
 
-                <v-window-item value="buildTab-1">
+              <!-- Project Details -->
 
-                  <v-card>
-                    <v-card-title>
-                      Project Task Board
-                      <v-spacer></v-spacer>
-                      <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
-                      </v-text-field>
-                      <v-spacer></v-spacer>
-                      <v-btn absolute right fab dark color="indigo" v-on="on">
-                        <v-dialog v-model="projectTaskDialog" activator="parent">
+              <v-window-item value="buildTab-1">
 
-                          <v-card>
-                            <v-card-title>
-                              <span>{{ projectTaskFormTitle }}</span>
-                            </v-card-title>
-                            <v-card-text>
-                              <v-container>
-                                <v-layout row>
+                <v-card>
+                  <v-card-title>
+                    Project Task Board
+                    <v-spacer></v-spacer>
+                    <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
+                    </v-text-field>
+                    <v-spacer></v-spacer>
+                    <v-btn absolute right fab dark color="indigo" v-on="on">
+                      <v-dialog v-model="projectTaskDialog" activator="parent">
 
-                                  <v-select :items="taskStatusTypes" v-model="editedProjectTask.status"
-                                    label="Status"></v-select>
+                        <v-card>
+                          <v-card-title>
+                            <span>{{ projectTaskFormTitle }}</span>
+                          </v-card-title>
+                          <v-card-text>
+                            <v-container>
+                              <v-layout row>
 
-                                </v-layout>
-                                <v-layout row>
+                                <v-select :items="taskStatusTypes" v-model="editedProjectTask.status" item-value="id"
+                                  item-title="name" label="Status"></v-select>
 
-                                  <v-text-field v-model="editedProjectTask.name" label="Name"></v-text-field>
+                              </v-layout>
+                              <v-layout row>
 
-                                </v-layout>
-                                <v-layout row>
+                                <v-text-field v-model="editedProjectTask.name" label="Name"></v-text-field>
 
-                                  <v-textarea name="description" label="Description" id="description"
-                                    v-model="editedProjectTask.description" required>
-                                  </v-textarea>
+                              </v-layout>
+                              <v-layout row>
 
-                                </v-layout>
-                                <!--
+                                <v-textarea name="description" label="Description" id="description"
+                                  v-model="editedProjectTask.description" required>
+                                </v-textarea>
+
+                              </v-layout>
+                              <!--
                             <v-layout row>
 
                              
@@ -828,89 +827,89 @@
 
                             </v-layout>
 -->
-                              </v-container>
-                            </v-card-text>
+                            </v-container>
+                          </v-card-text>
 
-                            <v-card-actions>
-                              <v-spacer></v-spacer>
-                              <v-btn color="blue darken-1" @click="closeProjectTaskDialog">Cancel</v-btn>
-                              <v-btn color="blue darken-1" @click="saveProjectTask">Save</v-btn>
-                            </v-card-actions>
-                          </v-card>
-                        </v-dialog>
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="blue darken-1" @click="closeProjectTaskDialog">Cancel</v-btn>
+                            <v-btn color="blue darken-1" @click="saveProjectTask">Save</v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </v-dialog>
+                    </v-btn>
+                  </v-card-title>
+                  <v-data-table :headers="taskTableHeaders" :calculate-widths="true" :items="projectTasks"
+                    :search="search">
+                    <template v-slot:[`item.actionEditTask`]="{ item }">
+                      <v-btn icon @click="editProjectTask(item)">
+                        <v-icon>
+                          edit
+                        </v-icon>
                       </v-btn>
-                    </v-card-title>
-                    <v-data-table :headers="taskTableHeaders" :calculate-widths="true" :items="projectTasks"
-                      :search="search">
-                      <template v-slot:[`item.actionEditTask`]="{ item }">
-                        <v-btn icon @click="editProjectTask(item)">
-                          <v-icon>
-                            edit
-                          </v-icon>
-                        </v-btn>
-                      </template>
-                      <template v-slot:[`item.actionDeleteTask`]="{ item }">
-                        <v-btn icon @click="deleteProjectTask(item)">
-                          <v-icon>
-                            delete
-                          </v-icon>
-                        </v-btn>
-                      </template>
-                    </v-data-table>
-                  </v-card>
-
-                </v-window-item>
-
-                <v-window-item value="buildTab-2">
-
-                  <v-card>
-                    <v-card-title>
-                      Project Gallery
-                      <v-spacer></v-spacer>
-                      <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
-                      </v-text-field>
-                      <v-spacer></v-spacer>
-                      <v-btn absolute right fab dark color="indigo" v-on="on">
-                        <v-dialog v-model="projectImageDialog" activator="parent">
-
-                          <v-card>
-                            <v-card-title>
-                              <span>Upload Project Images</span>
-                            </v-card-title>
-                            <v-card-text>
-                              <v-container>
-
-                                <v-layout row>
-
-                                  <v-file-input v-model="editedProjectImages.imageFiles" color="deep-purple accent-4"
-                                    counter label="Upload Project Images" placeholder="Select your image"
-                                    prepend-icon="mdi-paperclip" outlined multiple :show-size="1000">
-                                    <template v-slot:[`selection`]="{ index, text }">
-                                      <v-chip v-if="index < 2" color="deep-purple accent-4" dark label small>
-                                        {{ text }}
-                                      </v-chip>
-
-                                      <span v-else-if="index === 2" class="overline grey--text text--darken-3 mx-2">
-                                        +{{ editedProjectImages.imageFiles.length - 2 }} File(s)
-                                      </span>
-                                    </template>
-                                  </v-file-input>
-
-                                </v-layout>
-
-                              </v-container>
-                            </v-card-text>
-
-                            <v-card-actions>
-                              <v-spacer></v-spacer>
-                              <v-btn color="blue darken-1" @click="closeProjectImageDialog">Cancel</v-btn>
-                              <v-btn color="blue darken-1" @click="saveProjectImages">Save</v-btn>
-                            </v-card-actions>
-                          </v-card>
-                        </v-dialog>
+                    </template>
+                    <template v-slot:[`item.actionDeleteTask`]="{ item }">
+                      <v-btn icon @click="deleteProjectTask(item)">
+                        <v-icon>
+                          delete
+                        </v-icon>
                       </v-btn>
-                    </v-card-title>
-                    <!--
+                    </template>
+                  </v-data-table>
+                </v-card>
+
+              </v-window-item>
+
+              <v-window-item value="buildTab-2">
+
+                <v-card>
+                  <v-card-title>
+                    Project Gallery
+                    <v-spacer></v-spacer>
+                    <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
+                    </v-text-field>
+                    <v-spacer></v-spacer>
+                    <v-btn absolute right fab dark color="indigo" v-on="on">
+                      <v-dialog v-model="projectImageDialog" activator="parent">
+
+                        <v-card>
+                          <v-card-title>
+                            <span>Upload Project Images</span>
+                          </v-card-title>
+                          <v-card-text>
+                            <v-container>
+
+                              <v-layout row>
+
+                                <v-file-input v-model="editedProjectImages.imageFiles" color="deep-purple accent-4"
+                                  counter label="Upload Project Images" placeholder="Select your image"
+                                  prepend-icon="mdi-paperclip" outlined multiple :show-size="1000">
+                                  <template v-slot:[`selection`]="{ index, text }">
+                                    <v-chip v-if="index < 2" color="deep-purple accent-4" dark label small>
+                                      {{ text }}
+                                    </v-chip>
+
+                                    <span v-else-if="index === 2" class="overline grey--text text--darken-3 mx-2">
+                                      +{{ editedProjectImages.imageFiles.length - 2 }} File(s)
+                                    </span>
+                                  </template>
+                                </v-file-input>
+
+                              </v-layout>
+
+                            </v-container>
+                          </v-card-text>
+
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="blue darken-1" @click="closeProjectImageDialog">Cancel</v-btn>
+                            <v-btn color="blue darken-1" @click="saveProjectImages">Save</v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </v-dialog>
+                    </v-btn>
+                  </v-card-title>
+                  <!--
                    <v-expansion-panels>
                      <v-expansion-panel multiple v-model="panel">
                        <v-expansion-panel-header>Image Metadata</v-expansion-panel-header>
@@ -918,34 +917,34 @@
 
                        -->
 
-                    <v-data-table :headers="imageMetadataTableHeaders" :calculate-widths="true"
-                      :items="projectImageMetadata" :search="search">
-                      <template v-slot:[`item.image`]="{ item }">
-                        <v-img :src="`http://neacy.io/api/resource/projects/${item.projectId}/images/${item.id}/download`"
-                          :lazy-src="`http://neacy.io/api/resource/projects/${item.projectId}/images/${item.id}/download`"
-                          aspect-ratio="1" class="grey lighten-2" max-width="400" max-height="300"></v-img>
-                      </template>
-                      <template v-slot:[`item.actionEditImageMetadata`]="{ item }">
-                        <v-btn icon @click="editProjectImageMetaData(item)">
-                          <v-icon>
-                            edit
-                          </v-icon>
-                        </v-btn>
-                      </template>
-                      <template v-slot:[`item.actionDeleteImageMetadata`]="{ item }">
-                        <v-btn icon @click="deleteProjectImageMetaData(item)">
-                          <v-icon>
-                            delete
-                          </v-icon>
-                        </v-btn>
-                      </template>
-                    </v-data-table>
-                    <!--
+                  <v-data-table :headers="imageMetadataTableHeaders" :calculate-widths="true"
+                    :items="projectImageMetadata" :search="search">
+                    <template v-slot:[`item.image`]="{ item }">
+                      <v-img :src="`http://neacy.io/api/resource/projects/${item.projectId}/images/${item.id}/download`"
+                        :lazy-src="`http://neacy.io/api/resource/projects/${item.projectId}/images/${item.id}/download`"
+                        aspect-ratio="1" class="grey lighten-2" max-width="400" max-height="300"></v-img>
+                    </template>
+                    <template v-slot:[`item.actionEditImageMetadata`]="{ item }">
+                      <v-btn icon @click="editProjectImageMetaData(item)">
+                        <v-icon>
+                          edit
+                        </v-icon>
+                      </v-btn>
+                    </template>
+                    <template v-slot:[`item.actionDeleteImageMetadata`]="{ item }">
+                      <v-btn icon @click="deleteProjectImageMetaData(item)">
+                        <v-icon>
+                          delete
+                        </v-icon>
+                      </v-btn>
+                    </template>
+                  </v-data-table>
+                  <!--
                             </v-expansion-panel-content>
                         </v-expansion-panel>
                       </v-expansion-panels>
                       -->
-                    <!--
+                  <!--
                       <v-carousel
                          height="400"
                          hide-delimiter-background
@@ -958,7 +957,7 @@
                        </v-carousel>
                        -->
 
-                    <!-- Displays a gallery of project photos.
+                  <!-- Displays a gallery of project photos.
                        <v-row>
                            <v-col cols="12" sm="10" offset-sm="1">
                              <v-card flat>
@@ -996,181 +995,181 @@
                          </v-row>
 
                -->
-                    <v-btn absolute right fab dark color="indigo" v-on="on">
-                      <v-dialog v-model="projectImageMetaDataDialog" activator="parent">
+                  <v-btn absolute right fab dark color="indigo" v-on="on">
+                    <v-dialog v-model="projectImageMetaDataDialog" activator="parent">
 
-                        <v-card>
-                          <v-card-title>
-                            <span>{{ projectImageFormTitle }}</span>
-                          </v-card-title>
-                          <v-card-text>
-                            <v-container>
-                              <v-layout row>
+                      <v-card>
+                        <v-card-title>
+                          <span>{{ projectImageFormTitle }}</span>
+                        </v-card-title>
+                        <v-card-text>
+                          <v-container>
+                            <v-layout row>
 
-                                <v-text-field v-model="editedProjectImageMetaData.title" label="Title"></v-text-field>
+                              <v-text-field v-model="editedProjectImageMetaData.title" label="Title"></v-text-field>
 
-                              </v-layout>
-                              <v-layout row>
+                            </v-layout>
+                            <v-layout row>
 
-                                <v-textarea name="description" label="Description" id="description"
-                                  v-model="editedProjectImageMetaData.description" required>
-                                </v-textarea>
+                              <v-textarea name="description" label="Description" id="description"
+                                v-model="editedProjectImageMetaData.description" required>
+                              </v-textarea>
 
-                              </v-layout>
-                              <v-layout row>
+                            </v-layout>
+                            <v-layout row>
 
-                                <v-text-field v-model="editedProjectImageMetaData.location" label="Location">
-                                </v-text-field>
+                              <v-text-field v-model="editedProjectImageMetaData.location" label="Location">
+                              </v-text-field>
 
-                              </v-layout>
-                              <v-layout row>
+                            </v-layout>
+                            <v-layout row>
 
-                                <v-text-field v-model="editedProjectImageMetaData.categoryId" label="Category">
-                                </v-text-field>
+                              <v-text-field v-model="editedProjectImageMetaData.categoryId" label="Category">
+                              </v-text-field>
 
-                              </v-layout>
+                            </v-layout>
 
-                              <v-row justify="center">
-                                <v-img
-                                  :src="`http://neacy.io/api/resource/projects/${editedProjectImageMetaData.projectId}/images/${editedProjectImageMetaData.id}/download`"
-                                  :lazy-src="`http://neacy.io/api/resource/projects/${editedProjectImageMetaData.projectId}/images/${editedProjectImageMetaData.id}/download`"
-                                  aspect-ratio="1" class="grey lighten-2" max-width="700" max-height="600"></v-img>
-                              </v-row>
+                            <v-row justify="center">
+                              <v-img
+                                :src="`http://neacy.io/api/resource/projects/${editedProjectImageMetaData.projectId}/images/${editedProjectImageMetaData.id}/download`"
+                                :lazy-src="`http://neacy.io/api/resource/projects/${editedProjectImageMetaData.projectId}/images/${editedProjectImageMetaData.id}/download`"
+                                aspect-ratio="1" class="grey lighten-2" max-width="700" max-height="600"></v-img>
+                            </v-row>
 
-                            </v-container>
-                          </v-card-text>
+                          </v-container>
+                        </v-card-text>
 
-                          <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn color="blue darken-1" @click="closeProjectImageMetaDataDialog">Cancel</v-btn>
-                            <v-btn color="blue darken-1" @click="saveProjectImageMetaData">Save</v-btn>
-                          </v-card-actions>
-                        </v-card>
-                      </v-dialog>
-                    </v-btn>
-
-
-                  </v-card>
-
-                </v-window-item>
-
-                <v-window-item value="buildTab-3">
-
-                  <v-card>
-                    <v-card-title>
-                      Health & Safety
-
-                    </v-card-title>
-                    <v-tabs fixed-tabs>
-                      <v-tab>
-                        Site Inductions
-                      </v-tab>
-                      <v-tab>
-                        Risk Assessments
-                      </v-tab>
-                      <v-tab>
-                        Health & Safety Plan Design
-                      </v-tab>
-                      <v-tab>
-                        Health & Safety Plan Construction
-                      </v-tab>
-                      <v-tab>
-                        HSA AF1 & AF2
-                      </v-tab>
-
-                    </v-tabs>
-                  </v-card>
-
-                </v-window-item>
-
-              </v-window>
-
-            </v-window-item>
-
-            <v-window-item value="four">
-
-              <v-tabs v-model="financeTab" show-arrows>
-        
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn color="blue darken-1" @click="closeProjectImageMetaDataDialog">Cancel</v-btn>
+                          <v-btn color="blue darken-1" @click="saveProjectImageMetaData">Save</v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
+                  </v-btn>
 
 
-                <v-tab value="financeTab-6">
-                  BoQ Summary
-                </v-tab>
-                <v-tab value="financeTab-10">
-                  Room Schedule BoQ
-                </v-tab>
-                <v-tab value="financeTab-1">
-                  Project BoQ
-                </v-tab>
-                <v-tab value="financeTab-11">
-                  Quotations
-                </v-tab>
-                <v-tab value="financeTab-2">
-                  Procurement Schedule
-                </v-tab>
+                </v-card>
 
-                <v-tab value="financeTab-31">
-                  Products
-                </v-tab>
-                <v-tab value="financeTab-3">
-                  Product Orders
-                </v-tab>
-                <v-tab value="financeTab-4">
-                  Valuations
-                </v-tab>
-                <v-tab value="financeTab-5">
-                  Payment Certs
-                </v-tab>
-                <v-tab value="financeTab-7">
-                  Customer Invoices
-                </v-tab>
-                <v-tab value="financeTab-8">
-                  SubContractor Invoices
-                </v-tab>
-                <v-tab value="financeTab-9">
-                  Supplier Invoices
-                </v-tab>
-              </v-tabs>
+              </v-window-item>
 
-              <v-window v-model="financeTab">
+              <v-window-item value="buildTab-3">
 
-                <v-window-item value="financeTab-6">
+                <v-card>
+                  <v-card-title>
+                    Health & Safety
 
-                  <v-card>
-                    <v-card-title>
-                      <v-spacer></v-spacer>
-                      <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
-                      </v-text-field>
+                  </v-card-title>
+                  <v-tabs fixed-tabs>
+                    <v-tab>
+                      Site Inductions
+                    </v-tab>
+                    <v-tab>
+                      Risk Assessments
+                    </v-tab>
+                    <v-tab>
+                      Health & Safety Plan Design
+                    </v-tab>
+                    <v-tab>
+                      Health & Safety Plan Construction
+                    </v-tab>
+                    <v-tab>
+                      HSA AF1 & AF2
+                    </v-tab>
+
+                  </v-tabs>
+                </v-card>
+
+              </v-window-item>
+
+            </v-window>
+
+          </v-window-item>
+
+          <v-window-item value="four">
+
+            <v-tabs v-model="financeTab" show-arrows>
 
 
-                    </v-card-title>
-                    <h3>BoQ Summary</h3>
 
-                    <v-data-table :headers="projectBoQCategoryCostsTableHeaders" :calculate-widths="true"
-                      :items="projectBoQCategoryCosts" :search="search">
+              <v-tab value="financeTab-6">
+                BoQ Summary
+              </v-tab>
+              <v-tab value="financeTab-10">
+                Room Schedule BoQ
+              </v-tab>
+              <v-tab value="financeTab-1">
+                Project BoQ
+              </v-tab>
+              <v-tab value="financeTab-11">
+                Quotations
+              </v-tab>
+              <v-tab value="financeTab-2">
+                Procurement Schedule
+              </v-tab>
 
-                    </v-data-table>
-                  </v-card>
+              <v-tab value="financeTab-31">
+                Products
+              </v-tab>
+              <v-tab value="financeTab-3">
+                Product Orders
+              </v-tab>
+              <v-tab value="financeTab-4">
+                Valuations
+              </v-tab>
+              <v-tab value="financeTab-5">
+                Payment Certs
+              </v-tab>
+              <v-tab value="financeTab-7">
+                Customer Invoices
+              </v-tab>
+              <v-tab value="financeTab-8">
+                SubContractor Invoices
+              </v-tab>
+              <v-tab value="financeTab-9">
+                Supplier Invoices
+              </v-tab>
+            </v-tabs>
+
+            <v-window v-model="financeTab">
+
+              <v-window-item value="financeTab-6">
+
+                <v-card>
+                  <v-card-title>
+                    <v-spacer></v-spacer>
+                    <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
+                    </v-text-field>
 
 
-                </v-window-item>
-                <v-window-item value="financeTab-10">
+                  </v-card-title>
+                  <h3>BoQ Summary</h3>
 
-                  <v-card>
-                    <v-card-title>
+                  <v-data-table :headers="projectBoQCategoryCostsTableHeaders" :calculate-widths="true"
+                    :items="projectBoQCategoryCosts" :search="search">
 
-                      <v-spacer></v-spacer>
-                      <v-text-field v-model="searchRoomScheduleBoQTreeView" append-icon="search" label="Search"
-                        single-line hide-details>
-                      </v-text-field>
-                      <!--
+                  </v-data-table>
+                </v-card>
+
+
+              </v-window-item>
+              <v-window-item value="financeTab-10">
+
+                <v-card>
+                  <v-card-title>
+
+                    <v-spacer></v-spacer>
+                    <v-text-field v-model="searchRoomScheduleBoQTreeView" append-icon="search" label="Search" single-line
+                      hide-details>
+                    </v-text-field>
+                    <!--
     <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
     </v-text-field>
   -->
-                    </v-card-title>
-                    <h3>Room Schedule BoQ</h3>
+                  </v-card-title>
+                  <h3>Room Schedule BoQ</h3>
 
-                    <!--
+                  <!--
   <v-card
     class="mx-auto"
     max-width="500"
@@ -1210,36 +1209,36 @@
     </v-card-text>
   </v-card>
   -->
-                    <!-- :items="filteredProjectRoomScheduleBoQ" -->
-                    <v-treeview :items="filteredProjectRoomScheduleBoQ" v-model="openTreeNodes" :filter="filter"
-                      :search="searchRoomScheduleBoQTreeView">
+                  <!-- :items="filteredProjectRoomScheduleBoQ" -->
+                  <v-treeview :items="filteredProjectRoomScheduleBoQ" v-model="openTreeNodes" :filter="filter"
+                    :search="searchRoomScheduleBoQTreeView">
 
-                      <template v-slot:[`prepend`]="{ item }">
+                    <template v-slot:[`prepend`]="{ item }">
 
-                        <v-icon v-if="item.children">
-                          room
-                        </v-icon>
-                        <v-icon v-if="!item.children">
-                          settings
-                        </v-icon>
+                      <v-icon v-if="item.children">
+                        room
+                      </v-icon>
+                      <v-icon v-if="!item.children">
+                        settings
+                      </v-icon>
 
-                      </template>
+                    </template>
 
-                      <template v-slot:[`label`]="{ item }">
+                    <template v-slot:[`label`]="{ item }">
 
-                        <p v-if="item.children">
-                          {{ item.roomName }} : {{ item.cost }}
-                        </p>
+                      <p v-if="item.children">
+                        {{ item.roomName }} : {{ item.cost }}
+                      </p>
 
-                        <p v-if="!item.children">
-                          {{ item.boqItemName }} : {{ item.quantity }} : {{ item.boqItemContractRate }}
-                        </p>
+                      <p v-if="!item.children">
+                        {{ item.boqItemName }} : {{ item.quantity }} : {{ item.boqItemContractRate }}
+                      </p>
 
-                      </template>
+                    </template>
 
-                    </v-treeview>
+                  </v-treeview>
 
-                    <!--
+                  <!--
   <v-data-table :headers="projectRoomScheduleBoQTableHeaders" :calculate-widths="true"
     :items="projectRoomScheduleBoQ"
     :search="searchRoomScheduleBoQ"
@@ -1247,55 +1246,55 @@
 
   </v-data-table>
   -->
-                  </v-card>
+                </v-card>
 
 
-                </v-window-item>
-                <v-window-item value="financeTab-11">
+              </v-window-item>
+              <v-window-item value="financeTab-11">
 
-                  <v-card>
-                    <v-text-field v-model="searchProjectQuotations" label="Search Quotations" flat solo-inverted
-                      hide-details clearable clear-icon="mdi-close-circle-outline"></v-text-field>
+                <v-card>
+                  <v-text-field v-model="searchProjectQuotations" label="Search Quotations" flat solo-inverted
+                    hide-details clearable clear-icon="mdi-close-circle-outline"></v-text-field>
 
-                    <v-data-table :headers="title" :calculate-widths="true"
-                      :items="projectQuotations" :search="searchProjectQuotations">
+                  <v-data-table :headers="title" :calculate-widths="true" :items="projectQuotations"
+                    :search="searchProjectQuotations">
 
-                      <template v-slot:[`item.actionDownloadProjectQuotation`]="{ item }">
-                        <v-btn icon @click="downloadProjectQuotation(item)">
-                          <v-icon>
-                            cloud_download
-                          </v-icon>
-                        </v-btn>
-                      </template>
+                    <template v-slot:[`item.actionDownloadProjectQuotation`]="{ item }">
+                      <v-btn icon @click="downloadProjectQuotation(item)">
+                        <v-icon>
+                          cloud_download
+                        </v-icon>
+                      </v-btn>
+                    </template>
 
-                    </v-data-table>
+                  </v-data-table>
 
-                  </v-card>
+                </v-card>
 
 
-                </v-window-item>
+              </v-window-item>
 
-                <v-window-item value="financeTab-1">
+              <v-window-item value="financeTab-1">
 
-                  <v-card>
-                    <v-card-title>
-                     
-                        Bill of Quantities
-                        <v-spacer></v-spacer>
+                <v-card>
+                  <v-card-title>
 
-                        <v-btn icon @click="reloadBoQItems">
-                          <v-icon>
-                            refresh
-                          </v-icon>
-                        </v-btn>
-                        <v-spacer></v-spacer>
-                      
-                      <v-text-field v-model="searchProjectBoQ" append-icon="search" label="Search" single-line
-                        hide-details></v-text-field>
-                      <v-spacer></v-spacer>
-                      <v-btn @click="dialogBoQItem.value = true">
+                    Bill of Quantities
+                    <v-spacer></v-spacer>
+
+                    <v-btn icon @click="reloadBoQItems">
+                      <v-icon>
+                        refresh
+                      </v-icon>
+                    </v-btn>
+                    <v-spacer></v-spacer>
+
+                    <v-text-field v-model="searchProjectBoQ" append-icon="search" label="Search" single-line
+                      hide-details></v-text-field>
+                    <v-spacer></v-spacer>
+                    <v-btn @click="dialogBoQItem.value = true">
                       <v-dialog v-model="dialogBoQItem" activator="parent">
-                  
+
                         <v-card>
                           <v-card-title>
                             <span>BoQ Item</span>
@@ -1670,141 +1669,142 @@
                           </v-card-actions>
                         </v-card>
                       </v-dialog>
+                    </v-btn>
+                  </v-card-title>
+
+                  <v-layout row v-if="projectBoQSummary">
+
+                    <v-text-field v-model="projectBoQSummary.totalNumberOfBillItems" label="Total Bill Items">
+                    </v-text-field>
+
+
+                    <v-text-field v-model="projectBoQSummary.totalGrossValue" label="Contract Value">
+                    </v-text-field>
+
+                  </v-layout>
+                  <v-layout row v-if="projectBoQSummary">
+
+                    <v-text-field v-model="projectBoQSummary.certifiedToDateAmount"
+                      label="Amount Certified (to date)"></v-text-field>
+
+
+                    <v-text-field v-model="projectBoQSummary.claimedToDateAmount"
+                      label="Amount Claimed (to date)"></v-text-field>
+
+
+                    <v-text-field v-model="projectBoQSummary.paidToDateAmount" label="Amount Paid (to date)">
+                    </v-text-field>
+
+                  </v-layout>
+
+                  <v-data-table :headers="boqTableHeaders" :items="boq" :search="searchProjectBoQ" show-select>
+                    <template v-slot:[`item.total`]="{ item }">
+                      {{ (item.quantity * item.contractRate).toFixed(2) }}
+                    </template>
+                    <template v-slot:[`item.totalDelivered`]="{ item }">
+                      {{ (item.quantityDeliveredToDate * item.contractRate).toFixed(2) }}
+                    </template>
+
+                    <template v-slot:[`item.contractRate`]="props">
+                      <v-edit-dialog v-model="props.item.contractRate" large persistent
+                        @save="saveContractRate(props.item)" @cancel="cancel">
+                        <div>{{ props.item.contractRate }}</div>
+                        <template v-slot:[`input`]>
+                          <div class="mt-4 title">Update Contract Rate</div>
+
+                          <v-text-field v-model="props.item.contractRate" :rules="[max25chars]" label="Edit" single-line
+                            counter autofocus></v-text-field>
+                        </template>
+                      </v-edit-dialog>
+                    </template>
+
+                    <template v-slot:[`item.materialCost`]="props">
+                      <v-edit-dialog v-model="props.item.materialCost" large persistent
+                        @save="saveMaterialCost(props.item)" @cancel="cancel">
+                        <div>{{ props.item.materialCost }}</div>
+                        <template v-slot:[`input`]>
+                          <div class="mt-4 title">Update Material Cost</div>
+
+                          <v-text-field v-model="props.item.materialCost" :rules="[max25chars]" label="Edit" single-line
+                            counter autofocus></v-text-field>
+                        </template>
+                      </v-edit-dialog>
+                    </template>
+
+                    <template v-slot:[`item.labourCost`]="props">
+                      <v-edit-dialog v-model="props.item.labourCost" large persistent @save="saveLabourCost(props.item)"
+                        @cancel="cancel">
+                        <div>{{ props.item.labourCost }}</div>
+                        <template v-slot:[`input`]>
+                          <div class="mt-4 title">Update Labour Cost</div>
+                          <v-text-field v-model="props.item.labourCost" :rules="[max25chars]" label="Edit" single-line
+                            counter autofocus></v-text-field>
+                        </template>
+                      </v-edit-dialog>
+                    </template>
+
+                    <template v-slot:[`item.quantity`]="props">
+                      <v-edit-dialog v-model="props.item.quantity" large persistent @save="saveQuantity(props.item)"
+                        @cancel="cancel" @open="open" @close="close">
+                        <div>{{ props.item.quantity }}</div>
+                        <template v-slot:[`input`]>
+                          <div class="mt-4 title">Update Quantity</div>
+                          <v-text-field v-model="props.item.quantity" :rules="[max25chars]" label="Update Quantity"
+                            single-line autofocus></v-text-field>
+                        </template>
+                      </v-edit-dialog>
+                    </template>
+
+                    <template v-slot:[`item.quantityDeliveredToDate`]="props">
+                      <v-edit-dialog v-model="props.item.quantityDeliveredToDate" large persistent
+                        @save="saveQuantityDeliveredToDate(props.item)" @cancel="cancel" @open="open" @close="close">
+                        <div>{{ props.item.quantityDeliveredToDate }}</div>
+                        <template v-slot:[`input`]>
+                          <div class="mt-4 title">Update Quantity</div>
+
+                          <v-text-field v-model="props.item.quantityDeliveredToDate" :rules="[max25chars]"
+                            label="Update Quantity Delivered" single-line autofocus></v-text-field>
+                        </template>
+                      </v-edit-dialog>
+                    </template>
+
+                    <template v-slot:[`item.actionEditBoQItem`]="{ item }">
+                      <v-btn icon @click="editBoQItem(item)">
+                        <v-icon>
+                          edit
+                        </v-icon>
                       </v-btn>
-                    </v-card-title>
+                    </template>
+                    <template v-slot:[`item.actionDeleteBoQItem`]="{ item }">
+                      <v-btn icon @click="deleteProjectBoQItem(item)">
+                        <v-icon>
+                          delete
+                        </v-icon>
+                      </v-btn>
+                    </template>
+                  </v-data-table>
+                </v-card>
 
-                    <v-layout row v-if="projectBoQSummary">
+              </v-window-item>
 
-                      <v-text-field v-model="projectBoQSummary.totalNumberOfBillItems" label="Total Bill Items">
-                      </v-text-field>
+              <v-window-item value="financeTab-2">
 
-
-                      <v-text-field v-model="projectBoQSummary.totalGrossValue" label="Contract Value">
-                      </v-text-field>
-
-                    </v-layout>
-                    <v-layout row v-if="projectBoQSummary">
-
-                      <v-text-field v-model="projectBoQSummary.certifiedToDateAmount"
-                        label="Amount Certified (to date)"></v-text-field>
-
-
-                      <v-text-field v-model="projectBoQSummary.claimedToDateAmount"
-                        label="Amount Claimed (to date)"></v-text-field>
-
-
-                      <v-text-field v-model="projectBoQSummary.paidToDateAmount" label="Amount Paid (to date)">
-                      </v-text-field>
-
-                    </v-layout>
-        
-                    <v-data-table :headers="boqTableHeaders" :items="boq" :search="searchProjectBoQ" show-select>
-                      <template v-slot:[`item.total`]="{ item }">
-                        {{ (item.quantity * item.contractRate).toFixed(2) }}
-                      </template>
-                      <template v-slot:[`item.totalDelivered`]="{ item }">
-                        {{ (item.quantityDeliveredToDate * item.contractRate).toFixed(2) }}
-                      </template>
-
-                      <template v-slot:[`item.contractRate`]="props">
-                        <v-edit-dialog v-model="props.item.contractRate" large persistent
-                          @save="saveContractRate(props.item)" @cancel="cancel">
-                          <div>{{ props.item.contractRate }}</div>
-                          <template v-slot:[`input`]>
-                            <div class="mt-4 title">Update Contract Rate</div>
-
-                            <v-text-field v-model="props.item.contractRate" :rules="[max25chars]" label="Edit" single-line
-                              counter autofocus></v-text-field>
-                          </template>
-                        </v-edit-dialog>
-                      </template>
-
-                      <template v-slot:[`item.materialCost`]="props">
-                        <v-edit-dialog v-model="props.item.materialCost" large persistent
-                          @save="saveMaterialCost(props.item)" @cancel="cancel">
-                          <div>{{ props.item.materialCost }}</div>
-                          <template v-slot:[`input`]>
-                            <div class="mt-4 title">Update Material Cost</div>
-
-                            <v-text-field v-model="props.item.materialCost" :rules="[max25chars]" label="Edit" single-line
-                              counter autofocus></v-text-field>
-                          </template>
-                        </v-edit-dialog>
-                      </template>
-
-                      <template v-slot:[`item.labourCost`]="props">
-                        <v-edit-dialog v-model="props.item.labourCost" large persistent @save="saveLabourCost(props.item)"
-                          @cancel="cancel">
-                          <div>{{ props.item.labourCost }}</div>
-                          <template v-slot:[`input`]>
-                            <div class="mt-4 title">Update Labour Cost</div>
-                            <v-text-field v-model="props.item.labourCost" :rules="[max25chars]" label="Edit" single-line
-                              counter autofocus></v-text-field>
-                          </template>
-                        </v-edit-dialog>
-                      </template>
-
-                      <template v-slot:[`item.quantity`]="props">
-                        <v-edit-dialog v-model="props.item.quantity" large persistent @save="saveQuantity(props.item)"
-                          @cancel="cancel" @open="open" @close="close">
-                          <div>{{ props.item.quantity }}</div>
-                          <template v-slot:[`input`]>
-                            <div class="mt-4 title">Update Quantity</div>
-                            <v-text-field v-model="props.item.quantity" :rules="[max25chars]" label="Update Quantity"
-                              single-line autofocus></v-text-field>
-                          </template>
-                        </v-edit-dialog>
-                      </template>
-
-                      <template v-slot:[`item.quantityDeliveredToDate`]="props">
-                        <v-edit-dialog v-model="props.item.quantityDeliveredToDate" large persistent
-                          @save="saveQuantityDeliveredToDate(props.item)" @cancel="cancel" @open="open" @close="close">
-                          <div>{{ props.item.quantityDeliveredToDate }}</div>
-                          <template v-slot:[`input`]>
-                            <div class="mt-4 title">Update Quantity</div>
-
-                            <v-text-field v-model="props.item.quantityDeliveredToDate" :rules="[max25chars]"
-                              label="Update Quantity Delivered" single-line autofocus></v-text-field>
-                          </template>
-                        </v-edit-dialog>
-                      </template>
-
-                      <template v-slot:[`item.actionEditBoQItem`]="{ item }">
-                        <v-btn icon @click="editBoQItem(item)">
-                          <v-icon>
-                            edit
-                          </v-icon>
-                        </v-btn>
-                      </template>
-                      <template v-slot:[`item.actionDeleteBoQItem`]="{ item }">
-                        <v-btn icon @click="deleteProjectBoQItem(item)">
-                          <v-icon>
-                            delete
-                          </v-icon>
-                        </v-btn>
-                      </template>
-                    </v-data-table>
-                  </v-card>
-
-                </v-window-item>
-
-                <v-window-item value="financeTab-2">
-
-                  <v-card>
-                    <v-card-title>
-                      <v-spacer></v-spacer>
-                      <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
-                      </v-text-field>
-                      <v-spacer></v-spacer>
-                      <v-btn absolute right fab dark color="indigo" v-on="on">
+                <v-card>
+                  <v-card-title>
+                    <v-spacer></v-spacer>
+                    <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
+                    </v-text-field>
+                    <v-spacer></v-spacer>
+                    <v-btn absolute right fab dark color="indigo">
                       <v-dialog v-model="projectProcurementPackageDialog" activator="parent">
-                      
+
                         <v-card>
                           <v-card-title>
                             <span>{{ projectProcurementPackageFormTitle }}</span>
                           </v-card-title>
                           <v-card-text>
                             <v-container>
+                              
                               <v-layout row>
 
                                 <v-select :items="procurementStatusTypes" v-model="editedProjectProcurementPackage.status"
@@ -1953,8 +1953,8 @@
 
                                     <v-layout>
 
-                                      <v-select v-model="subContractorId" :items="subContractorListSelection"
-                                        label="Select SubContractor Tender List" />
+                                      <v-select v-model="subContractorId" :items="subContractors" item-value="id"
+                                        item-title="name" label="Select SubContractor Tender List" />
 
 
                                       <v-btn text color="primary" v-if='subContractorId'
@@ -2106,31 +2106,32 @@
                                     <v-spacer>
                                     </v-spacer>
                                     <v-btn absolute right fab dark color="indigo" v-on="on">
-                                    <v-dialog v-model="projectProcurementPackageImagesDialog" activator="parent">
-                
-                                      <v-card>
-                                        <v-card-title>
-                                          <span class="headline">Add Image</span>
-                                        </v-card-title>
-                                        <v-card-text>
-                                          <v-container>
+                                      <v-dialog v-model="projectProcurementPackageImagesDialog" activator="parent">
 
-                                            <v-data-table :headers="imageMetadataTableHeaders" :calculate-widths="true"
-                                              :items="projectImageMetadata" :search="search" show-select>
+                                        <v-card>
+                                          <v-card-title>
+                                            <span class="headline">Add Image</span>
+                                          </v-card-title>
+                                          <v-card-text>
+                                            <v-container>
 
-                                            </v-data-table>
+                                              <v-data-table :headers="imageMetadataTableHeaders" :calculate-widths="true"
+                                                :items="projectImageMetadata" :search="search" show-select>
 
-                                          </v-container>
-                                        </v-card-text>
-                                        <v-card-actions>
-                                          <v-spacer></v-spacer>
-                                          <v-btn color="blue darken-1"
-                                            @click="projectProcurementPackageImagesDialog = false">Cancel
-                                          </v-btn>
-                                          <v-btn color="blue darken-1" @click="saveProjectProcurementPackage">Save</v-btn>
-                                        </v-card-actions>
-                                      </v-card>
-                                    </v-dialog>
+                                              </v-data-table>
+
+                                            </v-container>
+                                          </v-card-text>
+                                          <v-card-actions>
+                                            <v-spacer></v-spacer>
+                                            <v-btn color="blue darken-1"
+                                              @click="projectProcurementPackageImagesDialog = false">Cancel
+                                            </v-btn>
+                                            <v-btn color="blue darken-1"
+                                              @click="saveProjectProcurementPackage">Save</v-btn>
+                                          </v-card-actions>
+                                        </v-card>
+                                      </v-dialog>
                                     </v-btn>
                                   </v-card-title>
                                   <v-data-table :headers="imageMetadataTableHeaders" :calculate-widths="true"
@@ -2153,280 +2154,279 @@
                           </v-card-actions>
                         </v-card>
                       </v-dialog>
-                      </v-btn>
-                    </v-card-title>
+                    </v-btn>
+                  </v-card-title>
 
-                    <v-card-text>
-                      <h2>Procurement Packages </h2>
-                      <br>
-                      <v-layout row>
+                  <v-card-text>
+                    <h2>Procurement Packages </h2>
+                    <br>
+                    <v-layout row>
 
-                        <div v-if="projectProcurementPackageSummary">Total Contract Value
-                          {{ projectProcurementPackageSummary.totalContractValue }}</div>
-
-
-                        <div v-if="projectProcurementPackageSummary">Total SuContract Value
-                          {{ projectProcurementPackageSummary.totalSubContractValue }}</div>
+                      <div v-if="projectProcurementPackageSummary">Total Contract Value
+                        {{ projectProcurementPackageSummary.totalContractValue }}</div>
 
 
-                        <div v-if="projectProcurementPackageSummary">Difference
-                          {{ projectProcurementPackageSummary.margin }} (Euro)</div>
-
-                      </v-layout>
-
-                      <br>
+                      <div v-if="projectProcurementPackageSummary">Total SuContract Value
+                        {{ projectProcurementPackageSummary.totalSubContractValue }}</div>
 
 
-                      <v-data-table :headers="projectProcurementPackagesTableHeaders" :calculate-widths="true"
-                        :items="projectProcurementPackages" :search="search">
-
-                        <template v-slot:[`item.actionEditProjectProcurementPackage`]="{ item }">
-                          <v-btn icon @click="editProjectProcurementPackage(item)">
-                            <v-icon>
-                              edit
-                            </v-icon>
-                          </v-btn>
-                        </template>
-
-                        <template v-slot:[`item.actionDeleteProjectProcurementPackage`]="{ item }">
-                          <v-btn icon @click="deleteProjectProcurementPackage(item)">
-                            <v-icon>
-                              delete
-                            </v-icon>
-                          </v-btn>
-                        </template>
-                      </v-data-table>
-                    </v-card-text>
-                  </v-card>
-
-                </v-window-item>
-
-                <v-window-item value="financeTab-31">
-
-                  <v-card>
-                    <v-card-title></v-card-title>
-                    <v-data-table :headers="productTableHeaders" :calculate-widths="true" :items="boQProducts"
-                      :search="search">
-                    </v-data-table>
-
-                  </v-card>
-
-                </v-window-item>
-
-                <v-window-item value="financeTab-3">
-
-                  <v-card>
-                    <v-card-title>
-
-                      <v-data-table :headers="orderTableHeaders" :calculate-widths="true" :items="orders"
-                        :search="search">
-                      </v-data-table>
-                    </v-card-title>
-                  </v-card>
-
-                </v-window-item>
-
-
-                <v-window-item value="financeTab-7">
-
-                  <v-card>
-                    <v-card-title>
-                      <v-spacer></v-spacer>
-                      <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
-                      </v-text-field>
-                      <v-spacer></v-spacer>
-                      <v-btn absolute right fab dark color="indigo">
-                        <v-dialog v-model="projectCustomerInvoiceDialog" activator="parent">
-
-                          <v-card>
-                            <v-card-title>
-                              <span>Customer Invoice Details</span>
-                            </v-card-title>
-                            <v-card-text>
-                              <v-container>
-                                <v-layout row>
-
-                                  <v-select :items="customerListSelection"
-                                    v-model="editedProjectCustomerInvoice.customerId" label="Select Customer" single>
-                                  </v-select>
-
-                                </v-layout>
-                                <v-layout row>
-
-                                  <v-text-field v-model="editedProjectCustomerInvoice.invoiceRef" label="Reference">
-                                  </v-text-field>
-
-
-                                  <v-select :items="invoiceStatusListSelection"
-                                    v-model="editedProjectCustomerInvoice.status" label="Status" single></v-select>
-                                </v-layout>
-                                <v-layout row>
-
-                                  <v-textarea name="description" label="Description" id="description"
-                                    v-model="editedProjectCustomerInvoice.description" required>
-                                  </v-textarea>
-
-                                </v-layout>
-                                <v-layout row>
-
-                                  <v-text-field v-model="editedProjectCustomerInvoice.currency" label="Currency">
-                                  </v-text-field>
-
-
-                                  <v-text-field v-model="editedProjectCustomerInvoice.grossAmount"
-                                    label="Gross Amount"></v-text-field>
-
-
-                                  <v-text-field v-model="editedProjectCustomerInvoice.netAmount" label="Net Amount">
-                                  </v-text-field>
-
-                                </v-layout>
-
-
-                                <v-layout row>
-
-                                  <v-dialog ref="projectCustomerInvoiceDateDialog"
-                                    v-model="projectCustomerInvoiceDateModal" persistent width="50%" activator="parent">
-                                    <template v-slot:activator="{ on }">
-                                      <v-text-field v-model="editedProjectCustomerInvoice.invoiceDate" label="Date Issued"
-                                        prepend-icon="event" readonly v-on="on"></v-text-field>
-                                    </template>
-                                    <v-date-picker v-model="editedProjectCustomerInvoice.invoiceDate" scrollable>
-                                      <v-spacer></v-spacer>
-                                      <v-btn text color="primary" @click="projectCustomerInvoiceDateModal = false">
-                                        Cancel</v-btn>
-                                      <v-btn text color="primary"
-                                        @click="$refs.projectCustomerInvoiceDateDialog.save(date)">OK</v-btn>
-                                    </v-date-picker>
-                                  </v-dialog>
-
-
-                                  <v-dialog ref="projectCustomerInvoicePaymentDueDateDialog"
-                                    v-model="projectCustomerInvoicePaymentDueDateModal" persistent width="50%"
-                                    activator="parent">
-                                    <template v-slot:activator="{ on }">
-                                      <v-text-field v-model="editedProjectCustomerInvoice.paymentDueDate"
-                                        label="Payment Due Date" prepend-icon="event" readonly v-on="on">
-                                      </v-text-field>
-                                    </template>
-                                    <v-date-picker v-model="editedProjectCustomerInvoice.paymentDueDate" scrollable>
-                                      <v-spacer></v-spacer>
-                                      <v-btn text color="primary"
-                                        @click="projectCustomerInvoicePaymentDueDateModal = false">Cancel</v-btn>
-                                      <v-btn text color="primary"
-                                        @click="$refs.projectCustomerInvoicePaymentDueDateDialog.save(date)">OK
-                                      </v-btn>
-                                    </v-date-picker>
-                                  </v-dialog>
-
-                                </v-layout>
-
-                                <v-layout row v-if="editedProjectCustomerInvoiceIndex < 0">
-
-                                  <v-file-input v-model="editedProjectCustomerInvoice.invoiceFile" label="Upload Invoice"
-                                    filled prepend-icon="mdi-camera"></v-file-input>
-
-                                </v-layout>
-
-                              </v-container>
-                            </v-card-text>
-
-                            <v-card-actions>
-                              <v-spacer></v-spacer>
-                              <v-btn color="blue darken-1" @click="closeProjectCustomerInvoiceDialog">Cancel
-                              </v-btn>
-                              <v-btn color="blue darken-1" @click="saveProjectCustomerInvoice">Save</v-btn>
-                            </v-card-actions>
-                          </v-card>
-                        </v-dialog>
-                      </v-btn>
-                    </v-card-title>
-                    <h3>Customer Invoice Summary</h3>
-                    <v-layout row v-if="projectCustomerInvoiceSummary">
-
-                      <v-text-field v-model="projectCustomerInvoiceSummary.totalInvoiceCount" label="Invoice Count"
-                        readonly></v-text-field>
-
-
-                      <v-text-field v-model="projectCustomerInvoiceSummary.invoicesGrossAmountTotal"
-                        label="Invoice Total Gross" readonly></v-text-field>
-
-
-                      <v-text-field v-model="projectCustomerInvoiceSummary.invoicesNetAmountTotal"
-                        label="Invoice Total Net" readonly></v-text-field>
+                      <div v-if="projectProcurementPackageSummary">Difference
+                        {{ projectProcurementPackageSummary.margin }} (Euro)</div>
 
                     </v-layout>
-                    <v-layout row v-if="projectCustomerInvoiceSummary">
 
-                      <v-text-field v-model="projectCustomerInvoiceSummary.unPaidInvoicesCount"
-                        label="Invoice Count (Not Paid)" readonly></v-text-field>
+                    <br>
 
 
-                      <v-text-field v-model="projectCustomerInvoiceSummary.unPaidInvoicesGrossAmount"
-                        label="Invoice Total Gross (Not Paid)" readonly></v-text-field>
+                    <v-data-table :headers="projectProcurementPackagesTableHeaders" :calculate-widths="true"
+                      :items="projectProcurementPackages" :search="search">
 
-
-                      <v-text-field v-model="projectCustomerInvoiceSummary.unPaidInvoicesNetAmount"
-                        label="Invoice Total Net (Not Paid)" readonly></v-text-field>
-
-                    </v-layout>
-                    <v-layout row v-if="projectCustomerInvoiceSummary">
-
-                      <v-text-field v-model="projectCustomerInvoiceSummary.paidInvoicesCount" label="Invoice Count (Paid)"
-                        readonly></v-text-field>
-
-
-                      <v-text-field v-model="projectCustomerInvoiceSummary.paidInvoicesGrossAmount"
-                        label="Invoice Total Gross (Paid)" readonly></v-text-field>
-
-
-                      <v-text-field v-model="projectCustomerInvoiceSummary.paidInvoicesNetAmount"
-                        label="Invoice Total Net (Paid)" readonly></v-text-field>
-
-                    </v-layout>
-                    <h3>Invoice Details</h3>
-                    <v-data-table :headers="projectCustomerInvoiceTableHeaders" :calculate-widths="true"
-                      :items="projectCustomerInvoices" :search="search">
-                      <template v-slot:[`item.actionDownloadProjectInvoice`]="{ item }">
-                        <v-btn icon @click="downloadCustomerInvoice(item)">
-                          <v-icon>
-                            cloud_download
-                          </v-icon>
-                        </v-btn>
-                      </template>
-                      <template v-slot:[`item.actionEdit`]="{ item }">
-                        <v-btn icon @click="showProjectCustomerEditDialog(item)">
+                      <template v-slot:[`item.actionEditProjectProcurementPackage`]="{ item }">
+                        <v-btn icon @click="editProjectProcurementPackage(item)">
                           <v-icon>
                             edit
                           </v-icon>
                         </v-btn>
                       </template>
 
-
-                      <template v-slot:[`item.actionDelete`]="{ item }">
-                        <v-btn icon @click="deleteProjectCustomerInvoice(item)">
+                      <template v-slot:[`item.actionDeleteProjectProcurementPackage`]="{ item }">
+                        <v-btn icon @click="deleteProjectProcurementPackage(item)">
                           <v-icon>
                             delete
                           </v-icon>
                         </v-btn>
                       </template>
                     </v-data-table>
-                  </v-card>
+                  </v-card-text>
+                </v-card>
+
+              </v-window-item>
+
+              <v-window-item value="financeTab-31">
+
+                <v-card>
+                  <v-card-title></v-card-title>
+                  <v-data-table :headers="productTableHeaders" :calculate-widths="true" :items="boQProducts"
+                    :search="search">
+                  </v-data-table>
+
+                </v-card>
+
+              </v-window-item>
+
+              <v-window-item value="financeTab-3">
+
+                <v-card>
+                  <v-card-title>
+
+                    <v-data-table :headers="orderTableHeaders" :calculate-widths="true" :items="orders" :search="search">
+                    </v-data-table>
+                  </v-card-title>
+                </v-card>
+
+              </v-window-item>
 
 
-                </v-window-item>
+              <v-window-item value="financeTab-7">
 
-                <v-window-item value="financeTab-8">
+                <v-card>
+                  <v-card-title>
+                    <v-spacer></v-spacer>
+                    <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
+                    </v-text-field>
+                    <v-spacer></v-spacer>
+                    <v-btn absolute right fab dark color="indigo">
+                      <v-dialog v-model="projectCustomerInvoiceDialog" activator="parent">
 
-                  <v-card>
-                    <v-card-title>
-                    
-                      <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
-                      </v-text-field>
-                      <v-spacer></v-spacer>
-                      <v-btn absolute right fab dark color="indigo">
+                        <v-card>
+                          <v-card-title>
+                            <span>Customer Invoice Details</span>
+                          </v-card-title>
+                          <v-card-text>
+                            <v-container>
+                              <v-layout row>
+
+                                <v-select :items="customerListSelection" v-model="editedProjectCustomerInvoice.customerId"
+                                  label="Select Customer" single>
+                                </v-select>
+
+                              </v-layout>
+                              <v-layout row>
+
+                                <v-text-field v-model="editedProjectCustomerInvoice.invoiceRef" label="Reference">
+                                </v-text-field>
+
+
+                                <v-select :items="invoiceStatusListSelection"
+                                  v-model="editedProjectCustomerInvoice.status" label="Status" single></v-select>
+                              </v-layout>
+                              <v-layout row>
+
+                                <v-textarea name="description" label="Description" id="description"
+                                  v-model="editedProjectCustomerInvoice.description" required>
+                                </v-textarea>
+
+                              </v-layout>
+                              <v-layout row>
+
+                                <v-text-field v-model="editedProjectCustomerInvoice.currency" label="Currency">
+                                </v-text-field>
+
+
+                                <v-text-field v-model="editedProjectCustomerInvoice.grossAmount"
+                                  label="Gross Amount"></v-text-field>
+
+
+                                <v-text-field v-model="editedProjectCustomerInvoice.netAmount" label="Net Amount">
+                                </v-text-field>
+
+                              </v-layout>
+
+
+                              <v-layout row>
+
+                                <v-dialog ref="projectCustomerInvoiceDateDialog" v-model="projectCustomerInvoiceDateModal"
+                                  persistent width="50%" activator="parent">
+                                  <template v-slot:activator="{ on }">
+                                    <v-text-field v-model="editedProjectCustomerInvoice.invoiceDate" label="Date Issued"
+                                      prepend-icon="event" readonly v-on="on"></v-text-field>
+                                  </template>
+                                  <v-date-picker v-model="editedProjectCustomerInvoice.invoiceDate" scrollable>
+                                    <v-spacer></v-spacer>
+                                    <v-btn text color="primary" @click="projectCustomerInvoiceDateModal = false">
+                                      Cancel</v-btn>
+                                    <v-btn text color="primary"
+                                      @click="$refs.projectCustomerInvoiceDateDialog.save(date)">OK</v-btn>
+                                  </v-date-picker>
+                                </v-dialog>
+
+
+                                <v-dialog ref="projectCustomerInvoicePaymentDueDateDialog"
+                                  v-model="projectCustomerInvoicePaymentDueDateModal" persistent width="50%"
+                                  activator="parent">
+                                  <template v-slot:activator="{ on }">
+                                    <v-text-field v-model="editedProjectCustomerInvoice.paymentDueDate"
+                                      label="Payment Due Date" prepend-icon="event" readonly v-on="on">
+                                    </v-text-field>
+                                  </template>
+                                  <v-date-picker v-model="editedProjectCustomerInvoice.paymentDueDate" scrollable>
+                                    <v-spacer></v-spacer>
+                                    <v-btn text color="primary"
+                                      @click="projectCustomerInvoicePaymentDueDateModal = false">Cancel</v-btn>
+                                    <v-btn text color="primary"
+                                      @click="$refs.projectCustomerInvoicePaymentDueDateDialog.save(date)">OK
+                                    </v-btn>
+                                  </v-date-picker>
+                                </v-dialog>
+
+                              </v-layout>
+
+                              <v-layout row v-if="editedProjectCustomerInvoiceIndex < 0">
+
+                                <v-file-input v-model="editedProjectCustomerInvoice.invoiceFile" label="Upload Invoice"
+                                  filled prepend-icon="mdi-camera"></v-file-input>
+
+                              </v-layout>
+
+                            </v-container>
+                          </v-card-text>
+
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="blue darken-1" @click="closeProjectCustomerInvoiceDialog">Cancel
+                            </v-btn>
+                            <v-btn color="blue darken-1" @click="saveProjectCustomerInvoice">Save</v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </v-dialog>
+                    </v-btn>
+                  </v-card-title>
+                  <h3>Customer Invoice Summary</h3>
+                  <v-layout row v-if="projectCustomerInvoiceSummary">
+
+                    <v-text-field v-model="projectCustomerInvoiceSummary.totalInvoiceCount" label="Invoice Count"
+                      readonly></v-text-field>
+
+
+                    <v-text-field v-model="projectCustomerInvoiceSummary.invoicesGrossAmountTotal"
+                      label="Invoice Total Gross" readonly></v-text-field>
+
+
+                    <v-text-field v-model="projectCustomerInvoiceSummary.invoicesNetAmountTotal" label="Invoice Total Net"
+                      readonly></v-text-field>
+
+                  </v-layout>
+                  <v-layout row v-if="projectCustomerInvoiceSummary">
+
+                    <v-text-field v-model="projectCustomerInvoiceSummary.unPaidInvoicesCount"
+                      label="Invoice Count (Not Paid)" readonly></v-text-field>
+
+
+                    <v-text-field v-model="projectCustomerInvoiceSummary.unPaidInvoicesGrossAmount"
+                      label="Invoice Total Gross (Not Paid)" readonly></v-text-field>
+
+
+                    <v-text-field v-model="projectCustomerInvoiceSummary.unPaidInvoicesNetAmount"
+                      label="Invoice Total Net (Not Paid)" readonly></v-text-field>
+
+                  </v-layout>
+                  <v-layout row v-if="projectCustomerInvoiceSummary">
+
+                    <v-text-field v-model="projectCustomerInvoiceSummary.paidInvoicesCount" label="Invoice Count (Paid)"
+                      readonly></v-text-field>
+
+
+                    <v-text-field v-model="projectCustomerInvoiceSummary.paidInvoicesGrossAmount"
+                      label="Invoice Total Gross (Paid)" readonly></v-text-field>
+
+
+                    <v-text-field v-model="projectCustomerInvoiceSummary.paidInvoicesNetAmount"
+                      label="Invoice Total Net (Paid)" readonly></v-text-field>
+
+                  </v-layout>
+                  <h3>Invoice Details</h3>
+                  <v-data-table :headers="projectCustomerInvoiceTableHeaders" :calculate-widths="true"
+                    :items="projectCustomerInvoices" :search="search">
+                    <template v-slot:[`item.actionDownloadProjectInvoice`]="{ item }">
+                      <v-btn icon @click="downloadCustomerInvoice(item)">
+                        <v-icon>
+                          cloud_download
+                        </v-icon>
+                      </v-btn>
+                    </template>
+                    <template v-slot:[`item.actionEdit`]="{ item }">
+                      <v-btn icon @click="showProjectCustomerEditDialog(item)">
+                        <v-icon>
+                          edit
+                        </v-icon>
+                      </v-btn>
+                    </template>
+
+
+                    <template v-slot:[`item.actionDelete`]="{ item }">
+                      <v-btn icon @click="deleteProjectCustomerInvoice(item)">
+                        <v-icon>
+                          delete
+                        </v-icon>
+                      </v-btn>
+                    </template>
+                  </v-data-table>
+                </v-card>
+
+
+              </v-window-item>
+
+              <v-window-item value="financeTab-8">
+
+                <v-card>
+                  <v-card-title>
+
+                    <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
+                    </v-text-field>
+                    <v-spacer></v-spacer>
+                    <v-btn absolute right fab dark color="indigo">
                       <v-dialog v-model="projectSubContractorInvoiceDialog" activator="parent">
-    
+
                         <v-card>
                           <v-card-title>
                             <span>SubContractor Invoice Details</span>
@@ -2447,7 +2447,8 @@
 
 
                                 <v-select :items="invoiceStatusListSelection"
-                                  v-model="editedProjectSubContractorInvoice.status" label="Status" single></v-select>
+                                  v-model="editedProjectSubContractorInvoice.status" item-value="id"
+                              item-title="name" label="Status" single></v-select>
                               </v-layout>
                               <v-layout row>
 
@@ -2527,145 +2528,145 @@
                         </v-card>
                       </v-dialog>
                     </v-btn>
-                    </v-card-title>
-                    <h3>SubContractor Invoice Summary</h3>
-                    <v-layout row v-if="projectSubContractorInvoiceSummary">
+                  </v-card-title>
+                  <h3>SubContractor Invoice Summary</h3>
+                  <v-layout row v-if="projectSubContractorInvoiceSummary">
 
-                      <v-text-field v-model="projectSubContractorInvoiceSummary.totalInvoiceCount" label="Invoice Count"
-                        readonly></v-text-field>
-
-
-                      <v-text-field v-model="projectSubContractorInvoiceSummary.invoicesGrossAmountTotal"
-                        label="Invoice Total Gross" readonly></v-text-field>
+                    <v-text-field v-model="projectSubContractorInvoiceSummary.totalInvoiceCount" label="Invoice Count"
+                      readonly></v-text-field>
 
 
-                      <v-text-field v-model="projectSubContractorInvoiceSummary.invoicesNetAmountTotal"
-                        label="Invoice Total Net" readonly></v-text-field>
-
-                    </v-layout>
-                    <v-layout row v-if="projectSubContractorInvoiceSummary">
-
-                      <v-text-field v-model="projectSubContractorInvoiceSummary.unPaidInvoicesCount"
-                        label="Invoice Count (Not Paid)" readonly></v-text-field>
+                    <v-text-field v-model="projectSubContractorInvoiceSummary.invoicesGrossAmountTotal"
+                      label="Invoice Total Gross" readonly></v-text-field>
 
 
-                      <v-text-field v-model="projectSubContractorInvoiceSummary.unPaidInvoicesGrossAmount"
-                        label="Invoice Total Gross (Not Paid)" readonly></v-text-field>
+                    <v-text-field v-model="projectSubContractorInvoiceSummary.invoicesNetAmountTotal"
+                      label="Invoice Total Net" readonly></v-text-field>
+
+                  </v-layout>
+                  <v-layout row v-if="projectSubContractorInvoiceSummary">
+
+                    <v-text-field v-model="projectSubContractorInvoiceSummary.unPaidInvoicesCount"
+                      label="Invoice Count (Not Paid)" readonly></v-text-field>
 
 
-                      <v-text-field v-model="projectSubContractorInvoiceSummary.unPaidInvoicesNetAmount"
-                        label="Invoice Total Net (Not Paid)" readonly></v-text-field>
-
-                    </v-layout>
-                    <v-layout row v-if="projectSubContractorInvoiceSummary">
-
-                      <v-text-field v-model="projectSubContractorInvoiceSummary.paidInvoicesCount"
-                        label="Invoice Count (Paid)" readonly></v-text-field>
+                    <v-text-field v-model="projectSubContractorInvoiceSummary.unPaidInvoicesGrossAmount"
+                      label="Invoice Total Gross (Not Paid)" readonly></v-text-field>
 
 
-                      <v-text-field v-model="projectSubContractorInvoiceSummary.paidInvoicesGrossAmount"
-                        label="Invoice Total Gross (Paid)" readonly></v-text-field>
+                    <v-text-field v-model="projectSubContractorInvoiceSummary.unPaidInvoicesNetAmount"
+                      label="Invoice Total Net (Not Paid)" readonly></v-text-field>
+
+                  </v-layout>
+                  <v-layout row v-if="projectSubContractorInvoiceSummary">
+
+                    <v-text-field v-model="projectSubContractorInvoiceSummary.paidInvoicesCount"
+                      label="Invoice Count (Paid)" readonly></v-text-field>
 
 
-                      <v-text-field v-model="projectSubContractorInvoiceSummary.paidInvoicesNetAmount"
-                        label="Invoice Total Net (Paid)" readonly></v-text-field>
+                    <v-text-field v-model="projectSubContractorInvoiceSummary.paidInvoicesGrossAmount"
+                      label="Invoice Total Gross (Paid)" readonly></v-text-field>
 
-                    </v-layout>
-                    <h3>Invoice Details</h3>
-                    <v-data-table :headers="projectSubContractorInvoiceTableHeaders" :calculate-widths="true"
-                      :items="projectSubContractorInvoices" :search="search">
-                      <template v-slot:[`item.actionDownloadProjectInvoice`]="{ item }">
-                        <v-btn icon @click="downloadSubContractorInvoice(item)">
-                          <v-icon>
-                            cloud_download
-                          </v-icon>
-                        </v-btn>
-                      </template>
-                      <template v-slot:[`item.actionEdit`]="{ item }">
-                        <v-btn icon @click="showProjectSubContractorEditDialog(item)">
-                          <v-icon>
-                            edit
-                          </v-icon>
-                        </v-btn>
-                      </template>
-                      <template v-slot:[`item.actionApproveProjectInvoice`]="{ item }">
-                        <v-btn icon @click="approveProjectInvoicePayment(item)">
-                          <v-icon>
-                            payment
-                          </v-icon>
-                        </v-btn>
-                      </template>
 
-                      <template v-slot:[`item.actionDelete`]="{ item }">
-                        <v-btn icon @click="deleteProjectSubContractorInvoice(item)">
-                          <v-icon>
-                            delete
-                          </v-icon>
-                        </v-btn>
-                      </template>
-                    </v-data-table>
-                  </v-card>
+                    <v-text-field v-model="projectSubContractorInvoiceSummary.paidInvoicesNetAmount"
+                      label="Invoice Total Net (Paid)" readonly></v-text-field>
 
-                </v-window-item>
+                  </v-layout>
+                  <h3>Invoice Details</h3>
+                  <v-data-table :headers="projectSubContractorInvoiceTableHeaders" :calculate-widths="true"
+                    :items="projectSubContractorInvoices" :search="search">
+                    <template v-slot:[`item.actionDownloadProjectInvoice`]="{ item }">
+                      <v-btn icon @click="downloadSubContractorInvoice(item)">
+                        <v-icon>
+                          cloud_download
+                        </v-icon>
+                      </v-btn>
+                    </template>
+                    <template v-slot:[`item.actionEdit`]="{ item }">
+                      <v-btn icon @click="showProjectSubContractorEditDialog(item)">
+                        <v-icon>
+                          edit
+                        </v-icon>
+                      </v-btn>
+                    </template>
+                    <template v-slot:[`item.actionApproveProjectInvoice`]="{ item }">
+                      <v-btn icon @click="approveProjectInvoicePayment(item)">
+                        <v-icon>
+                          payment
+                        </v-icon>
+                      </v-btn>
+                    </template>
 
-                <v-window-item value="financeTab-9">
+                    <template v-slot:[`item.actionDelete`]="{ item }">
+                      <v-btn icon @click="deleteProjectSubContractorInvoice(item)">
+                        <v-icon>
+                          delete
+                        </v-icon>
+                      </v-btn>
+                    </template>
+                  </v-data-table>
+                </v-card>
 
-                  <v-card>
-                    <v-card-title>
-                      <v-spacer></v-spacer>
-                      <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
-                      </v-text-field>
-                      <v-spacer></v-spacer>
-                      <v-btn absolute right fab dark color="indigo">
-                        <v-dialog v-model="projectSupplierInvoiceDialog" activator="parent">
+              </v-window-item>
 
-                          <v-card>
-                            <v-card-title>
-                              <span>Invoice Details</span>
-                            </v-card-title>
-                            <v-card-text>
-                              <v-container>
-                                <v-layout row>
-<!--
+              <v-window-item value="financeTab-9">
+
+                <v-card>
+                  <v-card-title>
+                    <v-spacer></v-spacer>
+                    <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
+                    </v-text-field>
+                    <v-spacer></v-spacer>
+                    <v-btn absolute right fab dark color="indigo">
+                      <v-dialog v-model="projectSupplierInvoiceDialog" activator="parent">
+
+                        <v-card>
+                          <v-card-title>
+                            <span>Invoice Details</span>
+                          </v-card-title>
+                          <v-card-text>
+                            <v-container>
+                              <v-layout row>
+                                <!--
                                   <v-select :items="supplierListSelection"
                                     v-model="editedProjectSupplierInvoice.supplierId" label="Select Supplier" single>
                                   </v-select>
 -->
-                                </v-layout>
-                                <v-layout row>
+                              </v-layout>
+                              <v-layout row>
 
-                                  <v-text-field v-model="editedProjectSupplierInvoice.invoiceRef" label="Reference">
-                                  </v-text-field>
-
-
-                                  <v-select :items="invoiceStatusListSelection"
-                                    v-model="editedProjectSupplierInvoice.status" label="Status" single></v-select>
-                                </v-layout>
-                                <v-layout row>
-
-                                  <v-textarea name="description" label="Description" id="description"
-                                    v-model="editedProjectSupplierInvoice.description" required>
-                                  </v-textarea>
-
-                                </v-layout>
-                                <v-layout row>
-
-                                  <v-text-field v-model="editedProjectSupplierInvoice.currency" label="Currency">
-                                  </v-text-field>
+                                <v-text-field v-model="editedProjectSupplierInvoice.invoiceRef" label="Reference">
+                                </v-text-field>
 
 
-                                  <v-text-field v-model="editedProjectSupplierInvoice.grossAmount"
-                                    label="Gross Amount"></v-text-field>
+                                <v-select :items="invoiceStatusListSelection"
+                                  v-model="editedProjectSupplierInvoice.status" label="Status" single></v-select>
+                              </v-layout>
+                              <v-layout row>
+
+                                <v-textarea name="description" label="Description" id="description"
+                                  v-model="editedProjectSupplierInvoice.description" required>
+                                </v-textarea>
+
+                              </v-layout>
+                              <v-layout row>
+
+                                <v-text-field v-model="editedProjectSupplierInvoice.currency" label="Currency">
+                                </v-text-field>
 
 
-                                  <v-text-field v-model="editedProjectSupplierInvoice.netAmount" label="Net Amount">
-                                  </v-text-field>
-
-                                </v-layout>
+                                <v-text-field v-model="editedProjectSupplierInvoice.grossAmount"
+                                  label="Gross Amount"></v-text-field>
 
 
-                                <v-layout row>
-<!--
+                                <v-text-field v-model="editedProjectSupplierInvoice.netAmount" label="Net Amount">
+                                </v-text-field>
+
+                              </v-layout>
+
+
+                              <v-layout row>
+                                <!--
                                   <v-dialog ref="projectInvoiceDateDialog" v-model="projectInvoiceDateModal" persistent
                                     width="50%" activator="parent">
                                     <template v-slot:activator="{ on }">
@@ -2698,227 +2699,12 @@
                                     </v-date-picker>
                                   </v-dialog>
 -->
-                                </v-layout>
-
-                                <v-layout row v-if="editedProjectSubContractorInvoiceIndex < 0">
-
-                                  <v-file-input v-model="editedProjectSubContractorInvoice.invoiceFile"
-                                    label="Upload Invoice" filled prepend-icon="mdi-camera"></v-file-input>
-
-                                </v-layout>
-
-                              </v-container>
-                            </v-card-text>
-
-                            <v-card-actions>
-                              <v-spacer></v-spacer>
-                              <v-btn color="blue darken-1" @click="closeProjectSupplierInvoiceDialog">Cancel
-                              </v-btn>
-                              <v-btn color="blue darken-1" @click="saveProjectSupplierInvoice">Save</v-btn>
-                            </v-card-actions>
-                          </v-card>
-                        </v-dialog>
-                      </v-btn>
-                    </v-card-title>
-                    <h3>Supplier Invoice Summary</h3>
-                    <v-layout row v-if="projectSupplierInvoiceSummary">
-
-                      <v-text-field v-model="projectSupplierInvoiceSummary.totalInvoiceCount" label="Invoice Count"
-                        readonly></v-text-field>
-
-
-                      <v-text-field v-model="projectSupplierInvoiceSummary.invoicesGrossAmountTotal"
-                        label="Invoice Total Gross" readonly></v-text-field>
-
-
-                      <v-text-field v-model="projectSupplierInvoiceSummary.invoicesNetAmountTotal"
-                        label="Invoice Total Net" readonly></v-text-field>
-
-                    </v-layout>
-                    <v-layout row v-if="projectSupplierInvoiceSummary">
-
-                      <v-text-field v-model="projectSupplierInvoiceSummary.unPaidInvoicesCount"
-                        label="Invoice Count (Not Paid)" readonly></v-text-field>
-
-
-                      <v-text-field v-model="projectSupplierInvoiceSummary.unPaidInvoicesGrossAmount"
-                        label="Invoice Total Gross (Not Paid)" readonly></v-text-field>
-
-
-                      <v-text-field v-model="projectSupplierInvoiceSummary.unPaidInvoicesNetAmount"
-                        label="Invoice Total Net (Not Paid)" readonly></v-text-field>
-
-                    </v-layout>
-                    <v-layout row v-if="projectSupplierInvoiceSummary">
-
-                      <v-text-field v-model="projectSupplierInvoiceSummary.paidInvoicesCount" label="Invoice Count (Paid)"
-                        readonly></v-text-field>
-
-
-                      <v-text-field v-model="projectSupplierInvoiceSummary.paidInvoicesGrossAmount"
-                        label="Invoice Total Gross (Paid)" readonly></v-text-field>
-
-
-                      <v-text-field v-model="projectSupplierInvoiceSummary.paidInvoicesNetAmount"
-                        label="Invoice Total Net (Paid)" readonly></v-text-field>
-
-                    </v-layout>
-                    <h3>Invoice Details</h3>
-                    Project Supplier Invoices {{ projectSupplierInvoices.value }}
-                    <v-data-table :headers="projectSupplierInvoiceTableHeaders" :items="projectSupplierInvoices.value" :calculate-widths="true"
-                       :search="search">
-                      <template v-slot:[`item.actionDownloadProjectInvoice`]="{ item }">
-                        <v-btn icon @click="downloadSupplierInvoice(item)">
-                          <v-icon>
-                            cloud_download
-                          </v-icon>
-                        </v-btn>
-                      </template>
-                      <template v-slot:[`item.actionEdit`]="{ item }">
-                        <v-btn icon @click="showProjectSupplierEditDialog(item)">
-                          <v-icon>
-                            edit
-                          </v-icon>
-                        </v-btn>
-                      </template>
-
-
-                      <template v-slot:[`item.actionDelete`]="{ item }">
-                        <v-btn icon @click="deleteProjectSupplierInvoice(item)">
-                          <v-icon>
-                            delete
-                          </v-icon>
-                        </v-btn>
-                      </template>
-                    </v-data-table>
-                  </v-card>
-
-                </v-window-item>
-
-
-              </v-window>
-
-            </v-window-item>
-
-            <v-window-item value="five">
-
-              <v-tabs v-model="adminTab" show-arrows>
-                
-
-                <v-tab href="adminTab-1">
-                  Project Access Control List
-                </v-tab>
-                <v-tab href="adminTab-2">
-                  Design Distribution List
-                </v-tab>
-                <v-tab href="adminTab-3">
-                  Construction Distribution List
-                </v-tab>
-                <v-tab href="adminTab-4">
-                  Financial Distribution List
-                </v-tab>
-                <v-tab href="adminTab-5">
-
-                </v-tab>
-              </v-tabs>
-
-              <v-window v-model="adminTab" v-if="userIsAuthenticatedAndHasRoleProjectAdmin">
-
-
-                <v-window-item value="adminTab-1">
-
-                  <v-card>
-                    <v-card-title>
-                      Access Control
-                      <v-spacer></v-spacer>
-                      <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
-                      </v-text-field>
-                      <v-spacer></v-spacer>
-                      <v-btn absolute right fab dark color="indigo" @click="openProjectAccessControlListDialog">
-                        <v-dialog v-model="aclDialog" activator="parent">
-
-                          <v-card>
-                            <v-card-title>
-                              <span class="headline">Update Project AccessControlList</span>
-                            </v-card-title>
-                            <v-card-text>
-                              <v-container>
-
-                                <v-data-table :headers="accessControlListHeaders" :calculate-widths="true" :items="users"
-                                  :search="search" item-key="username" show-select v-model="selectedProjectUsers">
-
-                                </v-data-table>
-
-                              </v-container>
-                            </v-card-text>
-
-                            <v-card-actions>
-                              <v-spacer></v-spacer>
-                              <v-btn color="blue darken-1" @click="closeProjectAccessControlListDialog">Cancel
-                              </v-btn>
-                              <v-btn color="blue darken-1" @click="updateProjectAccessControlList">Save</v-btn>
-                            </v-card-actions>
-                          </v-card>
-                        </v-dialog>
-                      </v-btn>
-                    </v-card-title>
-                    <v-data-table :headers="accessControlListHeaders" :calculate-widths="true" :items="accessControlList"
-                      :search="search">
-                    </v-data-table>
-                  </v-card>
-
-                </v-window-item>
-
-                <v-window-item value="adminTab-2">
-
-                  <v-card>
-                    <v-card-title>
-                      Contact List
-                      <v-spacer></v-spacer>
-                      <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
-                      </v-text-field>
-                      <v-spacer></v-spacer>
-                      <v-dialog v-model="projectContactDialog" activator="parent">
-                        <template v-slot:activator="{ on }">
-                          <v-btn absolute right fab dark color="indigo" v-on="on">
-                            <v-icon dark>add</v-icon>
-                          </v-btn>
-                        </template>
-                        <v-card>
-                          <v-card-title>
-                            <span class="headline">Update Project Contact List</span>
-                          </v-card-title>
-                          <v-card-text>
-                            <v-container>
-
-                              <v-layout row>
-
-                                <v-text-field v-model="editedProjectContact.companyId" label="Company">
-                                </v-text-field>
-
                               </v-layout>
-                              <v-layout row>
 
-                                <v-text-field v-model="editedProjectContact.name" label="Name"></v-text-field>
+                              <v-layout row v-if="editedProjectSubContractorInvoiceIndex < 0">
 
-                              </v-layout>
-                              <v-layout row>
-
-                                <v-textarea name="description" label="Description" id="description"
-                                  v-model="editedProjectContact.description" required>
-                                </v-textarea>
-
-                              </v-layout>
-                              <v-layout row>
-
-                                <v-text-field v-model="editedProjectContact.mobileNumber" label="Mobile">
-                                </v-text-field>
-
-                              </v-layout>
-                              <v-layout row>
-
-                                <v-text-field v-model="editedProjectContact.emailAddress" label="Email">
-                                </v-text-field>
+                                <v-file-input v-model="editedProjectSubContractorInvoice.invoiceFile"
+                                  label="Upload Invoice" filled prepend-icon="mdi-camera"></v-file-input>
 
                               </v-layout>
 
@@ -2927,57 +2713,272 @@
 
                           <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn color="blue darken-1" @click="closeProjectContactDialog">Cancel</v-btn>
-                            <v-btn color="blue darken-1" @click="saveProjectContact">Save</v-btn>
+                            <v-btn color="blue darken-1" @click="closeProjectSupplierInvoiceDialog">Cancel
+                            </v-btn>
+                            <v-btn color="blue darken-1" @click="saveProjectSupplierInvoice">Save</v-btn>
                           </v-card-actions>
                         </v-card>
                       </v-dialog>
-                    </v-card-title>
-                    <v-data-table :headers="projectContactHeaders" :calculate-widths="true" :items="projectContacts"
-                      :search="search">
-                      <template v-slot:[`item.actionEdit`]="{ item }">
-                        <v-btn icon @click="editProjectContact(item)">
-                          <v-icon>
-                            edit
-                          </v-icon>
+                    </v-btn>
+                  </v-card-title>
+                  <h3>Supplier Invoice Summary</h3>
+                  <v-layout row v-if="projectSupplierInvoiceSummary">
+
+                    <v-text-field v-model="projectSupplierInvoiceSummary.totalInvoiceCount" label="Invoice Count"
+                      readonly></v-text-field>
+
+
+                    <v-text-field v-model="projectSupplierInvoiceSummary.invoicesGrossAmountTotal"
+                      label="Invoice Total Gross" readonly></v-text-field>
+
+
+                    <v-text-field v-model="projectSupplierInvoiceSummary.invoicesNetAmountTotal" label="Invoice Total Net"
+                      readonly></v-text-field>
+
+                  </v-layout>
+                  <v-layout row v-if="projectSupplierInvoiceSummary">
+
+                    <v-text-field v-model="projectSupplierInvoiceSummary.unPaidInvoicesCount"
+                      label="Invoice Count (Not Paid)" readonly></v-text-field>
+
+
+                    <v-text-field v-model="projectSupplierInvoiceSummary.unPaidInvoicesGrossAmount"
+                      label="Invoice Total Gross (Not Paid)" readonly></v-text-field>
+
+
+                    <v-text-field v-model="projectSupplierInvoiceSummary.unPaidInvoicesNetAmount"
+                      label="Invoice Total Net (Not Paid)" readonly></v-text-field>
+
+                  </v-layout>
+                  <v-layout row v-if="projectSupplierInvoiceSummary">
+
+                    <v-text-field v-model="projectSupplierInvoiceSummary.paidInvoicesCount" label="Invoice Count (Paid)"
+                      readonly></v-text-field>
+
+
+                    <v-text-field v-model="projectSupplierInvoiceSummary.paidInvoicesGrossAmount"
+                      label="Invoice Total Gross (Paid)" readonly></v-text-field>
+
+
+                    <v-text-field v-model="projectSupplierInvoiceSummary.paidInvoicesNetAmount"
+                      label="Invoice Total Net (Paid)" readonly></v-text-field>
+
+                  </v-layout>
+                  <h3>Invoice Details</h3>
+                  Project Supplier Invoices {{ projectSupplierInvoices.value }}
+                  <v-data-table :headers="projectSupplierInvoiceTableHeaders" :items="projectSupplierInvoices.value"
+                    :calculate-widths="true" :search="search">
+                    <template v-slot:[`item.actionDownloadProjectInvoice`]="{ item }">
+                      <v-btn icon @click="downloadSupplierInvoice(item)">
+                        <v-icon>
+                          cloud_download
+                        </v-icon>
+                      </v-btn>
+                    </template>
+                    <template v-slot:[`item.actionEdit`]="{ item }">
+                      <v-btn icon @click="showProjectSupplierEditDialog(item)">
+                        <v-icon>
+                          edit
+                        </v-icon>
+                      </v-btn>
+                    </template>
+
+
+                    <template v-slot:[`item.actionDelete`]="{ item }">
+                      <v-btn icon @click="deleteProjectSupplierInvoice(item)">
+                        <v-icon>
+                          delete
+                        </v-icon>
+                      </v-btn>
+                    </template>
+                  </v-data-table>
+                </v-card>
+
+              </v-window-item>
+
+
+            </v-window>
+
+          </v-window-item>
+
+          <v-window-item value="five">
+
+            <v-tabs v-model="adminTab" show-arrows>
+
+
+              <v-tab href="adminTab-1">
+                Project Access Control List
+              </v-tab>
+              <v-tab href="adminTab-2">
+                Design Distribution List
+              </v-tab>
+              <v-tab href="adminTab-3">
+                Construction Distribution List
+              </v-tab>
+              <v-tab href="adminTab-4">
+                Financial Distribution List
+              </v-tab>
+              <v-tab href="adminTab-5">
+
+              </v-tab>
+            </v-tabs>
+
+            <v-window v-model="adminTab" v-if="userIsAuthenticatedAndHasRoleProjectAdmin">
+
+
+              <v-window-item value="adminTab-1">
+
+                <v-card>
+                  <v-card-title>
+                    Access Control
+                    <v-spacer></v-spacer>
+                    <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
+                    </v-text-field>
+                    <v-spacer></v-spacer>
+                    <v-btn absolute right fab dark color="indigo" @click="openProjectAccessControlListDialog">
+                      <v-dialog v-model="aclDialog" activator="parent">
+
+                        <v-card>
+                          <v-card-title>
+                            <span class="headline">Update Project AccessControlList</span>
+                          </v-card-title>
+                          <v-card-text>
+                            <v-container>
+
+                              <v-data-table :headers="accessControlListHeaders" :calculate-widths="true" :items="users"
+                                :search="search" item-key="username" show-select v-model="selectedProjectUsers">
+
+                              </v-data-table>
+
+                            </v-container>
+                          </v-card-text>
+
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="blue darken-1" @click="closeProjectAccessControlListDialog">Cancel
+                            </v-btn>
+                            <v-btn color="blue darken-1" @click="updateProjectAccessControlList">Save</v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </v-dialog>
+                    </v-btn>
+                  </v-card-title>
+                  <v-data-table :headers="accessControlListHeaders" :calculate-widths="true" :items="accessControlList"
+                    :search="search">
+                  </v-data-table>
+                </v-card>
+
+              </v-window-item>
+
+              <v-window-item value="adminTab-2">
+
+                <v-card>
+                  <v-card-title>
+                    Contact List
+                    <v-spacer></v-spacer>
+                    <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
+                    </v-text-field>
+                    <v-spacer></v-spacer>
+                    <v-dialog v-model="projectContactDialog" activator="parent">
+                      <template v-slot:activator="{ on }">
+                        <v-btn absolute right fab dark color="indigo" v-on="on">
+                          <v-icon dark>add</v-icon>
                         </v-btn>
                       </template>
+                      <v-card>
+                        <v-card-title>
+                          <span class="headline">Update Project Contact List</span>
+                        </v-card-title>
+                        <v-card-text>
+                          <v-container>
 
-                      <template v-slot:[`item.actionDelete`]="{ item }">
-                        <v-btn icon @click="deleteProjectContact(item)">
-                          <v-icon>
-                            delete
-                          </v-icon>
-                        </v-btn>
-                      </template>
-                    </v-data-table>
-                  </v-card>
+                            <v-layout row>
 
-                </v-window-item>
+                              <v-text-field v-model="editedProjectContact.companyId" label="Company">
+                              </v-text-field>
 
-                <v-window-item value="adminTab-3">
+                            </v-layout>
+                            <v-layout row>
 
-                </v-window-item>
+                              <v-text-field v-model="editedProjectContact.name" label="Name"></v-text-field>
 
-              </v-window>
+                            </v-layout>
+                            <v-layout row>
 
-            </v-window-item>
+                              <v-textarea name="description" label="Description" id="description"
+                                v-model="editedProjectContact.description" required>
+                              </v-textarea>
 
-          </v-window>
+                            </v-layout>
+                            <v-layout row>
 
-        </v-card-text>
-        <v-snackbar v-model="snack" :timeout="4000" :color="snackColor" shaped>
-          {{ snackText }}
+                              <v-text-field v-model="editedProjectContact.mobileNumber" label="Mobile">
+                              </v-text-field>
 
-          <template v-slot:[`action`]="{ attrs }">
-            <v-btn text v-bind="attrs" @click="snack.value = false">
-              X
-            </v-btn>
-          </template>
-        </v-snackbar>
-      </v-card>
+                            </v-layout>
+                            <v-layout row>
 
-    
+                              <v-text-field v-model="editedProjectContact.emailAddress" label="Email">
+                              </v-text-field>
+
+                            </v-layout>
+
+                          </v-container>
+                        </v-card-text>
+
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn color="blue darken-1" @click="closeProjectContactDialog">Cancel</v-btn>
+                          <v-btn color="blue darken-1" @click="saveProjectContact">Save</v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
+                  </v-card-title>
+                  <v-data-table :headers="projectContactHeaders" :calculate-widths="true" :items="projectContacts"
+                    :search="search">
+                    <template v-slot:[`item.actionEdit`]="{ item }">
+                      <v-btn icon @click="editProjectContact(item)">
+                        <v-icon>
+                          edit
+                        </v-icon>
+                      </v-btn>
+                    </template>
+
+                    <template v-slot:[`item.actionDelete`]="{ item }">
+                      <v-btn icon @click="deleteProjectContact(item)">
+                        <v-icon>
+                          delete
+                        </v-icon>
+                      </v-btn>
+                    </template>
+                  </v-data-table>
+                </v-card>
+
+              </v-window-item>
+
+              <v-window-item value="adminTab-3">
+
+              </v-window-item>
+
+            </v-window>
+
+          </v-window-item>
+
+        </v-window>
+
+      </v-card-text>
+      <v-snackbar v-model="snack" :timeout="4000" :color="snackColor" shaped>
+        {{ snackText }}
+
+        <template v-slot:[`action`]="{ attrs }">
+          <v-btn text v-bind="attrs" @click="snack.value = false">
+            X
+          </v-btn>
+        </template>
+      </v-snackbar>
+    </v-card>
+
+
   </v-container>
 </template>
 
@@ -2999,7 +3000,7 @@ export default {
 
     onMounted(() => {
       store.dispatch('projects/loadProject', id)
-      console.log('Loading project '+id)
+      console.log('Loading project ' + id)
       store.dispatch('users/loadUsers')
       store.dispatch('customers/loadCustomers')
       store.dispatch('subcontractors/loadSubContractors')
@@ -3294,7 +3295,7 @@ export default {
       { title: 'Name', key: 'name' },
       { title: 'Description', key: 'description' },
       { title: 'AnticipatedStartDate', key: 'anticipatedStartDate' },
-      { title: 'AnticipatedCompletionDate',  key: 'anticipatedCompletionDate', align: ' d-none' },
+      { title: 'AnticipatedCompletionDate', key: 'anticipatedCompletionDate', align: ' d-none' },
       { title: 'ActualStartDate', key: 'actualStartDate', align: ' d-none' },
       { title: 'ActualCompletionDate', key: 'actualCompletionDate', align: ' d-none' },
       { title: 'Status', key: 'status' },
@@ -3882,11 +3883,7 @@ export default {
     const subContractors = computed(() => { return store.getters['projects/loadedSubContractors'] });
     const users = computed(() => { return store.getters['users/loadedUsers'] });
     const userNames = computed(() => { return store.getters['users/loadedUsers'].map(u => u.username) });
-    const subContractorListSelection = computed(() => {
-      return store.getters['subcontractors/loadedSubContractors'].map(function (item) {
-        return { text: item.name, value: item.id }
-      })
-    });
+
     const suppliers = computed(() => {
       return store.getters['suppliers/loadedSuppliers']
     });
@@ -3900,7 +3897,7 @@ export default {
         return { text: item.name, value: item.id }
       })
     });
-    const projectSupplierInvoices= (() => {
+    const projectSupplierInvoices = (() => {
       return store.getters['projects/loadedProjectSupplierInvoices']
     });
     const accessControlList = computed(() => {
@@ -4002,7 +3999,7 @@ export default {
       return true
     });
     const loading = computed(() => {
-      return store.getters['loading' , { root: true }]
+      return store.getters['loading', { root: true }]
     });
 
 
@@ -4700,14 +4697,14 @@ export default {
         editedProjectImageMetaDataIndex.value = -1
       }, 300)
     });
-    /*
+    
     const closeProjectDrawingMetaDataDialog = (() => {
       projectDrawingMetaDataDialog.value = false
-      setTimeout(() => {
-        Object.assign(editedProjectDrawingMetaData, defaultProjectDrawingMetadata)
-        editedProjectDrawingMetaDataIndex.value = -1
-      }, 300)
-    });*/
+      //setTimeout(() => {
+        //Object.assign(editedProjectDrawingMetaData, defaultProjectDrawingMetadata)
+        //editedProjectDrawingMetaDataIndex.value = -1
+      //}, 300)
+    });
     const closeBoQItemDialog = (() => {
       //Object.assign(dialogBoQItem, false);
       console.log('close boq item dialog')
@@ -5015,7 +5012,7 @@ export default {
       console.log('Dialog opened')
     });
     const onDismissed = (() => {
-      store.dispatch('clearError')
+      store.dispatch('clearError', { root: true })
     });
 
     const makeProjectMeasure = ((name, qty) => {
@@ -5222,11 +5219,12 @@ export default {
       orders,
       boQProducts,
       projectDrawingCategories,
+      close,
+      closeProjectRoomDialog,
       boQItemCategories,
       subContractors,
       users,
       userNames,
-      subContractorListSelection,
       suppliers,
       customerListSelection,
       supplierListSelection,
@@ -5234,14 +5232,17 @@ export default {
       projectContacts,
       projectTasks,
       projectImageMetadata,
+      closeProjectImageDialog,
+      closeProjectDrawingMetaDataDialog,
       projectCustomerInvoiceSummary,
       projectSubContractorInvoiceSummary,
       projectSupplierInvoiceSummary,
-
+      closeProjectSubContractorInvoiceDialog,
       projectProcurementPackageSummary,
       projectSubContractorProcurementPackages,
       subContractorProcurementPackageBillItems,
       projectProcurementPackagesListSelection,
+      closeProjectProcurementPackageDialog,
       projectQuotationSummary,
       projectQuotations,
       filteredDrawingsList,
@@ -5257,6 +5258,7 @@ export default {
       tenders,
       projectTaskFormTitle,
       projectProcurementPackageFormTitle,
+      editedProjectProcurementPackage,
       projectImageFormTitle,
       formIsValid,
       loading,
@@ -5281,6 +5283,7 @@ export default {
       deleteProjectProcurementPackage,
       editProjectImageMetaData,
       saveProjectTask,
+      closeProjectTaskDialog,
       saveProjectProcurementPackage,
       createProjectSubContractorProcurementPackage,
       saveProjectContact,
@@ -5317,6 +5320,7 @@ export default {
       saveQuantity,
       saveQuantityDeliveredToDate,
       save,
+
       cancel,
       onDismissed,
       deleteProjectBoQItem,

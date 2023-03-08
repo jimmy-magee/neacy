@@ -88,106 +88,106 @@ const mutations = {
 }
 const actions = {
     loadSupplierCategories({ commit }) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         webClient.get(`/api/resource/clients/` + localStorage.clientId + `/supplier_categories`)
             .then(response => {
                 console.log('Received Suppliers Categories...')
                 commit('setLoadedSupplierCategories', response.data)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
                 commit('setError', e, { root: true })
             })
     },
     createSupplierCategory({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         webClient.post(`/api/resource/clients/` + localStorage.clientId + `/supplier_categories`, payload)
             .then(response => {
                 console.log('Received saved Supplier Category from server..')
                 commit('createSupplierCategory', response.data)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(error => {
                 commit('setError', error, { root: true })
             })
     },
     updateSupplierCategory({ commit}, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         webClient.post(`/api/resource/clients/` + localStorage.clientId + `/supplier_categories/` + payload.id, payload)
             .then(response => {
                 console.log('Received updated Supplier Category from server..')
                 commit('updateSupplierCategory', response.data)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(error => {
                 commit('setError', error, { root: true })
             })
     },
     deleteSupplierCategory({ commit}, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         webClient.delete(`/api/resource/clients/` + localStorage.clientId + `/supplier_categories/` + payload.id)
             .then(response => {
                 console.log(response)
                 commit('deleteSupplierCategory', payload)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(error => {
                 commit('setError', error)
             })
     },
     loadSuppliers({ commit }) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         console.log('Loading all System Suppliers for user with authorization token ' + localStorage.authHeader)
         webClient.get(`/api/resource/clients/` + localStorage.clientId + `/suppliers`)
             .then(response => {
                 console.log('Received Suppliers...')
                 console.log(response.data)
                 commit('setLoadedSuppliers', response.data)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
                 commit('setError', e, { root: true })
             })
     },
     createSupplier({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         webClient.post(`/api/resource/clients/` + localStorage.clientId + `/suppliers`, payload)
             .then(response => {
                 console.log('Received saved Supplier from server..')
                 commit('createSupplier', response.data)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(error => {
                 commit('setError', error, { root: true })
             })
     },
     updateSupplier({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         webClient.post(`/api/resource/clients/` + localStorage.clientId + `/suppliers/` + payload.id, payload)
             .then(response => {
                 console.log('Received updated Supplier from server..')
                 console.log(response.data)
                 commit('updateSupplier', response.data)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(error => {
                 commit('setError', error, { root: true })
             })
     },
     deleteSupplier({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         webClient.delete(`/api/resource/clients/` + localStorage.clientId + `/suppliers/` + payload.id)
             .then(response => {
                 console.log(response)
                 commit('deleteSupplier', payload)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(error => {
                 commit('setError', error, { root: true })
             })
     },
     updateSupplierProductQuotation({ commit  }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         console.log('Updating product quotation ')
         console.log(payload)
         webClient.post(`/api/resource/clients/` + localStorage.clientId + `/suppliers/` + payload.supplierId + `/quotations/` + payload.id, payload)
@@ -195,28 +195,28 @@ const actions = {
                 console.log('Received updated Supplier Product Quotation from server..')
                 console.log(response.data)
                 //commit('updateProduct', response.data)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(error => {
                 commit('setError', error, { root: true })
             })
     },
     loadSupplierQuotations({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         console.log('Loading Supplier qotations for  [{' + payload + '}] for user with authorization token ' + localStorage.authHeader)
         webClient.get(`/api/resource/clients/` + localStorage.clientId + `/suppliers/` + payload + `/quotations`)
             .then(response => {
                 console.log('Received Supplier Quotations...')
                 console.log(response.data)
                 commit('setLoadedSupplierQuotations', response.data)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
                 commit('setError', e, { root: true })
             })
     },
     loadSupplierQuotationSummary({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         console.log('Loading all supplier invoices ' + payload)
         console.log('for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
 
@@ -226,7 +226,7 @@ const actions = {
                 console.log(response.data)
                 const data = response.data
                 commit('setLoadedSupplierQuotationSummary', data)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
                 commit('setError', e, { root: true })
@@ -252,8 +252,9 @@ const actions = {
             link.setAttribute('download', payload.fileName) // or any other extension
             document.body.appendChild(link)
             link.click()
-        }).catch((response) => {
-            console.error('Could not download the supplier quotation from url ' + docUrl + ' from the backend.', response)
+        }).catch((error) => {
+            commit('setError', error, { root: true })
+            console.error('Could not download the supplier quotation from url ' + docUrl + ' from the backend.', error)
         })
     },
     createSupplierQuotation({ commit }, payload) {
@@ -290,7 +291,7 @@ const actions = {
                 })
             })
             .catch((error) => {
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
                 commit('setError', error)
                 console.log('Oops error creating Supplier Quotation ' + error.message)
                 console.log(error)
@@ -310,7 +311,7 @@ const actions = {
                 })
             })
             .catch((error) => {
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
                 commit('setError', error, { root: true })
                 console.log('Oops error updating Supplier Quotation ' + error.message)
                 console.log(error)
@@ -328,21 +329,21 @@ const actions = {
             })
     },
     loadSupplierOrders({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         console.log('Loading Supplier orders for  [{' + payload + '}] for user with authorization token ' + localStorage.authHeader)
         webClient.get(`/api/resource/clients/` + localStorage.clientId + `/suppliers/` + payload + `/orders`)
             .then(response => {
                 console.log('Received Supplier Orders...')
                 console.log(response.data)
                 commit('setLoadedSupplierOrders', response.data)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
                 commit('setError', e, { root: true })
             })
     },
     loadSupplierInvoiceSummary({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         console.log('Loading all supplier invoices ' + payload)
         //console.log('for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
 
@@ -352,7 +353,7 @@ const actions = {
                 console.log(response.data)
                 const data = response.data
                 commit('setLoadedSupplierInvoiceSummary', data)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
                 commit('setError', e, { root: true })
@@ -360,7 +361,7 @@ const actions = {
             })
     },
     loadSupplierInvoices({ commit }, payload) {
-        commit('setLoading', true)
+        commit('setLoading', true, { root: true })
         console.log('Loading all Invoices with supplier id ' + payload)
         //console.log('for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
         webClient.get(`/api/resource/clients/` + localStorage.clientId + `/suppliers/` + payload + '/invoices')
@@ -369,7 +370,7 @@ const actions = {
                 console.log(response.data)
                 const data = response.data
                 commit('setLoadedSupplierInvoices', data)
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
                 commit('setError', e, { root: true })
@@ -395,8 +396,9 @@ const actions = {
             link.setAttribute('download', payload.fileName) // or any other extension
             document.body.appendChild(link)
             link.click()
-        }).catch((response) => {
-            console.error('Could not download the invoice from url ' + docUrl + ' from the backend.', response)
+        }).catch((error) => {
+            commit('setError', error, { root: true })
+            console.error('Could not download the invoice from url ' + docUrl + ' from the backend.', error)
         })
     },
     createSupplierInvoice({ commit }, payload) {
@@ -434,7 +436,7 @@ const actions = {
                 })
             })
             .catch((error) => {
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
                 commit('setError', error)
                 console.log('Oops error creating Supplier Invoice ' + error.message)
                 console.log(error)
@@ -454,7 +456,7 @@ const actions = {
                 })
             })
             .catch((error) => {
-                commit('setLoading', false)
+                commit('setLoading', false, { root: true })
                 commit('setError', error)
                 console.log('Oops error updating Supplier Invoice ' + error.message)
                 console.log(error)

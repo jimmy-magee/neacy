@@ -2,6 +2,9 @@ import { createStore, createLogger } from 'vuex';
 import users from './modules/users';
 import projects from './modules/projects'
 import customers from './modules/customers';
+import products from './modules/products';
+import suppliers from './modules/suppliers'
+import subcontractors from './modules/subcontractors';
 
 const debug = process.env.NODE_ENV !== 'production'
 
@@ -10,6 +13,9 @@ export default createStore({
   modules: {
     users,
     projects,
+    products,
+    suppliers,
+    subcontractors,
     customers
   },
   state: {

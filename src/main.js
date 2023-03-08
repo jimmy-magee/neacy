@@ -43,6 +43,16 @@ const routes = [
     component: () => import(/* webpackChunkName: "customersPage" */ './components/Customer/CustomersPage.vue'),
   },
   {
+    path: '/supplier_categories',
+    name: 'Supplier Categories Page',
+    component: () => import(/* webpackChunkName: "supplierCategoryPage" */ './components/Supplier/SupplierCategories.vue'),
+  },
+  {
+    path: '/suppliers',
+    name: 'Suppliers',
+    component: () => import(/* webpackChunkName: "suppliersPage" */ './components/Supplier/SuppliersPage.vue'),
+  },
+  {
     path: '/projects',
     name: 'ProjectsList',
     component: () => import(/* webpackChunkName: "projectsPage" */ './components/Project/ProjectsList.vue'),

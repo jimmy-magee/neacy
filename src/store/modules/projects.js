@@ -345,7 +345,7 @@ const actions = {
                 commit('setLoading', false, { root: true })
             })
             .catch(error => {
-                commit('setError', error.response, { root: true })
+                commit('setError', error, { root: true })
             })
     },
     updateProjectDrawingCategory({ commit }, payload) {
