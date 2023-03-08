@@ -22,3 +22,4 @@ yarn lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+https://www.the-koi.com/projects/setting-up-vue-3-with-vuetify-icons-and-themes/

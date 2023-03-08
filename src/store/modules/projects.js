@@ -1490,7 +1490,7 @@ const actions = {
                 commit('setLoading', false, { root: true })
             })
             .catch(e => {
-
+                commit('setError', e, { root: true })
                 console.log(e)
             })
     },
@@ -1704,9 +1704,7 @@ const getters = {
         return state.loadedProjectSupplierInvoiceSummary
     },
     loadedProjectSupplierInvoices(state) {
-        return state.loadedProjectSupplierInvoices.sort((invoiceA, invoiceB) => {
-            return invoiceA.id > invoiceB.id
-        })
+        return state.loadedProjectSupplierInvoices
     },
     loadedProjectOrders(state) {
         return state.loadedProjectOrders.sort((A, B) => {

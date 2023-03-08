@@ -2618,7 +2618,7 @@
                       <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
                       </v-text-field>
                       <v-spacer></v-spacer>
-                      <v-btn absolute right fab dark color="indigo">
+                      <v-btn  @click="projectSupplierInvoiceDialog.value = true">
                         <v-dialog v-model="projectSupplierInvoiceDialog" activator="parent">
 
                           <v-card>
@@ -2628,11 +2628,11 @@
                             <v-card-text>
                               <v-container>
                                 <v-layout row>
-
+<!--
                                   <v-select :items="supplierListSelection"
                                     v-model="editedProjectSupplierInvoice.supplierId" label="Select Supplier" single>
                                   </v-select>
-
+-->
                                 </v-layout>
                                 <v-layout row>
 
@@ -2667,7 +2667,7 @@
 
 
                                 <v-layout row>
-
+<!--
                                   <v-dialog ref="projectInvoiceDateDialog" v-model="projectInvoiceDateModal" persistent
                                     width="50%" activator="parent">
                                     <template v-slot:activator="{ on }">
@@ -2699,7 +2699,7 @@
                                         @click="$refs.projectInvoicePaymentDueDateDialog.save(date)">OK</v-btn>
                                     </v-date-picker>
                                   </v-dialog>
-
+-->
                                 </v-layout>
 
                                 <v-layout row v-if="editedProjectSubContractorInvoiceIndex < 0">
@@ -2766,8 +2766,9 @@
 
                     </v-layout>
                     <h3>Invoice Details</h3>
-                    <v-data-table :headers="projectSupplierInvoiceTableHeaders" :calculate-widths="true"
-                      :items="projectSupplierInvoices" :search="search">
+                    Project Supplier Invoices {{ projectSupplierInvoices.value }}
+                    <v-data-table :headers="projectSupplierInvoiceTableHeaders" :items="projectSupplierInvoices.value" :calculate-widths="true"
+                       :search="search">
                       <template v-slot:[`item.actionDownloadProjectInvoice`]="{ item }">
                         <v-btn icon @click="downloadSupplierInvoice(item)">
                           <v-icon>
@@ -3371,7 +3372,7 @@ export default {
     const projectCustomerInvoicePaymentDueDateDialog = ref(false);
     const projectCustomerInvoicePaymentDueDateModal = ref(false);
     const editedProjectCustomerInvoiceIndex = ref(-1);
-    const editedProjectCustomerInvoice = {
+    const editedProjectCustomerInvoice = reactive({
       id: '',
       projectId: id,
       customerId: '',
@@ -3383,8 +3384,8 @@ export default {
       paymentDueDate: null,
       invoiceFile: null,
       status: ''
-    };
-    const defaultProjectCustomerInvoice = {
+    });
+    const defaultProjectCustomerInvoice = reactive({
       customerId: '',
       projectId: id,
       invoiceRef: '',
@@ -3395,7 +3396,7 @@ export default {
       paymentDueDate: null,
       invoiceFile: null,
       status: ''
-    };
+    });
     const projectSubContractorInvoiceDialog = ref(false);
     const projectSupplierInvoiceDialog = ref(false);
     const projectInvoicePaymentDialog = ref(false);
@@ -3404,7 +3405,7 @@ export default {
     const projectInvoicePaymentDueDateDialog = ref(false);
     const projectInvoicePaymentDueDateModal = ref(false);
     const editedProjectSubContractorInvoiceIndex = ref(-1);
-    const editedProjectSubContractorInvoice = {
+    const editedProjectSubContractorInvoice = reactive({
       id: '',
       projectId: id,
       subContractorId: '',
@@ -3416,8 +3417,8 @@ export default {
       paymentDueDate: null,
       invoiceFile: null,
       status: ''
-    };
-    const defaultProjectSubContractorInvoice = {
+    });
+    const defaultProjectSubContractorInvoice = reactive({
       subContractorId: '',
       projectId: id,
       invoiceRef: '',
@@ -3428,9 +3429,9 @@ export default {
       paymentDueDate: null,
       invoiceFile: null,
       status: ''
-    };
+    });
     const editedProjectSupplierInvoiceIndex = ref(-1);
-    const editedProjectSupplierInvoice = {
+    const editedProjectSupplierInvoice = reactive({
       id: '',
       projectId: id,
       supplierId: '',
@@ -3442,8 +3443,8 @@ export default {
       paymentDueDate: null,
       invoiceFile: null,
       status: ''
-    };
-    const defaultProjectSupplierInvoice = {
+    });
+    const defaultProjectSupplierInvoice = reactive({
       supplierId: '',
       projectId: id,
       invoiceRef: '',
@@ -3454,7 +3455,7 @@ export default {
       paymentDueDate: null,
       invoiceFile: null,
       status: ''
-    };
+    });
     const selected = [];
     const selectedProjectTaskImageMeta = [];
     const selectedProjectUsers = [];
@@ -3464,9 +3465,9 @@ export default {
       'COMPLETED'
     ];
     const invoiceStatusListSelection = [
-      { text: 'Un Paid', value: 'UNPAID' },
-      { text: 'Approved for Payment', value: 'APPROVED_FOR_PAYMENT' },
-      { text: 'Paid', value: 'PAID' }
+      { title: 'Un Paid', key: 'UNPAID' },
+      { title: 'Approved for Payment', key: 'APPROVED_FOR_PAYMENT' },
+      { title: 'Paid', key: 'PAID' }
     ];
     const aclDialog = ref(false);
     const dialog5 = ref(false);
@@ -3901,6 +3902,9 @@ export default {
         return { text: item.name, value: item.id }
       })
     });
+    const projectSupplierInvoices= (() => {
+      return store.getters['projects/loadedProjectSupplierInvoices']
+    });
     const accessControlList = computed(() => {
       return project.value.projectAccessControlList
     });
@@ -3928,7 +3932,7 @@ export default {
     const projectSupplierInvoiceSummary = computed(() => {
       return store.getters['projects/loadedProjectSupplierInvoiceSummary']
     });
-    const projectSupplierInvoices = computed(() => {
+    const title = computed(() => {
       return store.getters['projects/loadedProjectSupplierInvoices']
     });
     const projectProcurementPackageSummary = computed(() => {
@@ -4885,11 +4889,11 @@ export default {
           invoiceFile: editedProjectSupplierInvoice.invoiceFile
         }
         console.log(formData)
-        store.dispatch('createSupplierInvoice', formData)
+        store.dispatch('suppliers/createSupplierInvoice', formData)
           .then(
             setTimeout(() => {
-              store.dispatch('loadProjectSupplierInvoices', id)
-              store.dispatch('loadProjectSupplierInvoiceSummary', id)
+              store.dispatch('projects/loadProjectSupplierInvoices', id)
+              store.dispatch('projects/loadProjectSupplierInvoiceSummary', id)
             }, 300)
           )
       }
@@ -5034,6 +5038,7 @@ export default {
     });
 
     return {
+      title,
       openTreeNodes,
       snack,
       snackColor,
@@ -5114,6 +5119,8 @@ export default {
       editedProjectSubContractorInvoice,
       defaultProjectSubContractorInvoice,
       editedProjectSupplierInvoiceIndex,
+      projectSupplierInvoices,
+      closeProjectSupplierInvoiceDialog,
       editedProjectSupplierInvoice,
       defaultProjectSupplierInvoice,
       selected,
