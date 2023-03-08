@@ -2420,16 +2420,13 @@
 
                   <v-card>
                     <v-card-title>
-                      <v-spacer></v-spacer>
+                    
                       <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
                       </v-text-field>
                       <v-spacer></v-spacer>
+                      <v-btn absolute right fab dark color="indigo">
                       <v-dialog v-model="projectSubContractorInvoiceDialog" activator="parent">
-                        <template v-slot:activator="{ on }">
-                          <v-btn absolute right fab dark color="indigo" v-on="on">
-                            <v-icon dark>add</v-icon>
-                          </v-btn>
-                        </template>
+    
                         <v-card>
                           <v-card-title>
                             <span>SubContractor Invoice Details</span>
@@ -2529,6 +2526,7 @@
                           </v-card-actions>
                         </v-card>
                       </v-dialog>
+                    </v-btn>
                     </v-card-title>
                     <h3>SubContractor Invoice Summary</h3>
                     <v-layout row v-if="projectSubContractorInvoiceSummary">
@@ -2618,7 +2616,7 @@
                       <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
                       </v-text-field>
                       <v-spacer></v-spacer>
-                      <v-btn  @click="projectSupplierInvoiceDialog.value = true">
+                      <v-btn absolute right fab dark color="indigo">
                         <v-dialog v-model="projectSupplierInvoiceDialog" activator="parent">
 
                           <v-card>
