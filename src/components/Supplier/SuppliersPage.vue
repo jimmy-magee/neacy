@@ -101,9 +101,13 @@
       </v-layout>
 
       <v-data-table :headers="supplierTableHeaders" :items="suppliers" :search="search">
+        
         <template v-slot:[`item.actionView`]="{ item }">
-          <v-btn text :to="'/suppliers/' + item.id">
-            <v-icon>description</v-icon>
+  
+          <v-btn icon @click="viewSupplier(item)">
+            <v-icon>
+              view
+            </v-icon>
           </v-btn>
         </template>
         <template v-slot:[`item.actionEdit`]="{ item }">
@@ -129,6 +133,7 @@
 <script>
 
 import { computed, ref, reactive, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 
@@ -137,6 +142,7 @@ export default {
   setup() {
 
     const store = useStore();
+    const router = useRouter();
 
     onMounted(() => {
       store.dispatch('suppliers/loadSupplierCategories')
@@ -146,32 +152,32 @@ export default {
 
     const supplierTableHeaders = [
       {
-        text: 'Id',
+        title: 'Id',
         align: 'left',
         sortable: true,
-        value: 'supplierCategoryId'
+        key: 'id'
       },
       {
-        text: 'Category',
+        title: 'Category',
         align: 'left',
         sortable: true,
-        value: 'supplierCategoryName'
+        key: 'supplierCategoryName'
       },
       {
-        text: 'Name',
+        title: 'Name',
         align: 'left',
         sortable: true,
-        value: 'name'
+        key: 'name'
       },
-      { text: 'Address', value: 'address' },
-      { text: 'Website', value: 'website' },
-      { text: 'Head Office', value: 'landline' },
-      { text: 'Contact', value: 'contact' },
-      { text: 'Contact Number', value: 'contactNumber' },
-      { text: 'Email', value: 'email' },
-      { text: 'View', align: 'left', value: 'actionView' },
-      { text: 'Edit', align: 'left', value: 'actionEdit' },
-      { text: 'Delete', align: 'left', value: 'actionDelete' }
+      { title: 'Address', key: 'address' },
+      { title: 'Website', key: 'website' },
+      { title: 'Head Office', key: 'landline' },
+      { title: 'Contact', key: 'contact' },
+      { title: 'Contact Number', key: 'contactNumber' },
+      { title: 'Email', key: 'email' },
+      { title: 'View', align: 'left', key: 'actionView' },
+      { title: 'Edit', align: 'left', key: 'actionEdit' },
+      { title: 'Delete', align: 'left', key: 'actionDelete' }
     ];
     const search = ref('');
     const dialog = ref(false);
@@ -206,13 +212,18 @@ export default {
     })
     const supplierCategories = computed(() => store.getters['suppliers/loadedSupplierCategories']);
     const productCategories = computed(() => store.getters['products/loadedProductCategories']);
-    const suppliers = computed(() => store.getters['suppliers/loadedSuppliers']);
+    const suppliers = computed(() => { return store.getters['suppliers/loadedSuppliers']});
     const formTitle = computed(() => editedIndex.value === -1 ? 'New Supplier' : 'Edit Supplier');
     const loading = computed(() => store.getters['loading', { root: true }]);
     const error = computed(() => store.getters['error', { root: true }]);
     const userIsAuthenticatedAndHasRoleAdmin = computed(() => store.getters['users/userIsAuthenticatedAndHasRoleAdmin']);
 
+    const viewSupplier = ((item) => {
+      router.push('/suppliers/'+item.value)
+    });
+
     const editSupplier = ((item) => {
+      console.log(item)
       editedIndex.value = suppliers.value.indexOf(item)
       Object.assign(editedItem, item)
       dialog.value = true
@@ -260,6 +271,7 @@ export default {
       loading,
       error,
       userIsAuthenticatedAndHasRoleAdmin,
+      viewSupplier,
       editSupplier,
       updateSupplier,
       deleteSupplier,

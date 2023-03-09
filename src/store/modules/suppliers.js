@@ -149,14 +149,16 @@ const actions = {
                 commit('setError', e, { root: true })
             })
     },
-    createSupplier({ commit }, payload) {
+    createSupplier({ commit, dispatch }, payload) {
         commit('setLoading', true, { root: true })
         webClient.post(`/api/resource/clients/` + localStorage.clientId + `/suppliers`, payload)
             .then(response => {
                 console.log('Received saved Supplier from server..')
                 commit('createSupplier', response.data)
                 commit('setLoading', false, { root: true })
-            })
+            }).then(
+                dispatch('loadSuppliers')
+            )
             .catch(error => {
                 commit('setError', error, { root: true })
             })
