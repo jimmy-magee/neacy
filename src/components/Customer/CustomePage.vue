@@ -692,7 +692,7 @@ export default {
 
     const tab = ref(null);
     const date = new Date().toISOString().substr(0, 10);
-    const search = '';
+    const search = ref('');
     var snack = ref(false);
     var snackColor = ref('');
     var snackText = ref('');

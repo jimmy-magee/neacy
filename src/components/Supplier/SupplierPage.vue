@@ -21,8 +21,8 @@
         </v-tab>
       </v-tabs>
 
-      <v-tabs-items v-model="outerTab">
-        <v-tab-item key="1" :value="'outerTab-' + 1">
+      <v-window v-model="outerTab">
+        <v-window-item key="1" value="'outerTab-' + 1">
           <v-card>
             <v-card-title>
               Supplier Details
@@ -119,8 +119,8 @@
 
             </v-card-text>
           </v-card>
-        </v-tab-item>
-        <v-tab-item key="2" :value="'outerTab-' + 2">
+        </v-window-item>
+        <v-window-item key="2" value="'outerTab-' + 2">
           <v-card>
             <v-card-title>
 
@@ -129,7 +129,7 @@
               </v-text-field>
               <v-spacer></v-spacer>
               <v-dialog v-model="supplierQuotationDialog">
-                <template v-slot:activator="{ on }">
+                <template v-slot:[`activator`]="{ on }">
                   <v-btn absolute right fab dark color="indigo" v-on="on">
                     <v-icon dark>add</v-icon>
                   </v-btn>
@@ -183,8 +183,8 @@
                       <v-layout row>
                         <v-flex xs12 sm9 offset-sm1>
                           <v-dialog ref="supplierQuotationDateDialog" v-model="supplierQuotationDateModal"
-                            :return-value.sync="date" persistent width="50%">
-                            <template v-slot:activator="{ on }">
+                             persistent width="50%">
+                            <template v-slot:[`activator`]="{ on }">
                               <v-text-field v-model="editedSupplierQuotation.quotationDate" label="Date Issued"
                                 prepend-icon="event" readonly v-on="on"></v-text-field>
                             </template>
@@ -200,8 +200,8 @@
                       <v-layout row v-if="editedSupplierQuotationIndex >= 0">
                         <v-flex xs12 sm9 offset-sm1>
                           <v-dialog ref="supplierQuotationDateReceivedDialog" v-model="supplierQuotationDateReceivedModal"
-                            :return-value.sync="date" persistent width="50%">
-                            <template v-slot:activator="{ on }">
+                             persistent width="50%">
+                            <template v-slot:[`activator`]="{ on }">
                               <v-text-field v-model="editedSupplierQuotation.dateRecieved" label="Date Received"
                                 prepend-icon="event" readonly v-on="on"></v-text-field>
                             </template>
@@ -227,8 +227,8 @@
 
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" @click.native="closeSupplierQuotationDialog">Cancel</v-btn>
-                    <v-btn color="blue darken-1" @click.native="saveSupplierQuotation">Save</v-btn>
+                    <v-btn color="blue darken-1" @click="closeSupplierQuotationDialog">Cancel</v-btn>
+                    <v-btn color="blue darken-1" @click="saveSupplierQuotation">Save</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -250,24 +250,24 @@
               <v-data-table :headers="supplierQuotationTableHeaders" :calculate-widths="true" :items="supplierQuotations"
                 :search="search">
 
-                <template v-slot:item.actionDownloadSupplierQuotation="{ item }">
-                  <v-btn icon @click.native="downloadSupplierQuotation(item)">
+                <template v-slot:[`item.actionDownloadSupplierQuotation`]="{ item }">
+                  <v-btn icon @click="downloadSupplierQuotation(item)">
                     <v-icon>
                       cloud_download
                     </v-icon>
                   </v-btn>
                 </template>
 
-                <template v-slot:item.actionEditSupplierQuotation="{ item }">
-                  <v-btn icon @click.native="showSupplierQuotationEditDialog(item)">
+                <template v-slot:[`item.actionEditSupplierQuotation`]="{ item }">
+                  <v-btn icon @click="showSupplierQuotationEditDialog(item)">
                     <v-icon>
                       edit
                     </v-icon>
                   </v-btn>
                 </template>
 
-                <template v-slot:item.actionDeleteSupplierQuotation="{ item }">
-                  <v-btn icon @click.native="deleteSupplierQuotation(item)">
+                <template v-slot:[`item.actionDeleteSupplierQuotation`]="{ item }">
+                  <v-btn icon @click="deleteSupplierQuotation(item)">
                     <v-icon>
                       delete
                     </v-icon>
@@ -278,8 +278,8 @@
             </v-card-text>
 
           </v-card>
-        </v-tab-item>
-        <v-tab-item key="3" :value="'outerTab-' + 3">
+        </v-window-item>
+        <v-window-item key="3" value="'outerTab-' + 3">
           <v-card>
             <v-card-title>
 
@@ -288,7 +288,7 @@
               </v-text-field>
               <v-spacer></v-spacer>
               <v-dialog v-model="supplierInvoiceDialog">
-                <template v-slot:activator="{ on }">
+                <template v-slot:[`activator`]="{ on }">
                   <v-btn absolute right fab dark color="indigo" v-on="on">
                     <v-icon dark>add</v-icon>
                   </v-btn>
@@ -337,8 +337,8 @@
                       <v-layout row>
                         <v-flex xs4 sm5 offset-sm1>
                           <v-dialog ref="supplierInvoiceDateDialog" v-model="supplierInvoiceDateModal"
-                            :return-value.sync="date" persistent width="50%">
-                            <template v-slot:activator="{ on }">
+                             persistent width="50%">
+                            <template v-slot:[`activator`]="{ on }">
                               <v-text-field v-model="editedSupplierInvoice.invoiceDate" label="Date Issued"
                                 prepend-icon="event" readonly v-on="on"></v-text-field>
                             </template>
@@ -351,8 +351,8 @@
                         </v-flex>
                         <v-flex xs4 sm5 offset-sm1>
                           <v-dialog ref="supplierInvoicePaymentDueDateDialog" v-model="supplierInvoicePaymentDueDateModal"
-                            :return-value.sync="date" persistent width="50%">
-                            <template v-slot:activator="{ on }">
+                             persistent width="50%">
+                            <template v-slot:[`activator`]="{ on }">
                               <v-text-field v-model="editedSupplierInvoice.paymentDueDate" label="Payment Due Date"
                                 prepend-icon="event" readonly v-on="on"></v-text-field>
                             </template>
@@ -379,8 +379,8 @@
 
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" @click.native="closeSupplierInvoiceDialog">Cancel</v-btn>
-                    <v-btn color="blue darken-1" @click.native="saveSupplierInvoice">Save</v-btn>
+                    <v-btn color="blue darken-1" @click="closeSupplierInvoiceDialog">Cancel</v-btn>
+                    <v-btn color="blue darken-1" @click="saveSupplierInvoice">Save</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -434,24 +434,24 @@
               <v-data-table :headers="supplierInvoiceTableHeaders" :calculate-widths="true" :items="supplierInvoices"
                 :search="search">
 
-                <template v-slot:item.actionDownloadSupplierInvoice="{ item }">
-                  <v-btn icon @click.native="downloadSupplierInvoice(item)">
+                <template v-slot:[`item.actionDownloadSupplierInvoice`]="{ item }">
+                  <v-btn icon @click="downloadSupplierInvoice(item)">
                     <v-icon>
                       cloud_download
                     </v-icon>
                   </v-btn>
                 </template>
 
-                <template v-slot:item.actionEditSupplierInvoice="{ item }">
-                  <v-btn icon @click.native="showSupplierInvoiceEditDialog(item)">
+                <template v-slot:[`item.actionEditSupplierInvoice`]="{ item }">
+                  <v-btn icon @click="showSupplierInvoiceEditDialog(item)">
                     <v-icon>
                       edit
                     </v-icon>
                   </v-btn>
                 </template>
 
-                <template v-slot:item.actionDeleteSupplierInvoice="{ item }">
-                  <v-btn icon @click.native="deleteSupplierInvoice(item)">
+                <template v-slot:[`item.actionDeleteSupplierInvoice`]="{ item }">
+                  <v-btn icon @click="deleteSupplierInvoice(item)">
                     <v-icon>
                       delete
                     </v-icon>
@@ -462,55 +462,51 @@
             </v-card-text>
 
           </v-card>
-        </v-tab-item>
+        </v-window-item>
 
 
 
-        <v-tab-item key="4" :value="'outerTab-' + 4">
+        <v-window-item key="4" value="'outerTab-' + 4">
           <v-card>
-            <v-card-title>
-            </v-card-title>
             <v-data-table :headers="productTableHeaders" :items="supplierProducts" :search="search">
-              <template v-slot:item.cost="props">
-                <v-edit-dialog :return-value.sync="props.item.cost" large persistent @save="save(props.item)"
+              <!--
+              <template v-slot:[`item.cost`]="props">
+                <v-edit-dialog v-model="props.item.cost" large persistent @save="save(props.item)"
                   @cancel="cancel" @open="open" @close="close">
                   <div>{{ props.item.cost }}</div>
-                  <template v-slot:input>
+                  <template v-slot:[`input`]>
                     <div class="mt-4 title">Update Cost</div>
-                  </template>
-                  <template v-slot:input>
                     <v-text-field v-model="props.item.cost" label="Edit" single-line counter autofocus></v-text-field>
                   </template>
                 </v-edit-dialog>
               </template>
 
-              <template v-slot:item.leadInTimeInDays="props">
-                <v-edit-dialog :return-value.sync="props.item.leadInTimeInDays" large persistent @save="save(props.item)"
+              <template v-slot:[`item.leadInTimeInDays`]="props">
+                <v-edit-dialog v-model="props.item.leadInTimeInDays" large persistent @save="save(props.item)"
                   @cancel="cancel" @open="open" @close="close">
                   <div>{{ props.item.leadInTimeInDays }}</div>
-                  <template v-slot:input>
+                  <template v-slot:[`input`]>
                     <div class="mt-4 title">Update Lead In Time</div>
-                  </template>
-                  <template v-slot:input>
                     <v-text-field v-model="props.item.leadInTimeInDays" label="Edit" single-line counter autofocus>
                     </v-text-field>
                   </template>
                 </v-edit-dialog>
               </template>
+            -->
             </v-data-table>
           </v-card>
-        </v-tab-item>
+        </v-window-item>
 
 
-        <v-tab-item key="5" :value="'outerTab-' + 5">
+        <v-window-item key="5" value="'outerTab-' + 5">
           <v-card>
             <v-card-title>
             </v-card-title>
             <v-data-table :headers="orderTableHeaders" :items="orders" :search="search">
             </v-data-table>
           </v-card>
-        </v-tab-item>
-      </v-tabs-items>
+        </v-window-item>
+      </v-window>
 
     </v-card>
   </v-container>
@@ -521,24 +517,24 @@
 
 import { computed, ref, reactive, onMounted } from 'vue';
 import { useStore } from 'vuex';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 
 export default {
   setup() {
     const store = useStore();
 
     const route = useRoute();
-    const router = useRouter();
+   //const router = useRouter();
 
     const id = route.params.id;
 
     onMounted(() => {
-      store.dispatch('loadSupplierProducts', id)
-      store.dispatch('loadSupplierQuotations', id)
-      store.dispatch('loadSupplierQuotationSummary', id)
-      store.dispatch('loadSupplierOrders', id)
-      store.dispatch('loadSupplierInvoices', id)
-      store.dispatch('loadSupplierInvoiceSummary', id)
+      store.dispatch('suppliers/loadSupplierProducts', id)
+      store.dispatch('suppliers/loadSupplierQuotations', id)
+      store.dispatch('suppliers/loadSupplierQuotationSummary', id)
+      store.dispatch('suppliers/loadSupplierOrders', id)
+      store.dispatch('suppliers/loadSupplierInvoices', id)
+      store.dispatch('suppliers/loadSupplierInvoiceSummary', id)
     });
 
     // beforeUpdate() {
@@ -570,72 +566,71 @@ export default {
     });
     const supplierTableHeaders = [
       {
-        text: 'Id',
-        align: 'left',
+        title: 'Id',
         sortable: true,
         align: ' d-none',
-        value: 'productCategoryId'
+        key: 'productCategoryId'
       },
       {
-        text: 'Category',
+        title: 'Category',
         align: 'left',
         sortable: true,
-        value: 'productCategoryName'
+        key: 'productCategoryName'
       },
       {
-        text: 'Name',
+        title: 'Name',
         align: 'left',
         sortable: true,
-        value: 'name'
+        key: 'name'
       },
-      { text: 'Description', value: 'description' },
-      { text: 'Manufacturer', value: 'manufacturer' },
-      { text: 'Product Code', value: 'productCode' },
-      { text: 'Product Standard', value: 'productStandard' },
-      { text: 'Image', value: 'imageUrl' },
-      { text: 'Edit', align: 'left', value: 'actionEdit' },
-      { text: 'Delete', align: 'left', value: 'actionDelete' }
+      { title: 'Description', key: 'description' },
+      { title: 'Manufacturer', key: 'manufacturer' },
+      { title: 'Product Code', key: 'productCode' },
+      { title: 'Product Standard', key: 'productStandard' },
+      { title: 'Image', key: 'imageUrl' },
+      { title: 'Edit', align: 'left', key: 'actionEdit' },
+      { title: 'Delete', align: 'left', key: 'actionDelete' }
     ];
     const quotationTableHeaders = [
       {
-        text: 'Name',
+        title: 'Name',
         align: 'left',
         sortable: true,
-        value: 'productName'
+        key: 'productName'
       },
-      { text: 'Cost', value: 'cost' },
-      { text: 'Lead In (Days)', value: 'leadInTimeInDays' }
+      { title: 'Cost', key: 'cost' },
+      { title: 'Lead In (Days)', key: 'leadInTimeInDays' }
     ];
     const productTableHeaders = [
       {
-        text: 'Product',
+        title: 'Product',
         align: 'left',
         sortable: true,
-        value: 'productName'
+        key: 'productName'
       },
-      { text: 'Units', value: 'units' },
-      { text: 'Unit Cost', value: 'cost' },
-      { text: 'validTo', value: 'validTo' },
-      { text: 'LeadInTimeInDays', value: 'leadInTimeInDays' },
+      { title: 'Units', key: 'units' },
+      { title: 'Unit Cost', key: 'cost' },
+      { title: 'validTo', key: 'validTo' },
+      { title: 'LeadInTimeInDays', key: 'leadInTimeInDays' },
     ];
     const orderTableHeaders = [
       {
-        text: 'Project',
+        title: 'Project',
         align: 'left',
         sortable: true,
-        value: 'projectName'
+        key: 'projectName'
       },
       {
-        text: 'Product',
+        title: 'Product',
         align: 'left',
         sortable: true,
-        value: 'productName'
+        key: 'productName'
       },
-      { text: 'Quantity', value: 'quantity' },
-      { text: 'Unit Cost', value: 'unitCost' },
-      { text: 'Total Cost', value: 'totalCost' },
-      { text: 'Delivery Date', value: 'deliveryDate' },
-      { text: 'Status', value: 'status' },
+      { title: 'Quantity', key: 'quantity' },
+      { title: 'Unit Cost', key: 'unitCost' },
+      { title: 'Total Cost', key: 'totalCost' },
+      { title: 'Delivery Date', key: 'deliveryDate' },
+      { title: 'Status', key: 'status' },
     ];
     const search = ref('');
     const dialog = ref(false);
@@ -662,24 +657,24 @@ export default {
       imageUrl: ''
     };
     const invoiceStatusListSelection = [
-      { text: 'UNPAID', value: 'UNPAID' },
-      { text: 'APPROVED_FOR_PAYMENT', value: 'APPROVED_FOR_PAYMENT' },
-      { text: 'PAID', value: 'PAID' }
+      { title: 'UNPAID', key: 'UNPAID' },
+      { title: 'APPROVED_FOR_PAYMENT', key: 'APPROVED_FOR_PAYMENT' },
+      { title: 'PAID', key: 'PAID' }
     ];
     const supplierInvoiceTableHeaders = [
-      { text: 'Project', value: 'projectName' },
-      { text: 'Ref', value: 'invoiceRef' },
-      { text: 'Description', value: 'description', width: "1%" },
-      { text: 'Status', value: 'status' },
-      { text: 'Currency', value: 'currency' },
-      { text: 'Gross', value: 'grossAmount' },
-      { text: 'Net', value: 'netAmount' },
-      { text: 'Issued', value: 'invoiceDate' },
-      { text: 'Payment Due', value: 'paymentDueDate', width: "125px" },
-      { text: 'Download', align: 'left', value: 'actionDownloadSupplierInvoice' },
-      { text: 'Approve', align: 'left', value: 'actionPaySupplierInvoice' },
-      { text: 'Edit', align: 'left', value: 'actionEditSupplierInvoice' },
-      { text: 'Delete', align: 'left', value: 'actionDeleteSupplierInvoice' }
+      { title: 'Project', key: 'projectName' },
+      { title: 'Ref', key: 'invoiceRef' },
+      { title: 'Description', key: 'description', width: "1%" },
+      { title: 'Status', key: 'status' },
+      { title: 'Currency', key: 'currency' },
+      { title: 'Gross', key: 'grossAmount' },
+      { title: 'Net', key: 'netAmount' },
+      { title: 'Issued', key: 'invoiceDate' },
+      { title: 'Payment Due', key: 'paymentDueDate', width: "125px" },
+      { title: 'Download', align: 'left', key: 'actionDownloadSupplierInvoice' },
+      { title: 'Approve', align: 'left', key: 'actionPaySupplierInvoice' },
+      { title: 'Edit', align: 'left', key: 'actionEditSupplierInvoice' },
+      { title: 'Delete', align: 'left', key: 'actionDeleteSupplierInvoice' }
     ];
     const supplierInvoiceDialog = ref(false);
     const supplierInvoiceDateDialog = ref(false);
@@ -714,15 +709,15 @@ export default {
     });
     const formHasErrors = false;
     const supplierQuotationTableHeaders = [
-      { text: 'Project', value: 'projectName' },
-      { text: 'Ref', value: 'quotationRef' },
-      { text: 'Gross', value: 'grossAmount' },
-      { text: 'Currency', value: 'currency' },
-      { text: 'Issued', value: 'quotationDate', width: "125px" },
-      { text: 'Status', value: 'status' },
-      { text: 'Download', align: 'left', value: 'actionDownloadSupplierQuotation' },
-      { text: 'Edit', align: 'left', value: 'actionEditSupplierQuotation' },
-      { text: 'Delete', align: 'left', value: 'actionDeleteSupplierQuotation' }
+      { title: 'Project', key: 'projectName' },
+      { title: 'Ref', key: 'quotationRef' },
+      { title: 'Gross', key: 'grossAmount' },
+      { title: 'Currency', key: 'currency' },
+      { title: 'Issued', key: 'quotationDate', width: "125px" },
+      { title: 'Status', key: 'status' },
+      { title: 'Download', align: 'left', key: 'actionDownloadSupplierQuotation' },
+      { title: 'Edit', align: 'left', key: 'actionEditSupplierQuotation' },
+      { title: 'Delete', align: 'left', key: 'actionDeleteSupplierQuotation' }
     ];
     const supplierQuotationDialog = ref(false);
     const supplierQuotationDateDialog = ref(false);
@@ -756,42 +751,44 @@ export default {
       status: ''
     });
 
-    const productCategories = (() => { return store.getters.loadedProductCategories });
+    const productCategories = computed(() => { return store.getters.loadedProductCategories });
 
-    const supplierCategories = (() => { return store.getters.loadedSupplierCategories });
+    const supplierCategories = computed(() => { return store.getters.loadedSupplierCategories });
 
-    const supplierQuotationSummary = (() => { return store.getters.loadedSupplierQuotationSummary });
+    const supplierQuotationSummary = computed(() => { return store.getters.loadedSupplierQuotationSummary });
 
-    const supplierQuotation = (() => { return store.getters.loadedSupplierQuotations });
+    const supplierQuotation = computed(() => { return store.getters.loadedSupplierQuotation });
 
-    const supplierQuotations = (() => { });
+    const supplierQuotations = computed(() => {
+      return store.getters.loadedSupplierQuotations
+     });
 
-    const supplierProducts = (() => {
+    const supplierProducts = computed(() => {
       return store.getters.loadedSupplierProducts
     });
-    const orders = (() => {
+    const orders = computed(() => {
       return store.getters.loadedSupplierOrders
     });
-    const supplierInvoiceSummary = (() => {
+    const supplierInvoiceSummary = computed(() => {
       return store.getters.loadedSupplierInvoiceSummary
     });
-    const supplierInvoices = (() => {
+    const supplierInvoices = computed(() => {
       return store.getters.loadedSupplierInvoices
     });
-    const supplier = (() => {
+    const supplier = computed(() => {
       console.log('Loading product with id ' + id)
       return store.getters.loadedSupplier(id)
     });
-    const error = (() => {
+    const error = computed(() => {
       return store.getters.error
     });
-    const formValidationError = (() => {
+    const formValidationError = computed(() => {
       return store.getters.formValidationError
     });
-    const loading = (() => {
+    const loading = computed(() => {
       return store.getters.loading
     });
-    const userIsAuthenticatedAndHasRoleAdmin = (() => {
+    const userIsAuthenticatedAndHasRoleAdmin = computed(() => {
       return store.getters.userIsAuthenticatedAndHasRoleAdmin
     });
 
@@ -802,7 +799,7 @@ export default {
       save()
     });
     const saveSupplierQuotation = (() => {
-      if (editedSupplierQuotationIndex > -1) {
+      if (editedSupplierQuotationIndex.value > -1) {
         const formData = {
           id: editedSupplierQuotation.id,
           supplierId: id,
@@ -852,21 +849,21 @@ export default {
     });
     const showSupplierQuotationEditDialog = ((item) => {
       console.log('Showing Edit Quotation Dialog for operative with id ' + item.id)
-      editedSupplierQuotationIndex = supplierQuotations.indexOf(item)
-      editedSupplierQuotation = Object.assign({}, item)
-      supplierQuotationDialog = true
+      editedSupplierQuotationIndex.value = supplierQuotations.value.indexOf(item)
+      Object.assign(editedSupplierQuotation, item)
+      supplierQuotationDialog.value = true
     });
     const closeSupplierQuotationDialog = (() => {
-      supplierQuotationDialog = false
+      supplierQuotationDialog.value = false
       setTimeout(() => {
-        editedSupplierQuotation = Object.assign({}, defaultContractorQuotation)
-        editedSupplierQuotationIndex = -1
+        Object.assign(editedSupplierQuotation, defaultSupplierQuotation)
+        editedSupplierQuotationIndex.value = -1
       }, 300)
     });
     const downloadSupplierQuotation = ((item) => {
       console.log('downloading item requested..')
       console.log(item)
-      store.dispatch('downloadSupplierQuotation', item)
+      store.dispatch('suppliers/downloadSupplierQuotation', item)
     });
     const deleteSupplierQuotation = ((item) => {
       console.log('Delete SupplierQuotation Event Received..')
@@ -875,11 +872,11 @@ export default {
         supplierId: id
       }
       console.log(formData)
-      store.dispatch('deleteSupplierQuotation', formData)
+      store.dispatch('supplier/deleteSupplierQuotation', formData)
     });
 
     const saveSupplierInvoice = (() => {
-      if (editedSupplierInvoiceIndex > -1) {
+      if (editedSupplierInvoiceIndex.value > -1) {
         const formData = {
           id: editedSupplierInvoice.id,
           supplierId: id,
@@ -898,7 +895,7 @@ export default {
         store.dispatch('updateSupplierInvoice', formData)
           .then(
             setTimeout(() => {
-              store.dispatch('loadSupplierInvoiceSummary', id)
+              store.dispatch('suppliers/loadSupplierInvoiceSummary', id)
             }, 300)
           )
       } else {
@@ -917,10 +914,10 @@ export default {
           invoiceFile: editedSupplierInvoice.invoiceFile
         }
         console.log(formData)
-        $store.dispatch('createSupplierInvoice', formData)
+        store.dispatch('suppliers/createSupplierInvoice', formData)
           .then(
             setTimeout(() => {
-              store.dispatch('loadSupplierInvoiceSummary', id)
+              store.dispatch('suppliers/loadSupplierInvoiceSummary', id)
             }, 300)
           )
       }
@@ -929,64 +926,59 @@ export default {
     const downloadSupplierInvoice = ((item) => {
       console.log('downloading item requested..')
       console.log(item)
-      store.dispatch('downloadSupplierInvoice', item)
+      store.dispatch('suppliers/downloadSupplierInvoice', item)
     });
     const showSupplierInvoiceEditDialog = ((item) => {
       console.log('Showing Edit Invoice Dialog for operative with id ' + item.id)
-      editedSupplierInvoiceIndex = supplierInvoices.indexOf(item)
-      editedSupplierInvoice = Object.assign({}, item)
-      supplierInvoiceDialog = true
+      editedSupplierInvoiceIndex.value = supplierInvoices.value.indexOf(item)
+      Object.assign(editedSupplierInvoice, item)
+      supplierInvoiceDialog.value = true
     });
     const closeSupplierInvoiceDialog = (() => {
-      supplierInvoiceDialog = false
+      supplierInvoiceDialog.value = false
       setTimeout(() => {
-        editedSupplierInvoice = Object.assign({}, defaultContractorInvoice)
-        editedSupplierInvoiceIndex = -1
+        Object.assign(editedSupplierInvoice, defaultSupplierInvoice)
+        editedSupplierInvoiceIndex.value = -1
       }, 300)
     });
     const save = (() => {
-      snack = true
-      snackColor = 'success'
-      snackText = 'Data saved successfully'
+      snack.value = true
+      snackColor.value = 'success'
+      snackText.value = 'Data saved successfully'
     });
     const cancel = (() => {
-      snack = true
-      snackColor = 'error'
-      snackText = 'Canceled'
+      snack.value = true
+      snackColor.value = 'error'
+      snackText.value = 'Canceled'
     });
     const open = (() => {
-      snack = true
-      snackColor = 'info'
-      snackText = 'Dialog opened'
-    });
-    const editProduct = ((item) => {
-      editedIndex = products.indexOf(item)
-      editedItem = Object.assign({}, item)
-      dialog = true
+      snack.value = true
+      snackColor.value = 'info'
+      snackText.value = 'Dialog opened'
     });
     const updateProduct = (() => {
 
-      if (editedIndex === -1) {
+      if (editedIndex.value === -1) {
         console.log('Creating products')
         console.log(editedItem)
-        store.dispatch('createProduct', editedItem)
+        store.dispatch('suppliers/createProduct', editedItem)
       } else {
         console.log('Updating  products')
         console.log(editedItem)
-        store.dispatch('updateProduct', editedItem)
+        store.dispatch('suppliers/updateProduct', editedItem)
       }
       close()
     });
     const deleteProduct = ((item) => {
       console.log('Delete product Event Received..')
       console.log(item)
-      store.dispatch('deleteProduct', item)
+      store.dispatch('suppliers/deleteProduct', item)
     });
     const close = (() => {
       dialog.value = false
       setTimeout(() => {
-        editedItem = Object.assign({}, defaultItem)
-        editedIndex = -1
+        Object.assign(editedItem, defaultItem)
+        editedIndex.value = -1
       }, 300)
     });
     const onDismissed = (() => {
@@ -1059,9 +1051,7 @@ export default {
       save,
       cancel,
       open,
-      createProduct,
       updateProduct,
-      editProduct,
       deleteProduct,
       close,
       onDismissed,
