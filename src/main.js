@@ -53,6 +53,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "suppliersPage" */ './components/Supplier/SuppliersPage.vue'),
   },
   {
+    path: '/suppliers/:id',
+    name: 'SupplierPage',
+    component: () => import(/* webpackChunkName: "supplierPage" */ './components/Supplier/Supplier.vue'),
+  },
+  {
     path: '/projects',
     name: 'ProjectsList',
     component: () => import(/* webpackChunkName: "projectsPage" */ './components/Project/ProjectsList.vue'),

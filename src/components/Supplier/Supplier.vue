@@ -15,7 +15,7 @@
         <v-tab href="#outerTab-3">
           Product Invoices
         </v-tab>
-        
+
         <v-tab href="#outerTab-5" v-if="userIsAuthenticatedAndHasRoleAdmin">
           Product Orders
         </v-tab>
@@ -34,30 +34,25 @@
                   {{ snackText }}
                   <v-btn text @click="snack = false">Close</v-btn>
                 </v-snackbar>
-              </v-layout row>
+              </v-layout>
 
               <v-layout row>
                 <v-flex xs12>
                   <form @submit.prevent="onUpdateSupplier">
                     <v-layout row>
                       <v-flex xs12 sm6 offset-sm3>
-                        <v-select :items="supplierCategories" v-model="editedSupplier.supplierCategoryId"
-                          label="Category" item-value="id" item-text="name" required></v-select>
+                        <v-select :items="supplierCategories" v-model="editedSupplier.supplierCategoryId" label="Category"
+                          item-value="id" item-text="name" required></v-select>
                       </v-flex>
                     </v-layout>
-                
+
                     <v-layout wrap>
-                    <v-flex xs12 sm6 offset-sm3>
-                      <v-select
-                      v-model="editedSupplier.productCategoryList"
-                      :items="productCategories"
-                      multiple
-                      item-value="id"
-                      item-text="name"
-                      label="Select Product Categories">
-                      </v-select>
-                    </v-flex>
-             </v-layout>
+                      <v-flex xs12 sm6 offset-sm3>
+                        <v-select v-model="editedSupplier.productCategoryList" :items="productCategories" multiple
+                          item-value="id" item-text="name" label="Select Product Categories">
+                        </v-select>
+                      </v-flex>
+                    </v-layout>
                     <v-layout row>
                       <v-flex xs12 sm6 offset-sm3>
                         <v-text-field name="supplierName" label="Supplier Name" id="supplierName"
@@ -204,9 +199,8 @@
                       </v-layout>
                       <v-layout row v-if="editedSupplierQuotationIndex >= 0">
                         <v-flex xs12 sm9 offset-sm1>
-                          <v-dialog ref="supplierQuotationDateReceivedDialog"
-                            v-model="supplierQuotationDateReceivedModal" :return-value.sync="date" persistent
-                            width="50%">
+                          <v-dialog ref="supplierQuotationDateReceivedDialog" v-model="supplierQuotationDateReceivedModal"
+                            :return-value.sync="date" persistent width="50%">
                             <template v-slot:activator="{ on }">
                               <v-text-field v-model="editedSupplierQuotation.dateRecieved" label="Date Received"
                                 prepend-icon="event" readonly v-on="on"></v-text-field>
@@ -253,8 +247,8 @@
                 </v-flex>
               </v-layout>
               <h3>Quotation Details</h3>
-              <v-data-table :headers="supplierQuotationTableHeaders" :calculate-widths="true"
-                :items="supplierQuotations" :search="search">
+              <v-data-table :headers="supplierQuotationTableHeaders" :calculate-widths="true" :items="supplierQuotations"
+                :search="search">
 
                 <template v-slot:item.actionDownloadSupplierQuotation="{ item }">
                   <v-btn icon @click.native="downloadSupplierQuotation(item)">
@@ -310,7 +304,7 @@
                           <v-select :items="projectListSelection" v-model="editedSupplierInvoice.projectId"
                             label="Select Project" single></v-select>
                         </v-flex>
-                      </v-layout row>
+                      </v-layout>
                       <v-layout row>
                         <v-flex xs4 sm5 offset-sm1>
                           <v-text-field v-model="editedSupplierInvoice.invoiceRef" label="Reference"></v-text-field>
@@ -356,9 +350,8 @@
                           </v-dialog>
                         </v-flex>
                         <v-flex xs4 sm5 offset-sm1>
-                          <v-dialog ref="supplierInvoicePaymentDueDateDialog"
-                            v-model="supplierInvoicePaymentDueDateModal" :return-value.sync="date" persistent
-                            width="50%">
+                          <v-dialog ref="supplierInvoicePaymentDueDateDialog" v-model="supplierInvoicePaymentDueDateModal"
+                            :return-value.sync="date" persistent width="50%">
                             <template v-slot:activator="{ on }">
                               <v-text-field v-model="editedSupplierInvoice.paymentDueDate" label="Payment Due Date"
                                 prepend-icon="event" readonly v-on="on"></v-text-field>
@@ -470,7 +463,7 @@
 
           </v-card>
         </v-tab-item>
- 
+
 
 
         <v-tab-item key="4" :value="'outerTab-' + 4">
@@ -492,8 +485,8 @@
               </template>
 
               <template v-slot:item.leadInTimeInDays="props">
-                <v-edit-dialog :return-value.sync="props.item.leadInTimeInDays" large persistent
-                  @save="save(props.item)" @cancel="cancel" @open="open" @close="close">
+                <v-edit-dialog :return-value.sync="props.item.leadInTimeInDays" large persistent @save="save(props.item)"
+                  @cancel="cancel" @open="open" @close="close">
                   <div>{{ props.item.leadInTimeInDays }}</div>
                   <template v-slot:input>
                     <div class="mt-4 title">Update Lead In Time</div>
@@ -524,489 +517,555 @@
 </template>
 
 <script>
+
+
+import { computed, ref, reactive, onMounted } from 'vue';
+import { useStore } from 'vuex';
+import { useRoute, useRouter } from 'vue-router';
+
 export default {
-  props: ['id'],
-  mounted() {
-    this.$store.dispatch('loadSupplierProducts', this.id)
-    this.$store.dispatch('loadSupplierQuotations', this.id)
-    this.$store.dispatch('loadSupplierQuotationSummary', this.id)
-    this.$store.dispatch('loadSupplierOrders', this.id)
-    this.$store.dispatch('loadSupplierInvoices', this.id)
-    this.$store.dispatch('loadSupplierInvoiceSummary', this.id)
+  setup() {
+    const store = useStore();
 
-  },
-  beforeUpdate() {
-    this.editedSupplier = this.supplier
-  },
-  data() {
-    return {
-      outerTab: null,
-      date: new Date().toISOString().substr(0, 10),
-      snack: false,
-      snackColor: '',
-      snackText: '',
-      editedSupplier: {
-        id: '',
-        supplierCategoryId: '',
-        productCategoryList: [],
-        name: '',
-        description: '',
-        address: '',
-        eamil: '',
-        website: '',
-        contactName: '',
-        contactNumber: '',
-        landline: '',
-        companyRegistrationNumber: '',
-        vatRegistered: false,
-        vatNumber: '',
-        biq: '',
-        ban: '',
-        bankAccountNumber: ''
-      },
-      supplierTableHeaders: [
-        {
-          text: 'Id',
-          align: 'left',
-          sortable: true,
-          align: ' d-none',
-          value: 'productCategoryId'
-        },
-        {
-          text: 'Category',
-          align: 'left',
-          sortable: true,
-          value: 'productCategoryName'
-        },
-        {
-          text: 'Name',
-          align: 'left',
-          sortable: true,
-          value: 'name'
-        },
-        { text: 'Description', value: 'description' },
-        { text: 'Manufacturer', value: 'manufacturer' },
-        { text: 'Product Code', value: 'productCode' },
-        { text: 'Product Standard', value: 'productStandard' },
-        { text: 'Image', value: 'imageUrl' },
-        { text: 'Edit', align: 'left', value: 'actionEdit' },
-        { text: 'Delete', align: 'left', value: 'actionDelete' }
-      ],
-      quotationTableHeaders: [
-        {
-          text: 'Name',
-          align: 'left',
-          sortable: true,
-          value: 'productName'
-        },
-        { text: 'Cost', value: 'cost' },
-        { text: 'Lead In (Days)', value: 'leadInTimeInDays' }
-      ],
-      productTableHeaders: [
+    const route = useRoute();
+    const router = useRouter();
+
+    const id = route.params.id;
+
+    onMounted(() => {
+      store.dispatch('loadSupplierProducts', id)
+      store.dispatch('loadSupplierQuotations', id)
+      store.dispatch('loadSupplierQuotationSummary', id)
+      store.dispatch('loadSupplierOrders', id)
+      store.dispatch('loadSupplierInvoices', id)
+      store.dispatch('loadSupplierInvoiceSummary', id)
+    });
+
+    // beforeUpdate() {
+    //   editedSupplier = supplier
+    //  },
+    const outerTab = ref(null);
+    const date = new Date().toISOString().substr(0, 10);
+    const snack = ref(false);
+    const snackColor = ref('');
+    const snackText = ref('');
+    const editedSupplier = reactive({
+      id: '',
+      supplierCategoryId: '',
+      productCategoryList: [],
+      name: '',
+      description: '',
+      address: '',
+      eamil: '',
+      website: '',
+      contactName: '',
+      contactNumber: '',
+      landline: '',
+      companyRegistrationNumber: '',
+      vatRegistered: false,
+      vatNumber: '',
+      biq: '',
+      ban: '',
+      bankAccountNumber: ''
+    });
+    const supplierTableHeaders = [
       {
-          text: 'Product',
-          align: 'left',
-          sortable: true,
-          value: 'productName'
-        },
-        { text: 'Units', value: 'units' },
-        { text: 'Unit Cost', value: 'cost' },
-        { text: 'validTo', value: 'validTo' },
-        { text: 'LeadInTimeInDays', value: 'leadInTimeInDays' },
-      ],
-      orderTableHeaders: [
-        {
-          text: 'Project',
-          align: 'left',
-          sortable: true,
-          value: 'projectName'
-        },
-        {
-          text: 'Product',
-          align: 'left',
-          sortable: true,
-          value: 'productName'
-        },
-        { text: 'Quantity', value: 'quantity' },
-        { text: 'Unit Cost', value: 'unitCost' },
-        { text: 'Total Cost', value: 'totalCost' },
-        { text: 'Delivery Date', value: 'deliveryDate' },
-        { text: 'Status', value: 'status' },
-      ],
-      search: '',
-      dialog: false,
-      editedIndex: -1,
-      editedItem: {
-        id: '',
-        productCategoryId: '',
-        productCategoryName: '',
-        name: '',
-        description: '',
-        manufacturer: '',
-        productCode: '',
-        standard: '',
-        imageUrl: ''
+        text: 'Id',
+        align: 'left',
+        sortable: true,
+        align: ' d-none',
+        value: 'productCategoryId'
       },
-      defaultItem: {
-        productCategoryId: '',
-        productCategoryName: '',
-        name: '',
-        description: '',
-        manufacturer: '',
-        productCode: '',
-        standard: '',
-        imageUrl: ''
+      {
+        text: 'Category',
+        align: 'left',
+        sortable: true,
+        value: 'productCategoryName'
       },
-      invoiceStatusListSelection: [
-        { text: 'UNPAID', value: 'UNPAID' },
-        { text: 'APPROVED_FOR_PAYMENT', value: 'APPROVED_FOR_PAYMENT' },
-        { text: 'PAID', value: 'PAID' }
-      ],
-      supplierInvoiceTableHeaders: [
-        { text: 'Project', value: 'projectName' },
-        { text: 'Ref', value: 'invoiceRef' },
-        { text: 'Description', value: 'description', width: "1%" },
-        { text: 'Status', value: 'status' },
-        { text: 'Currency', value: 'currency' },
-        { text: 'Gross', value: 'grossAmount' },
-        { text: 'Net', value: 'netAmount' },
-        { text: 'Issued', value: 'invoiceDate' },
-        { text: 'Payment Due', value: 'paymentDueDate', width: "125px" },
-        { text: 'Download', align: 'left', value: 'actionDownloadSupplierInvoice' },
-        { text: 'Approve', align: 'left', value: 'actionPaySupplierInvoice' },
-        { text: 'Edit', align: 'left', value: 'actionEditSupplierInvoice' },
-        { text: 'Delete', align: 'left', value: 'actionDeleteSupplierInvoice' }
-      ],
-      supplierInvoiceDialog: false,
-      supplierInvoiceDateDialog: false,
-      supplierInvoiceDateModal: false,
-      supplierInvoicePaymentDueDateDialog: false,
-      supplierInvoicePaymentDueDateModal: false,
-      editedSupplierInvoiceIndex: -1,
-      editedSupplierInvoice: {
-        id: '',
-        supplierId: this.id,
-        projectId: '',
-        invoiceRef: '',
-        description: '',
-        currency: '',
-        netAmount: '',
-        invoiceDate: null,
-        paymentDueDate: null,
-        invoiceFile: null,
-        status: ''
+      {
+        text: 'Name',
+        align: 'left',
+        sortable: true,
+        value: 'name'
       },
-      defaultSupplierInvoice: {
-        supplierId: this.id,
-        projectId: '',
-        invoiceRef: '',
-        description: '',
-        currency: '',
-        netAmount: '',
-        invoiceDate: null,
-        paymentDueDate: null,
-        invoiceFile: null,
-        status: ''
+      { text: 'Description', value: 'description' },
+      { text: 'Manufacturer', value: 'manufacturer' },
+      { text: 'Product Code', value: 'productCode' },
+      { text: 'Product Standard', value: 'productStandard' },
+      { text: 'Image', value: 'imageUrl' },
+      { text: 'Edit', align: 'left', value: 'actionEdit' },
+      { text: 'Delete', align: 'left', value: 'actionDelete' }
+    ];
+    const quotationTableHeaders = [
+      {
+        text: 'Name',
+        align: 'left',
+        sortable: true,
+        value: 'productName'
       },
-      formHasErrors: false,
-      supplierQuotationTableHeaders: [
-        { text: 'Project', value: 'projectName' },
-        { text: 'Ref', value: 'quotationRef' },
-        { text: 'Gross', value: 'grossAmount' },
-        { text: 'Currency', value: 'currency' },
-        { text: 'Issued', value: 'quotationDate', width: "125px" },
-        { text: 'Status', value: 'status' },
-        { text: 'Download', align: 'left', value: 'actionDownloadSupplierQuotation' },
-        { text: 'Edit', align: 'left', value: 'actionEditSupplierQuotation' },
-        { text: 'Delete', align: 'left', value: 'actionDeleteSupplierQuotation' }
-      ],
-      supplierQuotationDialog: false,
-      supplierQuotationDateDialog: false,
-      supplierQuotationDateModal: false,
-      supplierQuotationDateReceivedDialog: false,
-      supplierQuotationDateReceivedModal: false,
-      editedSupplierQuotationIndex: -1,
-      editedSupplierQuotation: {
-        id: '',
-        supplierId: this.id,
-        projectId: '',
-        quotationRef: '',
-        description: '',
-        currency: '',
-        netAmount: '',
-        quotationDate: null,
-        dateReceived: null,
-        quotationFile: null,
-        status: ''
+      { text: 'Cost', value: 'cost' },
+      { text: 'Lead In (Days)', value: 'leadInTimeInDays' }
+    ];
+    const productTableHeaders = [
+      {
+        text: 'Product',
+        align: 'left',
+        sortable: true,
+        value: 'productName'
       },
-      defaultSupplierQuotation: {
-        supplierId: this.id,
-        projectId: '',
-        quotationRef: '',
-        description: '',
-        currency: '',
-        netAmount: '',
-        quotationDate: null,
-        paymentDueDate: null,
-        quotationFile: null,
-        status: ''
+      { text: 'Units', value: 'units' },
+      { text: 'Unit Cost', value: 'cost' },
+      { text: 'validTo', value: 'validTo' },
+      { text: 'LeadInTimeInDays', value: 'leadInTimeInDays' },
+    ];
+    const orderTableHeaders = [
+      {
+        text: 'Project',
+        align: 'left',
+        sortable: true,
+        value: 'projectName'
       },
+      {
+        text: 'Product',
+        align: 'left',
+        sortable: true,
+        value: 'productName'
+      },
+      { text: 'Quantity', value: 'quantity' },
+      { text: 'Unit Cost', value: 'unitCost' },
+      { text: 'Total Cost', value: 'totalCost' },
+      { text: 'Delivery Date', value: 'deliveryDate' },
+      { text: 'Status', value: 'status' },
+    ];
+    const search = ref('');
+    const dialog = ref(false);
+    const editedIndex = ref(-1);
+    const editedItem = {
+      id: '',
+      productCategoryId: '',
+      productCategoryName: '',
+      name: '',
+      description: '',
+      manufacturer: '',
+      productCode: '',
+      standard: '',
+      imageUrl: ''
+    };
+    const defaultItem = {
+      productCategoryId: '',
+      productCategoryName: '',
+      name: '',
+      description: '',
+      manufacturer: '',
+      productCode: '',
+      standard: '',
+      imageUrl: ''
+    };
+    const invoiceStatusListSelection = [
+      { text: 'UNPAID', value: 'UNPAID' },
+      { text: 'APPROVED_FOR_PAYMENT', value: 'APPROVED_FOR_PAYMENT' },
+      { text: 'PAID', value: 'PAID' }
+    ];
+    const supplierInvoiceTableHeaders = [
+      { text: 'Project', value: 'projectName' },
+      { text: 'Ref', value: 'invoiceRef' },
+      { text: 'Description', value: 'description', width: "1%" },
+      { text: 'Status', value: 'status' },
+      { text: 'Currency', value: 'currency' },
+      { text: 'Gross', value: 'grossAmount' },
+      { text: 'Net', value: 'netAmount' },
+      { text: 'Issued', value: 'invoiceDate' },
+      { text: 'Payment Due', value: 'paymentDueDate', width: "125px" },
+      { text: 'Download', align: 'left', value: 'actionDownloadSupplierInvoice' },
+      { text: 'Approve', align: 'left', value: 'actionPaySupplierInvoice' },
+      { text: 'Edit', align: 'left', value: 'actionEditSupplierInvoice' },
+      { text: 'Delete', align: 'left', value: 'actionDeleteSupplierInvoice' }
+    ];
+    const supplierInvoiceDialog = ref(false);
+    const supplierInvoiceDateDialog = ref(false);
+    const supplierInvoiceDateModal = ref(false);
+    const supplierInvoicePaymentDueDateDialog = ref(false);
+    const supplierInvoicePaymentDueDateModal = ref(false);
+    const editedSupplierInvoiceIndex = -1;
+    const editedSupplierInvoice = reactive({
+      id: '',
+      supplierId: id,
+      projectId: '',
+      invoiceRef: '',
+      description: '',
+      currency: '',
+      netAmount: '',
+      invoiceDate: null,
+      paymentDueDate: null,
+      invoiceFile: null,
+      status: ''
+    });
+    const defaultSupplierInvoice = reactive({
+      supplierId: id,
+      projectId: '',
+      invoiceRef: '',
+      description: '',
+      currency: '',
+      netAmount: '',
+      invoiceDate: null,
+      paymentDueDate: null,
+      invoiceFile: null,
+      status: ''
+    });
+    const formHasErrors = false;
+    const supplierQuotationTableHeaders = [
+      { text: 'Project', value: 'projectName' },
+      { text: 'Ref', value: 'quotationRef' },
+      { text: 'Gross', value: 'grossAmount' },
+      { text: 'Currency', value: 'currency' },
+      { text: 'Issued', value: 'quotationDate', width: "125px" },
+      { text: 'Status', value: 'status' },
+      { text: 'Download', align: 'left', value: 'actionDownloadSupplierQuotation' },
+      { text: 'Edit', align: 'left', value: 'actionEditSupplierQuotation' },
+      { text: 'Delete', align: 'left', value: 'actionDeleteSupplierQuotation' }
+    ];
+    const supplierQuotationDialog = ref(false);
+    const supplierQuotationDateDialog = ref(false);
+    const supplierQuotationDateModal = ref(false);
+    const supplierQuotationDateReceivedDialog = ref(false);
+    const supplierQuotationDateReceivedModal = ref(false);
+    const editedSupplierQuotationIndex = ref(-1);
+    const editedSupplierQuotation = reactive({
+      id: '',
+      supplierId: id,
+      projectId: '',
+      quotationRef: '',
+      description: '',
+      currency: '',
+      netAmount: '',
+      quotationDate: null,
+      dateReceived: null,
+      quotationFile: null,
+      status: ''
+    });
+    const defaultSupplierQuotation = reactive({
+      supplierId: id,
+      projectId: '',
+      quotationRef: '',
+      description: '',
+      currency: '',
+      netAmount: '',
+      quotationDate: null,
+      paymentDueDate: null,
+      quotationFile: null,
+      status: ''
+    });
 
-    }
-  },
-  computed: {
-    productCategories() {
-      return this.$store.getters.loadedProductCategories
-    },
-    supplierCategories() {
-      return this.$store.getters.loadedSupplierCategories
-    },
-    supplierQuotationSummary() {
-      return this.$store.getters.loadedSupplierQuotationSummary
-    },
-    supplierQuotations() {
-      return this.$store.getters.loadedSupplierQuotations
-    },
-    supplierProducts() {
-      return this.$store.getters.loadedSupplierProducts
-    },
-    orders() {
-      return this.$store.getters.loadedSupplierOrders
-    },
-    projectListSelection() {
-      return this.$store.getters.loadedProjects
-        .map(function (item) {
-          console.log("Project selection list adding " + item.id)
-          return { text: item.name, value: item.id }
-        })
-    },
-    supplierInvoiceSummary() {
-      return this.$store.getters.loadedSupplierInvoiceSummary
-    },
-    supplierInvoices() {
-      return this.$store.getters.loadedSupplierInvoices
-    },
-    supplier() {
-      console.log('Loading product with id ' + this.id)
-      return this.$store.getters.loadedSupplier(this.id)
-    },
-    error() {
-      return this.$store.getters.error
-    },
-    formValidationError() {
-      return this.$store.getters.formValidationError
-    },
-    loading() {
-      return this.$store.getters.loading
-    },
-    userIsAuthenticatedAndHasRoleAdmin() {
-      return this.$store.getters.userIsAuthenticatedAndHasRoleAdmin
-    }
-  },
-  methods: {
+    const productCategories = (() => { return store.getters.loadedProductCategories });
 
-    onUpdateSupplier() {
+    const supplierCategories = (() => { return store.getters.loadedSupplierCategories });
+
+    const supplierQuotationSummary = (() => { return store.getters.loadedSupplierQuotationSummary });
+
+    const supplierQuotation = (() => { return store.getters.loadedSupplierQuotations });
+
+    const supplierQuotations = (() => { });
+
+    const supplierProducts = (() => {
+      return store.getters.loadedSupplierProducts
+    });
+    const orders = (() => {
+      return store.getters.loadedSupplierOrders
+    });
+    const supplierInvoiceSummary = (() => {
+      return store.getters.loadedSupplierInvoiceSummary
+    });
+    const supplierInvoices = (() => {
+      return store.getters.loadedSupplierInvoices
+    });
+    const supplier = (() => {
+      console.log('Loading product with id ' + id)
+      return store.getters.loadedSupplier(id)
+    });
+    const error = (() => {
+      return store.getters.error
+    });
+    const formValidationError = (() => {
+      return store.getters.formValidationError
+    });
+    const loading = (() => {
+      return store.getters.loading
+    });
+    const userIsAuthenticatedAndHasRoleAdmin = (() => {
+      return store.getters.userIsAuthenticatedAndHasRoleAdmin
+    });
+
+    const onUpdateSupplier = (() => {
       console.log('Update Supplier Event Received..')
-      console.log(this.editedSupplier)
-      this.$store.dispatch('updateSupplier', this.editedSupplier)
-      this.save()
-    },
-    saveSupplierQuotation() {
-      if (this.editedSupplierQuotationIndex > -1) {
+      console.log(editedSupplier)
+      store.dispatch('updateSupplier', editedSupplier)
+      save()
+    });
+    const saveSupplierQuotation = (() => {
+      if (editedSupplierQuotationIndex > -1) {
         const formData = {
-          id: this.editedSupplierQuotation.id,
-          supplierId: this.id,
-          projectId: this.editedSupplierQuotation.projectId,
-          quotationRef: this.editedSupplierQuotation.quotationRef,
-          status: this.editedSupplierQuotation.status,
-          description: this.editedSupplierQuotation.description,
-          currency: this.editedSupplierQuotation.currency,
-          grossAmount: this.editedSupplierQuotation.grossAmount,
-          netAmount: this.editedSupplierQuotation.netAmount,
-          quotationDate: this.editedSupplierQuotation.quotationDate,
-          dateReceived: this.editedSupplierQuotation.dateReceived
+          id: editedSupplierQuotation.id,
+          supplierId: id,
+          projectId: editedSupplierQuotation.projectId,
+          quotationRef: editedSupplierQuotation.quotationRef,
+          status: editedSupplierQuotation.status,
+          description: editedSupplierQuotation.description,
+          currency: editedSupplierQuotation.currency,
+          grossAmount: editedSupplierQuotation.grossAmount,
+          netAmount: editedSupplierQuotation.netAmount,
+          quotationDate: editedSupplierQuotation.quotationDate,
+          dateReceived: editedSupplierQuotation.dateReceived
         }
         console.log('Updating subcontractor quotation details')
-        console.log(this.formData)
-        this.$store.dispatch('updateSupplierQuotation', formData)
+        console.log(formData)
+        store.dispatch('updateSupplierQuotation', formData)
           .then(
             setTimeout(() => {
-              this.$store.dispatch('loadSupplierQuotationSummary', this.id)
+              store.dispatch('loadSupplierQuotationSummary', id)
             }, 300)
           )
       } else {
         console.log('Creating new subcontractor quotation details')
         const formData = {
-          supplierId: this.id,
-          projectId: this.editedSupplierQuotation.projectId,
-          quotationRef: this.editedSupplierQuotation.quotationRef,
-          description: this.editedSupplierQuotation.description,
-          status: this.editedSupplierQuotation.status,
-          currency: this.editedSupplierQuotation.currency,
-          grossAmount: this.editedSupplierQuotation.grossAmount,
-          netAmount: this.editedSupplierQuotation.netAmount,
-          quotationDate: this.editedSupplierQuotation.quotationDate,
-          quotationFile: this.editedSupplierQuotation.quotationFile
+          supplierId: id,
+          projectId: editedSupplierQuotation.projectId,
+          quotationRef: editedSupplierQuotation.quotationRef,
+          description: editedSupplierQuotation.description,
+          status: editedSupplierQuotation.status,
+          currency: editedSupplierQuotation.currency,
+          grossAmount: editedSupplierQuotation.grossAmount,
+          netAmount: editedSupplierQuotation.netAmount,
+          quotationDate: editedSupplierQuotation.quotationDate,
+          quotationFile: editedSupplierQuotation.quotationFile
         }
         console.log(formData)
-        this.$store.dispatch('createSupplierQuotation', formData)
+        store.dispatch('createSupplierQuotation', formData)
           .then(
             setTimeout(() => {
-              this.$store.dispatch('loadSupplierQuotationSummary', this.id)
+              store.dispatch('loadSupplierQuotationSummary', id)
             }, 300)
           )
 
       }
-      this.closeSupplierQuotationDialog()
-      this.save()
-    },
-    showSupplierQuotationEditDialog(item) {
+      closeSupplierQuotationDialog()
+      save()
+    });
+    const showSupplierQuotationEditDialog = ((item) => {
       console.log('Showing Edit Quotation Dialog for operative with id ' + item.id)
-      this.editedSupplierQuotationIndex = this.supplierQuotations.indexOf(item)
-      this.editedSupplierQuotation = Object.assign({}, item)
-      this.supplierQuotationDialog = true
-    },
-    closeSupplierQuotationDialog() {
-      this.supplierQuotationDialog = false
+      editedSupplierQuotationIndex = supplierQuotations.indexOf(item)
+      editedSupplierQuotation = Object.assign({}, item)
+      supplierQuotationDialog = true
+    });
+    const closeSupplierQuotationDialog = (() => {
+      supplierQuotationDialog = false
       setTimeout(() => {
-        this.editedSupplierQuotation = Object.assign({}, this.defaultContractorQuotation)
-        this.editedSupplierQuotationIndex = -1
+        editedSupplierQuotation = Object.assign({}, defaultContractorQuotation)
+        editedSupplierQuotationIndex = -1
       }, 300)
-    },
-    downloadSupplierQuotation(item) {
+    });
+    const downloadSupplierQuotation = ((item) => {
       console.log('downloading item requested..')
       console.log(item)
-      this.$store.dispatch('downloadSupplierQuotation', item)
-    },
-    deleteSupplierQuotation(item) {
+      store.dispatch('downloadSupplierQuotation', item)
+    });
+    const deleteSupplierQuotation = ((item) => {
       console.log('Delete SupplierQuotation Event Received..')
       const formData = {
         id: item.id,
-        supplierId: this.id
+        supplierId: id
       }
       console.log(formData)
-      this.$store.dispatch('deleteSupplierQuotation', formData)
-    },
+      store.dispatch('deleteSupplierQuotation', formData)
+    });
 
-    saveSupplierInvoice() {
-      if (this.editedSupplierInvoiceIndex > -1) {
+    const saveSupplierInvoice = (() => {
+      if (editedSupplierInvoiceIndex > -1) {
         const formData = {
-          id: this.editedSupplierInvoice.id,
-          supplierId: this.id,
-          projectId: this.editedSupplierInvoice.projectId,
-          invoiceRef: this.editedSupplierInvoice.invoiceRef,
-          status: this.editedSupplierInvoice.status,
-          description: this.editedSupplierInvoice.description,
-          currency: this.editedSupplierInvoice.currency,
-          grossAmount: this.editedSupplierInvoice.grossAmount,
-          netAmount: this.editedSupplierInvoice.netAmount,
-          invoiceDate: this.editedSupplierInvoice.invoiceDate,
-          paymentDueDate: this.editedSupplierInvoice.paymentDueDate
+          id: editedSupplierInvoice.id,
+          supplierId: id,
+          projectId: editedSupplierInvoice.projectId,
+          invoiceRef: editedSupplierInvoice.invoiceRef,
+          status: editedSupplierInvoice.status,
+          description: editedSupplierInvoice.description,
+          currency: editedSupplierInvoice.currency,
+          grossAmount: editedSupplierInvoice.grossAmount,
+          netAmount: editedSupplierInvoice.netAmount,
+          invoiceDate: editedSupplierInvoice.invoiceDate,
+          paymentDueDate: editedSupplierInvoice.paymentDueDate
         }
         console.log('Updating supplier invoice details')
-        console.log(this.formData)
-        this.$store.dispatch('updateSupplierInvoice', formData)
+        console.log(formData)
+        store.dispatch('updateSupplierInvoice', formData)
           .then(
             setTimeout(() => {
-              this.$store.dispatch('loadSupplierInvoiceSummary', this.id)
+              store.dispatch('loadSupplierInvoiceSummary', id)
             }, 300)
           )
       } else {
         console.log('Creating new supplier invoice details')
         const formData = {
-          supplierId: this.id,
-          projectId: this.editedSupplierInvoice.projectId,
-          invoiceRef: this.editedSupplierInvoice.invoiceRef,
-          description: this.editedSupplierInvoice.description,
-          status: this.editedSupplierInvoice.status,
-          currency: this.editedSupplierInvoice.currency,
-          grossAmount: this.editedSupplierInvoice.grossAmount,
-          netAmount: this.editedSupplierInvoice.netAmount,
-          invoiceDate: this.editedSupplierInvoice.invoiceDate,
-          paymentDueDate: this.editedSupplierInvoice.paymentDueDate,
-          invoiceFile: this.editedSupplierInvoice.invoiceFile
+          supplierId: id,
+          projectId: editedSupplierInvoice.projectId,
+          invoiceRef: editedSupplierInvoice.invoiceRef,
+          description: editedSupplierInvoice.description,
+          status: editedSupplierInvoice.status,
+          currency: editedSupplierInvoice.currency,
+          grossAmount: editedSupplierInvoice.grossAmount,
+          netAmount: editedSupplierInvoice.netAmount,
+          invoiceDate: editedSupplierInvoice.invoiceDate,
+          paymentDueDate: editedSupplierInvoice.paymentDueDate,
+          invoiceFile: editedSupplierInvoice.invoiceFile
         }
         console.log(formData)
-        this.$store.dispatch('createSupplierInvoice', formData)
+        $store.dispatch('createSupplierInvoice', formData)
           .then(
             setTimeout(() => {
-              this.$store.dispatch('loadSupplierInvoiceSummary', this.id)
+              store.dispatch('loadSupplierInvoiceSummary', id)
             }, 300)
           )
       }
-      this.closeSupplierInvoiceDialog()
-    },
-    downloadSupplierInvoice(item) {
+      closeSupplierInvoiceDialog()
+    });
+    const downloadSupplierInvoice = ((item) => {
       console.log('downloading item requested..')
       console.log(item)
-      this.$store.dispatch('downloadSupplierInvoice', item)
-    },
-    showSupplierInvoiceEditDialog(item) {
+      store.dispatch('downloadSupplierInvoice', item)
+    });
+    const showSupplierInvoiceEditDialog = ((item) => {
       console.log('Showing Edit Invoice Dialog for operative with id ' + item.id)
-      this.editedSupplierInvoiceIndex = this.supplierInvoices.indexOf(item)
-      this.editedSupplierInvoice = Object.assign({}, item)
-      this.supplierInvoiceDialog = true
-    },
-    closeSupplierInvoiceDialog() {
-      this.supplierInvoiceDialog = false
+      editedSupplierInvoiceIndex = supplierInvoices.indexOf(item)
+      editedSupplierInvoice = Object.assign({}, item)
+      supplierInvoiceDialog = true
+    });
+    const closeSupplierInvoiceDialog = (() => {
+      supplierInvoiceDialog = false
       setTimeout(() => {
-        this.editedSupplierInvoice = Object.assign({}, this.defaultContractorInvoice)
-        this.editedSupplierInvoiceIndex = -1
+        editedSupplierInvoice = Object.assign({}, defaultContractorInvoice)
+        editedSupplierInvoiceIndex = -1
       }, 300)
-    },
-    save() {
-      this.snack = true
-      this.snackColor = 'success'
-      this.snackText = 'Data saved successfully'
-    },
-    cancel() {
-      this.snack = true
-      this.snackColor = 'error'
-      this.snackText = 'Canceled'
-    },
-    open() {
-      this.snack = true
-      this.snackColor = 'info'
-      this.snackText = 'Dialog opened'
-    },
-    close() {
-      console.log('Dialog closed')
-    },
-    editProduct(item) {
-      this.editedIndex = this.products.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialog = true
-    },
-    updateProduct() {
+    });
+    const save = (() => {
+      snack = true
+      snackColor = 'success'
+      snackText = 'Data saved successfully'
+    });
+    const cancel = (() => {
+      snack = true
+      snackColor = 'error'
+      snackText = 'Canceled'
+    });
+    const open = (() => {
+      snack = true
+      snackColor = 'info'
+      snackText = 'Dialog opened'
+    });
+    const editProduct = ((item) => {
+      editedIndex = products.indexOf(item)
+      editedItem = Object.assign({}, item)
+      dialog = true
+    });
+    const updateProduct = (() => {
 
-      if (this.editedIndex === -1) {
+      if (editedIndex === -1) {
         console.log('Creating products')
-        console.log(this.editedItem)
-        this.$store.dispatch('createProduct', this.editedItem)
+        console.log(editedItem)
+        store.dispatch('createProduct', editedItem)
       } else {
         console.log('Updating  products')
-        console.log(this.editedItem)
-        this.$store.dispatch('updateProduct', this.editedItem)
+        console.log(editedItem)
+        store.dispatch('updateProduct', editedItem)
       }
-      this.close()
-    },
-    deleteProduct(item) {
+      close()
+    });
+    const deleteProduct = ((item) => {
       console.log('Delete product Event Received..')
       console.log(item)
-      this.$store.dispatch('deleteProduct', item)
-    },
-    close() {
-      this.dialog = false
+      store.dispatch('deleteProduct', item)
+    });
+    const close = (() => {
+      dialog.value = false
       setTimeout(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
+        editedItem = Object.assign({}, defaultItem)
+        editedIndex = -1
       }, 300)
-    },
-    onDismissed() {
-      this.$store.dispatch('clearError')
-    },
-    formIsValid() {
+    });
+    const onDismissed = (() => {
+      store.dispatch('clearError')
+    });
+    const formIsValid = (() => {
       return true
+    });
+
+    return {
+      outerTab,
+      date,
+      snack,
+      snackColor,
+      snackText,
+      editedSupplier,
+      supplierTableHeaders,
+      quotationTableHeaders,
+      productTableHeaders,
+      orderTableHeaders,
+      search,
+      dialog,
+      editedIndex,
+      editedItem,
+      defaultItem,
+      invoiceStatusListSelection,
+      supplierInvoiceTableHeaders,
+      supplierInvoiceDialog,
+      supplierInvoiceDateDialog,
+      supplierInvoiceDateModal,
+      supplierInvoicePaymentDueDateDialog,
+      supplierInvoicePaymentDueDateModal,
+      editedSupplierInvoiceIndex,
+      editedSupplierInvoice,
+      defaultSupplierInvoice,
+      formHasErrors,
+      supplierQuotationTableHeaders,
+      supplierQuotationDialog,
+      supplierQuotationDateDialog,
+      supplierQuotationDateModal,
+      supplierQuotationDateReceivedDialog,
+      supplierQuotationDateReceivedModal,
+      editedSupplierQuotationIndex,
+      editedSupplierQuotation,
+      defaultSupplierQuotation,
+      supplierInvoices,
+      productCategories,
+      supplier,
+      supplierCategories,
+      supplierQuotationSummary,
+      supplierQuotation,
+      supplierQuotations,
+      supplierProducts,
+      orders,
+      supplierInvoiceSummary,
+      error,
+      formValidationError,
+      loading,
+      userIsAuthenticatedAndHasRoleAdmin,
+      onUpdateSupplier,
+      saveSupplierQuotation,
+      showSupplierQuotationEditDialog,
+      closeSupplierQuotationDialog,
+      downloadSupplierQuotation,
+      deleteSupplierQuotation,
+      saveSupplierInvoice,
+      downloadSupplierInvoice,
+      showSupplierInvoiceEditDialog,
+      closeSupplierInvoiceDialog,
+      save,
+      cancel,
+      open,
+      createProduct,
+      updateProduct,
+      editProduct,
+      deleteProduct,
+      close,
+      onDismissed,
+      formIsValid
     }
   }
 }
