@@ -3,26 +3,24 @@
     <v-card>
       <v-tabs v-model="outerTab" show-arrows>
         <v-tabs-slider color="blue"></v-tabs-slider>
-        <v-tab href="#outerTab-1">
+        <v-tab value="outerTab-1">
           Supplier Details
         </v-tab>
-        <v-tab href="#outerTab-2" v-if="userIsAuthenticatedAndHasRoleAdmin">
+        <v-tab value="outerTab-2" v-if="userIsAuthenticatedAndHasRoleAdmin">
           Quotations
         </v-tab>
-        <v-tab href="#outerTab-4" v-if="userIsAuthenticatedAndHasRoleAdmin">
+        <v-tab value="outerTab-4" v-if="userIsAuthenticatedAndHasRoleAdmin">
           Products
         </v-tab>
-        <v-tab href="#outerTab-3">
+        <v-tab value="outerTab-3">
           Product Invoices
         </v-tab>
-
-        <v-tab href="#outerTab-5" v-if="userIsAuthenticatedAndHasRoleAdmin">
+        <v-tab aria-valuemin="outerTab-5" v-if="userIsAuthenticatedAndHasRoleAdmin">
           Product Orders
         </v-tab>
       </v-tabs>
-
       <v-window v-model="outerTab">
-        <v-window-item key="1" value="'outerTab-' + 1">
+        <v-window-item  value="outerTab-1">
           <v-card>
             <v-card-title>
               Supplier Details
@@ -120,7 +118,7 @@
             </v-card-text>
           </v-card>
         </v-window-item>
-        <v-window-item key="2" value="'outerTab-' + 2">
+        <v-window-item  value="outerTab-2">
           <v-card>
             <v-card-title>
 
@@ -182,8 +180,8 @@
 
                       <v-layout row>
                         <v-flex xs12 sm9 offset-sm1>
-                          <v-dialog ref="supplierQuotationDateDialog" v-model="supplierQuotationDateModal"
-                             persistent width="50%">
+                          <v-dialog ref="supplierQuotationDateDialog" v-model="supplierQuotationDateModal" persistent
+                            width="50%">
                             <template v-slot:[`activator`]="{ on }">
                               <v-text-field v-model="editedSupplierQuotation.quotationDate" label="Date Issued"
                                 prepend-icon="event" readonly v-on="on"></v-text-field>
@@ -200,7 +198,7 @@
                       <v-layout row v-if="editedSupplierQuotationIndex >= 0">
                         <v-flex xs12 sm9 offset-sm1>
                           <v-dialog ref="supplierQuotationDateReceivedDialog" v-model="supplierQuotationDateReceivedModal"
-                             persistent width="50%">
+                            persistent width="50%">
                             <template v-slot:[`activator`]="{ on }">
                               <v-text-field v-model="editedSupplierQuotation.dateRecieved" label="Date Received"
                                 prepend-icon="event" readonly v-on="on"></v-text-field>
@@ -247,7 +245,7 @@
                 </v-flex>
               </v-layout>
               <h3>Quotation Details</h3>
-              <v-data-table :headers="supplierQuotationTableHeaders" :calculate-widths="true" :items="supplierQuotations"
+              <v-data-table :headers="supplierQuotationTableHeaders" dense :calculate-widths="true" :items="supplierQuotations"
                 :search="search">
 
                 <template v-slot:[`item.actionDownloadSupplierQuotation`]="{ item }">
@@ -279,7 +277,7 @@
 
           </v-card>
         </v-window-item>
-        <v-window-item key="3" value="'outerTab-' + 3">
+        <v-window-item  value="outerTab-3">
           <v-card>
             <v-card-title>
 
@@ -336,8 +334,8 @@
 
                       <v-layout row>
                         <v-flex xs4 sm5 offset-sm1>
-                          <v-dialog ref="supplierInvoiceDateDialog" v-model="supplierInvoiceDateModal"
-                             persistent width="50%">
+                          <v-dialog ref="supplierInvoiceDateDialog" v-model="supplierInvoiceDateModal" persistent
+                            width="50%">
                             <template v-slot:[`activator`]="{ on }">
                               <v-text-field v-model="editedSupplierInvoice.invoiceDate" label="Date Issued"
                                 prepend-icon="event" readonly v-on="on"></v-text-field>
@@ -351,7 +349,7 @@
                         </v-flex>
                         <v-flex xs4 sm5 offset-sm1>
                           <v-dialog ref="supplierInvoicePaymentDueDateDialog" v-model="supplierInvoicePaymentDueDateModal"
-                             persistent width="50%">
+                            persistent width="50%">
                             <template v-slot:[`activator`]="{ on }">
                               <v-text-field v-model="editedSupplierInvoice.paymentDueDate" label="Payment Due Date"
                                 prepend-icon="event" readonly v-on="on"></v-text-field>
@@ -463,10 +461,7 @@
 
           </v-card>
         </v-window-item>
-
-
-
-        <v-window-item key="4" value="'outerTab-' + 4">
+        <v-window-item  value="outerTab-4">
           <v-card>
             <v-data-table :headers="productTableHeaders" :items="supplierProducts" :search="search">
               <!--
@@ -496,9 +491,7 @@
             </v-data-table>
           </v-card>
         </v-window-item>
-
-
-        <v-window-item key="5" value="'outerTab-' + 5">
+        <v-window-item  value="outerTab-5">
           <v-card>
             <v-card-title>
             </v-card-title>
@@ -507,7 +500,6 @@
           </v-card>
         </v-window-item>
       </v-window>
-
     </v-card>
   </v-container>
 </template>
@@ -524,7 +516,7 @@ export default {
     const store = useStore();
 
     const route = useRoute();
-   //const router = useRouter();
+    //const router = useRouter();
 
     const id = route.params.id;
 
@@ -750,7 +742,6 @@ export default {
       quotationFile: null,
       status: ''
     });
-
     const productCategories = computed(() => { return store.getters.loadedProductCategories });
 
     const supplierCategories = computed(() => { return store.getters.loadedSupplierCategories });
@@ -759,19 +750,14 @@ export default {
 
     const supplierQuotation = computed(() => { return store.getters.loadedSupplierQuotation });
 
-    const supplierQuotations = computed(() => {
-      return store.getters.loadedSupplierQuotations
-     });
+    const supplierQuotations = computed(() => { return store.getters.loadedSupplierQuotations });
 
-    const supplierProducts = computed(() => {
-      return store.getters.loadedSupplierProducts
-    });
-    const orders = computed(() => {
-      return store.getters.loadedSupplierOrders
-    });
-    const supplierInvoiceSummary = computed(() => {
-      return store.getters.loadedSupplierInvoiceSummary
-    });
+    const supplierProducts = computed(() => { return store.getters.loadedSupplierProducts });
+    
+    const orders = computed(() => { return store.getters.loadedSupplierOrders });
+
+    const supplierInvoiceSummary = computed(() => { return store.getters.loadedSupplierInvoiceSummary });
+    
     const supplierInvoices = computed(() => {
       return store.getters.loadedSupplierInvoices
     });
@@ -789,13 +775,13 @@ export default {
       return store.getters.loading
     });
     const userIsAuthenticatedAndHasRoleAdmin = computed(() => {
-      return store.getters.userIsAuthenticatedAndHasRoleAdmin
+      return store.getters['users/userIsAuthenticatedAndHasRoleAdmin']
     });
 
     const onUpdateSupplier = (() => {
       console.log('Update Supplier Event Received..')
       console.log(editedSupplier)
-      store.dispatch('updateSupplier', editedSupplier)
+      store.dispatch('suppliers/updateSupplier', editedSupplier)
       save()
     });
     const saveSupplierQuotation = (() => {
@@ -815,10 +801,10 @@ export default {
         }
         console.log('Updating subcontractor quotation details')
         console.log(formData)
-        store.dispatch('updateSupplierQuotation', formData)
+        store.dispatch('suppliers/updateSupplierQuotation', formData)
           .then(
             setTimeout(() => {
-              store.dispatch('loadSupplierQuotationSummary', id)
+              store.dispatch('suppliers/loadSupplierQuotationSummary', id)
             }, 300)
           )
       } else {
@@ -836,10 +822,10 @@ export default {
           quotationFile: editedSupplierQuotation.quotationFile
         }
         console.log(formData)
-        store.dispatch('createSupplierQuotation', formData)
+        store.dispatch('suppliers/createSupplierQuotation', formData)
           .then(
             setTimeout(() => {
-              store.dispatch('loadSupplierQuotationSummary', id)
+              store.dispatch('suppliers/loadSupplierQuotationSummary', id)
             }, 300)
           )
 
@@ -872,7 +858,7 @@ export default {
         supplierId: id
       }
       console.log(formData)
-      store.dispatch('supplier/deleteSupplierQuotation', formData)
+      store.dispatch('suppliers/deleteSupplierQuotation', formData)
     });
 
     const saveSupplierInvoice = (() => {
@@ -892,7 +878,7 @@ export default {
         }
         console.log('Updating supplier invoice details')
         console.log(formData)
-        store.dispatch('updateSupplierInvoice', formData)
+        store.dispatch('suppliers/updateSupplierInvoice', formData)
           .then(
             setTimeout(() => {
               store.dispatch('suppliers/loadSupplierInvoiceSummary', id)
