@@ -213,7 +213,7 @@ import axios from 'axios'
   }
   const actions = {
     loadSubContractors({ commit}) {
-      commit('setLoading', true)
+      commit('setLoading', true, { root: true })
       console.log('Loading all SubContractors for user with authorization token ' + localStorage.authHeader)
       webClient.get('/api/resource/clients/' + localStorage.clientId + '/subcontractors')
         .then(response => {
@@ -230,7 +230,7 @@ import axios from 'axios'
         })
     },
     loadSubContractor({ commit}, payload) {
-      commit('setLoading', true)
+      commit('setLoading', true, { root: true })
       console.log('Loading all SubContractors for user with authorization token ' + localStorage.authHeader)
       webClient.get('/api/resource/clients/' + localStorage.clientId + '/subcontractors/' + payload)
         .then(response => {
@@ -247,7 +247,7 @@ import axios from 'axios'
         })
     },
     loadSubContractorCategories({ commit }) {
-      commit('setLoading', true)
+      commit('setLoading', true, { root: true })
       webClient.get(`/api/resource/clients/` + localStorage.clientId + `/subcontractor_categories`)
         .then(response => {
           console.log('Received SubContractor Categories...')
@@ -259,7 +259,7 @@ import axios from 'axios'
         })
     },
     createSubContractorCategory({ commit }, payload) {
-      commit('setLoading', true)
+      commit('setLoading', true, { root: true })
       webClient.post(`/api/resource/clients/` + localStorage.clientId + `/subcontractor_categories`, payload)
         .then(response => {
           console.log('Received saved SubContractor Category from server..')
@@ -271,7 +271,7 @@ import axios from 'axios'
         })
     },
     updateSubContractorCategory({ commit }, payload) {
-      commit('setLoading', true)
+      commit('setLoading', true, { root: true })
       webClient.post(`/api/resource/clients/` + localStorage.clientId + `/subcontractor_categories/` + payload.id, payload)
         .then(response => {
           console.log('Received updated SubContractor Category from server..')
@@ -283,7 +283,7 @@ import axios from 'axios'
         })
     },
     deleteSubContractorCategory({ commit }, payload) {
-      commit('setLoading', true)
+      commit('setLoading', true, { root: true })
       webClient.delete(`/api/resource/clients/` + localStorage.clientId + `/subcontractor_categories/` + payload.id)
         .then(response => {
           console.log(response)
@@ -295,7 +295,7 @@ import axios from 'axios'
         })
     },
     createSubContractor({ commit }, payload) {
-      commit('setLoading', true)
+      commit('setLoading', true, { root: true })
       console.log('CreatingSubContractor for user with authorization token ' + localStorage.authHeader + ' . Payload = ')
       console.log(payload)
       webClient.post('/api/resource/clients/' + localStorage.clientId + `/subcontractors`, payload)
@@ -313,7 +313,7 @@ import axios from 'axios'
         })
     },
     updateSubContractor({ commit }, payload) {
-      commit('setLoading', true)
+      commit('setLoading', true, { root: true })
       console.log('Updating SubContractor for user with authorization token ' + localStorage.authHeader + ' . Payload = ')
       console.log(payload)
       webClient.post('/api/resource/clients/' + localStorage.clientId + `/subcontractors/` + payload.id, payload)
@@ -348,7 +348,7 @@ import axios from 'axios'
         })
     },
     loadSubContractorProcurementPackages({ commit }, payload) {
-      commit('setLoading', true)
+      commit('setLoading', true, { root: true })
       //commit('setLoadedProjectProcurementPackages', [])
       console.log('Loading project procurement packages for user ' + localStorage.authHeader + ' for project ' + payload)
       webClient.get(`/api/resource/clients/` + localStorage.clientId + `/subcontractors/` + payload + '/procurement')
@@ -365,14 +365,14 @@ import axios from 'axios'
         })
     },
     loadSubContractorProcurementPackage({ commit }, payload) {
-      commit('setLoading', true)
+      commit('setLoading', true, { root: true })
       console.log('Setting subcontractor procurement package bill items for ' + payload.name)
       console.log(payload.billItems)
       commit('setLoadedSubContractorProcurementPackageBillItems', payload.billItems)
       commit('setLoading', false, { root: true })
     },
     loadProjectSubContractorProcurementPackages({ commit }, payload) {
-      commit('setLoading', true)
+      commit('setLoading', true, { root: true })
       //commit('setLoadedProjectProcurementPackages', [])
       console.log('Loading project subcontractor procurement packages for user ' + localStorage.authHeader + ' for project ' + payload.projectId)
 
@@ -436,7 +436,7 @@ import axios from 'axios'
         })
     },
     loadSubContractorInsurancePolicies({ commit }, payload) {
-      commit('setLoading', true)
+      commit('setLoading', true, { root: true })
       console.log('Loading all InsurancePolicies with subcontractor id ' + payload)
       console.log('for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
 
@@ -525,7 +525,7 @@ import axios from 'axios'
         })
     },
     loadSubContractorOperatives({ commit }, payload) {
-      commit('setLoading', true)
+      commit('setLoading', true, { root: true })
       console.log('Loading all Operatives with subcontractor id ' + payload)
       console.log('for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
       webClient.get(`/api/resource/clients/` + localStorage.clientId + `/subcontractors/` + payload + '/resource/operatives')
@@ -613,7 +613,7 @@ import axios from 'axios'
         })
     },
     loadSubContractorInvoiceSummary({ commit }, payload) {
-      commit('setLoading', true)
+      commit('setLoading', true, { root: true })
       console.log('Loading all subcontractor invoices ' + payload)
       console.log('for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
 
@@ -631,7 +631,7 @@ import axios from 'axios'
         })
     },
     loadSubContractorInvoices({ commit }, payload) {
-      commit('setLoading', true)
+      commit('setLoading', true, { root: true })
       console.log('Loading all Invoices with subcontractor id ' + payload)
       console.log('for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
       webClient.get(`/api/resource/clients/` + localStorage.clientId + `/subcontractors/` + payload + '/invoices')
@@ -744,7 +744,7 @@ import axios from 'axios'
         })
     },
     loadSubContractorQuotationSummary({ commit }, payload) {
-      commit('setLoading', true)
+      commit('setLoading', true, { root: true })
       console.log('Loading all subcontractor invoices ' + payload)
       console.log('for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
 
@@ -762,7 +762,7 @@ import axios from 'axios'
         })
     },
     loadSubContractorQuotations({ commit }, payload) {
-      commit('setLoading', true)
+      commit('setLoading', true, { root: true })
       console.log('Loading all Quotations with subcontractor id ' + payload)
       console.log('for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
 
@@ -875,7 +875,7 @@ import axios from 'axios'
         })
     },
     loadSubContractorPayments({ commit }, payload) {
-      commit('setLoading', true)
+      commit('setLoading', true, { root: true })
       console.log('Loading all Payments with subcontractor id ' + payload)
       console.log('for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
 

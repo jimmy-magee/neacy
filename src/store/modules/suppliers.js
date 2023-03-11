@@ -2,6 +2,7 @@ import webClient from './webclient'
 import axios from 'axios'
 
 const state = {
+    loadedSupplier: null,
     loadedSupplierCategories: [],
     loadedSuppliers: [],
     loadedSupplierInvoiceSummary: null,
@@ -25,6 +26,9 @@ const mutations = {
     },
     setLoadedSuppliers(state, payload) {
         state.loadedSuppliers = payload
+    },
+    setLoadedSupplier(state, payload) {
+        state.loadedSupplier = payload
     },
     setLoadedSupplierQuotations(state, payload) {
         state.loadedSupplierQuotations = payload
@@ -143,6 +147,20 @@ const actions = {
                 console.log('Received Suppliers...')
                 console.log(response.data)
                 commit('setLoadedSuppliers', response.data)
+                commit('setLoading', false, { root: true })
+            })
+            .catch(e => {
+                commit('setError', e, { root: true })
+            })
+    },
+    loadSupplier({ commit }, payload) {
+        commit('setLoading', true, { root: true })
+        console.log('Loading Supplier for user with authorization token ' + localStorage.authHeader)
+        webClient.get(`/api/resource/clients/` + localStorage.clientId + `/suppliers/` + payload)
+            .then(response => {
+                console.log('Received Supplier...')
+                console.log(response.data)
+                commit('setLoadedSupplier', response.data)
                 commit('setLoading', false, { root: true })
             })
             .catch(e => {
@@ -488,13 +506,7 @@ const getters = {
         })
     },
     loadedSupplier(state) {
-        return (supplierId) => {
-            console.log('Load supplier ')
-            console.log(supplierId)
-            return state.loadedSuppliers.find((supplier) => {
-                return supplier.id === supplierId
-            })
-        }
+        return state.loadedSupplier
     },
     loadedSupplierQuotations(state) {
         return state.loadedSupplierQuotations.sort((A, B) => {

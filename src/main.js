@@ -53,6 +53,21 @@ const routes = [
     component: () => import(/* webpackChunkName: "suppliersPage" */ './components/Supplier/SuppliersPage.vue'),
   },
   {
+    path: '/subcontractor_categories',
+    name: 'SubContractor Categories Page',
+    component: () => import(/* webpackChunkName: "subContractorCategoryPage" */ './components/SubContractor/SubContractorCategories.vue'),
+  },
+  {
+    path: '/subcontractors',
+    name: 'SubContractors',
+    component: () => import(/* webpackChunkName: "subcontractorsPage" */ './components/SubContractor/SubContractorsPage.vue'),
+  },
+  {
+    path: '/subcontractors/:id',
+    name: 'SubContractor',
+    component: () => import(/* webpackChunkName: "subcontractorPage" */ './components/SubContractor/SubContractorPage.vue'),
+  },
+  {
     path: '/suppliers/:id',
     name: 'SupplierPage',
     component: () => import(/* webpackChunkName: "supplierPage" */ './components/Supplier/SupplierPage.vue'),

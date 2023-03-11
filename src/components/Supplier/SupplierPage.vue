@@ -1,5 +1,6 @@
 <template>
   <v-container fluid>
+  
     <v-card>
       <v-tabs v-model="outerTab" show-arrows>
         <v-tabs-slider color="blue"></v-tabs-slider>
@@ -34,85 +35,85 @@
                 </v-snackbar>
               </v-layout>
 
-              <v-layout row>
-                <v-flex xs12>
+            
+              
                   <form @submit.prevent="onUpdateSupplier">
                     <v-layout row>
-                      <v-flex xs12 sm6 offset-sm3>
+                     
                         <v-select :items="supplierCategories" v-model="editedSupplier.supplierCategoryId" label="Category"
                           item-value="id" item-text="name" required></v-select>
-                      </v-flex>
+                      
                     </v-layout>
 
                     <v-layout wrap>
-                      <v-flex xs12 sm6 offset-sm3>
+                     
                         <v-select v-model="editedSupplier.productCategoryList" :items="productCategories" multiple
                           item-value="id" item-text="name" label="Select Product Categories">
                         </v-select>
-                      </v-flex>
+                      
                     </v-layout>
                     <v-layout row>
-                      <v-flex xs12 sm6 offset-sm3>
+                     
                         <v-text-field name="supplierName" label="Supplier Name" id="supplierName"
                           v-model="editedSupplier.name" required></v-text-field>
-                      </v-flex>
+                      
                     </v-layout>
                     <v-layout row>
-                      <v-flex xs12 sm6 offset-sm3>
+                     
                         <v-textarea name="supplierDescription" label="Supplier Description" id="supplierDescription"
                           v-model="editedSupplier.description" required></v-textarea>
-                      </v-flex>
+                      
                     </v-layout>
                     <v-layout row>
-                      <v-flex xs12 sm6 offset-sm3>
+                     
                         <v-textarea name="supplierAddress" label="Supplier Address" id="supplierAddress"
                           v-model="editedSupplier.address" required></v-textarea>
-                      </v-flex>
+                      
                     </v-layout>
                     <v-layout row>
-                      <v-flex xs12 sm6 offset-sm3>
+                     
                         <v-text-field name="supplierWebsite" label="Supplier Website" id="supplierWebsite"
                           v-model="editedSupplier.website">
                         </v-text-field>
-                      </v-flex>
+                      
                     </v-layout>
                     <v-layout row>
-                      <v-flex xs12 sm6 offset-sm3>
+                     
                         <v-text-field name="supplierEmail" label="Supplier Email" id="supplierEmail"
                           v-model="editedSupplier.email">
                         </v-text-field>
-                      </v-flex>
+                      
                     </v-layout>
                     <v-layout row>
-                      <v-flex xs12 sm6 offset-sm3>
+                     
                         <v-text-field name="supplierContactName" label="Contact Name" id="supplierContactName"
                           v-model="editedSupplier.contact">
                         </v-text-field>
-                      </v-flex>
+                      
                     </v-layout>
                     <v-layout row>
-                      <v-flex xs12 sm6 offset-sm3>
+                     
                         <v-text-field name="supplierContactNumber" label="Contact Number" id="supplierContactNumber"
                           v-model="editedSupplier.contactNumber">
                         </v-text-field>
-                      </v-flex>
+                      
                     </v-layout>
                     <v-layout row>
-                      <v-flex xs12 sm6 offset-sm3>
+                     
                         <v-text-field name="supplierHeadOfficeTelephoneNumber" label="Head Office TelephoneNumber"
                           id="supplierHeadOfficeTelephoneNumber" v-model="editedSupplier.landline">
                         </v-text-field>
-                      </v-flex>
+                      
                     </v-layout>
 
                     <v-layout row>
-                      <v-flex xs12 sm6 offset-sm6>
+                     
                         <v-btn class="primary" :disabled="!formIsValid" type="submit">Update Details</v-btn>
-                      </v-flex>
+                      
                     </v-layout>
                   </form>
-                </v-flex>
-              </v-layout>
+                
+             
 
 
             </v-card-text>
@@ -126,12 +127,9 @@
               <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
               </v-text-field>
               <v-spacer></v-spacer>
-              <v-dialog v-model="supplierQuotationDialog">
-                <template v-slot:[`activator`]="{ on }">
-                  <v-btn absolute right fab dark color="indigo" v-on="on">
-                    <v-icon dark>add</v-icon>
-                  </v-btn>
-                </template>
+              <btn>
+              <v-dialog v-model="supplierQuotationDialog" activator="parent">
+
                 <v-card>
                   <v-card-title>
                     <span>Quotation Details</span>
@@ -139,47 +137,47 @@
                   <v-card-text>
                     <v-container>
                       <v-layout row>
-                        <v-flex xs12 sm6 offset-sm1>
+                        
                           <v-select :items="projectListSelection" v-model="editedSupplierQuotation.projectId"
                             label="Select Project" single></v-select>
-                        </v-flex>
+                        
                       </v-layout>
                       <v-layout row>
-                        <v-flex xs12 sm9 offset-sm1>
+                       
                           <v-text-field v-model="editedSupplierQuotation.quotationRef" label="Reference"></v-text-field>
-                        </v-flex>
+                        
                       </v-layout>
                       <v-layout row v-show="editedSupplierQuotationIndex >= 0">
-                        <v-flex xs12 sm9 offset-sm1>
+                       
                           <v-text-field v-model="editedSupplierQuotation.status" label="Status"></v-text-field>
-                        </v-flex>
+                        
                       </v-layout>
                       <v-layout row>
-                        <v-flex xs12 sm9 offset-sm1>
+                       
                           <v-textarea name="description" label="Description" id="description"
                             v-model="editedSupplierQuotation.description" required>
                           </v-textarea>
-                        </v-flex>
+                        
                       </v-layout>
                       <v-layout row>
-                        <v-flex xs12 sm9 offset-sm1>
+                       
                           <v-text-field v-model="editedSupplierQuotation.currency" label="Currency"></v-text-field>
-                        </v-flex>
+                        
                       </v-layout>
                       <v-layout row>
-                        <v-flex xs12 sm9 offset-sm1>
+                       
                           <v-text-field v-model="editedSupplierQuotation.grossAmount" label="Gross Amount">
                           </v-text-field>
-                        </v-flex>
+                        
                       </v-layout>
                       <v-layout row>
-                        <v-flex xs12 sm9 offset-sm1>
+                       
                           <v-text-field v-model="editedSupplierQuotation.netAmount" label="Net Amount"></v-text-field>
-                        </v-flex>
+                        
                       </v-layout>
 
                       <v-layout row>
-                        <v-flex xs12 sm9 offset-sm1>
+                       
                           <v-dialog ref="supplierQuotationDateDialog" v-model="supplierQuotationDateModal" persistent
                             width="50%">
                             <template v-slot:[`activator`]="{ on }">
@@ -193,10 +191,10 @@
                               </v-btn>
                             </v-date-picker>
                           </v-dialog>
-                        </v-flex>
+                        
                       </v-layout>
                       <v-layout row v-if="editedSupplierQuotationIndex >= 0">
-                        <v-flex xs12 sm9 offset-sm1>
+                       
                           <v-dialog ref="supplierQuotationDateReceivedDialog" v-model="supplierQuotationDateReceivedModal"
                             persistent width="50%">
                             <template v-slot:[`activator`]="{ on }">
@@ -211,13 +209,13 @@
                                 OK</v-btn>
                             </v-date-picker>
                           </v-dialog>
-                        </v-flex>
+                        
                       </v-layout>
                       <v-layout row v-if="editedSupplierQuotationIndex < 0">
-                        <v-flex xs12 sm9 offset-sm1>
+                       
                           <v-file-input v-model="editedSupplierQuotation.quotationFile" label="Upload Quotation" filled
                             prepend-icon="mdi-camera"></v-file-input>
-                        </v-flex>
+                        
                       </v-layout>
 
                     </v-container>
@@ -230,19 +228,20 @@
                   </v-card-actions>
                 </v-card>
               </v-dialog>
+            </btn>
             </v-card-title>
             <v-card-text>
               <h3>Quotation Summary</h3>
               <v-layout row v-if="supplierQuotationSummary">
-                <v-flex xs4 sm3 offset-sm1>
+                
                   <v-text-field v-model="supplierQuotationSummary.totalQuotationCount" label="Quotations Submitted"
                     readonly></v-text-field>
-                </v-flex>
+                
               </v-layout>
               <v-layout row v-else>
-                <v-flex xs4 sm3 offset-sm1>
+                
                   <span>Quotation Count 0</span>
-                </v-flex>
+                
               </v-layout>
               <h3>Quotation Details</h3>
               <v-data-table :headers="supplierQuotationTableHeaders" dense :calculate-widths="true" :items="supplierQuotations"
@@ -298,42 +297,40 @@
                   <v-card-text>
                     <v-container>
                       <v-layout row>
-                        <v-flex xs12 sm12 offset-sm1>
+                        
                           <v-select :items="projectListSelection" v-model="editedSupplierInvoice.projectId"
                             label="Select Project" single></v-select>
-                        </v-flex>
+                        
                       </v-layout>
                       <v-layout row>
-                        <v-flex xs4 sm5 offset-sm1>
+                        
                           <v-text-field v-model="editedSupplierInvoice.invoiceRef" label="Reference"></v-text-field>
-                        </v-flex>
+                        
 
-                        <v-flex xs4 sm5 offset-sm1>
+                        
                           <v-select :items="invoiceStatusListSelection" v-model="editedSupplierInvoice.status"
                             label="Status" single></v-select>
-                        </v-flex>
+                        
                       </v-layout>
                       <v-layout row>
-                        <v-flex xs12 sm12 offset-sm1>
+                        
                           <v-textarea name="description" label="Description" id="description"
                             v-model="editedSupplierInvoice.description" required>
                           </v-textarea>
-                        </v-flex>
+                        
                       </v-layout>
                       <v-layout row>
-                        <v-flex xs12 sm3 offset-sm1>
+                      
                           <v-text-field v-model="editedSupplierInvoice.currency" label="Currency"></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 sm3 offset-sm1>
+                      
                           <v-text-field v-model="editedSupplierInvoice.grossAmount" label="Gross Amount"></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 sm3 offset-sm1>
+                       
                           <v-text-field v-model="editedSupplierInvoice.netAmount" label="Net Amount"></v-text-field>
-                        </v-flex>
+                        
                       </v-layout>
 
                       <v-layout row>
-                        <v-flex xs4 sm5 offset-sm1>
+                        
                           <v-dialog ref="supplierInvoiceDateDialog" v-model="supplierInvoiceDateModal" persistent
                             width="50%">
                             <template v-slot:[`activator`]="{ on }">
@@ -346,8 +343,8 @@
                               <v-btn text color="primary" @click="$refs.supplierInvoiceDateDialog.save(date)">OK</v-btn>
                             </v-date-picker>
                           </v-dialog>
-                        </v-flex>
-                        <v-flex xs4 sm5 offset-sm1>
+                        
+                        
                           <v-dialog ref="supplierInvoicePaymentDueDateDialog" v-model="supplierInvoicePaymentDueDateModal"
                             persistent width="50%">
                             <template v-slot:[`activator`]="{ on }">
@@ -362,14 +359,14 @@
                                 OK</v-btn>
                             </v-date-picker>
                           </v-dialog>
-                        </v-flex>
+                        
                       </v-layout>
 
                       <v-layout row v-if="editedSupplierInvoiceIndex < 0">
-                        <v-flex xs12 sm12 offset-sm1>
+                        
                           <v-file-input v-model="editedSupplierInvoice.invoiceFile" label="Upload Invoice" filled
                             prepend-icon="mdi-camera"></v-file-input>
-                        </v-flex>
+                        
                       </v-layout>
 
                     </v-container>
@@ -387,46 +384,46 @@
             <v-card-text>
               <h3>Invoice Summary</h3>
               <v-layout row v-if="supplierInvoiceSummary">
-                <v-flex xs4 sm3 offset-sm1>
+                
                   <v-text-field v-model="supplierInvoiceSummary.totalInvoiceCount" label="Total Invoice Count" readonly>
                   </v-text-field>
-                </v-flex>
-                <v-flex xs3 sm2 offset-sm1>
+                
+                
                   <v-text-field v-model="supplierInvoiceSummary.invoicesGrossAmountTotal" label="Invoice Total Gross"
                     readonly></v-text-field>
-                </v-flex>
-                <v-flex xs3 sm2 offset-sm1>
+                
+                
                   <v-text-field v-model="supplierInvoiceSummary.invoicesNetAmountTotal" label="Invoice Total Net"
                     readonly></v-text-field>
-                </v-flex>
+                
               </v-layout>
               <v-layout row v-if="supplierInvoiceSummary">
-                <v-flex xs4 sm3 offset-sm1>
+                
                   <v-text-field v-model="supplierInvoiceSummary.unPaidInvoicesCount" label="Un Paid Invoices" readonly>
                   </v-text-field>
-                </v-flex>
-                <v-flex xs4 sm3 offset-sm1>
+                
+                
                   <v-text-field v-model="supplierInvoiceSummary.unPaidInvoicesGrossAmount"
                     label="Invoice Total Gross (to Pay)" readonly></v-text-field>
-                </v-flex>
-                <v-flex xs4 sm3 offset-sm1>
+                
+                
                   <v-text-field v-model="supplierInvoiceSummary.unPaidInvoicesNetAmount"
                     label="Invoice Total Net (to Pay)" readonly></v-text-field>
-                </v-flex>
+                
               </v-layout>
               <v-layout row v-if="supplierInvoiceSummary">
-                <v-flex xs4 sm3 offset-sm1>
+                
                   <v-text-field v-model="supplierInvoiceSummary.paidInvoicesCount" label="Paid Invoices" readonly>
                   </v-text-field>
-                </v-flex>
-                <v-flex xs4 sm3 offset-sm1>
+                
+                
                   <v-text-field v-model="supplierInvoiceSummary.paidInvoicesGrossAmount"
                     label="Invoice Total Gross (Paid)" readonly></v-text-field>
-                </v-flex>
-                <v-flex xs4 sm3 offset-sm1>
+                
+                
                   <v-text-field v-model="supplierInvoiceSummary.paidInvoicesNetAmount" label="Invoice Total Net (Paid)"
                     readonly></v-text-field>
-                </v-flex>
+                
               </v-layout>
               <h3>Invoice Details</h3>
               <v-data-table :headers="supplierInvoiceTableHeaders" :calculate-widths="true" :items="supplierInvoices"
@@ -507,7 +504,7 @@
 <script>
 
 
-import { computed, ref, reactive, onMounted } from 'vue';
+import { computed, ref, reactive, onMounted, watch } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 
@@ -521,6 +518,7 @@ export default {
     const id = route.params.id;
 
     onMounted(() => {
+      store.dispatch('suppliers/loadSupplier', id)
       store.dispatch('suppliers/loadSupplierProducts', id)
       store.dispatch('suppliers/loadSupplierQuotations', id)
       store.dispatch('suppliers/loadSupplierQuotationSummary', id)
@@ -529,9 +527,7 @@ export default {
       store.dispatch('suppliers/loadSupplierInvoiceSummary', id)
     });
 
-    // beforeUpdate() {
-    //   editedSupplier = supplier
-    //  },
+
     const outerTab = ref(null);
     const date = new Date().toISOString().substr(0, 10);
     const snack = ref(false);
@@ -742,29 +738,26 @@ export default {
       quotationFile: null,
       status: ''
     });
-    const productCategories = computed(() => { return store.getters.loadedProductCategories });
+    const productCategories = computed(() => { return store.getters['products/loadedProductCategories'] });
 
-    const supplierCategories = computed(() => { return store.getters.loadedSupplierCategories });
+    const supplierCategories = computed(() => { return store.getters['suppliers/loadedSupplierCategories'] });
 
-    const supplierQuotationSummary = computed(() => { return store.getters.loadedSupplierQuotationSummary });
+    const supplierQuotationSummary = computed(() => { return store.getters['suppliers/loadedSupplierQuotationSummary'] });
 
-    const supplierQuotation = computed(() => { return store.getters.loadedSupplierQuotation });
+    const supplierQuotation = computed(() => { return store.getters['suppliers/loadedSupplierQuotation'] });
 
-    const supplierQuotations = computed(() => { return store.getters.loadedSupplierQuotations });
+    const supplierQuotations = computed(() => { return store.getters['suppliers/loadedSupplierQuotations'] });
 
-    const supplierProducts = computed(() => { return store.getters.loadedSupplierProducts });
+    const supplierProducts = computed(() => { return store.getters['suppliers/loadedSupplierProducts'] });
     
-    const orders = computed(() => { return store.getters.loadedSupplierOrders });
+    const orders = computed(() => { return store.getters['suppliers/loadedSupplierOrders'] });
 
-    const supplierInvoiceSummary = computed(() => { return store.getters.loadedSupplierInvoiceSummary });
+    const supplierInvoiceSummary = computed(() => { return store.getters['suppliers/loadedSupplierInvoiceSummary'] });
     
-    const supplierInvoices = computed(() => {
-      return store.getters.loadedSupplierInvoices
-    });
-    const supplier = computed(() => {
-      console.log('Loading product with id ' + id)
-      return store.getters.loadedSupplier(id)
-    });
+    const supplierInvoices = computed(() => { return store.getters['suppliers/loadedSupplierInvoices']});
+
+    const supplier = computed(() => { return store.getters['suppliers/loadedSupplier']});
+
     const error = computed(() => {
       return store.getters.error
     });
@@ -972,6 +965,11 @@ export default {
     });
     const formIsValid = (() => {
       return true
+    });
+
+    watch(supplier, (newValue, oldValue) => {
+      console.log('computedProperty [ supplier ]  was ' + oldValue + '. Now it is ' + JSON.stringify(newValue) + '.')
+      Object.assign(editedSupplier, newValue);
     });
 
     return {

@@ -3,7 +3,7 @@
     <v-app-bar app color="blue" dark>
       <v-toolbar-title>
         <v-app-bar-nav-icon @click.stop="sideNav = !sideNav"></v-app-bar-nav-icon>
-        Neacy Mechanical & Electrical </v-toolbar-title>
+        leanne luch</v-toolbar-title>
       <v-spacer></v-spacer>
       <div v-if="user">
         {{ user.username }}
@@ -27,7 +27,7 @@
     </v-navigation-drawer>
 
     <v-main>
-      <p>user - {{ user  }}</p>
+      
       <v-container fluid>
         <v-fade-transition mode="out-in">
           <router-view></router-view>
