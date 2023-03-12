@@ -11,8 +11,8 @@
       <v-sheet xs12 sm12 md12>
         <v-card>
           <v-card-text>
-          <v-btn v-if="userIsAuthenticatedAndHasRoleAdmin" absolute dark fab top right color="green" :to="'/projects/new'">
-            <v-icon>add</v-icon>
+          <v-btn  icon v-if="userIsAuthenticatedAndHasRoleAdmin" color="green" :to="'/projects/new'">
+            <v-icon icon="mdi-plus"></v-icon>
           </v-btn>
           </v-card-text>
         </v-card>
@@ -49,10 +49,8 @@
 
                 </v-card-text>
                 <v-card-actions>
-                  <v-btn text :to="'/projects/' + project.id">
-                    <v-icon left light>arrow_forward</v-icon>
-                    View Project Details
-                  </v-btn>
+                  <v-btn icon="mdi-view-compact"  color="green" :to="'/projects/' + project.id"/>
+                    
                 </v-card-actions>
               </v-sheet>
             </v-layout>

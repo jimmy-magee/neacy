@@ -6,7 +6,8 @@
         <v-spacer></v-spacer>
         <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
         <v-spacer></v-spacer>
-       <v-btn>
+       <v-btn icon color="green">
+        <v-icon icon="mdi-plus"></v-icon>
         <v-dialog v-model="customerDialog" activator="parent">
        
           <v-card>
@@ -129,17 +130,15 @@
                 :search="search">
 
           <template v-slot:[`item.actionEditCustomer`]="{ item }">
-            <v-btn icon @click="showCustomerEditDialog(item)">
-              Edit
+            <v-btn icon="mdi-file-edit-outline"  @click="showCustomerEditDialog(item)">
+            
             </v-btn>
           </template>
 
           <template v-slot:[`item.actionShowCustomerDetails`]="{ item }">
-            {{ item.raw.id }}
-            <v-btn icon @click="showCustomerDetails(item.raw.id)">
-              <v-icon>
-                pageview
-              </v-icon>
+         
+            <v-btn icon="mdi-view-compact" @click="showCustomerDetails(item.raw.id)">
+             
             </v-btn>
           </template>
         </v-data-table>

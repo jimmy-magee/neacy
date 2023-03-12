@@ -4,9 +4,10 @@
       <v-card-title>
         Suppliers
         <v-spacer></v-spacer>
-        <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
+        <v-text-field v-model="search" append-icon="mdi-search" label="Search" single-line hide-details></v-text-field>
         <v-spacer></v-spacer>
-        <v-btn absolute right fab dark color="indigo">
+        <v-btn icon color="green">
+          <v-icon icon="mdi-plus"></v-icon>
           <v-dialog v-model="dialog" activator="parent">
 
             <v-card>
@@ -100,28 +101,22 @@
 
       </v-layout>
 
-      <v-data-table :headers="supplierTableHeaders" :items="suppliers" :search="search">
+      <v-data-table :headers="supplierTableHeaders" :items="suppliers" :calculate-widths="true" :search="search">
         
         <template v-slot:[`item.actionView`]="{ item }">
   
-          <v-btn icon @click="viewSupplier(item)">
-            <v-icon>
-              view
-            </v-icon>
+          <v-btn icon="mdi-view-compact" @click="viewSupplier(item)">
+    
           </v-btn>
         </template>
         <template v-slot:[`item.actionEdit`]="{ item }">
-          <v-btn icon @click="editSupplier(item)">
-            <v-icon>
-              edit
-            </v-icon>
+          <v-btn icon="mdi-file-edit-outline" @click="editSupplier(item)">
+
           </v-btn>
         </template>
         <template v-slot:[`item.actionDelete`]="{ item }">
-          <v-btn icon @click="deleteSupplier(item)">
-            <v-icon>
-              delete
-            </v-icon>
+          <v-btn icon="mdi-delete-alert" @click="deleteSupplier(item)">
+    
           </v-btn>
         </template>
       </v-data-table>
@@ -223,8 +218,11 @@ export default {
     });
 
     const editSupplier = ((item) => {
-      console.log(item)
+      console.log('Edit suppliers')
+      console.log(item.value)
+
       editedIndex.value  = suppliers.value.findIndex(s =>  s.id == item.value);
+      console.log(editedIndex.value)
       const obj  = suppliers.value.find(s =>  s.id == item.value);
       Object.assign(editedItem, obj)
       dialog.value = true

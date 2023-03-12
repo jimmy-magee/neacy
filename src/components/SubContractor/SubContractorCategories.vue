@@ -6,40 +6,41 @@
         <v-spacer></v-spacer>
         <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
         <v-spacer></v-spacer>
-        <v-btn absolute right fab dark color="indigo">
-        <v-dialog v-model="dialog" activator="parent">
-          <v-card>
-            <v-card-title>
-              <span class="headline">{{ formTitle }}</span>
-            </v-card-title>
-            <v-card-text>
-              <v-container>
+        <v-btn icon color="green">
+          <v-icon icon="mdi-plus"></v-icon>
+          <v-dialog v-model="dialog" activator="parent">
+            <v-card>
+              <v-card-title>
+                <span class="headline">{{ formTitle }}</span>
+              </v-card-title>
+              <v-card-text>
+                <v-container>
 
-                <v-layout row>
-               
+                  <v-layout row>
+
                     <v-text-field v-model="editedItem.name" label="Name"></v-text-field>
-               
-                </v-layout>
 
-                <v-layout row>
-              
+                  </v-layout>
+
+                  <v-layout row>
+
                     <v-text-field v-model="editedItem.description" label="Description"></v-text-field>
-            
-                </v-layout>
 
-              </v-container>
-            </v-card-text>
+                  </v-layout>
 
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" @click="close">Cancel</v-btn>
-              <v-btn color="blue darken-1" @click="updateSubContractorCategory">Save</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-btn>
+                </v-container>
+              </v-card-text>
+
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" @click="close">Cancel</v-btn>
+                <v-btn color="blue darken-1" @click="updateSubContractorCategory">Save</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-btn>
       </v-card-title>
-<!--
+      <!--
       <v-layout row v-if="error">
         <v-flex xs12 sm6 md10 offset-sm2>
           <app-alert @dismissed="onDismissed" :text="error.message"></app-alert>

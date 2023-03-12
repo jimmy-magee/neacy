@@ -6,7 +6,8 @@
         <v-spacer></v-spacer>
         <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
         <v-spacer></v-spacer>
-        <v-btn>
+        <v-btn icon color="green" >
+          <v-icon icon="mdi-plus"></v-icon>
         <v-dialog v-model="subContractorDialog" activator="parent">
         
           <v-card>
@@ -126,18 +127,14 @@
         <v-data-table :headers="subContractorTableHeaders" :calculate-widths="true" :items="subContractors"
           :search="search">
           <template v-slot:[`item.actionEditSubContractor`]="{ item }">
-            <v-btn icon @click="showSubContractorEditDialog(item)">
-              <v-icon>
-                edit
-              </v-icon>
+            <v-btn icon="mdi-file-edit-outline" @click="showSubContractorEditDialog(item)">
+         
             </v-btn>
           </template>
 
           <template v-slot:[`item.actionShowSubContractorDetails`]="{ item }">
-            <v-btn icon @click="showSubContractorDetails(item)">
-              <v-icon>
-                pageview
-              </v-icon>
+            <v-btn icon="mdi-view-compact" @click="showSubContractorDetails(item)">
+            
             </v-btn>
           </template>
         </v-data-table>

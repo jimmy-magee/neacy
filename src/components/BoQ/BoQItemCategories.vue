@@ -6,7 +6,8 @@
         <v-spacer></v-spacer>
         <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
         <v-spacer></v-spacer>
-        <v-btn>Show
+        <v-btn icon color="green">
+          <v-icon icon="mdi-plus"></v-icon>
         <v-dialog v-model="dialog" activator="parent">
      
           <v-card>

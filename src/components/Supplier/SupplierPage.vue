@@ -120,7 +120,8 @@
               <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
               </v-text-field>
               <v-spacer></v-spacer>
-              <btn>
+              <v-btn icon color="green">
+                <v-icon icon="mdi-plus"></v-icon>
                 <v-dialog v-model="supplierQuotationDialog" activator="parent">
 
                   <v-card>
@@ -221,7 +222,7 @@
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
-              </btn>
+              </v-btn>
             </v-card-title>
             <v-card-text>
               <h3>Quotation Summary</h3>
@@ -277,102 +278,101 @@
               <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
               </v-text-field>
               <v-spacer></v-spacer>
-              <v-dialog v-model="supplierInvoiceDialog">
-                <template v-slot:[`activator`]="{ on }">
-                  <v-btn absolute right fab dark color="indigo" v-on="on">
-                    <v-icon dark>add</v-icon>
-                  </v-btn>
-                </template>
-                <v-card>
-                  <v-card-title>
-                    <span>Invoice Details</span>
-                  </v-card-title>
-                  <v-card-text>
-                    <v-container>
-                      <v-layout row>
-
-                        <v-select :items="projectListSelection" v-model="editedSupplierInvoice.projectId"
-                          label="Select Project" single></v-select>
-
-                      </v-layout>
-                      <v-layout row>
-
-                        <v-text-field v-model="editedSupplierInvoice.invoiceRef" label="Reference"></v-text-field>
+              <v-btn color="green" icon>
+                <v-icon icon="mdi-plus"></v-icon>
+                <v-dialog v-model="supplierInvoiceDialog" activator="parent">
 
 
+                  <v-card>
+                    <v-card-title>
+                      <span>Invoice Details</span>
+                    </v-card-title>
+                    <v-card-text>
+                      <v-container>
+                        <v-layout row>
 
-                        <v-select :items="invoiceStatusListSelection" v-model="editedSupplierInvoice.status"
-                          label="Status" single></v-select>
+                          <v-select :items="projectListSelection" v-model="editedSupplierInvoice.projectId"
+                            label="Select Project" single></v-select>
 
-                      </v-layout>
-                      <v-layout row>
+                        </v-layout>
+                        <v-layout row>
 
-                        <v-textarea name="description" label="Description" id="description"
-                          v-model="editedSupplierInvoice.description" required>
-                        </v-textarea>
-
-                      </v-layout>
-                      <v-layout row>
-
-                        <v-text-field v-model="editedSupplierInvoice.currency" label="Currency"></v-text-field>
-
-                        <v-text-field v-model="editedSupplierInvoice.grossAmount" label="Gross Amount"></v-text-field>
-
-                        <v-text-field v-model="editedSupplierInvoice.netAmount" label="Net Amount"></v-text-field>
-
-                      </v-layout>
-
-                      <v-layout row>
-
-                        <v-dialog ref="supplierInvoiceDateDialog" v-model="supplierInvoiceDateModal" persistent
-                          width="50%">
-                          <template v-slot:[`activator`]="{ on }">
-                            <v-text-field v-model="editedSupplierInvoice.invoiceDate" label="Date Issued"
-                              prepend-icon="event" readonly v-on="on"></v-text-field>
-                          </template>
-                          <v-date-picker v-model="editedSupplierInvoice.invoiceDate" scrollable>
-                            <v-spacer></v-spacer>
-                            <v-btn text color="primary" @click="supplierInvoiceDateModal = false">Cancel</v-btn>
-                            <v-btn text color="primary" @click="$refs.supplierInvoiceDateDialog.save(date)">OK</v-btn>
-                          </v-date-picker>
-                        </v-dialog>
+                          <v-text-field v-model="editedSupplierInvoice.invoiceRef" label="Reference"></v-text-field>
 
 
-                        <v-dialog ref="supplierInvoicePaymentDueDateDialog" v-model="supplierInvoicePaymentDueDateModal"
-                          persistent width="50%">
-                          <template v-slot:[`activator`]="{ on }">
-                            <v-text-field v-model="editedSupplierInvoice.paymentDueDate" label="Payment Due Date"
-                              prepend-icon="event" readonly v-on="on"></v-text-field>
-                          </template>
-                          <v-date-picker v-model="editedSupplierInvoice.paymentDueDate" scrollable>
-                            <v-spacer></v-spacer>
-                            <v-btn text color="primary" @click="supplierInvoicePaymentDueDateModal = false">Cancel
-                            </v-btn>
-                            <v-btn text color="primary" @click="$refs.supplierInvoicePaymentDueDateDialog.save(date)">
-                              OK</v-btn>
-                          </v-date-picker>
-                        </v-dialog>
 
-                      </v-layout>
+                          <v-select :items="invoiceStatusListSelection" v-model="editedSupplierInvoice.status"
+                            label="Status" single></v-select>
 
-                      <v-layout row v-if="editedSupplierInvoiceIndex < 0">
+                        </v-layout>
+                        <v-layout row>
 
-                        <v-file-input v-model="editedSupplierInvoice.invoiceFile" label="Upload Invoice" filled
-                          prepend-icon="mdi-camera"></v-file-input>
+                          <v-textarea name="description" label="Description" id="description"
+                            v-model="editedSupplierInvoice.description" required>
+                          </v-textarea>
 
-                      </v-layout>
+                        </v-layout>
+                        <v-layout row>
 
-                    </v-container>
-                  </v-card-text>
+                          <v-text-field v-model="editedSupplierInvoice.currency" label="Currency"></v-text-field>
 
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" @click="closeSupplierInvoiceDialog">Cancel</v-btn>
-                    <v-btn color="blue darken-1" @click="saveSupplierInvoice">Save</v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
+                          <v-text-field v-model="editedSupplierInvoice.grossAmount" label="Gross Amount"></v-text-field>
 
+                          <v-text-field v-model="editedSupplierInvoice.netAmount" label="Net Amount"></v-text-field>
+
+                        </v-layout>
+
+                        <v-layout row>
+
+                          <v-dialog ref="supplierInvoiceDateDialog" v-model="supplierInvoiceDateModal" persistent
+                            width="50%">
+                            <template v-slot:[`activator`]="{ on }">
+                              <v-text-field v-model="editedSupplierInvoice.invoiceDate" label="Date Issued"
+                                prepend-icon="event" readonly v-on="on"></v-text-field>
+                            </template>
+                            <v-date-picker v-model="editedSupplierInvoice.invoiceDate" scrollable>
+                              <v-spacer></v-spacer>
+                              <v-btn text color="primary" @click="supplierInvoiceDateModal = false">Cancel</v-btn>
+                              <v-btn text color="primary" @click="$refs.supplierInvoiceDateDialog.save(date)">OK</v-btn>
+                            </v-date-picker>
+                          </v-dialog>
+
+
+                          <v-dialog ref="supplierInvoicePaymentDueDateDialog" v-model="supplierInvoicePaymentDueDateModal"
+                            persistent width="50%">
+                            <template v-slot:[`activator`]="{ on }">
+                              <v-text-field v-model="editedSupplierInvoice.paymentDueDate" label="Payment Due Date"
+                                prepend-icon="event" readonly v-on="on"></v-text-field>
+                            </template>
+                            <v-date-picker v-model="editedSupplierInvoice.paymentDueDate" scrollable>
+                              <v-spacer></v-spacer>
+                              <v-btn text color="primary" @click="supplierInvoicePaymentDueDateModal = false">Cancel
+                              </v-btn>
+                              <v-btn text color="primary" @click="$refs.supplierInvoicePaymentDueDateDialog.save(date)">
+                                OK</v-btn>
+                            </v-date-picker>
+                          </v-dialog>
+
+                        </v-layout>
+
+                        <v-layout row v-if="editedSupplierInvoiceIndex < 0">
+
+                          <v-file-input v-model="editedSupplierInvoice.invoiceFile" label="Upload Invoice" filled
+                            prepend-icon="mdi-camera"></v-file-input>
+
+                        </v-layout>
+
+                      </v-container>
+                    </v-card-text>
+
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="blue darken-1" @click="closeSupplierInvoiceDialog">Cancel</v-btn>
+                      <v-btn color="blue darken-1" @click="saveSupplierInvoice">Save</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </v-btn>
             </v-card-title>
             <v-card-text>
               <h3>Invoice Summary</h3>
@@ -662,7 +662,7 @@ export default {
     const supplierInvoiceDateModal = ref(false);
     const supplierInvoicePaymentDueDateDialog = ref(false);
     const supplierInvoicePaymentDueDateModal = ref(false);
-    const editedSupplierInvoiceIndex = -1;
+    const editedSupplierInvoiceIndex = ref(-1);
     const editedSupplierInvoice = reactive({
       id: '',
       supplierId: id,
@@ -902,7 +902,7 @@ export default {
     });
     const showSupplierInvoiceEditDialog = ((item) => {
       console.log('Showing Edit Invoice Dialog for operative with id ' + item.id)
-      editedSupplierInvoiceIndex.value = supplierInvoices.value.indexOf(item)
+      editedSupplierInvoiceIndex.value = supplierInvoices.value.findIndex(s => s.id == item.value)
       Object.assign(editedSupplierInvoice, item)
       supplierInvoiceDialog.value = true
     });

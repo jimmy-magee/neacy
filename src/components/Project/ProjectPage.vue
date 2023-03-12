@@ -226,7 +226,8 @@
                     <v-text-field v-model="searchProjectDrawings" append-icon="search" label="Search" single-line
                       hide-details></v-text-field>
                     <v-spacer></v-spacer>
-                    <v-btn>
+                    <v-btn icon color="green">
+                      <v-icon icon="mdi-plus"></v-icon>
                     <v-dialog v-model="dialog" activator="parent">
                       <v-card>
                         <v-card-title>
@@ -256,24 +257,18 @@
                   <v-data-table :headers="drawingTableHeaders" :calculate-widths="true" :items="drawings"
                     :search="searchProjectDrawings">
                     <template v-slot:[`item.actionDownload`]="{ item }">
-                      <v-btn icon @click="downloadProjectDrawing(item)">
-                        <v-icon>
-                          cloud_download
-                        </v-icon>
+                      <v-btn icon="mdi-download" @click="downloadProjectDrawing(item)">
+                        
                       </v-btn>
                     </template>
                     <template v-slot:[`item.actionEdit`]="{ item }">
-                      <v-btn icon @click="editItem(item)">
-                        <v-icon>
-                          edit
-                        </v-icon>
+                      <v-btn icon="mdi-file-edit-outline" @click="editItem(item)">
+                        
                       </v-btn>
                     </template>
                     <template v-slot:[`item.actionDelete`]="{ item }">
-                      <v-btn icon @click="deleteProjectDrawing(item)">
-                        <v-icon>
-                          delete
-                        </v-icon>
+                      <v-btn icon="mdi-delete-alert" @click="deleteProjectDrawing(item)">
+                        
                       </v-btn>
                     </template>
                   </v-data-table>
@@ -351,7 +346,8 @@
                     <v-text-field v-model="searchProjectRFIs" append-icon="search" label="Search" single-line
                       hide-details></v-text-field>
                     <v-spacer></v-spacer>
-                    <v-btn absolute right fab dark color="indigo" v-on="on">
+                    <v-btn icon color="green">
+                      <v-icon icon="mdi-plus"></v-icon>
                       <v-dialog v-model="projectRFIDialog" activator="parent">
 
                         <v-card>
@@ -479,17 +475,13 @@
                   <v-data-table :headers="projectRFITableHeaders" :calculate-widths="true" :items="projectRFIs"
                     :search="searchProjectRFIs">
                     <template v-slot:[`item.actionEdit`]="{ item }">
-                      <v-btn icon @click="openProjectRFIDialog(item)">
-                        <v-icon>
-                          edit
-                        </v-icon>
+                      <v-btn icon="mdi-file-edit-outline" @click="openProjectRFIDialog(item)">
+                        
                       </v-btn>
                     </template>
                     <template v-slot:[`item.actionDelete`]="{ item }">
-                      <v-btn icon @click="deleteProjectRFI(item)">
-                        <v-icon>
-                          delete
-                        </v-icon>
+                      <v-btn icon="mdi-delete-alert" @click="deleteProjectRFI(item)">
+                        
                       </v-btn>
                     </template>
                   </v-data-table>
@@ -506,7 +498,8 @@
                     <v-text-field v-model="searchProjectRooms" append-icon="search" label="Search" single-line
                       hide-details></v-text-field>
                     <v-spacer></v-spacer>
-                    <v-btn absolute right fab dark color="indigo" v-on="on">
+                    <v-btn icon color="green">
+                      <v-icon icon="mdi-plus"></v-icon>
                       <v-dialog v-model="projectRoomDialog" activator="parent">
 
                         <v-card>
@@ -555,17 +548,13 @@
                   <v-data-table :headers="projectRoomTableHeaders" :calculate-widths="true" :items="projectRoomsX"
                     :search="searchProjectRooms">
                     <template v-slot:[`item.actionEdit`]="{ item }">
-                      <v-btn icon @click="openProjectRoomDialog(item)">
-                        <v-icon>
-                          edit
-                        </v-icon>
+                      <v-btn icon="mdi-file-edit-outline" @click="openProjectRoomDialog(item)">
+                        
                       </v-btn>
                     </template>
                     <template v-slot:[`item.actionDelete`]="{ item }">
-                      <v-btn icon @click="deleteProjectRoom(item)">
-                        <v-icon>
-                          delete
-                        </v-icon>
+                      <v-btn icon="mdi-delete-alert" @click="deleteProjectRoom(item)">
+                       
                       </v-btn>
                     </template>
                   </v-data-table>
@@ -608,7 +597,8 @@
                     <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
                     </v-text-field>
                     <v-spacer></v-spacer>
-                    <v-btn absolute right fab dark color="indigo" v-on="on">
+                    <v-btn icon color="green">
+                      <v-icon icon="mdi-plus"></v-icon>
                       <v-dialog v-model="projectTaskDialog" activator="parent">
 
                         <v-card>
@@ -842,17 +832,12 @@
                   <v-data-table :headers="taskTableHeaders" :calculate-widths="true" :items="projectTasks"
                     :search="search">
                     <template v-slot:[`item.actionEditTask`]="{ item }">
-                      <v-btn icon @click="editProjectTask(item)">
-                        <v-icon>
-                          edit
-                        </v-icon>
+                      <v-btn icon="mdi-file-edit-outline" @click="editProjectTask(item)">
                       </v-btn>
                     </template>
                     <template v-slot:[`item.actionDeleteTask`]="{ item }">
-                      <v-btn icon @click="deleteProjectTask(item)">
-                        <v-icon>
-                          delete
-                        </v-icon>
+                      <v-btn icon="mdi-delete-alert" @click="deleteProjectTask(item)">
+                      
                       </v-btn>
                     </template>
                   </v-data-table>
@@ -869,7 +854,8 @@
                     <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
                     </v-text-field>
                     <v-spacer></v-spacer>
-                    <v-btn absolute right fab dark color="indigo" v-on="on">
+                    <v-btn icon color="green">
+                      <v-icon icon="mdi-plus"></v-icon>
                       <v-dialog v-model="projectImageDialog" activator="parent">
 
                         <v-card>
@@ -925,17 +911,13 @@
                         aspect-ratio="1" class="grey lighten-2" max-width="400" max-height="300"></v-img>
                     </template>
                     <template v-slot:[`item.actionEditImageMetadata`]="{ item }">
-                      <v-btn icon @click="editProjectImageMetaData(item)">
-                        <v-icon>
-                          edit
-                        </v-icon>
+                      <v-btn icon="mdi-file-edit-outline" @click="editProjectImageMetaData(item)">
+                      
                       </v-btn>
                     </template>
                     <template v-slot:[`item.actionDeleteImageMetadata`]="{ item }">
-                      <v-btn icon @click="deleteProjectImageMetaData(item)">
-                        <v-icon>
-                          delete
-                        </v-icon>
+                      <v-btn icon="mdi-delete-alert" @click="deleteProjectImageMetaData(item)">
+                     
                       </v-btn>
                     </template>
                   </v-data-table>
@@ -1252,6 +1234,7 @@
               </v-window-item>
               <v-window-item value="financeTab-11">
 
+
                 <v-card>
                   <v-text-field v-model="searchProjectQuotations" label="Search Quotations" flat solo-inverted
                     hide-details clearable clear-icon="mdi-close-circle-outline"></v-text-field>
@@ -1261,9 +1244,7 @@
 
                     <template v-slot:[`item.actionDownloadProjectQuotation`]="{ item }">
                       <v-btn icon @click="downloadProjectQuotation(item)">
-                        <v-icon>
-                          cloud_download
-                        </v-icon>
+                         <v-icon icon="mdi-download"></v-icon>
                       </v-btn>
                     </template>
 
@@ -1282,17 +1263,16 @@
                     Bill of Quantities
                     <v-spacer></v-spacer>
 
-                    <v-btn icon @click="reloadBoQItems">
-                      <v-icon>
-                        refresh
-                      </v-icon>
+                    <v-btn icon color="blue" @click="reloadBoQItems">
+                      <v-icon icon="mdi-cached"></v-icon>
                     </v-btn>
                     <v-spacer></v-spacer>
 
                     <v-text-field v-model="searchProjectBoQ" append-icon="search" label="Search" single-line
                       hide-details></v-text-field>
                     <v-spacer></v-spacer>
-                    <v-btn @click="dialogBoQItem.value = true">
+                    <v-btn icon color="green" @click="dialogBoQItem.value = true">
+                      <v-icon icon="mdi-plus"></v-icon>
                       <v-dialog v-model="dialogBoQItem" activator="parent">
 
                         <v-card>
@@ -1523,16 +1503,12 @@
 
                                       <template v-slot:[`item.actionEdit`]="{ item }">
                                         <v-btn icon @click="updateProjectBoQItemMeasure(item)">
-                                          <v-icon>
-                                            save
-                                          </v-icon>
+                                          <v-icon icon="mdi-file-edit-outline"></v-icon>
                                         </v-btn>
                                       </template>
                                       <template v-slot:[`item.actionDelete`]="{ item }">
                                         <v-btn icon @click="deleteProjectBoQItemMeasure(item)">
-                                          <v-icon>
-                                            delete
-                                          </v-icon>
+                                          <v-icon icon="mdi-delete-alert"></v-icon>
                                         </v-btn>
                                       </template>
 
@@ -1770,16 +1746,12 @@
 
                     <template v-slot:[`item.actionEditBoQItem`]="{ item }">
                       <v-btn icon @click="editBoQItem(item)">
-                        <v-icon>
-                          edit
-                        </v-icon>
+                        <v-icon icon="mdi-file-edit-outline"></v-icon>
                       </v-btn>
                     </template>
                     <template v-slot:[`item.actionDeleteBoQItem`]="{ item }">
                       <v-btn icon @click="deleteProjectBoQItem(item)">
-                        <v-icon>
-                          delete
-                        </v-icon>
+                        <v-icon icon="mdi-delete-alert"></v-icon>
                       </v-btn>
                     </template>
                   </v-data-table>
@@ -1795,7 +1767,8 @@
                     <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
                     </v-text-field>
                     <v-spacer></v-spacer>
-                    <v-btn absolute right fab dark color="indigo">
+                    <v-btn icon color="green">
+                      <v-icon icon="mdi-plus"></v-icon>
                       <v-dialog v-model="projectProcurementPackageDialog" activator="parent">
 
                         <v-card>
@@ -2235,7 +2208,8 @@
                     <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
                     </v-text-field>
                     <v-spacer></v-spacer>
-                    <v-btn absolute right fab dark color="indigo">
+                    <v-btn icon color="green">
+                      <v-icon icon="mdi-plus"></v-icon>
                       <v-dialog v-model="projectCustomerInvoiceDialog" activator="parent">
 
                         <v-card>
@@ -2388,26 +2362,20 @@
                   <v-data-table :headers="projectCustomerInvoiceTableHeaders" :calculate-widths="true"
                     :items="projectCustomerInvoices" :search="search">
                     <template v-slot:[`item.actionDownloadProjectInvoice`]="{ item }">
-                      <v-btn icon @click="downloadCustomerInvoice(item)">
-                        <v-icon>
-                          cloud_download
-                        </v-icon>
+                      <v-btn icon="mdi-download" @click="downloadCustomerInvoice(item)">
+                        
                       </v-btn>
                     </template>
                     <template v-slot:[`item.actionEdit`]="{ item }">
-                      <v-btn icon @click="showProjectCustomerEditDialog(item)">
-                        <v-icon>
-                          edit
-                        </v-icon>
+                      <v-btn icon="mdi-file-edit-outline" @click="showProjectCustomerEditDialog(item)">
+                      
                       </v-btn>
                     </template>
 
 
                     <template v-slot:[`item.actionDelete`]="{ item }">
-                      <v-btn icon @click="deleteProjectCustomerInvoice(item)">
-                        <v-icon>
-                          delete
-                        </v-icon>
+                      <v-btn icon="mdi-delete-alert" @click="deleteProjectCustomerInvoice(item)">
+                        
                       </v-btn>
                     </template>
                   </v-data-table>
@@ -2424,7 +2392,9 @@
                     <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
                     </v-text-field>
                     <v-spacer></v-spacer>
-                    <v-btn absolute right fab dark color="indigo">
+                    <v-btn icon color="green">
+                <v-icon icon="mdi-plus"></v-icon>
+
                       <v-dialog v-model="projectSubContractorInvoiceDialog" activator="parent">
 
                         <v-card>
@@ -2576,32 +2546,24 @@
                   <v-data-table :headers="projectSubContractorInvoiceTableHeaders" :calculate-widths="true"
                     :items="projectSubContractorInvoices" :search="search">
                     <template v-slot:[`item.actionDownloadProjectInvoice`]="{ item }">
-                      <v-btn icon @click="downloadSubContractorInvoice(item)">
-                        <v-icon>
-                          cloud_download
-                        </v-icon>
+                      <v-btn icon="mdi-download" @click="downloadSubContractorInvoice(item)">
+                     
                       </v-btn>
                     </template>
                     <template v-slot:[`item.actionEdit`]="{ item }">
-                      <v-btn icon @click="showProjectSubContractorEditDialog(item)">
-                        <v-icon>
-                          edit
-                        </v-icon>
+                      <v-btn icon="mdi-file-edit-outline" @click="showProjectSubContractorEditDialog(item)">
+                        
                       </v-btn>
                     </template>
                     <template v-slot:[`item.actionApproveProjectInvoice`]="{ item }">
-                      <v-btn icon @click="approveProjectInvoicePayment(item)">
-                        <v-icon>
-                          payment
-                        </v-icon>
+                      <v-btn icon="mdi-payment" @click="approveProjectInvoicePayment(item)">
+                       
                       </v-btn>
                     </template>
 
                     <template v-slot:[`item.actionDelete`]="{ item }">
-                      <v-btn icon @click="deleteProjectSubContractorInvoice(item)">
-                        <v-icon>
-                          delete
-                        </v-icon>
+                      <v-btn icon="mdi-delete-alert" @click="deleteProjectSubContractorInvoice(item)">
+              
                       </v-btn>
                     </template>
                   </v-data-table>
@@ -2617,7 +2579,8 @@
                     <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
                     </v-text-field>
                     <v-spacer></v-spacer>
-                    <v-btn absolute right fab dark color="indigo">
+                    <v-btn icon color="green">
+                      <v-icon icon="mdi-plus"></v-icon>
                       <v-dialog v-model="projectSupplierInvoiceDialog" activator="parent">
 
                         <v-card>
@@ -2769,26 +2732,19 @@
                   <v-data-table :headers="projectSupplierInvoiceTableHeaders" :items="projectSupplierInvoices.value"
                     :calculate-widths="true" :search="search">
                     <template v-slot:[`item.actionDownloadProjectInvoice`]="{ item }">
-                      <v-btn icon @click="downloadSupplierInvoice(item)">
-                        <v-icon>
-                          cloud_download
-                        </v-icon>
+                      <v-btn icon="mdi-download" @click="downloadSupplierInvoice(item)">
                       </v-btn>
                     </template>
                     <template v-slot:[`item.actionEdit`]="{ item }">
-                      <v-btn icon @click="showProjectSupplierEditDialog(item)">
-                        <v-icon>
-                          edit
-                        </v-icon>
+                      <v-btn icon="mdi-file-edit-outline" @click="showProjectSupplierEditDialog(item)">
+                      
                       </v-btn>
                     </template>
 
 
                     <template v-slot:[`item.actionDelete`]="{ item }">
-                      <v-btn icon @click="deleteProjectSupplierInvoice(item)">
-                        <v-icon>
-                          delete
-                        </v-icon>
+                      <v-btn icon="mdi-delete-alert" @click="deleteProjectSupplierInvoice(item)">
+                     
                       </v-btn>
                     </template>
                   </v-data-table>
@@ -2937,18 +2893,14 @@
                   <v-data-table :headers="projectContactHeaders" :calculate-widths="true" :items="projectContacts"
                     :search="search">
                     <template v-slot:[`item.actionEdit`]="{ item }">
-                      <v-btn icon @click="editProjectContact(item)">
-                        <v-icon>
-                          edit
-                        </v-icon>
+                      <v-btn icon="mdi-file-edit-outline" @click="editProjectContact(item)">
+                       
                       </v-btn>
                     </template>
 
                     <template v-slot:[`item.actionDelete`]="{ item }">
-                      <v-btn icon @click="deleteProjectContact(item)">
-                        <v-icon>
-                          delete
-                        </v-icon>
+                      <v-btn icon="mdi-delete-alert" @click="deleteProjectContact(item)">
+                        
                       </v-btn>
                     </template>
                   </v-data-table>
@@ -4349,7 +4301,7 @@ export default {
         description: editedItem.description,
         status: editedItem.status,
         revision: editedItem.revision,
-        drawingFiles: drawingFiles
+        drawingFiles: drawingFiles.value
       }
       store.dispatch('projects/updateProjectDrawingMetaData', formData)
       //closeProjectDrawingMetaDataDialog()
@@ -4464,8 +4416,9 @@ export default {
       console.log('item is ')
       console.log(item)
       store.dispatch('projects/setSelectedProjectBoQItem', item)
-      editedBoQItemIndex.value = boq.value.indexOf(item)
-      Object.assign(editedBoQItem, item)
+      editedBoQItemIndex.value = boq.value.findIndex(boq => boq.id == item.value)
+      const obj = boq.value.find(boq => boq.id == item.value)
+      Object.assign(editedBoQItem, obj)
       if (editedBoQItem.anticipatedStartDate) {
         var anticipatedStartDate = new Date(editedBoQItem.anticipatedStartDate)
         editedBoQItem.anticipatedStartDate = anticipatedStartDate
