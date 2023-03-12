@@ -886,7 +886,7 @@ const actions = {
             })
     },
     uploadProjectDrawings({ commit }, payload) {
-        console.log('Creating dwg' + payload + ' for user ' + getters.user.username + ':' + getters.user.password)
+        //console.log('Creating dwg' + payload + ' for user ' + getters.user.username + ':' + getters.user.password)
 
         console.log('Creating project drawings for user ' + localStorage.authHeader + ' for project ' + payload.projectId + ' number o drawing files are ' + payload.drawingFiles.length)
         console.log(payload.drawingFiles)
@@ -900,7 +900,7 @@ const actions = {
         }
 
         formData.append('projectId', payload.projectId)
-        formData.append('userId', getters.user.id)
+        //formData.append('userId', getters['u)
 
         return axios.create({
             baseURL: `/`,

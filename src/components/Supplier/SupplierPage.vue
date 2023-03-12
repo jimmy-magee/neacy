@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-  
+
     <v-card>
       <v-tabs v-model="outerTab" show-arrows>
         <v-tabs-slider color="blue"></v-tabs-slider>
@@ -21,7 +21,7 @@
         </v-tab>
       </v-tabs>
       <v-window v-model="outerTab">
-        <v-window-item  value="outerTab-1">
+        <v-window-item value="outerTab-1">
           <v-card>
             <v-card-title>
               Supplier Details
@@ -34,92 +34,85 @@
                   <v-btn text @click="snack = false">Close</v-btn>
                 </v-snackbar>
               </v-layout>
+              <form @submit.prevent="onUpdateSupplier">
+                <v-layout row>
 
-            
-              
-                  <form @submit.prevent="onUpdateSupplier">
-                    <v-layout row>
-                     
-                        <v-select :items="supplierCategories" v-model="editedSupplier.supplierCategoryId" label="Category"
-                          item-value="id" item-text="name" required></v-select>
-                      
-                    </v-layout>
+                  <v-select :items="supplierCategories" v-model="editedSupplier.supplierCategoryId" label="Category"
+                    item-value="id" item-text="name" required></v-select>
 
-                    <v-layout wrap>
-                     
-                        <v-select v-model="editedSupplier.productCategoryList" :items="productCategories" multiple
-                          item-value="id" item-text="name" label="Select Product Categories">
-                        </v-select>
-                      
-                    </v-layout>
-                    <v-layout row>
-                     
-                        <v-text-field name="supplierName" label="Supplier Name" id="supplierName"
-                          v-model="editedSupplier.name" required></v-text-field>
-                      
-                    </v-layout>
-                    <v-layout row>
-                     
-                        <v-textarea name="supplierDescription" label="Supplier Description" id="supplierDescription"
-                          v-model="editedSupplier.description" required></v-textarea>
-                      
-                    </v-layout>
-                    <v-layout row>
-                     
-                        <v-textarea name="supplierAddress" label="Supplier Address" id="supplierAddress"
-                          v-model="editedSupplier.address" required></v-textarea>
-                      
-                    </v-layout>
-                    <v-layout row>
-                     
-                        <v-text-field name="supplierWebsite" label="Supplier Website" id="supplierWebsite"
-                          v-model="editedSupplier.website">
-                        </v-text-field>
-                      
-                    </v-layout>
-                    <v-layout row>
-                     
-                        <v-text-field name="supplierEmail" label="Supplier Email" id="supplierEmail"
-                          v-model="editedSupplier.email">
-                        </v-text-field>
-                      
-                    </v-layout>
-                    <v-layout row>
-                     
-                        <v-text-field name="supplierContactName" label="Contact Name" id="supplierContactName"
-                          v-model="editedSupplier.contact">
-                        </v-text-field>
-                      
-                    </v-layout>
-                    <v-layout row>
-                     
-                        <v-text-field name="supplierContactNumber" label="Contact Number" id="supplierContactNumber"
-                          v-model="editedSupplier.contactNumber">
-                        </v-text-field>
-                      
-                    </v-layout>
-                    <v-layout row>
-                     
-                        <v-text-field name="supplierHeadOfficeTelephoneNumber" label="Head Office TelephoneNumber"
-                          id="supplierHeadOfficeTelephoneNumber" v-model="editedSupplier.landline">
-                        </v-text-field>
-                      
-                    </v-layout>
+                </v-layout>
 
-                    <v-layout row>
-                     
-                        <v-btn class="primary" :disabled="!formIsValid" type="submit">Update Details</v-btn>
-                      
-                    </v-layout>
-                  </form>
-                
-             
+                <v-layout wrap>
 
+                  <v-select v-model="editedSupplier.productCategoryList" :items="productCategories" multiple
+                    item-value="id" item-text="name" label="Select Product Categories">
+                  </v-select>
 
+                </v-layout>
+                <v-layout row>
+
+                  <v-text-field name="supplierName" label="Supplier Name" id="supplierName" v-model="editedSupplier.name"
+                    required></v-text-field>
+
+                </v-layout>
+                <v-layout row>
+
+                  <v-textarea name="supplierDescription" label="Supplier Description" id="supplierDescription"
+                    v-model="editedSupplier.description" required></v-textarea>
+
+                </v-layout>
+                <v-layout row>
+
+                  <v-textarea name="supplierAddress" label="Supplier Address" id="supplierAddress"
+                    v-model="editedSupplier.address" required></v-textarea>
+
+                </v-layout>
+                <v-layout row>
+
+                  <v-text-field name="supplierWebsite" label="Supplier Website" id="supplierWebsite"
+                    v-model="editedSupplier.website">
+                  </v-text-field>
+
+                </v-layout>
+                <v-layout row>
+
+                  <v-text-field name="supplierEmail" label="Supplier Email" id="supplierEmail"
+                    v-model="editedSupplier.email">
+                  </v-text-field>
+
+                </v-layout>
+                <v-layout row>
+
+                  <v-text-field name="supplierContactName" label="Contact Name" id="supplierContactName"
+                    v-model="editedSupplier.contact">
+                  </v-text-field>
+
+                </v-layout>
+                <v-layout row>
+
+                  <v-text-field name="supplierContactNumber" label="Contact Number" id="supplierContactNumber"
+                    v-model="editedSupplier.contactNumber">
+                  </v-text-field>
+
+                </v-layout>
+                <v-layout row>
+
+                  <v-text-field name="supplierHeadOfficeTelephoneNumber" label="Head Office TelephoneNumber"
+                    id="supplierHeadOfficeTelephoneNumber" v-model="editedSupplier.landline">
+                  </v-text-field>
+
+                </v-layout>
+
+                <v-layout row>
+
+                  <v-btn class="primary" :disabled="!formIsValid" type="submit">Update Details</v-btn>
+
+                </v-layout>
+              </form>
             </v-card-text>
           </v-card>
         </v-window-item>
-        <v-window-item  value="outerTab-2">
+        <v-window-item value="outerTab-2">
           <v-card>
             <v-card-title>
 
@@ -128,56 +121,56 @@
               </v-text-field>
               <v-spacer></v-spacer>
               <btn>
-              <v-dialog v-model="supplierQuotationDialog" activator="parent">
+                <v-dialog v-model="supplierQuotationDialog" activator="parent">
 
-                <v-card>
-                  <v-card-title>
-                    <span>Quotation Details</span>
-                  </v-card-title>
-                  <v-card-text>
-                    <v-container>
-                      <v-layout row>
-                        
+                  <v-card>
+                    <v-card-title>
+                      <span>Quotation Details</span>
+                    </v-card-title>
+                    <v-card-text>
+                      <v-container>
+                        <v-layout row>
+
                           <v-select :items="projectListSelection" v-model="editedSupplierQuotation.projectId"
                             label="Select Project" single></v-select>
-                        
-                      </v-layout>
-                      <v-layout row>
-                       
+
+                        </v-layout>
+                        <v-layout row>
+
                           <v-text-field v-model="editedSupplierQuotation.quotationRef" label="Reference"></v-text-field>
-                        
-                      </v-layout>
-                      <v-layout row v-show="editedSupplierQuotationIndex >= 0">
-                       
+
+                        </v-layout>
+                        <v-layout row v-show="editedSupplierQuotationIndex >= 0">
+
                           <v-text-field v-model="editedSupplierQuotation.status" label="Status"></v-text-field>
-                        
-                      </v-layout>
-                      <v-layout row>
-                       
+
+                        </v-layout>
+                        <v-layout row>
+
                           <v-textarea name="description" label="Description" id="description"
                             v-model="editedSupplierQuotation.description" required>
                           </v-textarea>
-                        
-                      </v-layout>
-                      <v-layout row>
-                       
+
+                        </v-layout>
+                        <v-layout row>
+
                           <v-text-field v-model="editedSupplierQuotation.currency" label="Currency"></v-text-field>
-                        
-                      </v-layout>
-                      <v-layout row>
-                       
+
+                        </v-layout>
+                        <v-layout row>
+
                           <v-text-field v-model="editedSupplierQuotation.grossAmount" label="Gross Amount">
                           </v-text-field>
-                        
-                      </v-layout>
-                      <v-layout row>
-                       
-                          <v-text-field v-model="editedSupplierQuotation.netAmount" label="Net Amount"></v-text-field>
-                        
-                      </v-layout>
 
-                      <v-layout row>
-                       
+                        </v-layout>
+                        <v-layout row>
+
+                          <v-text-field v-model="editedSupplierQuotation.netAmount" label="Net Amount"></v-text-field>
+
+                        </v-layout>
+
+                        <v-layout row>
+
                           <v-dialog ref="supplierQuotationDateDialog" v-model="supplierQuotationDateModal" persistent
                             width="50%">
                             <template v-slot:[`activator`]="{ on }">
@@ -191,10 +184,10 @@
                               </v-btn>
                             </v-date-picker>
                           </v-dialog>
-                        
-                      </v-layout>
-                      <v-layout row v-if="editedSupplierQuotationIndex >= 0">
-                       
+
+                        </v-layout>
+                        <v-layout row v-if="editedSupplierQuotationIndex >= 0">
+
                           <v-dialog ref="supplierQuotationDateReceivedDialog" v-model="supplierQuotationDateReceivedModal"
                             persistent width="50%">
                             <template v-slot:[`activator`]="{ on }">
@@ -209,43 +202,43 @@
                                 OK</v-btn>
                             </v-date-picker>
                           </v-dialog>
-                        
-                      </v-layout>
-                      <v-layout row v-if="editedSupplierQuotationIndex < 0">
-                       
+
+                        </v-layout>
+                        <v-layout row v-if="editedSupplierQuotationIndex < 0">
+
                           <v-file-input v-model="editedSupplierQuotation.quotationFile" label="Upload Quotation" filled
                             prepend-icon="mdi-camera"></v-file-input>
-                        
-                      </v-layout>
 
-                    </v-container>
-                  </v-card-text>
+                        </v-layout>
 
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" @click="closeSupplierQuotationDialog">Cancel</v-btn>
-                    <v-btn color="blue darken-1" @click="saveSupplierQuotation">Save</v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-            </btn>
+                      </v-container>
+                    </v-card-text>
+
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="blue darken-1" @click="closeSupplierQuotationDialog">Cancel</v-btn>
+                      <v-btn color="blue darken-1" @click="saveSupplierQuotation">Save</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </btn>
             </v-card-title>
             <v-card-text>
               <h3>Quotation Summary</h3>
               <v-layout row v-if="supplierQuotationSummary">
-                
-                  <v-text-field v-model="supplierQuotationSummary.totalQuotationCount" label="Quotations Submitted"
-                    readonly></v-text-field>
-                
+
+                <v-text-field v-model="supplierQuotationSummary.totalQuotationCount" label="Quotations Submitted"
+                  readonly></v-text-field>
+
               </v-layout>
               <v-layout row v-else>
-                
-                  <span>Quotation Count 0</span>
-                
+
+                <span>Quotation Count 0</span>
+
               </v-layout>
               <h3>Quotation Details</h3>
-              <v-data-table :headers="supplierQuotationTableHeaders" dense :calculate-widths="true" :items="supplierQuotations"
-                :search="search">
+              <v-data-table :headers="supplierQuotationTableHeaders" dense :calculate-widths="true"
+                :items="supplierQuotations" :search="search">
 
                 <template v-slot:[`item.actionDownloadSupplierQuotation`]="{ item }">
                   <v-btn icon @click="downloadSupplierQuotation(item)">
@@ -276,7 +269,7 @@
 
           </v-card>
         </v-window-item>
-        <v-window-item  value="outerTab-3">
+        <v-window-item value="outerTab-3">
           <v-card>
             <v-card-title>
 
@@ -297,76 +290,76 @@
                   <v-card-text>
                     <v-container>
                       <v-layout row>
-                        
-                          <v-select :items="projectListSelection" v-model="editedSupplierInvoice.projectId"
-                            label="Select Project" single></v-select>
-                        
-                      </v-layout>
-                      <v-layout row>
-                        
-                          <v-text-field v-model="editedSupplierInvoice.invoiceRef" label="Reference"></v-text-field>
-                        
 
-                        
-                          <v-select :items="invoiceStatusListSelection" v-model="editedSupplierInvoice.status"
-                            label="Status" single></v-select>
-                        
+                        <v-select :items="projectListSelection" v-model="editedSupplierInvoice.projectId"
+                          label="Select Project" single></v-select>
+
                       </v-layout>
                       <v-layout row>
-                        
-                          <v-textarea name="description" label="Description" id="description"
-                            v-model="editedSupplierInvoice.description" required>
-                          </v-textarea>
-                        
+
+                        <v-text-field v-model="editedSupplierInvoice.invoiceRef" label="Reference"></v-text-field>
+
+
+
+                        <v-select :items="invoiceStatusListSelection" v-model="editedSupplierInvoice.status"
+                          label="Status" single></v-select>
+
                       </v-layout>
                       <v-layout row>
-                      
-                          <v-text-field v-model="editedSupplierInvoice.currency" label="Currency"></v-text-field>
-                      
-                          <v-text-field v-model="editedSupplierInvoice.grossAmount" label="Gross Amount"></v-text-field>
-                       
-                          <v-text-field v-model="editedSupplierInvoice.netAmount" label="Net Amount"></v-text-field>
-                        
+
+                        <v-textarea name="description" label="Description" id="description"
+                          v-model="editedSupplierInvoice.description" required>
+                        </v-textarea>
+
+                      </v-layout>
+                      <v-layout row>
+
+                        <v-text-field v-model="editedSupplierInvoice.currency" label="Currency"></v-text-field>
+
+                        <v-text-field v-model="editedSupplierInvoice.grossAmount" label="Gross Amount"></v-text-field>
+
+                        <v-text-field v-model="editedSupplierInvoice.netAmount" label="Net Amount"></v-text-field>
+
                       </v-layout>
 
                       <v-layout row>
-                        
-                          <v-dialog ref="supplierInvoiceDateDialog" v-model="supplierInvoiceDateModal" persistent
-                            width="50%">
-                            <template v-slot:[`activator`]="{ on }">
-                              <v-text-field v-model="editedSupplierInvoice.invoiceDate" label="Date Issued"
-                                prepend-icon="event" readonly v-on="on"></v-text-field>
-                            </template>
-                            <v-date-picker v-model="editedSupplierInvoice.invoiceDate" scrollable>
-                              <v-spacer></v-spacer>
-                              <v-btn text color="primary" @click="supplierInvoiceDateModal = false">Cancel</v-btn>
-                              <v-btn text color="primary" @click="$refs.supplierInvoiceDateDialog.save(date)">OK</v-btn>
-                            </v-date-picker>
-                          </v-dialog>
-                        
-                        
-                          <v-dialog ref="supplierInvoicePaymentDueDateDialog" v-model="supplierInvoicePaymentDueDateModal"
-                            persistent width="50%">
-                            <template v-slot:[`activator`]="{ on }">
-                              <v-text-field v-model="editedSupplierInvoice.paymentDueDate" label="Payment Due Date"
-                                prepend-icon="event" readonly v-on="on"></v-text-field>
-                            </template>
-                            <v-date-picker v-model="editedSupplierInvoice.paymentDueDate" scrollable>
-                              <v-spacer></v-spacer>
-                              <v-btn text color="primary" @click="supplierInvoicePaymentDueDateModal = false">Cancel
-                              </v-btn>
-                              <v-btn text color="primary" @click="$refs.supplierInvoicePaymentDueDateDialog.save(date)">
-                                OK</v-btn>
-                            </v-date-picker>
-                          </v-dialog>
-                        
+
+                        <v-dialog ref="supplierInvoiceDateDialog" v-model="supplierInvoiceDateModal" persistent
+                          width="50%">
+                          <template v-slot:[`activator`]="{ on }">
+                            <v-text-field v-model="editedSupplierInvoice.invoiceDate" label="Date Issued"
+                              prepend-icon="event" readonly v-on="on"></v-text-field>
+                          </template>
+                          <v-date-picker v-model="editedSupplierInvoice.invoiceDate" scrollable>
+                            <v-spacer></v-spacer>
+                            <v-btn text color="primary" @click="supplierInvoiceDateModal = false">Cancel</v-btn>
+                            <v-btn text color="primary" @click="$refs.supplierInvoiceDateDialog.save(date)">OK</v-btn>
+                          </v-date-picker>
+                        </v-dialog>
+
+
+                        <v-dialog ref="supplierInvoicePaymentDueDateDialog" v-model="supplierInvoicePaymentDueDateModal"
+                          persistent width="50%">
+                          <template v-slot:[`activator`]="{ on }">
+                            <v-text-field v-model="editedSupplierInvoice.paymentDueDate" label="Payment Due Date"
+                              prepend-icon="event" readonly v-on="on"></v-text-field>
+                          </template>
+                          <v-date-picker v-model="editedSupplierInvoice.paymentDueDate" scrollable>
+                            <v-spacer></v-spacer>
+                            <v-btn text color="primary" @click="supplierInvoicePaymentDueDateModal = false">Cancel
+                            </v-btn>
+                            <v-btn text color="primary" @click="$refs.supplierInvoicePaymentDueDateDialog.save(date)">
+                              OK</v-btn>
+                          </v-date-picker>
+                        </v-dialog>
+
                       </v-layout>
 
                       <v-layout row v-if="editedSupplierInvoiceIndex < 0">
-                        
-                          <v-file-input v-model="editedSupplierInvoice.invoiceFile" label="Upload Invoice" filled
-                            prepend-icon="mdi-camera"></v-file-input>
-                        
+
+                        <v-file-input v-model="editedSupplierInvoice.invoiceFile" label="Upload Invoice" filled
+                          prepend-icon="mdi-camera"></v-file-input>
+
                       </v-layout>
 
                     </v-container>
@@ -384,46 +377,46 @@
             <v-card-text>
               <h3>Invoice Summary</h3>
               <v-layout row v-if="supplierInvoiceSummary">
-                
-                  <v-text-field v-model="supplierInvoiceSummary.totalInvoiceCount" label="Total Invoice Count" readonly>
-                  </v-text-field>
-                
-                
-                  <v-text-field v-model="supplierInvoiceSummary.invoicesGrossAmountTotal" label="Invoice Total Gross"
-                    readonly></v-text-field>
-                
-                
-                  <v-text-field v-model="supplierInvoiceSummary.invoicesNetAmountTotal" label="Invoice Total Net"
-                    readonly></v-text-field>
-                
+
+                <v-text-field v-model="supplierInvoiceSummary.totalInvoiceCount" label="Total Invoice Count" readonly>
+                </v-text-field>
+
+
+                <v-text-field v-model="supplierInvoiceSummary.invoicesGrossAmountTotal" label="Invoice Total Gross"
+                  readonly></v-text-field>
+
+
+                <v-text-field v-model="supplierInvoiceSummary.invoicesNetAmountTotal" label="Invoice Total Net"
+                  readonly></v-text-field>
+
               </v-layout>
               <v-layout row v-if="supplierInvoiceSummary">
-                
-                  <v-text-field v-model="supplierInvoiceSummary.unPaidInvoicesCount" label="Un Paid Invoices" readonly>
-                  </v-text-field>
-                
-                
-                  <v-text-field v-model="supplierInvoiceSummary.unPaidInvoicesGrossAmount"
-                    label="Invoice Total Gross (to Pay)" readonly></v-text-field>
-                
-                
-                  <v-text-field v-model="supplierInvoiceSummary.unPaidInvoicesNetAmount"
-                    label="Invoice Total Net (to Pay)" readonly></v-text-field>
-                
+
+                <v-text-field v-model="supplierInvoiceSummary.unPaidInvoicesCount" label="Un Paid Invoices" readonly>
+                </v-text-field>
+
+
+                <v-text-field v-model="supplierInvoiceSummary.unPaidInvoicesGrossAmount"
+                  label="Invoice Total Gross (to Pay)" readonly></v-text-field>
+
+
+                <v-text-field v-model="supplierInvoiceSummary.unPaidInvoicesNetAmount" label="Invoice Total Net (to Pay)"
+                  readonly></v-text-field>
+
               </v-layout>
               <v-layout row v-if="supplierInvoiceSummary">
-                
-                  <v-text-field v-model="supplierInvoiceSummary.paidInvoicesCount" label="Paid Invoices" readonly>
-                  </v-text-field>
-                
-                
-                  <v-text-field v-model="supplierInvoiceSummary.paidInvoicesGrossAmount"
-                    label="Invoice Total Gross (Paid)" readonly></v-text-field>
-                
-                
-                  <v-text-field v-model="supplierInvoiceSummary.paidInvoicesNetAmount" label="Invoice Total Net (Paid)"
-                    readonly></v-text-field>
-                
+
+                <v-text-field v-model="supplierInvoiceSummary.paidInvoicesCount" label="Paid Invoices" readonly>
+                </v-text-field>
+
+
+                <v-text-field v-model="supplierInvoiceSummary.paidInvoicesGrossAmount" label="Invoice Total Gross (Paid)"
+                  readonly></v-text-field>
+
+
+                <v-text-field v-model="supplierInvoiceSummary.paidInvoicesNetAmount" label="Invoice Total Net (Paid)"
+                  readonly></v-text-field>
+
               </v-layout>
               <h3>Invoice Details</h3>
               <v-data-table :headers="supplierInvoiceTableHeaders" :calculate-widths="true" :items="supplierInvoices"
@@ -458,7 +451,7 @@
 
           </v-card>
         </v-window-item>
-        <v-window-item  value="outerTab-4">
+        <v-window-item value="outerTab-4">
           <v-card>
             <v-data-table :headers="productTableHeaders" :items="supplierProducts" :search="search">
               <!--
@@ -488,7 +481,7 @@
             </v-data-table>
           </v-card>
         </v-window-item>
-        <v-window-item  value="outerTab-5">
+        <v-window-item value="outerTab-5">
           <v-card>
             <v-card-title>
             </v-card-title>
@@ -749,14 +742,14 @@ export default {
     const supplierQuotations = computed(() => { return store.getters['suppliers/loadedSupplierQuotations'] });
 
     const supplierProducts = computed(() => { return store.getters['suppliers/loadedSupplierProducts'] });
-    
+
     const orders = computed(() => { return store.getters['suppliers/loadedSupplierOrders'] });
 
     const supplierInvoiceSummary = computed(() => { return store.getters['suppliers/loadedSupplierInvoiceSummary'] });
-    
-    const supplierInvoices = computed(() => { return store.getters['suppliers/loadedSupplierInvoices']});
 
-    const supplier = computed(() => { return store.getters['suppliers/loadedSupplier']});
+    const supplierInvoices = computed(() => { return store.getters['suppliers/loadedSupplierInvoices'] });
+
+    const supplier = computed(() => { return store.getters['suppliers/loadedSupplier'] });
 
     const error = computed(() => {
       return store.getters.error

@@ -50,111 +50,109 @@
                   </v-snackbar>
                 </v-layout>
 
-               
 
-                  <form @submit.prevent="onUpdateSubContractor">
-                    <v-layout row>
 
-                      <v-select :items="subContractorCategories" v-model="editedSubContractor.subContractorCategoryId"
-                        label="Category" item-value="id" item-text="name" required></v-select>
+                <form @submit.prevent="onUpdateSubContractor">
+                  <v-layout row>
 
-                    </v-layout>
-                    <v-layout row>
+                    <v-select :items="subContractorCategories" v-model="editedSubContractor.subContractorCategoryId"
+                      label="Category" item-value="id" item-text="name" required></v-select>
 
-                      <v-text-field name="subContractorName" label="SubContractor Name" id="subContractorName"
-                        v-model="editedSubContractor.name" required></v-text-field>
+                  </v-layout>
+                  <v-layout row>
 
-                    </v-layout>
-                    <v-layout row>
+                    <v-text-field name="subContractorName" label="SubContractor Name" id="subContractorName"
+                      v-model="editedSubContractor.name" required></v-text-field>
 
-                      <v-textarea name="subContractorDescription" label="SubContractor Description"
-                        id="subContractorDescription" v-model="editedSubContractor.description" required></v-textarea>
+                  </v-layout>
+                  <v-layout row>
 
-                    </v-layout>
-                    <v-layout row>
+                    <v-textarea name="subContractorDescription" label="SubContractor Description"
+                      id="subContractorDescription" v-model="editedSubContractor.description" required></v-textarea>
 
-                      <v-textarea name="subContractorAddress" label="SubContractor Address" id="subContractorAddress"
-                        v-model="editedSubContractor.address" required></v-textarea>
+                  </v-layout>
+                  <v-layout row>
 
-                    </v-layout>
-                    <v-layout row>
+                    <v-textarea name="subContractorAddress" label="SubContractor Address" id="subContractorAddress"
+                      v-model="editedSubContractor.address" required></v-textarea>
 
-                      <v-text-field name="subContractorWebsite" label="SubContractor Website" id="subContractorWebsite"
-                        v-model="editedSubContractor.website">
-                      </v-text-field>
+                  </v-layout>
+                  <v-layout row>
 
-                    </v-layout>
-                    <v-layout row>
+                    <v-text-field name="subContractorWebsite" label="SubContractor Website" id="subContractorWebsite"
+                      v-model="editedSubContractor.website">
+                    </v-text-field>
 
-                      <v-text-field name="subContractorEmail" label="SubContractor Email" id="subContractorEmail"
-                        v-model="editedSubContractor.email">
-                      </v-text-field>
+                  </v-layout>
+                  <v-layout row>
 
-                    </v-layout>
-                    <v-layout row>
+                    <v-text-field name="subContractorEmail" label="SubContractor Email" id="subContractorEmail"
+                      v-model="editedSubContractor.email">
+                    </v-text-field>
 
-                      <v-text-field name="subContractorContactName" label="Contact Name" id="subContractorContactName"
-                        v-model="editedSubContractor.contactName">
-                      </v-text-field>
+                  </v-layout>
+                  <v-layout row>
 
-                    </v-layout>
-                    <v-layout row>
+                    <v-text-field name="subContractorContactName" label="Contact Name" id="subContractorContactName"
+                      v-model="editedSubContractor.contactName">
+                    </v-text-field>
 
-                      <v-text-field name="subContractorContactNumber" label="Contact Number"
-                        id="subContractorContactNumber" v-model="editedSubContractor.contactNumber">
-                      </v-text-field>
+                  </v-layout>
+                  <v-layout row>
 
-                    </v-layout>
-                    <v-layout row>
+                    <v-text-field name="subContractorContactNumber" label="Contact Number" id="subContractorContactNumber"
+                      v-model="editedSubContractor.contactNumber">
+                    </v-text-field>
 
-                      <v-text-field name="subContractorHeadOfficeTelephoneNumber" label="Head Office TelephoneNumber"
-                        id="subContractorHeadOfficeTelephoneNumber"
-                        v-model="editedSubContractor.headOfficeTelephoneNumber">
-                      </v-text-field>
+                  </v-layout>
+                  <v-layout row>
 
-                    </v-layout>
-                    <v-layout row>
+                    <v-text-field name="subContractorHeadOfficeTelephoneNumber" label="Head Office TelephoneNumber"
+                      id="subContractorHeadOfficeTelephoneNumber" v-model="editedSubContractor.headOfficeTelephoneNumber">
+                    </v-text-field>
 
-                      <v-text-field name="subContractorCompanyRegistrationNumber" label="Company Registration Number"
-                        id="subContractorCompanyRegistrationNumber"
-                        v-model="editedSubContractor.companyRegistrationNumber">
-                      </v-text-field>
+                  </v-layout>
+                  <v-layout row>
 
-                    </v-layout>
-                    <v-layout row>
+                    <v-text-field name="subContractorCompanyRegistrationNumber" label="Company Registration Number"
+                      id="subContractorCompanyRegistrationNumber" v-model="editedSubContractor.companyRegistrationNumber">
+                    </v-text-field>
 
-                      <v-text-field name="subContractorVatNumber" label="Company Vat Number" id="subContractorVatNumber"
-                        v-model="editedSubContractor.vatNumber">
-                      </v-text-field>
+                  </v-layout>
+                  <v-layout row>
 
-                    </v-layout>
-                    <v-layout row>
+                    <v-text-field name="subContractorVatNumber" label="Company Vat Number" id="subContractorVatNumber"
+                      v-model="editedSubContractor.vatNumber">
+                    </v-text-field>
 
-                      <v-text-field name="subContractorBankAccountNumber" label="Bank Account"
-                        id="subContractorBankAccountNumber" v-model="editedSubContractor.bankAccountNumber">
-                      </v-text-field>
+                  </v-layout>
+                  <v-layout row>
 
-                    </v-layout>
-                    <v-layout row>
+                    <v-text-field name="subContractorBankAccountNumber" label="Bank Account"
+                      id="subContractorBankAccountNumber" v-model="editedSubContractor.bankAccountNumber">
+                    </v-text-field>
 
-                      <v-text-field name="subContractorbiq" label="BIC" id="subContractorbiq"
-                        v-model="editedSubContractor.biq">
-                      </v-text-field>
+                  </v-layout>
+                  <v-layout row>
 
-                    </v-layout>
-                    <v-layout row>
+                    <v-text-field name="subContractorbiq" label="BIC" id="subContractorbiq"
+                      v-model="editedSubContractor.biq">
+                    </v-text-field>
 
-                      <v-text-field name="subContractorban" label="IBAN" id="subContractorban"
-                        v-model="editedSubContractor.ban">
-                      </v-text-field>
+                  </v-layout>
+                  <v-layout row>
 
-                    </v-layout>
-                    <v-layout row>
+                    <v-text-field name="subContractorban" label="IBAN" id="subContractorban"
+                      v-model="editedSubContractor.ban">
+                    </v-text-field>
 
-                      <v-btn class="primary" :disabled="!formIsValid" type="submit">Update Details</v-btn>
+                  </v-layout>
+                  <v-layout row>
 
-                    </v-layout>
-                  </form>
+                    <v-btn class="primary" :disabled="!formIsValid" type="submit">Update Details</v-btn>
+
+                  </v-layout>
+                </form>
 
 
 
@@ -334,103 +332,103 @@
                       hide-details></v-text-field>
                     <v-spacer></v-spacer>
                     <btn>
-                    <v-dialog v-model="subContractorOperativeDialog" activator="parent">
-                      <v-card>
-                        <v-card-title>
-                          <span>Operative Safe Pass Details</span>
-                        </v-card-title>
-                        <v-card-text>
-                          <v-container>
-                            <v-layout row>
+                      <v-dialog v-model="subContractorOperativeDialog" activator="parent">
+                        <v-card>
+                          <v-card-title>
+                            <span>Operative Safe Pass Details</span>
+                          </v-card-title>
+                          <v-card-text>
+                            <v-container>
+                              <v-layout row>
 
-                              <v-text-field v-model="editedSubContractorOperative.firstName"
-                                label="First Name"></v-text-field>
+                                <v-text-field v-model="editedSubContractorOperative.firstName"
+                                  label="First Name"></v-text-field>
 
-                            </v-layout>
-                            <v-layout row>
+                              </v-layout>
+                              <v-layout row>
 
-                              <v-text-field v-model="editedSubContractorOperative.lastName"
-                                label="Last Name"></v-text-field>
+                                <v-text-field v-model="editedSubContractorOperative.lastName"
+                                  label="Last Name"></v-text-field>
 
-                            </v-layout>
-                            <v-layout row>
+                              </v-layout>
+                              <v-layout row>
 
-                              <v-textarea name="description" label="Description" id="description"
-                                v-model="editedSubContractorOperative.description" required>
-                              </v-textarea>
+                                <v-textarea name="description" label="Description" id="description"
+                                  v-model="editedSubContractorOperative.description" required>
+                                </v-textarea>
 
-                            </v-layout>
-                            <v-layout row>
+                              </v-layout>
+                              <v-layout row>
 
-                              <v-text-field v-model="editedSubContractorOperative.mobileNumber"
-                                label="Mobile Number"></v-text-field>
+                                <v-text-field v-model="editedSubContractorOperative.mobileNumber"
+                                  label="Mobile Number"></v-text-field>
 
-                            </v-layout>
-                            <v-layout row>
+                              </v-layout>
+                              <v-layout row>
 
-                              <v-text-field v-model="editedSubContractorOperative.email" label="Email"></v-text-field>
+                                <v-text-field v-model="editedSubContractorOperative.email" label="Email"></v-text-field>
 
-                            </v-layout>
-                            <v-layout row>
+                              </v-layout>
+                              <v-layout row>
 
-                              <v-text-field v-model="editedSubContractorOperative.trade" label="Trade"></v-text-field>
+                                <v-text-field v-model="editedSubContractorOperative.trade" label="Trade"></v-text-field>
 
-                            </v-layout>
-                            <v-layout row>
+                              </v-layout>
+                              <v-layout row>
 
-                              <v-text-field v-model="editedSubContractorOperative.safePassId"
-                                label="Safe Pass Id"></v-text-field>
+                                <v-text-field v-model="editedSubContractorOperative.safePassId"
+                                  label="Safe Pass Id"></v-text-field>
 
-                            </v-layout>
-                            <v-layout row>
+                              </v-layout>
+                              <v-layout row>
 
-                              <v-dialog ref="subContractorOperativeSafePassExpiryDialog"
-                                v-model="subContractorOperativeSafePassExpiryModal" persistent width="50%">
-                                <template v-slot:[`activator`]="{ on }">
-                                  <v-text-field v-model="editedSubContractorOperative.safePassExpiryDate"
-                                    label="Safe Pass Expiry" prepend-icon="event" readonly v-on="on"></v-text-field>
-                                </template>
-                                <v-date-picker v-model="editedSubContractorOperative.safePassExpiryDate" scrollable>
-                                  <v-spacer></v-spacer>
-                                  <v-btn text color="primary"
-                                    @click="subContractorOperativeSafePassExpiryModal = false">Cancel</v-btn>
-                                  <v-btn text color="primary"
-                                    @click="$refs.subContractorOperativeSafePassExpiryDialog.save(date)">OK</v-btn>
-                                </v-date-picker>
-                              </v-dialog>
+                                <v-dialog ref="subContractorOperativeSafePassExpiryDialog"
+                                  v-model="subContractorOperativeSafePassExpiryModal" persistent width="50%">
+                                  <template v-slot:[`activator`]="{ on }">
+                                    <v-text-field v-model="editedSubContractorOperative.safePassExpiryDate"
+                                      label="Safe Pass Expiry" prepend-icon="event" readonly v-on="on"></v-text-field>
+                                  </template>
+                                  <v-date-picker v-model="editedSubContractorOperative.safePassExpiryDate" scrollable>
+                                    <v-spacer></v-spacer>
+                                    <v-btn text color="primary"
+                                      @click="subContractorOperativeSafePassExpiryModal = false">Cancel</v-btn>
+                                    <v-btn text color="primary"
+                                      @click="$refs.subContractorOperativeSafePassExpiryDialog.save(date)">OK</v-btn>
+                                  </v-date-picker>
+                                </v-dialog>
 
-                            </v-layout>
-                            <v-layout row v-if="editedSubContractorOperativeIndex < 0">
+                              </v-layout>
+                              <v-layout row v-if="editedSubContractorOperativeIndex < 0">
 
-                              <v-file-input v-model="editedSubContractorOperative.safePassImageFile"
-                                label="Upload SafePass Image" filled prepend-icon="mdi-camera"></v-file-input>
+                                <v-file-input v-model="editedSubContractorOperative.safePassImageFile"
+                                  label="Upload SafePass Image" filled prepend-icon="mdi-camera"></v-file-input>
 
 
-                            </v-layout>
-                            <v-layout row v-if="editedSubContractorOperativeIndex >= 0">
+                              </v-layout>
+                              <v-layout row v-if="editedSubContractorOperativeIndex >= 0">
 
-                              <v-img :src="editedSubContractorOperative.safePassImageUrl"
-                                :lazy-src="editedSubContractorOperative.safePassImageUrl" aspect-ratio="1"
-                                class="grey lighten-2" max-width="400" max-height="250">
-                                <template v-slot:[`placeholder`]>
-                                  <v-row class="fill-height ma-0" justify="center">
-                                    <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
-                                  </v-row>
-                                </template>
-                              </v-img>
+                                <v-img :src="editedSubContractorOperative.safePassImageUrl"
+                                  :lazy-src="editedSubContractorOperative.safePassImageUrl" aspect-ratio="1"
+                                  class="grey lighten-2" max-width="400" max-height="250">
+                                  <template v-slot:[`placeholder`]>
+                                    <v-row class="fill-height ma-0" justify="center">
+                                      <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                                    </v-row>
+                                  </template>
+                                </v-img>
 
-                            </v-layout>
-                          </v-container>
-                        </v-card-text>
+                              </v-layout>
+                            </v-container>
+                          </v-card-text>
 
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn color="blue darken-1" @click="closeSubContractorOperativeDialog">Cancel</v-btn>
-                          <v-btn color="blue darken-1" @click="saveSubContractorOperative">Save</v-btn>
-                        </v-card-actions>
-                      </v-card>
-                    </v-dialog>
-                  </btn>
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="blue darken-1" @click="closeSubContractorOperativeDialog">Cancel</v-btn>
+                            <v-btn color="blue darken-1" @click="saveSubContractorOperative">Save</v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </v-dialog>
+                    </btn>
                   </v-card-title>
                   <v-card-text>
                     <v-data-table :headers="subContractorOperativeHeaders" :calculate-widths="true"
@@ -458,7 +456,7 @@
               </v-window-item>
 
             </v-window>
-            
+
           </v-window-item>
 
           <!-- SubContractor Quotations-->
@@ -471,109 +469,110 @@
                   hide-details></v-text-field>
                 <v-spacer></v-spacer>
                 <v-btn>
-                <v-dialog v-model="subContractorQuotationDialog" activator="parent">
-        
-                  <v-card>
-                    <v-card-title>
-                      <span>Quotation Details</span>
-                    </v-card-title>
-                    <v-card-text>
-                      <v-container>
-                        <v-layout row>
+                  <v-dialog v-model="subContractorQuotationDialog" activator="parent">
 
-                          <v-select :items="projects" v-model="editedSubContractorQuotation.projectId" item-value="id" item-text="name" 
-                            label="Select Project" single></v-select>
+                    <v-card>
+                      <v-card-title>
+                        <span>Quotation Details</span>
+                      </v-card-title>
+                      <v-card-text>
+                        <v-container>
+                          <v-layout row>
 
-                        </v-layout>
-                        <v-layout row>
+                            <v-select :items="projects" v-model="editedSubContractorQuotation.projectId" item-value="id"
+                              item-text="name" label="Select Project" single></v-select>
 
-                          <v-text-field v-model="editedSubContractorQuotation.quotationRef"
-                            label="Reference"></v-text-field>
+                          </v-layout>
+                          <v-layout row>
 
-                        </v-layout>
-                        <v-layout row v-show="editedSubContractorQuotationIndex >= 0">
+                            <v-text-field v-model="editedSubContractorQuotation.quotationRef"
+                              label="Reference"></v-text-field>
 
-                          <v-text-field v-model="editedSubContractorQuotation.status" label="Status"></v-text-field>
+                          </v-layout>
+                          <v-layout row v-show="editedSubContractorQuotationIndex >= 0">
 
-                        </v-layout>
-                        <v-layout row>
+                            <v-text-field v-model="editedSubContractorQuotation.status" label="Status"></v-text-field>
 
-                          <v-textarea name="description" label="Description" id="description"
-                            v-model="editedSubContractorQuotation.description" required>
-                          </v-textarea>
+                          </v-layout>
+                          <v-layout row>
 
-                        </v-layout>
-                        <v-layout row>
+                            <v-textarea name="description" label="Description" id="description"
+                              v-model="editedSubContractorQuotation.description" required>
+                            </v-textarea>
 
-                          <v-text-field v-model="editedSubContractorQuotation.currency" label="Currency"></v-text-field>
+                          </v-layout>
+                          <v-layout row>
 
-                        </v-layout>
-                        <v-layout row>
+                            <v-text-field v-model="editedSubContractorQuotation.currency" label="Currency"></v-text-field>
 
-                          <v-text-field v-model="editedSubContractorQuotation.grossAmount"
-                            label="Gross Amount"></v-text-field>
+                          </v-layout>
+                          <v-layout row>
 
-                        </v-layout>
-                        <v-layout row>
+                            <v-text-field v-model="editedSubContractorQuotation.grossAmount"
+                              label="Gross Amount"></v-text-field>
 
-                          <v-text-field v-model="editedSubContractorQuotation.netAmount"
-                            label="Net Amount"></v-text-field>
+                          </v-layout>
+                          <v-layout row>
 
-                        </v-layout>
+                            <v-text-field v-model="editedSubContractorQuotation.netAmount"
+                              label="Net Amount"></v-text-field>
 
-                        <v-layout row>
+                          </v-layout>
 
-                          <v-dialog ref="subContractorQuotationDateDialog" v-model="subContractorQuotationDateModal"
-                            persistent width="50%">
-                            <template v-slot:[`activator`]="{ on }">
-                              <v-text-field v-model="editedSubContractorQuotation.quotationDate" label="Date Issued"
-                                prepend-icon="event" readonly v-on="on"></v-text-field>
-                            </template>
-                            <v-date-picker v-model="editedSubContractorQuotation.quotationDate" scrollable>
-                              <v-spacer></v-spacer>
-                              <v-btn text color="primary" @click="subContractorQuotationDateModal = false">Cancel</v-btn>
-                              <v-btn text color="primary"
-                                @click="$refs.subContractorQuotationDateDialog.save(date)">OK</v-btn>
-                            </v-date-picker>
-                          </v-dialog>
+                          <v-layout row>
 
-                        </v-layout>
-                        <v-layout row v-if="editedSubContractorQuotationIndex >= 0">
+                            <v-dialog ref="subContractorQuotationDateDialog" v-model="subContractorQuotationDateModal"
+                              persistent width="50%">
+                              <template v-slot:[`activator`]="{ on }">
+                                <v-text-field v-model="editedSubContractorQuotation.quotationDate" label="Date Issued"
+                                  prepend-icon="event" readonly v-on="on"></v-text-field>
+                              </template>
+                              <v-date-picker v-model="editedSubContractorQuotation.quotationDate" scrollable>
+                                <v-spacer></v-spacer>
+                                <v-btn text color="primary"
+                                  @click="subContractorQuotationDateModal = false">Cancel</v-btn>
+                                <v-btn text color="primary"
+                                  @click="$refs.subContractorQuotationDateDialog.save(date)">OK</v-btn>
+                              </v-date-picker>
+                            </v-dialog>
 
-                          <v-dialog ref="subContractorQuotationDateReceivedDialog"
-                            v-model="subContractorQuotationDateReceivedModal" persistent width="50%">
-                            <template v-slot:[`activator`]="{ on }">
-                              <v-text-field v-model="editedSubContractorQuotation.dateRecieved" label="Date Received"
-                                prepend-icon="event" readonly v-on="on"></v-text-field>
-                            </template>
-                            <v-date-picker v-model="editedSubContractorQuotation.dateReceived" scrollable>
-                              <v-spacer></v-spacer>
-                              <v-btn text color="primary"
-                                @click="subContractorQuotationDateReceivedModal = false">Cancel</v-btn>
-                              <v-btn text color="primary"
-                                @click="$refs.subContractorQuotationDateReceivedDialog.save(date)">OK</v-btn>
-                            </v-date-picker>
-                          </v-dialog>
+                          </v-layout>
+                          <v-layout row v-if="editedSubContractorQuotationIndex >= 0">
 
-                        </v-layout>
-                        <v-layout row v-if="editedSubContractorQuotationIndex < 0">
+                            <v-dialog ref="subContractorQuotationDateReceivedDialog"
+                              v-model="subContractorQuotationDateReceivedModal" persistent width="50%">
+                              <template v-slot:[`activator`]="{ on }">
+                                <v-text-field v-model="editedSubContractorQuotation.dateRecieved" label="Date Received"
+                                  prepend-icon="event" readonly v-on="on"></v-text-field>
+                              </template>
+                              <v-date-picker v-model="editedSubContractorQuotation.dateReceived" scrollable>
+                                <v-spacer></v-spacer>
+                                <v-btn text color="primary"
+                                  @click="subContractorQuotationDateReceivedModal = false">Cancel</v-btn>
+                                <v-btn text color="primary"
+                                  @click="$refs.subContractorQuotationDateReceivedDialog.save(date)">OK</v-btn>
+                              </v-date-picker>
+                            </v-dialog>
 
-                          <v-file-input v-model="editedSubContractorQuotation.quotationFile" label="Upload Quotation"
-                            filled prepend-icon="mdi-camera"></v-file-input>
+                          </v-layout>
+                          <v-layout row v-if="editedSubContractorQuotationIndex < 0">
 
-                        </v-layout>
+                            <v-file-input v-model="editedSubContractorQuotation.quotationFile" label="Upload Quotation"
+                              filled prepend-icon="mdi-camera"></v-file-input>
 
-                      </v-container>
-                    </v-card-text>
+                          </v-layout>
 
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="blue darken-1" @click="closeSubContractorQuotationDialog">Cancel</v-btn>
-                      <v-btn color="blue darken-1" @click="saveSubContractorQuotation">Save</v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </v-btn>
+                        </v-container>
+                      </v-card-text>
+
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" @click="closeSubContractorQuotationDialog">Cancel</v-btn>
+                        <v-btn color="blue darken-1" @click="saveSubContractorQuotation">Save</v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+                </v-btn>
               </v-card-title>
               <v-card-text>
                 <h3>Quotation Summary</h3>
@@ -628,177 +627,178 @@
               <v-card-title>
                 Tender Packages
                 <v-spacer></v-spacer>
-              <v-btn>
-                <v-dialog v-model="showSubContractorProjectProcurementPackageDialog" activator="parent">
-                  <v-card>
+                <v-btn>
+                  <v-dialog v-model="showSubContractorProjectProcurementPackageDialog" activator="parent">
                     <v-card>
-                      <v-card-title>
-                        Project Tenders
-                      </v-card-title>
-                      <v-card-text>
+                      <v-card>
+                        <v-card-title>
+                          Project Tenders
+                        </v-card-title>
+                        <v-card-text>
 
-                        Description:
-                        <p class="text-justify">
-                          {{ editedSubContractorProjectProcurementPackage.packageDescription }}
-                        </p>
-                        <br>
+                          Description:
+                          <p class="text-justify">
+                            {{ editedSubContractorProjectProcurementPackage.packageDescription }}
+                          </p>
+                          <br>
 
-                        <v-expansion-panels>
-                          <v-expansion-panel>
-                            <v-expansion-panel-header>Bill of Quantities</v-expansion-panel-header>
-                            <v-expansion-panel-content>
-                              <v-card>
-                                <v-card-title>
-                                  <v-text-field v-model="searchTenderBillItems" append-icon="search" label="Search"
-                                    single-line hide-details></v-text-field>
-                                </v-card-title>
-                                <v-card-text>
+                          <v-expansion-panels>
+                            <v-expansion-panel>
+                              <v-expansion-panel-header>Bill of Quantities</v-expansion-panel-header>
+                              <v-expansion-panel-content>
+                                <v-card>
+                                  <v-card-title>
+                                    <v-text-field v-model="searchTenderBillItems" append-icon="search" label="Search"
+                                      single-line hide-details></v-text-field>
+                                  </v-card-title>
                                   <v-card-text>
-                                    <v-data-table :headers="subContractorProjectProcurementPackageBillItemsTableHeaders"
+                                    <v-card-text>
+                                      <v-data-table :headers="subContractorProjectProcurementPackageBillItemsTableHeaders"
+                                        :calculate-widths="true"
+                                        :items="editedSubContractorProjectProcurementPackage.billItems"
+                                        :search="searchTenderBillItems">
+                                        <template v-slot:[`item.total`]="{ item }">
+                                          {{ item.quantity * item.rate }}
+                                        </template>
+
+                                        <template v-slot:[`item.rate`]="props">
+                                          <v-edit-dialog v-model="props.item.rate" large persistent
+                                            @save="saveContractRate(props.item)" @cancel="cancel">
+                                            <div>{{ props.item.rate }}</div>
+                                            <template v-slot:[`input`]>
+                                              <div class="mt-4 title">Update SubContract Rate</div>
+
+                                              <v-text-field v-model="props.item.rate" :rules="[max25chars]"
+                                                label="Update Rate" single-line counter autofocus></v-text-field>
+                                            </template>
+                                          </v-edit-dialog>
+                                        </template>
+                                      </v-data-table>
+                                    </v-card-text>
+                                  </v-card-text>
+                                </v-card>
+                              </v-expansion-panel-content>
+                            </v-expansion-panel>
+
+                            <v-expansion-panel>
+                              <v-expansion-panel-header>Project Drawings Schedule</v-expansion-panel-header>
+                              <v-expansion-panel-content>
+                                <v-card>
+                                  <v-card-title>
+                                    <v-text-field v-model="searchTenderDrawings" append-icon="search" label="Search"
+                                      single-line hide-details></v-text-field>
+                                  </v-card-title>
+                                  <v-card-text>
+
+                                    <v-data-table :headers="subContractorProjectProcurementPackageDrawingsTableHeaders"
                                       :calculate-widths="true"
-                                      :items="editedSubContractorProjectProcurementPackage.billItems"
-                                      :search="searchTenderBillItems">
-                                      <template v-slot:[`item.total`]="{ item }">
-                                        {{ item.quantity * item.rate }}
-                                      </template>
-
-                                      <template v-slot:[`item.rate`]="props">
-                                        <v-edit-dialog v-model="props.item.rate" large persistent
-                                          @save="saveContractRate(props.item)" @cancel="cancel">
-                                          <div>{{ props.item.rate }}</div>
-                                          <template v-slot:[`input`]>
-                                            <div class="mt-4 title">Update SubContract Rate</div>
-
-                                            <v-text-field v-model="props.item.rate" :rules="[max25chars]"
-                                              label="Update Rate" single-line counter autofocus></v-text-field>
-                                          </template>
-                                        </v-edit-dialog>
+                                      :items="editedSubContractorProjectProcurementPackage.drawings"
+                                      :search="searchTenderDrawings">
+                                      <template v-slot:[`item.actionDownload`]="{ item }">
+                                        <v-btn icon @click="downloadProjectDrawing(item)">
+                                          <v-icon>
+                                            cloud_download
+                                          </v-icon>
+                                        </v-btn>
                                       </template>
                                     </v-data-table>
                                   </v-card-text>
-                                </v-card-text>
-                              </v-card>
-                            </v-expansion-panel-content>
-                          </v-expansion-panel>
+                                </v-card>
+                              </v-expansion-panel-content>
+                            </v-expansion-panel>
+                            <br>
+                            <v-expansion-panel>
+                              <v-expansion-panel-header>Project Images</v-expansion-panel-header>
+                              <v-expansion-panel-content>
+                                <v-card>
+                                  <v-card-title>
+                                    <v-text-field v-model="searchTenderImages" append-icon="search" label="Search"
+                                      single-line hide-details></v-text-field>
+                                  </v-card-title>
+                                  <v-card-text>
 
-                          <v-expansion-panel>
-                            <v-expansion-panel-header>Project Drawings Schedule</v-expansion-panel-header>
-                            <v-expansion-panel-content>
-                              <v-card>
-                                <v-card-title>
-                                  <v-text-field v-model="searchTenderDrawings" append-icon="search" label="Search"
-                                    single-line hide-details></v-text-field>
-                                </v-card-title>
-                                <v-card-text>
+                                    <v-data-table :headers="subContractorProjectProcurementPackageImagesTableHeaders"
+                                      :calculate-widths="true"
+                                      :items="editedSubContractorProjectProcurementPackage.images"
+                                      :search="searchTenderImages">
 
-                                  <v-data-table :headers="subContractorProjectProcurementPackageDrawingsTableHeaders"
-                                    :calculate-widths="true"
-                                    :items="editedSubContractorProjectProcurementPackage.drawings"
-                                    :search="searchTenderDrawings">
-                                    <template v-slot:[`item.actionDownload`]="{ item }">
-                                      <v-btn icon @click="downloadProjectDrawing(item)">
-                                        <v-icon>
-                                          cloud_download
-                                        </v-icon>
-                                      </v-btn>
-                                    </template>
-                                  </v-data-table>
-                                </v-card-text>
-                              </v-card>
-                            </v-expansion-panel-content>
-                          </v-expansion-panel>
-                          <br>
-                          <v-expansion-panel>
-                            <v-expansion-panel-header>Project Images</v-expansion-panel-header>
-                            <v-expansion-panel-content>
-                              <v-card>
-                                <v-card-title>
-                                  <v-text-field v-model="searchTenderImages" append-icon="search" label="Search"
-                                    single-line hide-details></v-text-field>
-                                </v-card-title>
-                                <v-card-text>
+                                      <template v-slot:[`item.imageUrl`]="{ item }">
+                                        <v-img :src="item.imageUrl" :lazy-src="item.imageUrl" aspect-ratio="1"
+                                          class="grey lighten-2" max-width="600" max-height="500"></v-img>
 
-                                  <v-data-table :headers="subContractorProjectProcurementPackageImagesTableHeaders"
-                                    :calculate-widths="true" :items="editedSubContractorProjectProcurementPackage.images"
-                                    :search="searchTenderImages">
+                                      </template>
+                                      <template v-slot:[`item.actionViewImage`]="{ item }">
+                                        <v-btn icon @click="viewProjectImage(item)">
+                                          <v-icon>
+                                            pageview
+                                          </v-icon>
+                                        </v-btn>
+                                      </template>
+                                    </v-data-table>
+                                  </v-card-text>
+                                </v-card>
+                              </v-expansion-panel-content>
+                            </v-expansion-panel>
 
-                                    <template v-slot:[`item.imageUrl`]="{ item }">
-                                      <v-img :src="item.imageUrl" :lazy-src="item.imageUrl" aspect-ratio="1"
-                                        class="grey lighten-2" max-width="600" max-height="500"></v-img>
+                          </v-expansion-panels>
+                        </v-card-text>
+                      </v-card>
 
-                                    </template>
-                                    <template v-slot:[`item.actionViewImage`]="{ item }">
-                                      <v-btn icon @click="viewProjectImage(item)">
-                                        <v-icon>
-                                          pageview
-                                        </v-icon>
-                                      </v-btn>
-                                    </template>
-                                  </v-data-table>
-                                </v-card-text>
-                              </v-card>
-                            </v-expansion-panel-content>
-                          </v-expansion-panel>
 
-                        </v-expansion-panels>
-                      </v-card-text>
+
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" @click="closeSubContractorProjectProcurementPackageDialog">Ok</v-btn>
+                      </v-card-actions>
                     </v-card>
+                  </v-dialog>
+                </v-btn>
 
+                <v-btn>
+                  <v-dialog v-model="projectImageMetaDataDialog" activator="parent">
 
+                    <v-card>
+                      <v-card-title>
+                        <span>Project Image</span>
+                      </v-card-title>
+                      <v-card-text>
+                        <v-container>
+                          <v-layout row>
 
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="blue darken-1" @click="closeSubContractorProjectProcurementPackageDialog">Ok</v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-</v-btn>
+                            <v-text-field v-model="editedProjectImageMetaData.name" label="Name" readonly></v-text-field>
 
-<v-btn>
-                <v-dialog v-model="projectImageMetaDataDialog" activator="parent">
+                          </v-layout>
+                          <v-layout row>
 
-                  <v-card>
-                    <v-card-title>
-                      <span>Project Image</span>
-                    </v-card-title>
-                    <v-card-text>
-                      <v-container>
-                        <v-layout row>
+                            <v-textarea name="description" label="Description" id="description"
+                              v-model="editedProjectImageMetaData.description" readonly>
+                            </v-textarea>
 
-                          <v-text-field v-model="editedProjectImageMetaData.name" label="Name" readonly></v-text-field>
+                          </v-layout>
+                          <v-layout row>
 
-                        </v-layout>
-                        <v-layout row>
+                            <v-text-field v-model="editedProjectImageMetaData.location" label="Location"
+                              readonly></v-text-field>
 
-                          <v-textarea name="description" label="Description" id="description"
-                            v-model="editedProjectImageMetaData.description" readonly>
-                          </v-textarea>
+                          </v-layout>
 
-                        </v-layout>
-                        <v-layout row>
+                          <v-row justify="center">
+                            <v-img
+                              :src="`http://neacy.io/api/resource/projects/${editedProjectImageMetaData.projectId}/images/${editedProjectImageMetaData.id}/download`"
+                              :lazy-src="`http://neacy.io/api/resource/projects/${editedProjectImageMetaData.projectId}/images/${editedProjectImageMetaData.id}/download`"
+                              aspect-ratio="1" class="grey lighten-2" max-width="700" max-height="600"></v-img>
+                          </v-row>
 
-                          <v-text-field v-model="editedProjectImageMetaData.location" label="Location"
-                            readonly></v-text-field>
+                        </v-container>
+                      </v-card-text>
 
-                        </v-layout>
-
-                        <v-row justify="center">
-                          <v-img
-                            :src="`http://neacy.io/api/resource/projects/${editedProjectImageMetaData.projectId}/images/${editedProjectImageMetaData.id}/download`"
-                            :lazy-src="`http://neacy.io/api/resource/projects/${editedProjectImageMetaData.projectId}/images/${editedProjectImageMetaData.id}/download`"
-                            aspect-ratio="1" class="grey lighten-2" max-width="700" max-height="600"></v-img>
-                        </v-row>
-
-                      </v-container>
-                    </v-card-text>
-
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="blue darken-1" @click="closeProjectImageDialog">Close</v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </v-btn>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" @click="closeProjectImageDialog">Close</v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+                </v-btn>
               </v-card-title>
               <v-card-text>
                 <v-data-table :headers="subContractorProjectProcurementPackagesTableHeaders" :calculate-widths="true"
@@ -833,106 +833,108 @@
                 <v-text-field v-model="search" append-icon="search" label="Search" single-line
                   hide-details></v-text-field>
                 <v-spacer></v-spacer>
-              <v-btn>
-                <v-dialog v-model="subContractorInvoiceDialog" activator="parent">
-                  <template v-slot:[`activator`]="{ on }">
-                    <v-btn absolute right fab dark color="indigo" v-on="on"><v-icon dark>add</v-icon></v-btn>
-                  </template>
-                  <v-card>
-                    <v-card-title>
-                      <span>Invoice Details</span>
-                    </v-card-title>
-                    <v-card-text>
-                      <v-container>
-                        <v-layout row>
+                <v-btn>
+                  <v-dialog v-model="subContractorInvoiceDialog" activator="parent">
+                    <template v-slot:[`activator`]="{ on }">
+                      <v-btn absolute right fab dark color="indigo" v-on="on"><v-icon dark>add</v-icon></v-btn>
+                    </template>
+                    <v-card>
+                      <v-card-title>
+                        <span>Invoice Details</span>
+                      </v-card-title>
+                      <v-card-text>
+                        <v-container>
+                          <v-layout row>
 
-                          <v-select :items="projects" v-model="editedSubContractorInvoice.projectId" item-value="id" item-text="name" 
-                            label="Select Project" single></v-select>
+                            <v-select :items="projects" v-model="editedSubContractorInvoice.projectId" item-value="id"
+                              item-text="name" label="Select Project" single></v-select>
 
-                        </v-layout>
-                        <v-layout row>
+                          </v-layout>
+                          <v-layout row>
 
-                          <v-text-field v-model="editedSubContractorInvoice.invoiceRef" label="Reference"></v-text-field>
-
-
-
-                          <v-select :items="invoiceStatusListSelection" v-model="editedSubContractorInvoice.status" item-value="id" item-text="name" 
-                            label="Status" single></v-select>
-
-                        </v-layout>
-                        <v-layout row>
-
-                          <v-textarea name="description" label="Description" id="description"
-                            v-model="editedSubContractorInvoice.description" required>
-                          </v-textarea>
-
-                        </v-layout>
-                        <v-layout row>
-                          xs12 sm3 offset-sm1>
-                          <v-text-field v-model="editedSubContractorInvoice.currency" label="Currency"></v-text-field>
+                            <v-text-field v-model="editedSubContractorInvoice.invoiceRef"
+                              label="Reference"></v-text-field>
 
 
-                          <v-text-field v-model="editedSubContractorInvoice.grossAmount"
-                            label="Gross Amount"></v-text-field>
+
+                            <v-select :items="invoiceStatusListSelection" v-model="editedSubContractorInvoice.status"
+                              item-value="id" item-text="name" label="Status" single></v-select>
+
+                          </v-layout>
+                          <v-layout row>
+
+                            <v-textarea name="description" label="Description" id="description"
+                              v-model="editedSubContractorInvoice.description" required>
+                            </v-textarea>
+
+                          </v-layout>
+                          <v-layout row>
+                            xs12 sm3 offset-sm1>
+                            <v-text-field v-model="editedSubContractorInvoice.currency" label="Currency"></v-text-field>
 
 
-                          <v-text-field v-model="editedSubContractorInvoice.netAmount" label="Net Amount"></v-text-field>
-
-                        </v-layout>
-
-
-                        <v-layout row>
-
-                          <v-dialog ref="subContractorInvoiceDateDialog" v-model="subContractorInvoiceDateModal"
-                            persistent width="50%">
-                            <template v-slot:[`activator`]="{ on }">
-                              <v-text-field v-model="editedSubContractorInvoice.invoiceDate" label="Date Issued"
-                                prepend-icon="event" readonly v-on="on"></v-text-field>
-                            </template>
-                            <v-date-picker v-model="editedSubContractorInvoice.invoiceDate" scrollable>
-                              <v-spacer></v-spacer>
-                              <v-btn text color="primary" @click="subContractorInvoiceDateModal = false">Cancel</v-btn>
-                              <v-btn text color="primary"
-                                @click="$refs.subContractorInvoiceDateDialog.save(date)">OK</v-btn>
-                            </v-date-picker>
-                          </v-dialog>
+                            <v-text-field v-model="editedSubContractorInvoice.grossAmount"
+                              label="Gross Amount"></v-text-field>
 
 
-                          <v-dialog ref="subContractorInvoicePaymentDueDateDialog"
-                            v-model="subContractorInvoicePaymentDueDateModal" persistent width="50%">
-                            <template v-slot:[`activator`]="{ on }">
-                              <v-text-field v-model="editedSubContractorInvoice.paymentDueDate" label="Payment Due Date"
-                                prepend-icon="event" readonly v-on="on"></v-text-field>
-                            </template>
-                            <v-date-picker v-model="editedSubContractorInvoice.paymentDueDate" scrollable>
-                              <v-spacer></v-spacer>
-                              <v-btn text color="primary"
-                                @click="subContractorInvoicePaymentDueDateModal = false">Cancel</v-btn>
-                              <v-btn text color="primary"
-                                @click="$refs.subContractorInvoicePaymentDueDateDialog.save(date)">OK</v-btn>
-                            </v-date-picker>
-                          </v-dialog>
+                            <v-text-field v-model="editedSubContractorInvoice.netAmount"
+                              label="Net Amount"></v-text-field>
 
-                        </v-layout>
+                          </v-layout>
 
-                        <v-layout row v-if="editedSubContractorInvoiceIndex < 0">
 
-                          <v-file-input v-model="editedSubContractorInvoice.invoiceFile" label="Upload Invoice" filled
-                            prepend-icon="mdi-camera"></v-file-input>
+                          <v-layout row>
 
-                        </v-layout>
+                            <v-dialog ref="subContractorInvoiceDateDialog" v-model="subContractorInvoiceDateModal"
+                              persistent width="50%">
+                              <template v-slot:[`activator`]="{ on }">
+                                <v-text-field v-model="editedSubContractorInvoice.invoiceDate" label="Date Issued"
+                                  prepend-icon="event" readonly v-on="on"></v-text-field>
+                              </template>
+                              <v-date-picker v-model="editedSubContractorInvoice.invoiceDate" scrollable>
+                                <v-spacer></v-spacer>
+                                <v-btn text color="primary" @click="subContractorInvoiceDateModal = false">Cancel</v-btn>
+                                <v-btn text color="primary"
+                                  @click="$refs.subContractorInvoiceDateDialog.save(date)">OK</v-btn>
+                              </v-date-picker>
+                            </v-dialog>
 
-                      </v-container>
-                    </v-card-text>
 
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="blue darken-1" @click="closeSubContractorInvoiceDialog">Cancel</v-btn>
-                      <v-btn color="blue darken-1" @click="saveSubContractorInvoice">Save</v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </v-btn>
+                            <v-dialog ref="subContractorInvoicePaymentDueDateDialog"
+                              v-model="subContractorInvoicePaymentDueDateModal" persistent width="50%">
+                              <template v-slot:[`activator`]="{ on }">
+                                <v-text-field v-model="editedSubContractorInvoice.paymentDueDate" label="Payment Due Date"
+                                  prepend-icon="event" readonly v-on="on"></v-text-field>
+                              </template>
+                              <v-date-picker v-model="editedSubContractorInvoice.paymentDueDate" scrollable>
+                                <v-spacer></v-spacer>
+                                <v-btn text color="primary"
+                                  @click="subContractorInvoicePaymentDueDateModal = false">Cancel</v-btn>
+                                <v-btn text color="primary"
+                                  @click="$refs.subContractorInvoicePaymentDueDateDialog.save(date)">OK</v-btn>
+                              </v-date-picker>
+                            </v-dialog>
+
+                          </v-layout>
+
+                          <v-layout row v-if="editedSubContractorInvoiceIndex < 0">
+
+                            <v-file-input v-model="editedSubContractorInvoice.invoiceFile" label="Upload Invoice" filled
+                              prepend-icon="mdi-camera"></v-file-input>
+
+                          </v-layout>
+
+                        </v-container>
+                      </v-card-text>
+
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" @click="closeSubContractorInvoiceDialog">Cancel</v-btn>
+                        <v-btn color="blue darken-1" @click="saveSubContractorInvoice">Save</v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+                </v-btn>
               </v-card-title>
               <v-card-text>
                 <h3>Invoice Summary</h3>
@@ -1040,8 +1042,8 @@
                         <v-container>
                           <v-layout row>
 
-                            <v-select :items="projects" v-model="editedSubContractorPayment.projectId" item-value="id" item-text="name" 
-                              label="Select Project" single></v-select>
+                            <v-select :items="projects" v-model="editedSubContractorPayment.projectId" item-value="id"
+                              item-text="name" label="Select Project" single></v-select>
 
                           </v-layout>
                           <v-layout row>
@@ -1576,7 +1578,7 @@ export default {
     const subContractorPayments = computed(() => {
       return store.getters['subcontractors/loadedSubContractorPayments']
     });
- 
+
 
     //methods
 
@@ -1617,8 +1619,10 @@ export default {
       save()
     });
     const showSubContractorInsurancePolicyEditDialog = ((item) => {
-      editedSubContractorInsurancePolicyIndex.value = subContractorInsurancePolicies.value.indexOf(item)
-      Object.assign(editedSubContractorInsurancePolicy, item)
+      editedSubContractorInsurancePolicyIndex.value = subContractorInsurancePolicies.value.findIndex(s =>  s.id == item.value);
+      const obj  = subContractorInsurancePolicies.value.find(s =>  s.id == item.value);
+      console.log(obj)
+      Object.assign(editedSubContractorInsurancePolicy, obj)
       if (editedSubContractorInsurancePolicy.coverStartDate) {
         var coverStartDate = new Date(editedSubContractorInsurancePolicy.coverStartDate).toISOString().substr(0, 10)
         editedSubContractorInsurancePolicy.coverStartDate = coverStartDate
@@ -2074,7 +2078,7 @@ export default {
       saveSubContractorOperative,
       saveSubContractorPayment,
       saveSubContractorQuotation,
-      closeSubContractorInvoiceDialog, 
+      closeSubContractorInvoiceDialog,
       closeSubContractorPaymentDialog,
       deleteSubContractorInsurancePolicy,
       deleteSubContractorInvoice,

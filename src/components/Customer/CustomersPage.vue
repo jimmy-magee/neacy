@@ -235,8 +235,9 @@ export default {
     const showCustomerEditDialog = (item) => {
       console.log('Showing Edit Customer Dialog for customer ' + item.raw.name)
       console.log(item.name)
-      editedCustomerIndex.value = 1;//customers.value.indexOf(item)
-      Object.assign(editedCustomer, item);
+      editedCustomerIndex.value = customers.value.findIndex(s =>  s.id == item.value);
+      const obj = customers.value.find(s =>  s.id == item.value);
+      Object.assign(editedCustomer, obj);
       console.log('Showing Edit Customer Dialog for editedCustomer ' + editedCustomer.name)
       console.log(editedCustomer.name)
       customerDialog.value = true;

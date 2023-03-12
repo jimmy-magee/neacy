@@ -224,8 +224,9 @@ export default {
 
     const editSupplier = ((item) => {
       console.log(item)
-      editedIndex.value = suppliers.value.indexOf(item)
-      Object.assign(editedItem, item)
+      editedIndex.value  = suppliers.value.findIndex(s =>  s.id == item.value);
+      const obj  = suppliers.value.find(s =>  s.id == item.value);
+      Object.assign(editedItem, obj)
       dialog.value = true
     });
 

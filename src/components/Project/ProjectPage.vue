@@ -62,7 +62,7 @@
                   <v-card-text>
 
 
-                    <v-layout row>
+                 
 
                       <form @submit.prevent="onUpdateProject">
                         <v-layout row>
@@ -182,7 +182,7 @@
                         </v-layout>
                       </form>
 
-                    </v-layout>
+                  
 
 
                   </v-card-text>
@@ -3060,7 +3060,7 @@ export default {
     const financeTab = ref(null);
     const adminTab = ref(null);
     const tab = ref(null);
-    const drawingFiles = [];
+    const drawingFiles = reactive([]);
     const filteredDrawings = [];
     const filteredBoQ = [];
     const search = ref(null);
@@ -4005,11 +4005,11 @@ export default {
 
     const reloadBoQItems = (() => {
       searchProjectBoQ.value = '';
-      store.dispatch('loadProjectBoQItems', id)
+      store.dispatch('projects/loadProjectBoQItems', id)
     });
 
     const loadBoQItemsByCategory = ((categoryId) => {
-      return store.dispatch('loadBoQItemsByCategory', categoryId)
+      return store.dispatch('projects/loadBoQItemsByCategory', categoryId)
     });
     const updateNewBoQItem = ((categoryBoQItem) => {
       console.log('Category BoQ Item Selected ')
@@ -4035,12 +4035,12 @@ export default {
     const saveSubContractBillItem = ((item) => {
       console.log('updating suubContractBillItem')
       console.log(item)
-      store.dispatch('updateSubContractorProcurementPackageBillItem', item)
+      store.dispatch('projects/updateSubContractorProcurementPackageBillItem', item)
     });
     const onUpdateProject = (() => {
       console.log('Updating project details with form')
       console.log(editedProjectDetails)
-      store.dispatch('updateProject', editedProjectDetails)
+      store.dispatch('projects/updateProject', editedProjectDetails)
         .then((response) => {
           console.log('Project data updated successfully' + response)
           snack.value = true
@@ -4057,37 +4057,37 @@ export default {
     const downloadProjectDrawing = ((item) => {
       console.log('downloading item requested..')
       console.log(item)
-      store.dispatch('downloadProjectDrawing', item)
+      store.dispatch('projects/downloadProjectDrawing', item)
     });
     const downloadProjectQuotation = ((item) => {
       console.log('downloading project quotation requested..')
       console.log(item)
       if (item.type == 'SubContractor') {
-        store.dispatch('downloadSubContractorQuotation', item)
+        store.dispatch('subcontractors/downloadSubContractorQuotation', item)
       }
       if (item.type == 'Supplier') {
-        store.dispatch('downloadSupplierQuotation', item)
+        store.dispatch('suppliers/downloadSupplierQuotation', item)
       }
     });
     const downloadCustomerInvoice = ((item) => {
       console.log('downloading customer invoice..')
       console.log(item)
-      store.dispatch('downloadCustomerInvoice', item)
+      store.dispatch('customers/downloadCustomerInvoice', item)
     });
     const downloadSubContractorInvoice = ((item) => {
       console.log('downloading subcontractor invoice..')
       console.log(item)
-      store.dispatch('downloadSubContractorInvoice', item)
+      store.dispatch('subcontractors/downloadSubContractorInvoice', item)
     });
     const downloadSupplierInvoice = ((item) => {
       console.log('downloading supplier invoice..')
       console.log(item)
-      store.dispatch('downloadSupplierInvoice', item)
+      store.dispatch('suppliers/downloadSupplierInvoice', item)
     });
     const downloadSubContractorQuotation = ((item) => {
       console.log('downloading item requested..')
       console.log(item)
-      store.dispatch('downloadSubContractorQuotation', item)
+      store.dispatch('subcontractors/downloadSubContractorQuotation', item)
     });
     const editItem = ((item) => {
       editedIndex.value = drawings.value.indexOf(item)
@@ -4107,7 +4107,7 @@ export default {
       }
       console.log('deleting project contact..')
       console.log(formData)
-      store.dispatch('deleteProjectContact', formData)
+      store.dispatch('projects/deleteProjectContact', formData)
     });
     const closeProjectContactDialog = (() => {
       projectContactDialog.value = false
@@ -4165,7 +4165,7 @@ export default {
     const deleteProjectSubContractorProcurementPackage = ((item) => {
       console.log('Delete SubContractor Procurement Package ')
       console.log(item)
-      store.dispatch('deleteProjectSubContractorProcurementPackage', item)
+      store.dispatch('projects/deleteProjectSubContractorProcurementPackage', item)
     });
     const editProjectImageMetaData = ((item) => {
       editedProjectImageMetaDataIndex.value = projectImageMetadata.value.indexOf(item)
@@ -4189,7 +4189,7 @@ export default {
         }
         console.log('dispatching update project task event form data is')
         console.log(formData)
-        store.dispatch('updateProjectTask', formData)
+        store.dispatch('projects/updateProjectTask', formData)
       } else {
         const formData = {
           projectId: id,
@@ -4204,7 +4204,7 @@ export default {
           imageFiles: editedProjectTask.imageFiles,
           imageMetaDataIds: selectedProjectTaskImageMeta.map(x => x.id)
         }
-        store.dispatch('createProjectTask', formData)
+        store.dispatch('projects/createProjectTask', formData)
         console.log('Creating new project task')
         console.log(formData)
       }
@@ -4229,7 +4229,7 @@ export default {
         }
         console.log('dispatching update project procurement package, form data is')
         console.log(formData)
-        store.dispatch('updateProjectProcurementPackage', formData)
+        store.dispatch('projects/updateProjectProcurementPackage', formData)
       } else {
         const formData = {
           projectId: id,
@@ -4246,7 +4246,7 @@ export default {
           drawingIds: editedProjectProcurementPackage.drawings.filter(x => x != null).map(x => x.id),
           imageIds: editedProjectProcurementPackage.images.filter(x => x != null).map(x => x.id)
         }
-        store.dispatch('createProjectProcurementPackage', formData)
+        store.dispatch('projects/createProjectProcurementPackage', formData)
         console.log('Creating new project procurement package')
         console.log(formData)
       }
@@ -4261,7 +4261,7 @@ export default {
         subContractorId: subId,
         projectProcurementPackageId: item.id,
       }
-      store.dispatch('createProjectSubContractorProcurementPackage', formData)
+      store.dispatch('projects/createProjectSubContractorProcurementPackage', formData)
       console.log('Creating SubContractorProjectProcurementPackage')
       console.log(formData)
     });
@@ -4276,7 +4276,7 @@ export default {
           emailAddress: editedProjectContact.emailAddress,
           companyId: editedProjectContact.companyId
         }
-        store.dispatch('updateProjectContact', formData)
+        store.dispatch('projects/updateProjectContact', formData)
         console.log('Updating project contact')
         console.log(formData)
       } else {
@@ -4288,7 +4288,7 @@ export default {
           emailAddress: editedProjectContact.emailAddress,
           companyId: editedProjectContact.companyId
         }
-        store.dispatch('createProjectContact', formData)
+        store.dispatch('projects/createProjectContact', formData)
         console.log('Creating project contact')
         console.log(formData)
       }
@@ -4308,7 +4308,7 @@ export default {
       }
       console.log('Saving project image meta data')
       console.log(formData)
-      store.dispatch('saveProjectImageMetaData', formData)
+      store.dispatch('projects/saveProjectImageMetaData', formData)
 
       // }
       closeProjectImageMetaDataDialog()
@@ -4319,7 +4319,7 @@ export default {
         projectId: id,
         imageFiles: editedProjectImages.imageFiles
       }
-      store.dispatch('uploadProjectImages', formData)
+      store.dispatch('projects/uploadProjectImages', formData)
       console.log('Uploading project images')
       console.log(formData)
 
@@ -4335,7 +4335,7 @@ export default {
         usernames: selectedProjectUsers
       }
 
-      store.dispatch('updateProjectAccessControlList', formData)
+      store.dispatch('projects/updateProjectAccessControlList', formData)
       // console.log('Updating project control list')
       // console.log(formData)
       closeProjectAccessControlListDialog()
@@ -4351,7 +4351,7 @@ export default {
         revision: editedItem.revision,
         drawingFiles: drawingFiles
       }
-      store.dispatch('updateProjectDrawingMetaData', formData)
+      store.dispatch('projects/updateProjectDrawingMetaData', formData)
       //closeProjectDrawingMetaDataDialog()
       console.log('Updating project drawing meta data')
       console.log(formData)
@@ -4359,9 +4359,9 @@ export default {
     const uploadProjectDrawings = (() => {
       const formData = {
         projectId: id,
-        drawingFiles: drawingFiles
+        drawingFiles: drawingFiles.value
       }
-      store.dispatch('uploadProjectDrawings', formData)
+      store.dispatch('projects/uploadProjectDrawings', formData)
       console.log('Uploading project drawings')
       console.log(formData)
       close()
@@ -4370,7 +4370,7 @@ export default {
       console.log('onDeleteDrawing Event Received..')
       console.log(item)
       // const index = drawings.indexOf(item)
-      store.dispatch('deleteProjectDrawing', item)
+      store.dispatch('projects/deleteProjectDrawing', item)
       // confirm('Are you sure you want to delete drawing ' + $event.title + ' from the project register?') && drawings.splice(index, 1)
     });
     const saveOrUpdateProjectRFI = (() => {
@@ -4378,9 +4378,9 @@ export default {
       editedProjectRFI.projectId = id
 
       if (editedProjectRFIIndex.value == -1) {
-        store.dispatch('createProjectRFI', editedProjectRFI)
+        store.dispatch('projects/createProjectRFI', editedProjectRFI)
       } else {
-        store.dispatch('updateProjectRFI', editedProjectRFI)
+        store.dispatch('projects/updateProjectRFI', editedProjectRFI)
       }
       closeProjectRFIDialog()
       console.log('Updating project rfi')
@@ -4389,7 +4389,7 @@ export default {
     const deleteProjectRFI = ((item) => {
       console.log('onDeleteDrawing Event Received..')
       console.log(item)
-      store.dispatch('deleteProjectRFI', item)
+      store.dispatch('projects/deleteProjectRFI', item)
     });
     const openProjectRFIDialog = ((item) => {
       editedProjectRFIIndex.value = projectRFIs.value.indexOf(item)
@@ -4416,16 +4416,16 @@ export default {
       editedProjectRoom.projectId = id
 
       if (editedProjectRoomIndex.value == -1) {
-        store.dispatch('createProjectRoom', editedProjectRoom)
+        store.dispatch('projects/createProjectRoom', editedProjectRoom)
       } else {
-        store.dispatch('updateProjectRoom', editedProjectRoom)
+        store.dispatch('projects/updateProjectRoom', editedProjectRoom)
       }
       closeProjectRoomDialog()
       console.log('Updating project room')
       console.log(editedProjectRoom)
     });
     const deleteProjectRoom = ((item) => {
-      store.dispatch('deleteProjectRoom', item)
+      store.dispatch('dprojects/eleteProjectRoom', item)
     });
     const openProjectRoomDialog = ((item) => {
       editedProjectRoomIndex.value = projectRoomsX.value.indexOf(item)
@@ -4450,20 +4450,20 @@ export default {
       console.log('onDeleteDrawing Event Received..')
       console.log(item)
       // const index = projectTasks.indexOf(item)
-      store.dispatch('deleteProjectTask', item)
+      store.dispatch('projects/deleteProjectTask', item)
       // confirm('Are you sure you want to delete drawing ' + $event.title + ' from the project register?') && drawings.splice(index, 1)
     });
     const deleteProjectProcurementPackage = ((item) => {
       console.log('onDeleteDrawing Event Received..')
       console.log(item)
       // const index = projectProcurementPackages.indexOf(item)
-      store.dispatch('deleteProjectProcurementPackage', item)
+      store.dispatch('projects/deleteProjectProcurementPackage', item)
       // confirm('Are you sure you want to delete drawing ' + $event.title + ' from the project register?') && drawings.splice(index, 1)
     });
     const editBoQItem = ((item) => {
       console.log('item is ')
       console.log(item)
-      store.dispatch('setSelectedProjectBoQItem', item)
+      store.dispatch('projects/setSelectedProjectBoQItem', item)
       editedBoQItemIndex.value = boq.value.indexOf(item)
       Object.assign(editedBoQItem, item)
       if (editedBoQItem.anticipatedStartDate) {
@@ -4518,11 +4518,11 @@ export default {
         }
         //  console.log('Updated project boq item')
         //  console.log(formData)
-        store.dispatch('updateProjectBoQItem', formData)
+        store.dispatch('projects/updateProjectBoQItem', formData)
           .then(
-            store.dispatch('loadProjectProcurementPackages', id)
+            store.dispatch('projects/loadProjectProcurementPackages', id)
           ).then(
-            store.dispatch('loadProjectProcurementPackageSummary', id)
+            store.dispatch('projects/loadProjectProcurementPackageSummary', id)
             //$store.dispatch('loadProjectBoQSummary', id)
           )
 
@@ -4563,7 +4563,7 @@ export default {
       console.log('onDelete BoQItem Event Received..')
       console.log(item)
       // const index = drawings.indexOf(item)
-      store.dispatch('deleteProjectBoQItem', item)
+      store.dispatch('projects/deleteProjectBoQItem', item)
       // confirm('Are you sure you want to delete drawing ' + $event.title + ' from the project register?') && drawings.splice(index, 1)
     });
     // https://stackoverflow.com/questions/43002417/arrays-javascript-filter-array-of-objects-using-input-search
@@ -4596,12 +4596,12 @@ export default {
     const updateProjectBoQItemMeasure = ((item) => {
       console.log('updat BoQItemMeasure Event Received..')
       console.log(item)
-      store.dispatch('updateProjectBoQItemMeasure', item)
+      store.dispatch('projects/updateProjectBoQItemMeasure', item)
       var qty = measures.value.filter(m => m.quantityMeasured != null)
         .map(m => parseInt(m.quantityMeasured)).reduce((sum, val) => sum + val, 0).toFixed(2)
       editedBoQItem.quantity = qty
       editedBoQItem.measuredQuantity = qty
-      store.dispatch('updateProjectBoQItem', editedBoQItem)
+      store.dispatch('projects/updateProjectBoQItem', editedBoQItem)
 
 
       /*
@@ -4633,7 +4633,7 @@ export default {
     const deleteProjectBoQItemMeasure = ((item) => {
       console.log('onDelete BoQItemMeasure Event Received..')
       console.log(item)
-      store.dispatch('deleteProjectBoQItemMeasure', item)
+      store.dispatch('projects/deleteProjectBoQItemMeasure', item)
         .then(
           setTimeout(() => {
             var qty = measures.value.filter(m => m.quantityMeasured != null)
@@ -4651,7 +4651,7 @@ export default {
 
       editedBoQItem.quantity = qty
       editedBoQItem.measuredQuantity = qty
-      store.dispatch('updateProjectBoQItem', editedBoQItem)
+      store.dispatch('projects/updateProjectBoQItem', editedBoQItem)
       console.log('XXXXX')
       console.log(editedBoQItem.measuredQuantity)
       setTimeout(() => {
@@ -4731,11 +4731,11 @@ export default {
         }
         console.log('Updating project customer invoice details')
         console.log(formData)
-        store.dispatch('updateCustomerInvoice', formData)
+        store.dispatch('projects/updateCustomerInvoice', formData)
           .then(
             setTimeout(() => {
-              store.dispatch('loadProjectCustomerInvoices', id)
-              store.dispatch('loadProjectCustomerInvoiceSummary', id)
+              store.dispatch('projects/loadProjectCustomerInvoices', id)
+              store.dispatch('projects/loadProjectCustomerInvoiceSummary', id)
             }, 300)
           )
 
@@ -4755,11 +4755,11 @@ export default {
           invoiceFile: editedProjectCustomerInvoice.invoiceFile
         }
         console.log(formData)
-        store.dispatch('createCustomerInvoice', formData)
+        store.dispatch('projects/createCustomerInvoice', formData)
           .then(
             setTimeout(() => {
-              store.dispatch('loadProjectCustomerInvoices', id)
-              store.dispatch('loadProjectCustomerInvoiceSummary', id)
+              store.dispatch('projects/loadProjectCustomerInvoices', id)
+              store.dispatch('projects/loadProjectCustomerInvoiceSummary', id)
             }, 300)
           )
       }
@@ -4796,11 +4796,11 @@ export default {
         }
         console.log('Updating project invoice details')
         console.log(formData)
-        store.dispatch('updateSubContractorInvoice', formData)
+        store.dispatch('projects/updateSubContractorInvoice', formData)
           .then(
             setTimeout(() => {
-              store.dispatch('loadProjectSubContractorInvoices', id)
-              store.dispatch('loadProjectSubContractorInvoiceSummary', id)
+              store.dispatch('projects/loadProjectSubContractorInvoices', id)
+              store.dispatch('projects/loadProjectSubContractorInvoiceSummary', id)
             }, 300)
           )
 
@@ -4820,11 +4820,11 @@ export default {
           invoiceFile: editedProjectSubContractorInvoice.invoiceFile
         }
         console.log(formData)
-        store.dispatch('createSubContractorInvoice', formData)
+        store.dispatch('subcontractors/createSubContractorInvoice', formData)
           .then(
             setTimeout(() => {
-              store.dispatch('loadProjectSubContractorInvoices', id)
-              store.dispatch('loadProjectSubContractorInvoiceSummary', id)
+              store.dispatch('projects/loadProjectSubContractorInvoices', id)
+              store.dispatch('projects/loadProjectSubContractorInvoiceSummary', id)
             }, 300)
           )
       }
@@ -4860,11 +4860,11 @@ export default {
         }
         console.log('Updating project supplier invoice details')
         console.log(formData)
-        store.dispatch('updateSupplierInvoice', formData)
+        store.dispatch('suppliers/updateSupplierInvoice', formData)
           .then(
             setTimeout(() => {
-              store.dispatch('loadProjectSupplierInvoices', id)
-              store.dispatch('loadProjectSupplierInvoiceSummary', id)
+              store.dispatch('projects/loadProjectSupplierInvoices', id)
+              store.dispatch('projects/loadProjectSupplierInvoiceSummary', id)
             }, 300)
           )
 
@@ -4896,8 +4896,9 @@ export default {
     });
     const showProjectSupplierEditDialog = ((item) => {
       console.log('Showing Edit Supplieer Invoice Dialog for operative with id ' + item.id)
-      editedProjectSupplierInvoiceIndex.value = projectSupplierInvoices.value.indexOf(item)
-      Object.assign(editedProjectSupplierInvoice, item)
+      editedProjectSupplierInvoiceIndex.value = projectSupplierInvoices.value.findIndex(s =>  s.id == item.value);
+      const obj = projectSupplierInvoices.value.find(s =>  s.id == item.value);
+      Object.assign(editedProjectSupplierInvoice, obj)
       projectSupplierInvoiceDialog.value = true
     });
     const closeProjectSupplierInvoiceDialog = (() => {
@@ -4916,7 +4917,7 @@ export default {
       }
       console.log('Approving project invoice for payment')
       console.log(formData)
-      store.dispatch('approveSubContractorInvoicePayment', formData)
+      store.dispatch('subcontractors/approveSubContractorInvoicePayment', formData)
       closeProjectSubContractorInvoiceDialog()
     });
     const deleteProjectSubContractorInvoice = ((item) => {
@@ -4927,7 +4928,7 @@ export default {
         projectId: id,
       }
       console.log(formData)
-      store.dispatch('deleteSubContractorInvoice', formData)
+      store.dispatch('subcontractors/deleteSubContractorInvoice', formData)
     });
     const deleteProjectSupplierInvoice = ((item) => {
       console.log('Delete Supplier Invoice Event Received..')
@@ -4937,20 +4938,20 @@ export default {
         projectId: id,
       }
       console.log(formData)
-      store.dispatch('deleteSupplierInvoice', formData)
+      store.dispatch('suppliers/deleteSupplierInvoice', formData)
     });
     const saveContractRate = ((item) => {
       //console.log('update BoQItem ContractRate ')
       //console.log(item)
-      store.dispatch('updateProjectBoQItem', item)
+      store.dispatch('projects/updateProjectBoQItem', item)
       //console.log('Updated BoQItem Quantity successfully')
     });
     const saveMaterialCost = ((item) => {
-      store.dispatch('updateProjectBoQItem', item)
+      store.dispatch('projects/updateProjectBoQItem', item)
       //console.log('Updated BoQItem Quantity successfully')
     });
     const saveLabourCost = ((item) => {
-      store.dispatch('updateProjectBoQItem', item)
+      store.dispatch('projects/updateProjectBoQItem', item)
       //console.log('Updated BoQItem Quantity successfully')
     });
     const saveMeasureQuantity = ((item) => {
@@ -4967,7 +4968,7 @@ export default {
       }
       console.log(newMeasure)
 
-      store.dispatch('createProjectBoQItemMeasure', newMeasure).then(
+      store.dispatch('projects/createProjectBoQItemMeasure', newMeasure).then(
         console.log('Updated BoQItem Quantity successfully'),
         snack.value = true,
         snackColor.value = 'success',
@@ -4977,7 +4978,7 @@ export default {
     const saveQuantity = ((item) => {
       console.log('Save Quantity called')
       console.log(item)
-      store.dispatch('updateProjectBoQItem', item).then(
+      store.dispatch('projects/updateProjectBoQItem', item).then(
         console.log('Updated BoQItem Quantity successfully'),
         snack.value = true,
         snackColor.value = 'success',
@@ -4987,7 +4988,7 @@ export default {
     const saveQuantityDeliveredToDate = ((item) => {
       console.log('Save Quantity Delivered called')
       console.log(item)
-      store.dispatch('updateProjectBoQItem', item).then(
+      store.dispatch('projects/updateProjectBoQItem', item).then(
         console.log('Updated BoQItem Quantity successfully'),
         snack.value = true,
         snackColor.value = 'success',

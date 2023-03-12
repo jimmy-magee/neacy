@@ -18,7 +18,7 @@
                     <v-layout row>
                       
                         <v-select :items="subContractorCategories" v-model="editedSubContractor.subContractorCategoryId"
-                          label="Category" item-value="id" item-text="name" required></v-select>
+                          label="Category" item-key="id" item-title="name" required></v-select>
                       
                     </v-layout>
                     <v-layout row>
@@ -239,9 +239,10 @@ export default {
       router.push('/subcontractors/' + subContractor.value)
     });
     const showSubContractorEditDialog = ((item) => {
-      console.log('Showing Edit SubContractor Dialog for subcontractorId ' + item.id)
-      editedSubContractorIndex.value = subContractors.value.indexOf(item)
-      Object.assign(editedSubContractor, item)
+      console.log('Showing Edit SubContractor Dialog for subcontractorId ' + item.value)
+      const obj  = subContractors.value.find(s =>  s.id == item.value);
+      console.log(obj)
+      Object.assign(editedSubContractor, obj)
       subContractorDialog.value = true
     });
     const closeSubContractorDialog = (() => {
