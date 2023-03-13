@@ -38,14 +38,14 @@
                 <v-layout row>
 
                   <v-select :items="supplierCategories" v-model="editedSupplier.supplierCategoryId" label="Category"
-                    item-value="id" item-text="name" required></v-select>
+                    item-key="id" item-title="name" required></v-select>
 
                 </v-layout>
 
                 <v-layout wrap>
 
                   <v-select v-model="editedSupplier.productCategoryList" :items="productCategories" multiple
-                    item-value="id" item-text="name" label="Select Product Categories">
+                    item-key="id" item-title="name" label="Select Product Categories">
                   </v-select>
 
                 </v-layout>

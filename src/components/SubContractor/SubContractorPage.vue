@@ -56,7 +56,7 @@
                   <v-layout row>
 
                     <v-select :items="subContractorCategories" v-model="editedSubContractor.subContractorCategoryId"
-                      label="Category" item-value="id" item-text="name" required></v-select>
+                      label="Category" item-key="id" item-title="name" required></v-select>
 
                   </v-layout>
                   <v-layout row>

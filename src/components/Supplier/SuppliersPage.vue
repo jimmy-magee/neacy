@@ -100,8 +100,8 @@
         <app-alert @dismissed="onDismissed" :text="error.message"></app-alert>
 
       </v-layout>
-
-      <v-data-table :headers="supplierTableHeaders" :items="suppliers" :calculate-widths="true" :search="search">
+      <v-card-text>      
+        <v-data-table :headers="supplierTableHeaders" :items="suppliers" :calculate-widths="true" :search="search">
         
         <template v-slot:[`item.actionView`]="{ item }">
   
@@ -120,6 +120,7 @@
           </v-btn>
         </template>
       </v-data-table>
+    </v-card-text>
 
     </v-card>
   </v-container>

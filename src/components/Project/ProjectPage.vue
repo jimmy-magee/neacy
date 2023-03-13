@@ -2190,11 +2190,11 @@
               <v-window-item value="financeTab-3">
 
                 <v-card>
-                  <v-card-title>
+                  <v-card-title></v-card-title>
 
-                    <v-data-table :headers="orderTableHeaders" :calculate-widths="true" :items="orders" :search="search">
+                    <v-data-table :headers="orderTableHeaders"  :calculate-widths="true" :items="orders" :search="search">
                     </v-data-table>
-                  </v-card-title>
+                  
                 </v-card>
 
               </v-window-item>

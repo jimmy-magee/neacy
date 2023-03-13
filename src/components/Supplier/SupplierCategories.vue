@@ -50,18 +50,13 @@
 
       <v-data-table :headers="supplierCategoryTableHeaders" :items="supplierCategories" :search="search">
         <template v-slot:[`item.actionEdit`]="{ item }">
-          <v-btn icon @click="editSupplierCategory(item)">
-            <v-icon>
-              edit
-            </v-icon>
+          <v-btn  icon="mdi-file-edit-outline" @click="editSupplierCategory(item)">
+     
           </v-btn>
         </template>
         <template v-slot:[`item.actionDelete`]="{ item }">
-          <v-btn icon @click="deleteSupplierCategory(item)">
-            <v-icon>
-              delete
-            </v-icon>
-          </v-btn>
+          <v-btn  icon="mdi-delete-alert" @click="deleteSupplierCategory(item)">
+        </v-btn>
         </template>
       </v-data-table>
 
