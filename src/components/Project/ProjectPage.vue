@@ -2959,7 +2959,7 @@
 
 <script>
 
-import { computed, ref, reactive, onMounted, watch } from 'vue';
+import { computed, ref, reactive, onMounted, watch, toRaw } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -4032,12 +4032,16 @@ export default {
     });
     const downloadProjectDrawing = ((item) => {
       console.log('downloading item requested..')
-      console.log(item.value)
+      console.log(toRaw(item))
+
+
       console.log('for project id')
-      console.log(id)
+      console.log(item.value)
+      console.log(item.title)
       const payload = {
         projectId: id,
-        id: item.value
+        id: item.value,
+        fileName: item.title
       }
       console.log(payload)
       store.dispatch('projects/downloadProjectDrawing', payload)
