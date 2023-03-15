@@ -7,7 +7,7 @@
       </v-sheet>
     </v-layout>
     -->
-    <v-layout row>
+
 
       <v-card>
         <v-card-text>
@@ -38,9 +38,9 @@
             </form>
           </v-container>
         </v-card-text>
-        user = {{user}}
+    
       </v-card>
-    </v-layout>
+
   </v-container>
 </template>
 
@@ -69,6 +69,9 @@ export default {
     watch(user, (currentValue, oldValue) => {
       console.log(currentValue);
       console.log(oldValue);
+      if(currentValue != null && currentValue != undefined) {
+        router.push('projects')
+      }
     });
 
 

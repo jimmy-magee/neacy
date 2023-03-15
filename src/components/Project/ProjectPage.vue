@@ -241,6 +241,11 @@
                               <v-file-input v-model="drawingFiles" label="Upload Drawing Files" filled multiple
                                 prepend-icon="mdi-camera"></v-file-input>
 
+                                <v-file-input ref="file" filled multiple prepend-icon="mdi-camera"
+                                v-on:change="handleFileUpload()"  
+                                type="file"></v-file-input>
+                                
+
                             </v-layout>
                           </v-container>
                         </v-card-text>
@@ -1695,6 +1700,22 @@
                     </template>
 
                     <template v-slot:[`item.materialCost`]="props">
+                      <v-btn flat @click="materialCostDialog = true">
+                      {{ props.value }}
+                      <v-edit-dialog  v-model="materialCostDialog" large persistent
+                        @save="saveMaterialCost(props.item)" @cancel="cancel">
+                        <div>{{ props.raw }}</div>
+                        <template v-slot:[`input`]>
+                          <div class="mt-4 title">Update Material Cost</div>
+
+                          <v-text-field v-model="props.raw" :rules="[max25chars]" label="Edit" single-line
+                            counter autofocus></v-text-field>
+                        </template>
+                      </v-edit-dialog>
+                    </v-btn>
+                    </template>
+
+<!--                    <template v-slot:[`item.materialCost`]="props">
                       <v-edit-dialog v-model="props.item.materialCost" large persistent
                         @save="saveMaterialCost(props.item)" @cancel="cancel">
                         <div>{{ props.item.materialCost }}</div>
@@ -1706,6 +1727,7 @@
                         </template>
                       </v-edit-dialog>
                     </template>
+-->
 
                     <template v-slot:[`item.labourCost`]="props">
                       <v-edit-dialog v-model="props.item.labourCost" large persistent @save="saveLabourCost(props.item)"
@@ -3000,6 +3022,7 @@ export default {
     const editedImageMetadataIndex = ref(-1);
     const editedProjectImageIndex = ref(-1)
     const dialog = ref(false);
+    const materialCostDialog = ref(false);
     const openTreeNodes = reactive([]);
     const snack = ref(false);
     const snackColor = ref('');
@@ -4986,7 +5009,19 @@ export default {
       Object.assign(editedProjectDetails, newValue);
     });
 
+
+    const file = ref(null)
+
+        const handleFileUpload = async() => {
+           // debugger;
+            console.log("selected file",file.value.files)
+            //Upload to server
+        }
+
+       
     return {
+      handleFileUpload,
+          file,
       title,
       openTreeNodes,
       snack,
@@ -5151,6 +5186,7 @@ export default {
       editedBoQItemIndex,
       editedBoQItem,
       defaultBoQItem,
+      materialCostDialog,
       editedBoQItemMeasureIndex,
       editedBoQItemMeasure,
       defaultBoQItemMeasure,
