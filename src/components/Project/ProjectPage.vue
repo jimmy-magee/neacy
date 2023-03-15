@@ -279,6 +279,7 @@
                   </v-data-table>
                 </v-card>
 
+                <v-btn>
                 <v-dialog v-model="projectDrawingMetaDataDialog" activator="parent">
                   <v-card>
                     <v-card-title>
@@ -338,6 +339,7 @@
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
+              </v-btn>
               </v-window-item>
 
               <!--Schedules-->
@@ -2048,12 +2050,9 @@
                                     SubContract Drawings
                                     <v-spacer>
                                     </v-spacer>
+                                    <v-btn>
                                     <v-dialog v-model="projectProcurementPackageDrawingsDialog" activator="parent">
-                                      <template v-slot:activator="{ on }">
-                                        <v-btn absolute right fab dark color="indigo" v-on="on">
-                                          <v-icon dark>add</v-icon>
-                                        </v-btn>
-                                      </template>
+                                     
                                       <v-card>
                                         <v-card-title>
                                           <span class="Subtitle 2">Select Tender Drawings</span>
@@ -2082,6 +2081,8 @@
                                         </v-card-actions>
                                       </v-card>
                                     </v-dialog>
+                                  </v-btn>
+
                                   </v-card-title>
                                   <v-card-text>
                                     <v-data-table :headers="projectProcurementSubContractDrawingsTableHeaders"
@@ -4077,8 +4078,9 @@ export default {
       store.dispatch('subcontractors/downloadSubContractorQuotation', item)
     });
     const editItem = ((item) => {
-      editedIndex.value = drawings.value.indexOf(item)
-      Object.assign(editedItem, item)
+      editedIndex.value = drawings.value.findIndex( d => d.id == item.value)
+      const dwg = drawings.value.find( d => d.id == item.value)
+      Object.assign(editedItem, dwg)
       projectDrawingMetaDataDialog.value = true
     });
     const editProjectContact = ((item) => {
@@ -4339,7 +4341,7 @@ export default {
         drawingFiles: drawingFiles.value
       }
       store.dispatch('projects/updateProjectDrawingMetaData', formData)
-      //closeProjectDrawingMetaDataDialog()
+      closeProjectDrawingMetaDataDialog()
       console.log('Updating project drawing meta data')
       console.log(formData)
     });
@@ -4355,9 +4357,13 @@ export default {
     });
     const deleteProjectDrawing = ((item) => {
       console.log('onDeleteDrawing Event Received..')
-      console.log(item)
+      const formData = {
+        projectId: id,
+        id: item.value
+      }
+      console.log(formData)
       // const index = drawings.indexOf(item)
-      store.dispatch('projects/deleteProjectDrawing', item)
+      store.dispatch('projects/deleteProjectDrawing', formData)
       // confirm('Are you sure you want to delete drawing ' + $event.title + ' from the project register?') && drawings.splice(index, 1)
     });
     const saveOrUpdateProjectRFI = (() => {
