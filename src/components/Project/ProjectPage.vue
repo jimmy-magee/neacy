@@ -550,6 +550,7 @@
                       </v-dialog>
                     </v-btn>
                   </v-card-title>
+
                   <v-data-table :headers="projectRoomTableHeaders" :calculate-widths="true" :items="projectRoomsX"
                     :search="searchProjectRooms">
                     <template v-slot:[`item.actionEdit`]="{ item }">
@@ -2212,11 +2213,11 @@
               <v-window-item value="financeTab-3">
 
                 <v-card>
-                  <v-card-title>
+                  <v-card-title></v-card-title>
 
-                    <v-data-table :headers="orderTableHeaders" :calculate-widths="true" :items="orders" :search="search">
+                    <v-data-table :headers="orderTableHeaders"  :calculate-widths="true" :items="orders" :search="search">
                     </v-data-table>
-                  </v-card-title>
+                  
                 </v-card>
 
               </v-window-item>
@@ -4400,11 +4401,12 @@ export default {
       console.log(editedProjectRoom)
     });
     const deleteProjectRoom = ((item) => {
-      store.dispatch('dprojects/eleteProjectRoom', item)
+      store.dispatch('projects/deleteProjectRoom', item.value)
     });
     const openProjectRoomDialog = ((item) => {
-      editedProjectRoomIndex.value = projectRoomsX.value.indexOf(item)
-      Object.assign(editedProjectRoom, item)
+      editedProjectRoomIndex.value = projectRoomsX.value.findIndex(r => r.id == item.value)
+      const obj = projectRoomsX.value.find(r => r.id == item.value);
+      Object.assign(editedProjectRoom, obj)
       console.log(item)
 
       console.log("edited Project Room = ");
@@ -4622,12 +4624,12 @@ export default {
     });
     const closeProjectBoQItemMeasureDialog = (() => {
       projectBoQItemMeasureDialog.value = false
-      var qty = measures.value.filter(m => m.quantityMeasured != null)
-        .map(m => parseInt(m.quantityMeasured)).reduce((sum, val) => sum + val, 0).toFixed(2)
+     // var qty = measures.value.filter(m => m.quantityMeasured != null)
+     //   .map(m => parseInt(m.quantityMeasured)).reduce((sum, val) => sum + val, 0).toFixed(2)
 
-      editedBoQItem.quantity = qty
-      editedBoQItem.measuredQuantity = qty
-      store.dispatch('projects/updateProjectBoQItem', editedBoQItem)
+     // editedBoQItem.quantity = qty
+     // editedBoQItem.measuredQuantity = qty
+      //store.dispatch('projects/updateProjectBoQItem', editedBoQItem)
       console.log('XXXXX')
       console.log(editedBoQItem.measuredQuantity)
       setTimeout(() => {
@@ -5291,6 +5293,7 @@ export default {
       saveOrUpdateProjectRoom,
       deleteProjectRoom,
       openProjectRoomDialog,
+      closeProjectBoQItemMeasureDialog,
       deleteProjectTask,
       editBoQItem,
       saveProjectBoQItem,
@@ -5310,7 +5313,7 @@ export default {
       saveQuantity,
       saveQuantityDeliveredToDate,
       save,
-
+      projectRoomsX,
       cancel,
       onDismissed,
       deleteProjectBoQItem,

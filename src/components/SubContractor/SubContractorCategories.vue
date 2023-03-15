@@ -50,17 +50,13 @@
 
       <v-data-table :headers="subContractorCategoryTableHeaders" :items="subContractorCategories" :search="search">
         <template v-slot:[`item.actionEdit`]="{ item }">
-          <v-btn icon @click="editSubContractorCategory(item)">
-            <v-icon>
-              edit
-            </v-icon>
+          <v-btn  icon="mdi-file-edit-outline" @click="editSubContractorCategory(item)">
+    
           </v-btn>
         </template>
         <template v-slot:[`item.actionDelete`]="{ item }">
-          <v-btn icon @click="deleteSubContractorCategory(item)">
-            <v-icon>
-              delete
-            </v-icon>
+          <v-btn  icon="mdi-delete-alert" @click="deleteSubContractorCategory(item)">
+         
           </v-btn>
         </template>
       </v-data-table>
