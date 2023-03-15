@@ -949,7 +949,7 @@ const actions = {
     downloadProjectDrawing(payload) {
         const drawingUrl = '/api/resource/clients/' + localStorage.clientId + '/projects/' + payload.projectId + '/drawings/' + payload.id + '/download'
         console.log('Downloading  Drawing from url:')
-        console.log(payload.id)
+        console.log(payload.projectId)
         axios({
             baseURL: `/`,
             url: drawingUrl,

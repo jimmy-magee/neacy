@@ -4032,8 +4032,14 @@ export default {
     });
     const downloadProjectDrawing = ((item) => {
       console.log('downloading item requested..')
-      console.log(item)
-      store.dispatch('projects/downloadProjectDrawing', item)
+      console.log(item.value)
+      console.log('for project id')
+      console.log(id)
+      const payload = {
+        projectId: id,
+        id: item.value
+      }
+      store.dispatch('projects/downloadProjectDrawing', payload)
     });
     const downloadProjectQuotation = ((item) => {
       console.log('downloading project quotation requested..')
