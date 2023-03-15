@@ -4039,6 +4039,7 @@ export default {
         projectId: id,
         id: item.value
       }
+      console.log(payload)
       store.dispatch('projects/downloadProjectDrawing', payload)
     });
     const downloadProjectQuotation = ((item) => {

@@ -931,7 +931,7 @@ const actions = {
                 commit('updateProjectDrawing', updatedDrawing)
             })
             .catch((error) => {
-                console.log(error)
+                commit('setError', error, { root: true })
             })
     },
     deleteProjectDrawing({ commit }, payload) {
@@ -943,13 +943,13 @@ const actions = {
                 commit('deleteProjectDrawing', payload)
             })
             .catch((error) => {
-                console.log(error)
+                commit('setError', error, { root: true })
             })
     },
-    downloadProjectDrawing(payload) {
+    downloadProjectDrawing({ commit }, payload) {
         const drawingUrl = '/api/resource/clients/' + localStorage.clientId + '/projects/' + payload.projectId + '/drawings/' + payload.id + '/download'
         console.log('Downloading  Drawing from url:')
-        console.log(payload.projectId)
+        console.log(payload)
         axios({
             baseURL: `/`,
             url: drawingUrl,
@@ -962,11 +962,11 @@ const actions = {
             const url = window.URL.createObjectURL(new Blob([response.data]))
             const link = document.createElement('a')
             link.href = url
-            link.setAttribute('download', payload.fileName) // or any other extension
+            link.setAttribute('download', response.data.type) // or any other extension
             document.body.appendChild(link)
             link.click()
-        }).catch((response) => {
-            console.error('Could not download the drawing from url ' + payload.drawingUrl + ' from the backend.', response)
+        }).catch((error) => {
+            commit('setError', error, { root: true })
         })
     },
     uploadProjectImages({ commit }, payload) {
