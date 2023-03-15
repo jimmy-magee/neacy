@@ -4335,7 +4335,7 @@ export default {
     const uploadProjectDrawings = (() => {
       const formData = {
         projectId: id,
-        drawingFiles: drawingFiles.value
+        drawingFiles: file.value
       }
       store.dispatch('projects/uploadProjectDrawings', formData)
       console.log('Uploading project drawings')

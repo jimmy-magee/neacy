@@ -892,15 +892,18 @@ const actions = {
         console.log(payload.drawingFiles)
         const formData = new FormData()
         var i = 0
-        var len = payload.drawingFiles.length
+        var len = payload.drawingFiles.files.length
         for (; i < len;) {
-            const file = payload.drawingFiles[i]
-            formData.append('fileParts', file)
+            //var file = payload.drawingFiles.files[i]
+            //console.log('Adding file ' + i)
+            //console.log(file)
+            formData.append('fileParts', payload.drawingFiles.files[i])
             i++
         }
 
         formData.append('projectId', payload.projectId)
         //formData.append('userId', getters['u)
+        console.log(formData)
 
         return axios.create({
             baseURL: `/`,
