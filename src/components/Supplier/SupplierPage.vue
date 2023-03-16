@@ -38,14 +38,14 @@
                 <v-layout row>
 
                   <v-select :items="supplierCategories" v-model="editedSupplier.supplierCategoryId" label="Category"
-                    item-key="id" item-title="name" required></v-select>
+                    item-value="id" item-text="name" required></v-select>
 
                 </v-layout>
 
                 <v-layout wrap>
 
                   <v-select v-model="editedSupplier.productCategoryList" :items="productCategories" multiple
-                    item-key="id" item-title="name" label="Select Product Categories">
+                    item-value="id" item-text="name" label="Select Product Categories">
                   </v-select>
 
                 </v-layout>
@@ -132,8 +132,8 @@
                       <v-container>
                         <v-layout row>
 
-                          <v-select :items="projectListSelection" v-model="editedSupplierQuotation.projectId"
-                            label="Select Project" single></v-select>
+                          <v-select :items="projects" v-model="editedSupplierQuotation.projectId" item-value="id"
+                            item-title="name" label="Select Project" single></v-select>
 
                         </v-layout>
                         <v-layout row>
@@ -250,7 +250,7 @@
                 </template>
 
                 <template v-slot:[`item.actionEditSupplierQuotation`]="{ item }">
-                  <v-btn icon @click="showSupplierQuotationEditDialog(item)">
+                  <v-btn icon @click="editSupplierQuotation(item)">
                     <v-icon>
                       edit
                     </v-icon>
@@ -291,8 +291,8 @@
                       <v-container>
                         <v-layout row>
 
-                          <v-select :items="projectListSelection" v-model="editedSupplierInvoice.projectId"
-                            label="Select Project" single></v-select>
+                          <v-select :items="projects" v-model="editedSupplierInvoice.projectId" label="Select Project"
+                            single></v-select>
 
                         </v-layout>
                         <v-layout row>
@@ -424,25 +424,19 @@
 
                 <template v-slot:[`item.actionDownloadSupplierInvoice`]="{ item }">
                   <v-btn icon @click="downloadSupplierInvoice(item)">
-                    <v-icon>
-                      cloud_download
-                    </v-icon>
+                    <v-icon icon="mdi-download"></v-icon>
                   </v-btn>
                 </template>
 
                 <template v-slot:[`item.actionEditSupplierInvoice`]="{ item }">
                   <v-btn icon @click="showSupplierInvoiceEditDialog(item)">
-                    <v-icon>
-                      edit
-                    </v-icon>
+                    <v-icon icon="mdi-file-edit-outline"></v-icon>
                   </v-btn>
                 </template>
 
                 <template v-slot:[`item.actionDeleteSupplierInvoice`]="{ item }">
                   <v-btn icon @click="deleteSupplierInvoice(item)">
-                    <v-icon>
-                      delete
-                    </v-icon>
+                    <v-icon icon="mdi-delete-alert"></v-icon>
                   </v-btn>
                 </template>
 
@@ -511,6 +505,8 @@ export default {
     const id = route.params.id;
 
     onMounted(() => {
+      store.dispatch('projects/loadProjects')
+      store.dispatch('suppliers/loadSupplier', id)
       store.dispatch('suppliers/loadSupplier', id)
       store.dispatch('suppliers/loadSupplierProducts', id)
       store.dispatch('suppliers/loadSupplierQuotations', id)
@@ -731,6 +727,9 @@ export default {
       quotationFile: null,
       status: ''
     });
+
+    const projects = computed(() => store.getters['projects/loadedProjects']);
+
     const productCategories = computed(() => { return store.getters['products/loadedProductCategories'] });
 
     const supplierCategories = computed(() => { return store.getters['suppliers/loadedSupplierCategories'] });
@@ -819,10 +818,11 @@ export default {
       closeSupplierQuotationDialog()
       save()
     });
-    const showSupplierQuotationEditDialog = ((item) => {
+    const editSupplierQuotation = ((item) => {
       console.log('Showing Edit Quotation Dialog for operative with id ' + item.id)
-      editedSupplierQuotationIndex.value = supplierQuotations.value.indexOf(item)
-      Object.assign(editedSupplierQuotation, item)
+      editedSupplierQuotationIndex.value = supplierQuotations.value.findIndex(q => q.id == item.value)
+      const obj = supplierQuotations.value.find(q => q.id == item.value)
+      Object.assign(editedSupplierQuotation, obj)
       supplierQuotationDialog.value = true
     });
     const closeSupplierQuotationDialog = (() => {
@@ -994,6 +994,7 @@ export default {
       formHasErrors,
       supplierQuotationTableHeaders,
       supplierQuotationDialog,
+      projects,
       supplierQuotationDateDialog,
       supplierQuotationDateModal,
       supplierQuotationDateReceivedDialog,
@@ -1017,7 +1018,7 @@ export default {
       userIsAuthenticatedAndHasRoleAdmin,
       onUpdateSupplier,
       saveSupplierQuotation,
-      showSupplierQuotationEditDialog,
+      editSupplierQuotation,
       closeSupplierQuotationDialog,
       downloadSupplierQuotation,
       deleteSupplierQuotation,
