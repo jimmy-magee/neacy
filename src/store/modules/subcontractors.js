@@ -809,10 +809,17 @@ import axios from 'axios'
       console.log(' for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
 
       const formData = new FormData()
-      formData.append('quotationFile', payload.quotationFile)
+      var i = 0
+        var len = payload.quotationFile.files.length
+        for (; i < len;) {
+            formData.append('quotationFile', payload.quotationFile.files[i])
+            i++
+        }
+      //formData.append('quotationFile', payload.quotationFile)
       formData.append('subContractrorId', payload.subContractorId)
       formData.append('clientId', localStorage.clientId)
       formData.append('projectId', payload.projectId)
+      console.log("payload project Id "+payload.projectId)
       formData.append('packageId', payload.packageId)
       formData.append('quotationRef', payload.quotationRef)
       formData.append('description', payload.description)

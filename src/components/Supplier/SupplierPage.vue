@@ -238,7 +238,7 @@
 
               </v-layout>
               <h3>Quotation Details</h3>
-              <v-data-table :headers="supplierQuotationTableHeaders" dense :calculate-widths="true"
+              <v-data-table :headers="showSupplierQuotationTableHeaders" dense :calculate-widths="true"
                 :items="supplierQuotations" :search="search">
 
                 <template v-slot:[`item.actionDownloadSupplierQuotation`]="{ item }">
@@ -479,7 +479,7 @@
 <script>
 
 
-import { computed, ref, reactive, onMounted, watch, toRaw } from 'vue';
+import { computed, ref, reactive, onMounted, watch } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 
@@ -674,8 +674,8 @@ export default {
     });
     const formHasErrors = false;
     const supplierQuotationTableHeaders = [
-      { title: 'id', key: 'id' },
-      { title: 'fileName', key: 'fileName' },
+      { title: 'id', key: 'id', width: "0px", hide: true }, // ' d-none' hides the column but keeps the search ability
+      { title: 'fileName', key: 'fileName', width: "1%"}, // ' d-none' hides the column but keeps the search ability
       { title: 'Project', key: 'projectName' },
       { title: 'Ref', key: 'quotationRef' },
       { title: 'Gross', key: 'grossAmount' },
@@ -718,6 +718,10 @@ export default {
       status: ''
     });
 
+
+    const showSupplierQuotationTableHeaders = computed(() => {
+      return supplierQuotationTableHeaders.filter(h => !h.hide);
+    });
     const projects = computed(() => store.getters['projects/loadedProjects']);
 
     const productCategories = computed(() => { return store.getters['products/loadedProductCategories'] });
@@ -826,16 +830,8 @@ export default {
     });
     const downloadSupplierQuotation = ((item) => {
       console.log('downloading item requested..')
-      const obj = toRaw(item)
-      console.log(obj.columns.id)
-      console.log(obj.columns.fileName)
-      //console.log(item.title)
-      const formData = {
-        id: item.value,
-        supplierId: id,
-        fileName: obj.columns.fileName
-      }
-      store.dispatch('suppliers/downloadSupplierQuotation', formData)
+      const obj = supplierQuotations.value.find(q => q.id == item.value)
+      store.dispatch('suppliers/downloadSupplierQuotation', obj)
     });
     const deleteSupplierQuotation = ((item) => {
       console.log('Delete SupplierQuotation Event Received..')
@@ -970,6 +966,7 @@ export default {
     const file = ref(null)
 
     return {
+      showSupplierQuotationTableHeaders,
       file,
       outerTab,
       date,

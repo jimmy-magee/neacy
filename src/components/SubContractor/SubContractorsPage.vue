@@ -19,7 +19,7 @@
                     <v-layout row>
                       
                         <v-select :items="subContractorCategories" v-model="editedSubContractor.subContractorCategoryId"
-                          label="Category" item-key="id" item-title="name" required></v-select>
+                          label="Category" item-value="id" item-title="name" required></v-select>
                       
                     </v-layout>
                     <v-layout row>
@@ -134,7 +134,10 @@
 
           <template v-slot:[`item.actionShowSubContractorDetails`]="{ item }">
             <v-btn icon="mdi-view-compact" @click="showSubContractorDetails(item)">
-            
+            </v-btn>
+          </template>
+          <template v-slot:[`item.actionDeleteSubContractor`]="{ item }">
+            <v-btn icon="mdi-delete-alert" @click="deleteSubContractor(item)">
             </v-btn>
           </template>
         </v-data-table>
@@ -220,8 +223,9 @@ export default {
       { title: 'Contact Name', key: 'contactName' },
       { title: 'Number', key: 'headOfficeTelephoneNumber' },
       { title: 'Email', key: 'email' },
+      { title: 'View', align: 'left', key: 'actionShowSubContractorDetails' },
       { title: 'Edit', align: 'left', key: 'actionEditSubContractor' },
-      { title: 'View', align: 'left', key: 'actionShowSubContractorDetails' }
+      { title: 'Delete', align: 'left', key: 'actionDeleteSubContractor' }
     ];
 
     const subContractorCategories = computed(() => {
@@ -237,6 +241,8 @@ export default {
     });
     const showSubContractorEditDialog = ((item) => {
       console.log('Showing Edit SubContractor Dialog for subcontractorId ' + item.value)
+      editedSubContractorIndex.value = subContractors.value.findIndex(s => s.id == item.value)
+      console.log("index value is " + editedSubContractorIndex.value)
       const obj  = subContractors.value.find(s =>  s.id == item.value);
       console.log(obj)
       Object.assign(editedSubContractor, obj)
@@ -268,8 +274,9 @@ export default {
     });
     const deleteSubContractor = ((item) => {
       console.log('Delete SubContractor Event Received..')
-      console.log(item)
-      store.dispatch('subcontractors/deleteSubContractor', item)
+      console.log(item.value)
+      const obj = subContractors.value.find(s => s.id == item.value)
+      store.dispatch('subcontractors/deleteSubContractor', obj)
     });
     const save = (() => {
       snack.value = true

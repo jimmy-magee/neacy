@@ -468,7 +468,8 @@
                 <v-text-field v-model="search" append-icon="search" label="Search" single-line
                   hide-details></v-text-field>
                 <v-spacer></v-spacer>
-                <v-btn>
+                <v-btn icon color="green" >
+          <v-icon icon="mdi-plus"></v-icon>
                   <v-dialog v-model="subContractorQuotationDialog" activator="parent">
 
                     <v-card>
@@ -480,7 +481,7 @@
                           <v-layout row>
 
                             <v-select :items="projects" v-model="editedSubContractorQuotation.projectId" item-value="id"
-                              item-text="name" label="Select Project" single></v-select>
+                              item-title="name" label="Select Project" single></v-select>
 
                           </v-layout>
                           <v-layout row>
@@ -557,8 +558,8 @@
                           </v-layout>
                           <v-layout row v-if="editedSubContractorQuotationIndex < 0">
 
-                            <v-file-input v-model="editedSubContractorQuotation.quotationFile" label="Upload Quotation"
-                              filled prepend-icon="mdi-camera"></v-file-input>
+                            <v-file-input ref="file" label="Upload Quotation" filled
+                              prepend-icon="mdi-camera"></v-file-input>
 
                           </v-layout>
 
@@ -592,26 +593,20 @@
                   :items="subContractorQuotations" :search="search">
 
                   <template v-slot:[`item.actionDownloadSubContractorQuotation`]="{ item }">
-                    <v-btn icon @click="downloadSubContractorQuotation(item)">
-                      <v-icon>
-                        cloud_download
-                      </v-icon>
+                    <v-btn icon="mdi-download" @click="downloadSubContractorQuotation(item)">
+                      
                     </v-btn>
                   </template>
 
                   <template v-slot:[`item.actionEditSubContractorQuotation`]="{ item }">
-                    <v-btn icon @click="showSubContractorQuotationEditDialog(item)">
-                      <v-icon>
-                        edit
-                      </v-icon>
+                    <v-btn icon="mdi-file-edit-outline" @click="showSubContractorQuotationEditDialog(item)">
+                      
                     </v-btn>
                   </template>
 
                   <template v-slot:[`item.actionDeleteSubContractorQuotation`]="{ item }">
-                    <v-btn icon @click="deleteSubContractorQuotation(item)">
-                      <v-icon>
-                        delete
-                      </v-icon>
+                    <v-btn icon="mdi-delete-alert" @click="deleteSubContractorQuotation(item)">
+                     
                     </v-btn>
                   </template>
 
@@ -1192,6 +1187,7 @@ export default {
     const id = route.params.id;
 
     onMounted(() => {
+      store.dispatch('projects/loadProjects')
       store.dispatch('subcontractors/loadSubContractor', id)
       store.dispatch('subcontractors/loadSubContractorInsurancePolicies', id)
       store.dispatch('subcontractors/loadSubContractorOperatives', id)
@@ -1578,7 +1574,7 @@ export default {
     const subContractorPayments = computed(() => {
       return store.getters['subcontractors/loadedSubContractorPayments']
     });
-
+    const projects = computed(() => store.getters['projects/loadedProjects']);
 
     //methods
 
@@ -1619,8 +1615,8 @@ export default {
       save()
     });
     const showSubContractorInsurancePolicyEditDialog = ((item) => {
-      editedSubContractorInsurancePolicyIndex.value = subContractorInsurancePolicies.value.findIndex(s =>  s.id == item.value);
-      const obj  = subContractorInsurancePolicies.value.find(s =>  s.id == item.value);
+      editedSubContractorInsurancePolicyIndex.value = subContractorInsurancePolicies.value.findIndex(s => s.id == item.value);
+      const obj = subContractorInsurancePolicies.value.find(s => s.id == item.value);
       console.log(obj)
       Object.assign(editedSubContractorInsurancePolicy, obj)
       if (editedSubContractorInsurancePolicy.coverStartDate) {
@@ -1724,13 +1720,13 @@ export default {
           grossAmount: editedSubContractorQuotation.grossAmount,
           netAmount: editedSubContractorQuotation.netAmount,
           quotationDate: editedSubContractorQuotation.quotationDate,
-          quotationFile: editedSubContractorQuotation.quotationFile
+          quotationFile: file.value
         }
         console.log(formData)
         store.dispatch('subcontractors/createSubContractorQuotation', formData)
           .then(
             setTimeout(() => {
-              store.dispatch('subcontractors/loadSubContractorQuotationSummary', id)
+              store.dispatch('subcontractors/loadSubContractorQuotations', id)
             }, 300)
           )
 
@@ -1739,9 +1735,10 @@ export default {
       save()
     });
     const showSubContractorQuotationEditDialog = ((item) => {
-      console.log('Showing Edit Quotation Dialog for operative with id ' + item.id)
-      editedSubContractorQuotationIndex.value = subContractorQuotations.value.indexOf(item)
-      Object.assign(editedSubContractorQuotation, item)
+      console.log('Showing Edit Quotation Dialog for operative with id ' + item.value)
+      editedSubContractorQuotationIndex.value = subContractorQuotations.value.findIndex(q => q.id == item.value)
+      const obj = subContractorQuotations.value.find(q => q.id == item.value)
+      Object.assign(editedSubContractorQuotation, obj)
       subContractorQuotationDialog.value = true
     });
     const closeSubContractorQuotationDialog = (() => {
@@ -1753,17 +1750,23 @@ export default {
     });
     const downloadSubContractorQuotation = ((item) => {
       console.log('downloading item requested..')
-      console.log(item)
-      store.dispatch('subcontractors/downloadSubContractorQuotation', item)
+      const obj = subContractorQuotations.value.find(q => q.id == item.value)
+      store.dispatch('subcontractors/downloadSubContractorQuotation', obj)
     });
     const deleteSubContractorQuotation = ((item) => {
       console.log('Delete SubContractorQuotation Event Received..')
       const formData = {
-        id: item.id,
+        id: item.value,
         subContractorId: id
       }
       console.log(formData)
       store.dispatch('subcontractors/deleteSubContractorQuotation', formData)
+      .then(
+            setTimeout(() => {
+              store.dispatch('suppliers/loadSubContractorQuotations', id)
+              //store.dispatch('suppliers/loadSupplierQuotationSummary', id)
+            }, 300)
+          )
     });
     const showSubContractorProjectProcurementPackage = ((item) => {
       console.log('Showing Edit SubContractorProjectProcurementPackageBillItems Dialog for procurement package with id ' + item.id)
@@ -1976,11 +1979,11 @@ export default {
       Object.assign(editedSubContractor, newValue);
     });
 
-
+    const file = ref(null)
     return {
-
       search,
-
+      file,
+      projects,
       editedProjectImageMetaData,
       projectImageMetaDataDialog,
       pagination,
@@ -1994,7 +1997,6 @@ export default {
       searchTenderDrawings,
       searchTenderImages,
       max25chars,
-
       subContractorQuotationTableHeaders,
       subContractorProjectProcurementPackageBillItemsTableHeaders,
       subContractorProjectProcurementPackageImagesTableHeaders,
