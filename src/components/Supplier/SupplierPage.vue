@@ -207,7 +207,7 @@
                         </v-layout>
                         <v-layout row v-if="editedSupplierQuotationIndex < 0">
 
-                          <v-file-input v-model="editedSupplierQuotation.quotationFile" label="Upload Quotation" filled
+                          <v-file-input ref="file"  label="Upload Quotation" filled
                             prepend-icon="mdi-camera"></v-file-input>
 
                         </v-layout>
@@ -242,27 +242,15 @@
                 :items="supplierQuotations" :search="search">
 
                 <template v-slot:[`item.actionDownloadSupplierQuotation`]="{ item }">
-                  <v-btn icon @click="downloadSupplierQuotation(item)">
-                    <v-icon>
-                      cloud_download
-                    </v-icon>
-                  </v-btn>
+                  <v-btn icon="mdi-download" @click="downloadSupplierQuotation(item)"></v-btn>
                 </template>
 
                 <template v-slot:[`item.actionEditSupplierQuotation`]="{ item }">
-                  <v-btn icon @click="editSupplierQuotation(item)">
-                    <v-icon>
-                      edit
-                    </v-icon>
-                  </v-btn>
+                  <v-btn icon="mdi-file-edit-outline" @click="editSupplierQuotation(item)"> </v-btn>
                 </template>
 
                 <template v-slot:[`item.actionDeleteSupplierQuotation`]="{ item }">
-                  <v-btn icon @click="deleteSupplierQuotation(item)">
-                    <v-icon>
-                      delete
-                    </v-icon>
-                  </v-btn>
+                  <v-btn icon="mdi-delete-alert" @click="deleteSupplierQuotation(item)"></v-btn>
                 </template>
 
               </v-data-table>
@@ -491,7 +479,7 @@
 <script>
 
 
-import { computed, ref, reactive, onMounted, watch } from 'vue';
+import { computed, ref, reactive, onMounted, watch, toRaw } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 
@@ -686,6 +674,8 @@ export default {
     });
     const formHasErrors = false;
     const supplierQuotationTableHeaders = [
+      { title: 'id', key: 'id' },
+      { title: 'fileName', key: 'fileName' },
       { title: 'Project', key: 'projectName' },
       { title: 'Ref', key: 'quotationRef' },
       { title: 'Gross', key: 'grossAmount' },
@@ -789,7 +779,8 @@ export default {
         store.dispatch('suppliers/updateSupplierQuotation', formData)
           .then(
             setTimeout(() => {
-              store.dispatch('suppliers/loadSupplierQuotationSummary', id)
+              store.dispatch('suppliers/loadSupplierQuotations', id)
+              //store.dispatch('suppliers/loadSupplierQuotationSummary', id)
             }, 300)
           )
       } else {
@@ -804,13 +795,14 @@ export default {
           grossAmount: editedSupplierQuotation.grossAmount,
           netAmount: editedSupplierQuotation.netAmount,
           quotationDate: editedSupplierQuotation.quotationDate,
-          quotationFile: editedSupplierQuotation.quotationFile
+          quotationFile: file.value
         }
         console.log(formData)
         store.dispatch('suppliers/createSupplierQuotation', formData)
           .then(
             setTimeout(() => {
-              store.dispatch('suppliers/loadSupplierQuotationSummary', id)
+
+              //store.dispatch('suppliers/loadSupplierQuotationSummary', id)
             }, 300)
           )
 
@@ -819,7 +811,7 @@ export default {
       save()
     });
     const editSupplierQuotation = ((item) => {
-      console.log('Showing Edit Quotation Dialog for operative with id ' + item.id)
+      console.log('Edit supplier quotation ' + item.value)
       editedSupplierQuotationIndex.value = supplierQuotations.value.findIndex(q => q.id == item.value)
       const obj = supplierQuotations.value.find(q => q.id == item.value)
       Object.assign(editedSupplierQuotation, obj)
@@ -834,13 +826,21 @@ export default {
     });
     const downloadSupplierQuotation = ((item) => {
       console.log('downloading item requested..')
-      console.log(item)
-      store.dispatch('suppliers/downloadSupplierQuotation', item)
+      const obj = toRaw(item)
+      console.log(obj.columns.id)
+      console.log(obj.columns.fileName)
+      //console.log(item.title)
+      const formData = {
+        id: item.value,
+        supplierId: id,
+        fileName: obj.columns.fileName
+      }
+      store.dispatch('suppliers/downloadSupplierQuotation', formData)
     });
     const deleteSupplierQuotation = ((item) => {
       console.log('Delete SupplierQuotation Event Received..')
       const formData = {
-        id: item.id,
+        id: item.value,
         supplierId: id
       }
       console.log(formData)
@@ -867,6 +867,7 @@ export default {
         store.dispatch('suppliers/updateSupplierInvoice', formData)
           .then(
             setTimeout(() => {
+              //store.dispatch('suppliers/loadSupplierQuotations', id)
               store.dispatch('suppliers/loadSupplierInvoiceSummary', id)
             }, 300)
           )
@@ -889,6 +890,7 @@ export default {
         store.dispatch('suppliers/createSupplierInvoice', formData)
           .then(
             setTimeout(() => {
+              //store.dispatch('suppliers/loadSupplierQuotations', id)
               store.dispatch('suppliers/loadSupplierInvoiceSummary', id)
             }, 300)
           )
@@ -965,7 +967,10 @@ export default {
       Object.assign(editedSupplier, newValue);
     });
 
+    const file = ref(null)
+
     return {
+      file,
       outerTab,
       date,
       snack,

@@ -257,6 +257,7 @@ const actions = {
         const docUrl = '/api/resource/clients/' + localStorage.clientId + '/suppliers/' + payload.supplierId + '/quotations/' + payload.id + '/download'
         console.log('Downloading Supplier Quotation from url:')
         console.log(docUrl)
+        console.log("File name is " + payload.fileName)
         axios({
             baseURL: `/`,
             url: docUrl,
@@ -277,13 +278,19 @@ const actions = {
             console.error('Could not download the supplier quotation from url ' + docUrl + ' from the backend.', error)
         })
     },
-    createSupplierQuotation({ commit }, payload) {
+    createSupplierQuotation({ commit, dispatch }, payload) {
         //console.log('Creating new quotation for subcontractor  ' + payload.subContractorId + ' assigned to ' + payload.projectId)
         console.log(payload)
         console.log(' for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
 
         const formData = new FormData()
-        formData.append('quotationFile', payload.quotationFile)
+
+        var i = 0
+        var len = payload.quotationFile.files.length
+        for (; i < len;) {
+            formData.append('quotationFile', payload.quotationFile.files[i])
+            i++
+        }
         formData.append('supplierId', payload.supplierId)
         formData.append('clientId', localStorage.clientId)
         formData.append('projectId', payload.projectId)
@@ -309,6 +316,7 @@ const actions = {
                     ...savedSupplierQuotation,
                     id: savedSupplierQuotation.id
                 })
+                dispatch('loadSupplierQuotations', payload.supplierId)
             })
             .catch((error) => {
                 commit('setLoading', false, { root: true })
@@ -325,10 +333,7 @@ const actions = {
             .then((response) => {
                 const savedSupplierQuotation = response.data
                 console.log(savedSupplierQuotation)
-                commit('updateSupplierQuotation', {
-                    ...savedSupplierQuotation,
-                    id: savedSupplierQuotation.id
-                })
+                commit('updateSupplierQuotation',savedSupplierQuotation)
             })
             .catch((error) => {
                 commit('setLoading', false, { root: true })
@@ -342,7 +347,7 @@ const actions = {
         webClient.delete('/api/resource/clients/' + localStorage.clientId + '/suppliers/' + payload.supplierId + '/quotations/' + payload.id)
             .then((response) => {
                 console.log('Deleted Supplier Quotation, response status = ' + response.status)
-                commit('deleteSupplierrQuotation', payload)
+                commit('deleteSupplierQuotation', payload)
             })
             .catch((error) => {
                 console.log(error)
