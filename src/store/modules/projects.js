@@ -1521,7 +1521,7 @@ const actions = {
         console.log('Loading all Quotations for project id ' + payload)
         console.log('for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
 
-        webClient.get(`/api/client/` + localStorage.clientId + `/projects/` + payload + '/quotations')
+        webClient.get(`/api/resource/clients/` + localStorage.clientId + `/projects/` + payload + '/quotations')
             .then(response => {
                 console.log('Received Project Quotations from server.')
                 console.log(response.data)

@@ -1247,7 +1247,7 @@
                   <v-text-field v-model="searchProjectQuotations" label="Search Quotations" flat solo-inverted
                     hide-details clearable clear-icon="mdi-close-circle-outline"></v-text-field>
 
-                  <v-data-table :headers="title" :calculate-widths="true" :items="projectQuotations"
+                  <v-data-table :headers="projectQuotationTableHeaders" :calculate-widths="true" :items="projectQuotations"
                     :search="searchProjectQuotations">
 
                     <template v-slot:[`item.actionDownloadProjectQuotation`]="{ item }">
@@ -2952,6 +2952,8 @@
           </v-btn>
         </template>
       </v-snackbar>
+
+     
     </v-card>
 
 
@@ -2989,6 +2991,7 @@ export default {
       store.dispatch('projects/loadProjectRooms', id)
       store.dispatch('projects/loadProjectImageMetadata', id)
       store.dispatch('projects/loadProjectProducts', id)
+      store.dispatch('projects/loadProjectQuotations', id)
       store.dispatch('projects/loadProjectOrders', id)
       store.dispatch('projects/loadProjectProcurementPackages', id)
       store.dispatch('projects/loadProjectProcurementPackageSummary', id)
@@ -4034,8 +4037,6 @@ export default {
     const downloadProjectDrawing = ((item) => {
       console.log('downloading item requested..')
       console.log(toRaw(item))
-
-
       console.log('for project id')
       console.log(item.value)
       console.log(item.title)
@@ -4048,13 +4049,23 @@ export default {
       store.dispatch('projects/downloadProjectDrawing', payload)
     });
     const downloadProjectQuotation = ((item) => {
-      console.log('downloading project quotation requested..')
-      console.log(item)
-      if (item.type == 'SubContractor') {
-        store.dispatch('subcontractors/downloadSubContractorQuotation', item)
+      
+      const obj = projectQuotations.value.find(q => q.id == item.value)
+      console.log(item.value)
+      console.log(obj.type)
+      if (obj.type == 'SubContractor') {
+        const payload = {
+          supplierId: obj.companyId,
+          id: obj.id,
+          fileName: obj.fileName
+        }
+        console.log("dispatching download subcontractor quotation")
+        console.log(payload)
+        store.dispatch('subcontractors/downloadSubContractorQuotation', payload)
       }
-      if (item.type == 'Supplier') {
-        store.dispatch('suppliers/downloadSupplierQuotation', item)
+      if (obj.type == 'Supplier') {
+        console.log('downloading project quotation requested..')
+        store.dispatch('suppliers/downloadSupplierQuotation', obj)
       }
     });
     const downloadCustomerInvoice = ((item) => {
