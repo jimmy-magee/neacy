@@ -88,6 +88,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "projectPage" */ './components/Project/ProjectPage.vue'),
   },
   {
+    path: '/drawing_categories',
+    name: 'Drawing Categories Page',
+    component: () => import(/* webpackChunkName: "drawingCategoryPage" */ './components/Drawing/DrawingCategories.vue'),
+  },
+  {
     path: '/boqitem_categories',
     name: 'BoQItemCategoriesPage',
     component: () => import(/* webpackChunkName: "projectPage" */ './components/BoQ/BoQItemCategories.vue'),

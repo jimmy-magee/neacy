@@ -468,8 +468,8 @@
                 <v-text-field v-model="search" append-icon="search" label="Search" single-line
                   hide-details></v-text-field>
                 <v-spacer></v-spacer>
-                <v-btn icon color="green" >
-          <v-icon icon="mdi-plus"></v-icon>
+                <v-btn icon color="green">
+                  <v-icon icon="mdi-plus"></v-icon>
                   <v-dialog v-model="subContractorQuotationDialog" activator="parent">
 
                     <v-card>
@@ -594,19 +594,19 @@
 
                   <template v-slot:[`item.actionDownloadSubContractorQuotation`]="{ item }">
                     <v-btn icon="mdi-download" @click="downloadSubContractorQuotation(item)">
-                      
+
                     </v-btn>
                   </template>
 
                   <template v-slot:[`item.actionEditSubContractorQuotation`]="{ item }">
                     <v-btn icon="mdi-file-edit-outline" @click="showSubContractorQuotationEditDialog(item)">
-                      
+
                     </v-btn>
                   </template>
 
                   <template v-slot:[`item.actionDeleteSubContractorQuotation`]="{ item }">
                     <v-btn icon="mdi-delete-alert" @click="deleteSubContractorQuotation(item)">
-                     
+
                     </v-btn>
                   </template>
 
@@ -1761,12 +1761,12 @@ export default {
       }
       console.log(formData)
       store.dispatch('subcontractors/deleteSubContractorQuotation', formData)
-      .then(
-            setTimeout(() => {
-              store.dispatch('suppliers/loadSubContractorQuotations', id)
-              //store.dispatch('suppliers/loadSupplierQuotationSummary', id)
-            }, 300)
-          )
+        .then(
+          setTimeout(() => {
+            store.dispatch('suppliers/loadSubContractorQuotations', id)
+            //store.dispatch('suppliers/loadSupplierQuotationSummary', id)
+          }, 300)
+        )
     });
     const showSubContractorProjectProcurementPackage = ((item) => {
       console.log('Showing Edit SubContractorProjectProcurementPackageBillItems Dialog for procurement package with id ' + item.id)

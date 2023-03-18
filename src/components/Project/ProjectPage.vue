@@ -1456,20 +1456,21 @@
                                                   <v-spacer></v-spacer>
                                                 </v-card-title>
                                                 <v-card-text>
-
+projectQuantitiesByRoom{{ projectQuantitiesByRoom1 }}
                                                   <v-data-table :headers="projectRoomMeasureTableHeaders"
-                                                    :calculate-widths="true" :items="projectQuantitiesByRoom"
-                                                    item-key="id" :show-select="false" :search="searchProjectRooms">
+                                                    :calculate-widths="true" :items="projectQuantitiesByRoom1"
+                                                     :show-select="false" :search="searchProjectRooms">
 
-                                                    <template v-slot:[`item.quantity`]="props">
-                                                      <v-edit-dialog v-model="props.item.quantity" large persistent
-                                                        @save="saveMeasureQuantity(props.item)" @cancel="cancel"
+                                                    <template v-slot:[`item`]="{item}">
+                                                      {{ item.qty }}
+                                                      <v-edit-dialog v-model="item.quantity" large persistent
+                                                        @save="saveMeasureQuantity(item)" @cancel="cancel"
                                                         @open="open" @close="close">
-                                                        <div>{{ props.item.quantity }}</div>
+                                                        <div>{{ item.qty }}</div>
                                                         <template v-slot:[`input`]>
                                                           <div class="mt-4 title">Update Quantity</div>
 
-                                                          <v-text-field v-model="props.item.quantity"
+                                                          <v-text-field v-model="item.quantity"
                                                             label="Update Quantity" single-line autofocus>
                                                           </v-text-field>
                                                         </template>
@@ -1682,24 +1683,30 @@
                   </v-layout>
 
                   <v-data-table :headers="boqTableHeaders" :items="boq" :search="searchProjectBoQ" show-select>
-                    <template v-slot:[`item.total`]="{ item }">
-                      {{ (item.quantity * item.contractRate).toFixed(2) }}
+                    <template v-slot:[`item.${quantity}`]="{ item }">
+                      {{ item }}
+                      {{ (item.props.title.quantity * item.contractRate).toFixed(2) }}
                     </template>
                     <template v-slot:[`item.totalDelivered`]="{ item }">
                       {{ (item.quantityDeliveredToDate * item.contractRate).toFixed(2) }}
                     </template>
 
-                    <template v-slot:[`item.contractRate`]="props">
-                      <v-edit-dialog v-model="props.item.contractRate" large persistent
-                        @save="saveContractRate(props.item)" @cancel="cancel">
-                        <div>{{ props.item.contractRate }}</div>
+                    <template v-slot:[`item.${contractRate}`]="props">
+                    
+                      <v-btn @click="contractDialog = true">{{ props.item.props.title.contractRate }}
+                      <v-dialog v-model="contractDialog" snall  persistent activator="parent"
+                        @save="saveContractRate(props.item.props.title.contractRate)" @cancel="cancel">
+                        <div>{{ props.item.props.title.contractRate }}</div>
+                      <v-text-field v-model="props.item.props.title.contractRate" :rules="[max25chars]" label="Edit" single-line
+                            counter autofocus></v-text-field>
                         <template v-slot:[`input`]>
                           <div class="mt-4 title">Update Contract Rate</div>
 
-                          <v-text-field v-model="props.item.contractRate" :rules="[max25chars]" label="Edit" single-line
+                          <v-text-field v-model="props.item.props.title.contractRate" :rules="[max25chars]" label="Edit" single-line
                             counter autofocus></v-text-field>
                         </template>
-                      </v-edit-dialog>
+                      </v-dialog>
+                      </v-btn>
                     </template>
 
                     <template v-slot:[`item.materialCost`]="props">
@@ -3114,7 +3121,7 @@ export default {
       { title: 'Delete', align: 'left', key: 'actionDelete' }
     ];
     const projectRoomMeasureTableHeaders = [
-      { title: 'Room Name', key: 'name' },
+      { title: 'Space', key: 'name' },
       { title: 'Quantity', key: 'quantity', default: 0 },
     ];
     const projectBoQCategoryCostsTableHeaders = [
@@ -3856,6 +3863,8 @@ export default {
       return roots;
     });
     const projectQuantitiesByRoom = computed(() => { return store.getters['projects/loadedProjectRooms'] });
+    const projectQuantitiesByRoom1 = computed(() =>  projectQuantitiesByRoom.value.map(r => { return makeRoomQuantity(r.name, 0); }));
+    
     const orders = computed(() => { return store.getters['projects/loadedProjectOrders'] });
     const boQProducts = computed(() => { return store.getters['projects/loadedProjectProducts'] });
     const projectDrawingCategories = computed(() => { return store.getters['projects/loadedProjectDrawingCategories'] });
@@ -5053,6 +5062,7 @@ export default {
       handleFileUpload,
           file,
       title,
+      projectQuantitiesByRoom1,
       openTreeNodes,
       snack,
       snackColor,
@@ -5357,7 +5367,15 @@ export default {
   }
 }
 
+function makeRoomQuantity(name, qty) {
 
+//const projectBoQMeasure = this.loadedProjectBoQItemMeasures;
+console.log("making room qty " + name);
+return {
+  name: name,
+  qty: qty
+};
+}
 
 
 </script>

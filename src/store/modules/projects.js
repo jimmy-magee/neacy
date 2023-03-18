@@ -363,7 +363,7 @@ const actions = {
     },
     deleteProjectDrawingCategory({ commit }, payload) {
         commit('setLoading', true, { root: true })
-        webClient.delete(`/api/resource/clients/` + localStorage.clientId + `/drawing_categories/` + payload.id)
+        webClient.delete(`/api/resource/clients/` + localStorage.clientId + `/drawing_categories/` + payload)
             .then(() => {
                 commit('deleteProjectDrawingCategory', payload)
                 commit('setLoading', false, { root: true })
@@ -1582,6 +1582,20 @@ const actions = {
                 commit('setError', error, { root: true })
             })
     },
+    loadProjectDrawingCategories ({ commit }) {
+        commit('setLoading', true, { root: true })
+        webClient.get(`/api/resource/clients/` + localStorage.clientId + `/drawing_categories`)
+            .then(response => {
+              console.log('Received ProjectDrawings Categories...')
+              console.log(response.data)
+              commit('setLoadedProjectDrawingCategories', response.data)
+              commit('setLoading', false, { root: true })
+            })
+            .catch(error => {
+                commit('setError', error, { root: true })
+            })
+      }
+      
 }
 const getters = {
     loadedProjects(state) {
