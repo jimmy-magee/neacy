@@ -6,7 +6,8 @@
         <v-spacer></v-spacer>
         <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
         <v-spacer></v-spacer>
-        <v-btn>
+        <v-btn icon color="green">
+          <v-icon icon="mdi-plus"></v-icon>
           <v-dialog v-model="dialog" activator="parent">
            
             <v-card>
@@ -19,7 +20,7 @@
                   <v-layout wrap>
                  
                       <v-select v-model="editedItem.productCategoryId" :items="productCategories" item-value="id"
-                        item-text="name" label="Select Product Category">
+                        item-title="name" label="Select Product Category">
                       </v-select>
                     
                   </v-layout>
@@ -88,16 +89,16 @@
 
       <v-data-table :headers="productTableHeaders" :items="products" :search="search">
         <template v-slot:[`item.actionView`]="{ item }">
-          <v-btn text :to="'/products/' + item.id">
+          <v-btn icon  :to="'/products/' + item.value">
             <v-icon color="orange darken-4" right>mdi-open-in-new</v-icon>
           </v-btn>
         </template>
 
         <template v-slot:[`item.actionEdit`]="{ item }">
-          <v-btn icon="mdi-file-edit-outline" @click="editProduct(item.value.id)"></v-btn>
+          <v-btn icon="mdi-file-edit-outline" @click="editProduct(item.value)"></v-btn>
         </template>
         <template v-slot:[`item.actionDelete`]="{ item }">
-          <v-btn icon="mdi-delete-alert" @click="deleteProduct(item.value.id)"></v-btn>
+          <v-btn icon="mdi-delete-alert" @click="deleteProduct(item.value)"></v-btn>
         </template>
       </v-data-table>
 
@@ -180,7 +181,7 @@ export default {
 
     const formHasErrors = ref(false);
 
-    const productCategories = computed(() => store.getters['products/loadedProductCategoryies']);
+    const productCategories = computed(() => store.getters['products/loadedProductCategories']);
     const products = computed(() => store.getters['products/loadedProducts']);
 
     const formTitle = computed(() => editedIndex.value === -1 ? 'New Product' : 'Edit Product');
@@ -191,8 +192,8 @@ export default {
     const editProduct = ((item) => {
       console.log('Edit item..' + item)
       console.log(item)
-      editedIndex.value = products.value.findIndex(u => u.username == item)
-      const obj = products.value.find(u => u.username == item)
+      editedIndex.value = products.value.findIndex(u => u.id == item)
+      const obj = products.value.find(u => u.id == item)
       Object.assign(editedItem, obj)
       dialog.value = true
     });

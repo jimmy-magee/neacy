@@ -16,6 +16,9 @@ const mutations = {
     setLoadedProductCategories(state, payload) {
         state.loadedProductCategories = payload
     },
+    createProductCategory(state, payload) {
+        state.loadedProductCategories.push(payload)
+    },
     updateProductCategory(state, payload) {
         state.loadedProductCategories = [
             ...state.loadedProductCategories.filter(u => u.id !== payload.id), payload
@@ -54,7 +57,7 @@ const mutations = {
 }
 const actions = {
     loadProductCategoryTree({ commit }) {
-         commit('setLoading', true, { root: true })
+        commit('setLoading', true, { root: true })
 
         webClient.get(`/api/resource/clients/` + localStorage.clientId + `/product_categories`)
             .then(response => {
@@ -75,7 +78,7 @@ const actions = {
                 console.log('Nodes are ')
                 console.log(nodes)
                 commit('setLoadedProductCategoryTree', nodes)
-                 commit('setLoading', false, { root: true })
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
                 console.log('Encountered error')
@@ -83,27 +86,27 @@ const actions = {
             })
     },
     loadProductCategories({ commit }) {
-         commit('setLoading', true, { root: true })
+        commit('setLoading', true, { root: true })
         //  webClient.defaults.headers.common['Authorization'] = localStorage.authHeader;
 
         webClient.get(`/api/resource/clients/` + localStorage.clientId + `/product_categories`)
             .then(response => {
                 console.log('Received Products Categories...')
                 commit('setLoadedProductCategories', response.data)
-                 commit('setLoading', false, { root: true })
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
                 commit('setError', e, { root: true })
             })
     },
     createProductCategory({ commit }, payload) {
-         commit('setLoading', true, { root: true })
+        commit('setLoading', true, { root: true })
         webClient.post(`/api/resource/clients/` + localStorage.clientId + `/product_categories`, payload)
             .then(response => {
                 console.log('Received saved Product Category from server..')
                 commit('createProductCategory', response.data)
                 //dispatch('loadProductCategoryTree')
-                 commit('setLoading', false, { root: true })
+                commit('setLoading', false, { root: true })
             })
             .catch(error => {
                 console.log('Encounterd error ')
@@ -112,38 +115,38 @@ const actions = {
             })
     },
     updateProductCategory({ commit, dispatch }, payload) {
-         commit('setLoading', true, { root: true })
+        commit('setLoading', true, { root: true })
         webClient.post(`/api/resource/clients/` + localStorage.clientId + `/product_categories/` + payload.id, payload)
             .then(response => {
                 console.log('Received updated Product Category from server..')
                 commit('updateProductCategory', response.data)
                 dispatch('loadProductCategoryTree')
-                 commit('setLoading', false, { root: true })
+                commit('setLoading', false, { root: true })
             })
             .catch(error => {
                 commit('setError', error.response.data.message)
             })
     },
     deleteProductCategory({ commit, dispatch }, payload) {
-         commit('setLoading', true, { root: true })
+        commit('setLoading', true, { root: true })
         webClient.delete(`/api/resource/clients/` + localStorage.clientId + `/product_categories/` + payload.id)
             .then(response => {
                 console.log(response)
                 dispatch('loadProductCategoryTree');
-                 commit('setLoading', false, { root: true })
+                commit('setLoading', false, { root: true })
             })
             .catch(error => {
                 commit('setError', error, { root: true })
             })
     },
     loadProductsByCategory({ commit }, payload) {
-         commit('setLoading', true, { root: true })
+        commit('setLoading', true, { root: true })
         webClient.get(`/api/resource/clients/` + localStorage.clientId + `/products/category/` + payload)
             .then(response => {
                 console.log('Received Products...')
                 console.log(response.data)
                 commit('setLoadedProducts', response.data)
-                 commit('setLoading', false, { root: true })
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
                 commit('setError', e, { root: true })
@@ -151,37 +154,37 @@ const actions = {
 
     },
     loadProducts({ commit }) {
-         commit('setLoading', true, { root: true })
+        commit('setLoading', true, { root: true })
         console.log('Loading all System Products for user with authorization token ' + localStorage.authHeader)
         webClient.get(`/api/resource/clients/` + localStorage.clientId + `/products`,)
             .then(response => {
                 console.log('Received Products...')
                 console.log(response.data)
                 commit('setLoadedProducts', response.data)
-                 commit('setLoading', false, { root: true })
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
                 commit('setError', e, { root: true })
             })
     },
     loadProduct({ commit }, payload) {
-         commit('setLoading', true, { root: true })
+        commit('setLoading', true, { root: true })
         console.log('Loading Product with id [{' + payload.id + '}] for user with authorization token ' + localStorage.authHeader)
         webClient.get(`/api/resource/clients/` + localStorage.clientId + `/product/` + payload.id)
             .then(response => {
                 console.log('Received Product...')
                 console.log(response.data)
                 commit('setLoadedProduct', response.data)
-                 commit('setLoading', false, { root: true })
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
                 commit('setError', e, { root: true })
             })
     },
     createProduct({ commit }, payload) {
-         commit('setLoading', true, { root: true })
-        const formData = new FormData()
-  
+        commit('setLoading', true, { root: true })
+        //const formData = new FormData()
+
         /*
           var len = payload.productImages.length
           for (; i < len;) {
@@ -201,6 +204,7 @@ const actions = {
              j++
           }
     */
+   /*
         formData.append('name', payload.name)
         formData.append('description', payload.description)
         formData.append('productCategoryId', payload.productCategoryId)
@@ -214,11 +218,13 @@ const actions = {
             baseURL: `/`,
             headers: { 'Authorization': localStorage.authHeader, 'Content-Type': 'multipart/form-data' }
             ///api/resource/clients/{clientId}/projects/{projectId}/drawings
-        }).post(`/api/resource/clients/` + localStorage.clientId + `/products`, formData)
+        })*/
+        
+        webClient.post(`/api/resource/clients/` + localStorage.clientId + `/products`, payload)
             .then(response => {
                 console.log('Received saved Product from server..')
                 commit('createProduct', response.data)
-                 commit('setLoading', false, { root: true })
+                commit('setLoading', false, { root: true })
             })
             .catch(error => {
                 commit('setError', error, { root: true })
@@ -226,13 +232,13 @@ const actions = {
             })
     },
     updateProduct({ commit }, payload) {
-         commit('setLoading', true, { root: true })
+        commit('setLoading', true, { root: true })
         webClient.post(`/api/resource/clients/` + localStorage.clientId + `/products/` + payload.id, payload)
             .then(response => {
                 console.log('Received updated Product from server..')
                 console.log(response.data)
                 commit('updateProduct', response.data)
-                 commit('setLoading', false, { root: true })
+                commit('setLoading', false, { root: true })
             })
             .catch(error => {
                 commit('setError', error, { root: true })
@@ -263,7 +269,7 @@ const actions = {
         })
     },
     updateSupplierProductQuotation({ commit }, payload) {
-         commit('setLoading', true, { root: true })
+        commit('setLoading', true, { root: true })
         console.log('Updating product quotation ')
         console.log(payload)
         webClient.post(`/api/resource/clients/` + localStorage.clientId + `/suppliers/` + payload.supplierId + `/quotations/` + payload.id, payload)
@@ -271,7 +277,7 @@ const actions = {
                 console.log('Received updated Supplier Product Quotation from server..')
                 console.log(response.data)
                 //commit('updateProduct', response.data)
-                 commit('setLoading', false, { root: true })
+                commit('setLoading', false, { root: true })
             })
             .catch(error => {
                 commit('setError', error, { root: true })
@@ -279,20 +285,20 @@ const actions = {
     },
 
     deleteProduct({ commit }, payload) {
-         commit('setLoading', true, { root: true })
-        webClient.delete(`/api/resource/clients/` + localStorage.clientId + `/products/` + payload.id)
+        commit('setLoading', true, { root: true })
+        webClient.delete(`/api/resource/clients/` + localStorage.clientId + `/products/` + payload)
             .then(response => {
                 console.log(response)
-                console.log('Successfully deleted product..' + payload.name)
+                console.log('Successfully deleted product..' + payload)
                 commit('deleteProduct', payload)
-                 commit('setLoading', false, { root: true })
+                commit('setLoading', false, { root: true })
             })
             .catch(error => {
                 commit('setError', error, { root: true })
             })
     },
     createProductQuotationForm({ commit }, payload) {
-         commit('setLoading', true, { root: true })
+        commit('setLoading', true, { root: true })
         console.log('Saving Prouduct Quotation form..')
         console.log(payload)
         webClient.post(`/api/resource/clients/` + localStorage.clientId + `/productXX/quotation`, payload)
@@ -300,7 +306,7 @@ const actions = {
                 console.log('Received saved Prouduct Quotation form from server..')
                 console.log(response.data)
                 // commit('createProduct', response.data)
-                 commit('setLoading', false, { root: true })
+                commit('setLoading', false, { root: true })
             })
             .catch(error => {
                 commit('setError', error, { root: true })
@@ -308,14 +314,14 @@ const actions = {
             })
     },
     loadProductQuotations({ commit }, payload) {
-         commit('setLoading', true, { root: true })
+        commit('setLoading', true, { root: true })
         console.log('Loading Product qotations for  [{' + payload + '}] for user with authorization token ' + localStorage.authHeader)
         webClient.get(`/api/resource/clients/` + localStorage.clientId + `/products/` + payload + `/quotations`)
             .then(response => {
                 console.log('Received Product Quotations...')
                 console.log(response.data)
                 commit('setLoadedProductQuotations', response.data)
-                 commit('setLoading', false, { root: true })
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
                 commit('setError', e, { root: true })
@@ -323,14 +329,14 @@ const actions = {
     },
 
     loadProductOrders({ commit }, payload) {
-         commit('setLoading', true, { root: true })
+        commit('setLoading', true, { root: true })
         console.log('Loading Product orders for  [{' + payload + '}] for user with authorization token ' + localStorage.authHeader)
         webClient.get(`/api/resource/clients/` + localStorage.clientId + `/products/` + payload + `/orders`)
             .then(response => {
                 console.log('Received Product Orders...')
                 console.log(response.data)
                 commit('setLoadedProductOrders', response.data)
-                 commit('setLoading', false, { root: true })
+                commit('setLoading', false, { root: true })
             })
             .catch(e => {
                 commit('setError', e, { root: true })

@@ -97,7 +97,9 @@ export default {
           { icon: 'assignment', title: 'BoQItem Categories', link: '/boqitem_categories' },
           { icon: 'assignment', title: 'SubContractor Categories', link: '/subcontractor_categories' },
           { icon: 'assignment', title: 'Supplier Categories', link: '/supplier_categories' },
+          { icon: 'assignment', title: 'Product Categories', link: '/product_categories' },
           { icon: 'supervised_user_circle', title: 'Users', link: '/admin/users' },
+          
         ]
       }
       return menuItems;
