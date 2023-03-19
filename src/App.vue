@@ -3,7 +3,7 @@
     <v-app-bar app color="blue" dark>
       <v-toolbar-title>
         <v-app-bar-nav-icon @click.stop="sideNav = !sideNav"></v-app-bar-nav-icon>
-        leanne luch</v-toolbar-title>
+        Neacy</v-toolbar-title>
       <v-spacer></v-spacer>
       <div v-if="user">
         {{ user.username }}
@@ -82,7 +82,7 @@ export default {
       if (userIsAuthenticatedAndHasRoleAdmin.value) {
         menuItems = [
           { icon: 'dashboard', title: 'Projects', link: '/projects' },
-          { icon: 'api', title: 'Products', link: '/product_categories' },
+          { icon: 'api', title: 'Products', link: '/products' },
           { icon: 'bar_chart', title: 'Suppliers', link: '/suppliers' },
           { icon: 'construction', title: 'SubContractors', link: '/subcontractors' },
           //{icon: 'construction', title: 'SubContractors V2', link: '/subcontractorsV2'},

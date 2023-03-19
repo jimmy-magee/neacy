@@ -15,7 +15,6 @@
               <v-card-title>
                 <span class="headline">{{ formTitle }}</span>
               </v-card-title>
-              editedItem:  {{ editedItem }}
               <v-card-text>
                 <v-container>
 
