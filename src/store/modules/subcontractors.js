@@ -267,7 +267,7 @@ import axios from 'axios'
           commit('setLoading', false, { root: true })
         })
         .catch(error => {
-          commit('setError', error.response)
+          commit('setError', error, { root: true })
         })
     },
     updateSubContractorCategory({ commit }, payload) {
@@ -279,19 +279,19 @@ import axios from 'axios'
           commit('setLoading', false, { root: true })
         })
         .catch(error => {
-          commit('setError', error.response)
+          commit('setError', error, { root: true })
         })
     },
     deleteSubContractorCategory({ commit }, payload) {
       commit('setLoading', true, { root: true })
-      webClient.delete(`/api/resource/clients/` + localStorage.clientId + `/subcontractor_categories/` + payload.id)
+      webClient.delete(`/api/resource/clients/` + localStorage.clientId + `/subcontractor_categories/` + payload)
         .then(response => {
           console.log(response)
           commit('deleteSubContractorCategory', payload)
           commit('setLoading', false, { root: true })
         })
         .catch(error => {
-          commit('setError', error.response)
+          commit('setError', error, { root: true })
         })
     },
     createSubContractor({ commit }, payload) {

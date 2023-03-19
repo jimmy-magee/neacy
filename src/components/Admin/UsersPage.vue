@@ -29,7 +29,6 @@
                     <v-select :items="clients" v-model="editedItem.clientId" label="Client" item-value="id"
                       item-text="name"></v-select>
 
-
                   </v-layout>
 
                   <v-layout row>

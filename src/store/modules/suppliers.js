@@ -129,7 +129,7 @@ const actions = {
     },
     deleteSupplierCategory({ commit}, payload) {
         commit('setLoading', true, { root: true })
-        webClient.delete(`/api/resource/clients/` + localStorage.clientId + `/supplier_categories/` + payload.id)
+        webClient.delete(`/api/resource/clients/` + localStorage.clientId + `/supplier_categories/` + payload)
             .then(response => {
                 console.log(response)
                 commit('deleteSupplierCategory', payload)
@@ -196,7 +196,7 @@ const actions = {
     },
     deleteSupplier({ commit }, payload) {
         commit('setLoading', true, { root: true })
-        webClient.delete(`/api/resource/clients/` + localStorage.clientId + `/suppliers/` + payload.id)
+        webClient.delete(`/api/resource/clients/` + localStorage.clientId + `/suppliers/` + payload)
             .then(response => {
                 console.log(response)
                 commit('deleteSupplier', payload)

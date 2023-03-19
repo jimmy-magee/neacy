@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-card>
       <v-card-title>
         SubContractor Categories
@@ -50,12 +50,12 @@
 
       <v-data-table :headers="subContractorCategoryTableHeaders" :items="subContractorCategories" :search="search">
         <template v-slot:[`item.actionEdit`]="{ item }">
-          <v-btn  icon="mdi-file-edit-outline" @click="editSubContractorCategory(item)">
+          <v-btn  icon="mdi-file-edit-outline" @click="editSubContractorCategory(item.value)">
     
           </v-btn>
         </template>
         <template v-slot:[`item.actionDelete`]="{ item }">
-          <v-btn  icon="mdi-delete-alert" @click="deleteSubContractorCategory(item)">
+          <v-btn  icon="mdi-delete-alert" @click="deleteSubContractorCategory(item.value)">
          
           </v-btn>
         </template>
@@ -112,10 +112,11 @@ export default {
     const error = computed(() => store.getters['error', { root: true }]);
     const userIsAuthenticatedAndHasRoleAdmin = computed(() => store.getters['users/userIsAuthenticatedAndHasRoleAdmin']);
 
-    const editSubContractorCategory = ((item) => {
-      editedIndex.value = subContractorCategories.value.indexOf(item)
-      Object.assign(editedItem, item)
-      dialog.value = true
+    const editSubContractorCategory = ((id) => {
+      editedIndex.value = subContractorCategories.value.findIndex(sc => sc.id == id);
+      const obj = subContractorCategories.value.find(sc => sc.id == id);
+      Object.assign(editedItem, obj);
+      dialog.value = true;
     });
 
     const updateSubContractorCategory = (() => {

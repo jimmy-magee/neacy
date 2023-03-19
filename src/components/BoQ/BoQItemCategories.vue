@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-card>
       <v-card-title>
         BoQItem Categories
@@ -56,17 +56,13 @@
 
       <v-data-table :headers="boQItemCategoryTableHeaders" :items="boQItemCategories" :search="search">
         <template v-slot:[`item.actionEdit`]="{ item }">
-          <v-btn icon @click="editBoQItemCategory(item)">
-            <v-icon>
-              edit
-            </v-icon>
+          <v-btn icon="mdi-file-edit-outline" @click="editBoQItemCategory(item.value)">
+           
           </v-btn>
         </template>
         <template v-slot:[`item.actionDelete`]="{ item }">
-          <v-btn icon @click="deleteBoQItemCategory(item)">
-            <v-icon>
-              delete
-            </v-icon>
+          <v-btn icon="mdi-delete-alert" @click="deleteBoQItemCategory(item.value)">
+
           </v-btn>
         </template>
       </v-data-table>
@@ -136,9 +132,11 @@ export default {
     const error = computed(() => store.getters['error', { root: true }]);
     const userIsAuthenticatedAndHasRoleAdmin = computed(() => store.getters['users/userIsAuthenticatedAndHasRoleAdmin']);
 
-    const editBoQItemCategory = ((item) => {
-      editedIndex.value = boQItemCategories.value.indexOf(item)
-      Object.assign(editedItem, item)
+    const editBoQItemCategory = ((id) => {
+      console.log('Edit item '+id)
+      editedIndex.value = boQItemCategories.value.findIndex(bc => bc.id == id)
+      const obj = boQItemCategories.value.find(bc => bc.id == id)
+      Object.assign(editedItem, obj)
       dialog.value = true
     });
 
@@ -155,10 +153,10 @@ export default {
         close()
       });
 
-      const deleteBoQItemCategory = ((item) => {
+      const deleteBoQItemCategory = ((id) => {
         console.log('Delete BoQItemCategory Event Received..')
-        console.log(item)
-        store.dispatch('projects/deleteBoQItemCategory', item.value)
+        console.log(id)
+        store.dispatch('projects/deleteBoQItemCategory', id)
       });
 
       const close = (() => {

@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-card>
       <v-card-title>
         Supplier Categories
@@ -17,15 +17,15 @@
               <v-container>
 
                 <v-layout row>
-                  <v-flex xs12 sm10 offset-sm1>
+                  
                     <v-text-field v-model="editedItem.name" label="Name"></v-text-field>
-                  </v-flex>
+                  
                 </v-layout>
 
                 <v-layout row>
-                  <v-flex xs12 sm10 offset-sm1>
+                  
                     <v-text-field v-model="editedItem.description" label="Description"></v-text-field>
-                  </v-flex>
+                 
                 </v-layout>
 
               </v-container>
@@ -42,20 +42,20 @@
       </v-card-title>
 <!--
       <v-layout row v-if="error">
-        <v-flex xs12 sm6 md10 offset-sm2>
+     
           <app-alert @dismissed="onDismissed" :text="error.message"></app-alert>
-        </v-flex>
+      
       </v-layout>
     -->
 
       <v-data-table :headers="supplierCategoryTableHeaders" :items="supplierCategories" :search="search">
         <template v-slot:[`item.actionEdit`]="{ item }">
-          <v-btn  icon="mdi-file-edit-outline" @click="editSupplierCategory(item)">
+          <v-btn  icon="mdi-file-edit-outline" @click="editSupplierCategory(item.value)">
      
           </v-btn>
         </template>
         <template v-slot:[`item.actionDelete`]="{ item }">
-          <v-btn  icon="mdi-delete-alert" @click="deleteSupplierCategory(item)">
+          <v-btn  icon="mdi-delete-alert" @click="deleteSupplierCategory(item.value)">
         </v-btn>
         </template>
       </v-data-table>
@@ -110,10 +110,11 @@ export default {
     const error = computed(() => store.getters['error', { root: true }]);
     const userIsAuthenticatedAndHasRoleAdmin = computed(() => store.getters['users/userIsAuthenticatedAndHasRoleAdmin']);
 
-    const editSupplierCategory = ((item) => {
-      editedIndex.value = supplierCategories.value.indexOf(item)
-      Object.assign(editedItem, item)
-      this.dialog.value = true
+    const editSupplierCategory = ((id) => {
+      editedIndex.value = supplierCategories.value.findIndex(sc => sc.id == id)
+      const obj = supplierCategories.value.find(sc => sc.id == id)
+      Object.assign(editedItem, obj)
+      dialog.value = true
     });
 
     const updateSupplierCategory = (() => {
@@ -136,7 +137,7 @@ export default {
     const close = (() => {
       dialog.value = false;
       setTimeout(() => {
-        Object.assign(editedItem, this.defaultItem)
+        Object.assign(editedItem, defaultItem)
         editedIndex.value = -1
       }, 300);
     });
