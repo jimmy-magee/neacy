@@ -97,6 +97,11 @@ const routes = [
     name: 'BoQItemCategoriesPage',
     component: () => import(/* webpackChunkName: "projectPage" */ './components/BoQ/BoQItemCategories.vue'),
   },
+  {
+    path: '/admin/users',
+    name: 'UsersPage',
+    component: () => import(/* webpackChunkName: "projectPage" */ './components/Admin/UsersPage.vue'),
+  },
 ]
 
 
