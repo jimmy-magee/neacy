@@ -133,7 +133,7 @@
                         <v-layout row>
 
                           <v-select :items="projects" v-model="editedSupplierQuotation.projectId" item-value="id"
-                            item-title="name" label="Select Project" single></v-select>
+                            item-text="name" label="Select Project" single></v-select>
 
                         </v-layout>
                         <v-layout row>
@@ -279,7 +279,7 @@
                       <v-container>
                         <v-layout row>
 
-                          <v-select :items="projects" v-model="editedSupplierInvoice.projectId" label="Select Project"
+                          <v-select :items="projects" v-model="editedSupplierInvoice.projectId" item-title="name" item-value="id" label="Select Project"
                             single></v-select>
 
                         </v-layout>
@@ -345,7 +345,7 @@
 
                         <v-layout row v-if="editedSupplierInvoiceIndex < 0">
 
-                          <v-file-input v-model="editedSupplierInvoice.invoiceFile" label="Upload Invoice" filled
+                          <v-file-input ref="invoiceFile" label="Upload Invoice" filled
                             prepend-icon="mdi-camera"></v-file-input>
 
                         </v-layout>
@@ -356,7 +356,7 @@
                     <v-card-actions>
                       <v-spacer></v-spacer>
                       <v-btn color="blue darken-1" @click="closeSupplierInvoiceDialog">Cancel</v-btn>
-                      <v-btn color="blue darken-1" @click="saveSupplierInvoice">Save</v-btn>
+                      <v-btn color="blue darken-1" @click="saveSupplierInvoiceX">Save</v-btn>
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
@@ -844,6 +844,7 @@ export default {
     });
 
     const saveSupplierInvoice = (() => {
+      console.log('Submitting new supplier invoice')
       if (editedSupplierInvoiceIndex.value > -1) {
         const formData = {
           id: editedSupplierInvoice.id,
@@ -880,7 +881,7 @@ export default {
           netAmount: editedSupplierInvoice.netAmount,
           invoiceDate: editedSupplierInvoice.invoiceDate,
           paymentDueDate: editedSupplierInvoice.paymentDueDate,
-          invoiceFile: editedSupplierInvoice.invoiceFile
+          invoiceFile: invoiceFile.value
         }
         console.log(formData)
         store.dispatch('suppliers/createSupplierInvoice', formData)
@@ -964,10 +965,12 @@ export default {
     });
 
     const file = ref(null)
+    const invoiceFile = ref(null)
 
     return {
       showSupplierQuotationTableHeaders,
       file,
+      invoiceFile,
       outerTab,
       date,
       snack,

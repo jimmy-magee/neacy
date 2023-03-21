@@ -1,6 +1,6 @@
 <template>
   <v-app id="app">
-    <v-app-bar app color="blue" dark>
+    <v-app-bar app color="blue">
       <v-toolbar-title>
         <v-app-bar-nav-icon @click.stop="sideNav = !sideNav"></v-app-bar-nav-icon>
         Neacy</v-toolbar-title>

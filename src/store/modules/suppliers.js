@@ -432,7 +432,13 @@ const actions = {
         //console.log(' for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
 
         const formData = new FormData()
-        formData.append('invoiceFile', payload.invoiceFile)
+        var i = 0
+        var len = payload.quotationFile.files.length
+        for (; i < len;) {
+            formData.append('invoiceFile', payload.invoiceFile.files[i])
+            i++
+        }
+
         formData.append('supplierId', payload.supplierId)
         formData.append('clientId', localStorage.clientId)
         formData.append('projectId', payload.projectId)

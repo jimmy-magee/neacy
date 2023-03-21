@@ -97,6 +97,9 @@
       </v-layout>
 
       <v-layout row>
+        <v-btn class="secondary" to="/projects" >Cancel</v-btn>
+      </v-layout>
+      <v-layout row>
         <v-btn class="primary" :disabled="!formIsValid" type="submit">Create Project</v-btn>
       </v-layout>
     </form>

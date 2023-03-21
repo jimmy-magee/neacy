@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <!--
     <v-layout row v-if="error">
       <v-sheet xs12 sm6 offset-sm3>
@@ -7,86 +7,149 @@
       </v-sheet>
     </v-layout>
     -->
+
     <v-layout row wrap>
-      <v-sheet xs12 sm12 md12>
-        <v-card>
-          <v-card-text>
-          <v-btn  icon v-if="userIsAuthenticatedAndHasRoleAdmin" color="green" :to="'/projects/new'">
+
+      <v-card>
+        <v-card-title>
+        Projects
+        <v-spacer></v-spacer>
+        <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
+        <v-spacer></v-spacer>
+        <v-btn icon v-if="userIsAuthenticatedAndHasRoleAdmin" color="green" :to="'/projects/new'">
             <v-icon icon="mdi-plus"></v-icon>
           </v-btn>
-          </v-card-text>
-        </v-card>
-      </v-sheet>
+     
+      </v-card-title>
+        <v-card-text>
+          
+          <v-data-table :headers="projectTableHeaders" :items="projects" :search="search">
+            <template v-slot:[`item.actionEdit`]="{ item }">
+              <v-btn icon="mdi-file-edit-outline" @click="editProject(item.value)">
+              </v-btn>
+            </template>
+            <!--
+            <template v-slot:[`item.actionDelete`]="{ item }">
+              <v-btn icon="mdi-delete-alert" @click="deleteProject(item.value)">
+              </v-btn>
+            </template>
+           -->
+          </v-data-table>
+        </v-card-text>
+
+      </v-card>
+
     </v-layout>
 
-
-    <v-layout row wrap v-for="project in projects" :key="project.id" class="mb-2">
-      <v-sheet xs12 sm10 md8 offset-sm1 offset-md2>
-        <v-card class="info">
-          <v-container fluid>
-            <v-layout row>
-              <!--
-              <v-sheet xs5 sm4 md3>
-              <v-img
-                :src="project.images[0]"
-                :lazy-src="project.images[0]"
-                aspect-ratio="1"
-                class="grey lighten-2"
-              >
-              </v-img>
-              </v-sheet>
-              -->
-              <v-sheet xs12 sm12 md10>
-                <v-card-text>
-
-                  <div class="title">{{ project.name }}</div>
-
-                  <div class="title">{{ project.address }}</div>
-
-                  <div class="title">{{ project.description }}</div>
-
-                  <div class="title">Status: {{ project.status }}</div>
-
-                </v-card-text>
-                <v-card-actions>
-                  <v-btn icon="mdi-view-compact"  color="green" :to="'/projects/' + project.id"/>
-                    
-                </v-card-actions>
-              </v-sheet>
-            </v-layout>
-          </v-container>
-        </v-card>
-      </v-sheet>
-    </v-layout>
   </v-container>
 </template>
 
 <script>
 
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router';
+
 export default {
 
   setup() {
     const store = useStore();
-    const projects = computed(() => store.getters['projects/loadedProjects']);
-    const error = computed(() => store.getters['error', { root: true }]);
-    const userIsAuthenticatedAndHasRoleAdmin = computed(() => store.getters['users/userIsAuthenticatedAndHasRoleAdmin']);
-
+    const router = useRouter();
 
     onMounted(() => {
       store.dispatch('projects/loadProjects')
     });
 
-    const onDismissed = () => (
-      store.dispatch('clearError', {root: true})
-    );
+    const projectTableHeaders = [
+      {
+        title: 'Name',
+        align: 'left',
+        sortable: true,
+        key: 'name'
+      },
+      { title: 'Description', key: 'description' },
+      { title: 'Address', key: 'address' },
+      { title: 'Customer', key: 'customerName' },
+      { title: 'Mechanical And ElectricalEngineer', key: 'mechanicalAndElectricalEngineer' },
+      { title: 'Architect', key: 'architect' },
+      { title: 'Client Quantity Surveryor', key: 'clientQuantitySurveyor' },
+
+      { title: 'View', align: 'left', key: 'actionEdit' },
+    ];
+
+    const search = ref('');
+    const dialog = ref(false);
+    const editedIndex = ref(-1);
+    const editedItem = reactive({
+      id: '',
+      name: '',
+      description: '',
+    });
+    const defaultItem = reactive({
+      id: '',
+      name: '',
+      description: '',
+    })
+    const projects = computed(() => store.getters['projects/loadedProjects']);
+    const formTitle = computed(() => editedIndex.value === -1 ? 'New Supplier Category' : 'Edit Supplier Category');
+    const loading = computed(() => store.getters['loading', { root: true }]);
+    const error = computed(() => store.getters['error', { root: true }]);
+    const userIsAuthenticatedAndHasRoleAdmin = computed(() => store.getters['users/userIsAuthenticatedAndHasRoleAdmin']);
+
+    const editProject = ((id) => {
+      console.log('Edit item ' + id)
+      editedIndex.value = projects.value.findIndex(sc => sc.id == id)
+      const obj = projects.value.find(sc => sc.id == id)
+      Object.assign(editedItem, obj)
+      dialog.value = true
+      router.push('projects/' + id)
+    });
+
+    const updateProject = (() => {
+      if (editedIndex.value === -1) {
+        console.log('Creating  project')
+        console.log(editedItem)
+        store.dispatch('projects/createProject', editedItem)
+      } else {
+        console.log('Updating  project')
+        console.log(editedItem)
+        store.dispatch('projects/updateProject', editedItem)
+      }
+      close()
+    });
+    const deleteProject = ((item) => {
+      console.log('Delete project Event Received..')
+      console.log(item)
+      store.dispatch('projects/deleteProject', item)
+    });
+    const close = (() => {
+      dialog.value = false;
+      setTimeout(() => {
+        Object.assign(editedItem, defaultItem)
+        editedIndex.value = -1
+      }, 300);
+    });
+    const onDismissed = (() => {
+      store.dispatch('clearError', { root: true })
+    });
 
     return {
       projects,
+      projectTableHeaders,
+      search,
+      dialog,
+      editedIndex,
+      editedItem,
+      defaultItem,
+      formTitle,
+      loading,
+      error,
       userIsAuthenticatedAndHasRoleAdmin,
-      onDismissed,
-      error
+      editProject,
+      updateProject,
+      deleteProject,
+      close,
+      onDismissed
     }
   }
 

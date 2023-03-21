@@ -34,6 +34,8 @@ const state = {
     loadedProjectBoQSummary: null,
     selectedProjectBoQItem: null,
     loadedProjectBoQItemMeasures: [],
+    loadedProjectBoQCategoryCosts: [],
+    loadedProjectRoomScheduleBoQ: [],
     loadedProjectSubContractTenders: [],
 }
 const mutations = {
@@ -229,6 +231,17 @@ const mutations = {
     },
     createProjectBoQItemMeasure(state, payload) {
         state.loadedProjectBoQItemMeasures.push(payload)
+    },
+    setLoadedProjectBoQCategoryCosts(state, payload) {
+        console.log('Setting project bill of quantites category costs' + payload)
+        state.loadedProjectBoQCategoryCosts = payload
+    },
+    setLoadedProjectRoomScheduleBoQ(state, payload) {
+        //console.log('Setting project bill of quantites category costs' + payload)
+        state.loadedProjectRoomScheduleBoQ = payload
+    },
+    setLoadedProjectOrders(state, payload) {
+        state.loadedProjectOrders = payload
     },
     setLoadedProjectSubContractTenders(state, payload) {
         console.log('Setting project subcontract tenders' + payload)
@@ -767,6 +780,44 @@ const actions = {
             })
             .catch((error) => {
                 console.log(error)
+                commit('setError', error, { root: true })
+            })
+    },
+    loadProjectBoQCategoryCosts({ commit }, payload) {
+        commit('setLoading', true, { root: true })
+        commit('setLoadedProjectBoQCategoryCosts', [])
+        console.log('Loading project bill of quantities category costs for user ' + localStorage.authHeader + ' for project ' + payload)
+        webClient.get(`/api/resource/clients/` + localStorage.clientId + '/projects/' + payload + '/boqitems/category/summary')
+            .then(response => {
+                const items = response.data
+                console.log('Received bill of quantites category costs from server ')
+                console.log(items)
+                commit('setLoadedProjectBoQCategoryCosts', items)
+                commit('setLoading', false, { root: true })
+            })
+            .catch(e => {
+                console.log('errror getting project boq category costs')
+                console.log(e)
+                commit('setError', e, { root: true })
+            })
+    },
+    loadProjectRoomScheduleBoQ({ commit }, payload) {
+        commit('setLoading', true, { root: true })
+        commit('setLoadedProjectRoomScheduleBoQ', [])
+        console.log('Loading project bill of quantities by room scheudle ' + localStorage.authHeader + ' for project ' + payload)
+
+        webClient.get(`/api/resource/clients/` + localStorage.clientId + '/projects/' + payload + '/room_schedule/boqitems')
+            .then(response => {
+                const items = response.data
+                console.log('Received bill of quantites by room schedule  from server ')
+                console.log(items)
+                commit('setLoadedProjectRoomScheduleBoQ', items)
+                commit('setLoading', false, { root: true })
+            })
+            .catch(e => {
+                console.log('errror getting project boq by room schedule')
+                console.log(e)
+                commit('setError', e, { root: true })
             })
     },
     loadProjectDrawingMetadata({ commit }, payload) {
@@ -838,6 +889,20 @@ const actions = {
                 console.log('Received bill item measures from server.. ')
                 console.log(items)
                 commit('setLoadedProjectBoQItemMeasures', items)
+                commit('setLoading', false, { root: true })
+            })
+            .catch(e => {
+                commit('setError', e, { root: true })
+            })
+    },
+    loadProjectOrders({ commit }, payload) {
+        commit('setLoading', true, { root: true })
+        console.log('Loading Product orders for  [{' + payload + '}] for user with authorization token ' + localStorage.authHeader)
+        webClient.get(`/api/resource/clients/` + localStorage.clientId + `/projects/` + payload + `/orders`)
+            .then(response => {
+                console.log('Received Project Orders...')
+                console.log(response.data)
+                commit('setLoadedProjectOrders', response.data)
                 commit('setLoading', false, { root: true })
             })
             .catch(e => {
@@ -1036,7 +1101,7 @@ const actions = {
                 console.log(e)
             })
     },
-    createProjectBoQItem({ commit }, payload) {
+    createProjectBoQItem({ commit, dispatch }, payload) {
         console.log('Creating Project BoQ')
         console.log(payload)
         console.log(' for user with token ' + localStorage.authHeader)
@@ -1049,7 +1114,13 @@ const actions = {
                     ...savedProjectBoQItem,
                     id: savedProjectBoQItem.id
                 })
-            })
+            }).then(
+                setTimeout(() => {
+                    dispatch('loadProjectBoQSummary', payload.projectId)
+                    dispatch('loadProjectBoQCategoryCosts', payload.projectId)
+                    dispatch('loadProjectProcurementPackageSummary', payload.projectId)
+                 }, 150)
+              )
             .catch((error) => {
                 commit('setLoading', false, { root: true })
                 commit('setError', error, { root: true })
@@ -1070,6 +1141,8 @@ const actions = {
                 // this.$store.loadProjectProcurementPackages(updatedProjectBoQItem.projectId)
             }).then(
                 setTimeout(() => {
+                    dispatch('loadProjectBoQSummary', payload.projectId)
+                    dispatch('loadProjectBoQCategoryCosts', payload.projectId)
                     dispatch('loadProjectProcurementPackageSummary', payload.projectId)
                 }, 150)
             ).catch((error) => {
@@ -1582,20 +1655,20 @@ const actions = {
                 commit('setError', error, { root: true })
             })
     },
-    loadProjectDrawingCategories ({ commit }) {
+    loadProjectDrawingCategories({ commit }) {
         commit('setLoading', true, { root: true })
         webClient.get(`/api/resource/clients/` + localStorage.clientId + `/drawing_categories`)
             .then(response => {
-              console.log('Received ProjectDrawings Categories...')
-              console.log(response.data)
-              commit('setLoadedProjectDrawingCategories', response.data)
-              commit('setLoading', false, { root: true })
+                console.log('Received ProjectDrawings Categories...')
+                console.log(response.data)
+                commit('setLoadedProjectDrawingCategories', response.data)
+                commit('setLoading', false, { root: true })
             })
             .catch(error => {
                 commit('setError', error, { root: true })
             })
-      }
-      
+    }
+
 }
 const getters = {
     loadedProjects(state) {
@@ -1646,6 +1719,18 @@ const getters = {
     },
     loadedProjectRooms(state) {
         return state.loadedProjectRooms
+    },
+    loadedProjectBoQCategoryCosts(state) {
+        return state.loadedProjectBoQCategoryCosts.sort((A, B) => {
+            //console.log('Sorting boq category costs comparing '+ A.category +' to '+B.category)
+            return A.category > B.category
+        })
+    },
+    loadedProjectRoomScheduleBoQ(state) {
+        return state.loadedProjectRoomScheduleBoQ.sort((A, B) => {
+            //console.log('Sorting boq room schedule, comparing '+ A.roomName +' to '+B.roomName)
+            return A.roomName > B.roomName
+        })
     },
     loadedProjectRFIs(state) {
         return state.loadedProjectRFIs.sort((rfiA, rfiB) => {
@@ -1749,9 +1834,9 @@ const getters = {
             })
         }
     },
-    loadedBoQItemCategories (state) {
+    loadedBoQItemCategories(state) {
         return state.loadedBoQItemCategories
-      },
+    },
 }
 
 export default {

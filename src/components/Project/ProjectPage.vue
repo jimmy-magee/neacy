@@ -62,127 +62,126 @@
                   <v-card-text>
 
 
-                 
-
-                      <form @submit.prevent="onUpdateProject">
-                        <v-layout row>
-
-                          <v-text-field name="projectName" label="Project Name" id="projectName"
-                            v-model="editedProjectDetails.name" required></v-text-field>
-
-                        </v-layout>
-                        <v-layout row>
-
-                          <v-text-field name="siteId" label="Site ID" id="projectSiteId"
-                            v-model="editedProjectDetails.siteId">
-                          </v-text-field>
-
-                        </v-layout>
-                        <v-layout row>
-
-                          <v-textarea name="projectDescription" label="Project Description" id="projectDescription"
-                            v-model="editedProjectDetails.description" required>
-                          </v-textarea>
-
-                        </v-layout>
-                        <v-layout row>
-
-                          <v-text-field name="projectAddress" label="Project Address" id="projectAddress"
-                            v-model="editedProjectDetails.address" required></v-text-field>
-
-                        </v-layout>
-                        <v-layout row>
 
 
-                          <v-select v-model="editedProjectDetails.status" :items="projectStatusList" item-value="id"
-                            item-title="name" label="Project Status">
-                          </v-select>
+                    <form @submit.prevent="onUpdateProject">
+                      <v-layout row>
+
+                        <v-text-field name="projectName" label="Project Name" id="projectName"
+                          v-model="editedProjectDetails.name" required></v-text-field>
+
+                      </v-layout>
+                      <v-layout row>
+
+                        <v-text-field name="siteId" label="Site ID" id="projectSiteId"
+                          v-model="editedProjectDetails.siteId">
+                        </v-text-field>
+
+                      </v-layout>
+                      <v-layout row>
+
+                        <v-textarea name="projectDescription" label="Project Description" id="projectDescription"
+                          v-model="editedProjectDetails.description" required>
+                        </v-textarea>
+
+                      </v-layout>
+                      <v-layout row>
+
+                        <v-text-field name="projectAddress" label="Project Address" id="projectAddress"
+                          v-model="editedProjectDetails.address" required></v-text-field>
+
+                      </v-layout>
+                      <v-layout row>
 
 
-                        </v-layout>
-                        <v-layout row>
+                        <v-select v-model="editedProjectDetails.status" :items="projectStatusList" item-value="id"
+                          item-text="name" label="Project Status">
+                        </v-select>
 
-                          <v-select v-model="editedProjectDetails.customerId" :items="customers" item-value="id"
-                            item-title="name" label="Project Client">
-                          </v-select>
 
-                        </v-layout>
-                        <v-layout row>
+                      </v-layout>
+                      <v-layout row>
 
-                          <v-text-field name="projectClientQuantitySurveyor" label="PQS"
-                            id="projectClientQuantitySurveyor"
-                            v-model="editedProjectDetails.clientQuantitySurveyor"></v-text-field>
+                        <v-select v-model="editedProjectDetails.customerId" :items="customers" item-value="id"
+                          item-text="name" label="Project Client">
+                        </v-select>
 
-                        </v-layout>
-                        <v-layout row>
+                      </v-layout>
+                      <v-layout row>
 
-                          <v-text-field name="projectArchitect" label="Project Architect" id="projectArchitect"
-                            v-model="editedProjectDetails.architect"></v-text-field>
+                        <v-text-field name="projectClientQuantitySurveyor" label="PQS" id="projectClientQuantitySurveyor"
+                          v-model="editedProjectDetails.clientQuantitySurveyor"></v-text-field>
 
-                        </v-layout>
-                        <v-layout row>
+                      </v-layout>
+                      <v-layout row>
 
-                          <v-text-field name="projectStructuralEngineer" label="Project Structural Engineer"
-                            id="projectStructuralEngineer" v-model="editedProjectDetails.structuralEngineer">
-                          </v-text-field>
+                        <v-text-field name="projectArchitect" label="Project Architect" id="projectArchitect"
+                          v-model="editedProjectDetails.architect"></v-text-field>
 
-                        </v-layout>
-                        <v-layout row>
+                      </v-layout>
+                      <v-layout row>
 
-                          <v-text-field name="status" label="Project Mechanical & Electrical Engineer"
-                            id="projectMechanicalAndElectricalEngineer"
-                            v-model="editedProjectDetails.mechanicalAndElectricalEngineer"></v-text-field>
+                        <v-text-field name="projectStructuralEngineer" label="Project Structural Engineer"
+                          id="projectStructuralEngineer" v-model="editedProjectDetails.structuralEngineer">
+                        </v-text-field>
 
-                        </v-layout>
-                        <v-layout row>
+                      </v-layout>
+                      <v-layout row>
 
-                          <v-text-field name="projectQuantitySurveyor" label="Project Quantity Surveyor"
-                            id="projectQuantitySurveyor" v-model="editedProjectDetails.projectQuantitySurveyor">
-                          </v-text-field>
+                        <v-text-field name="status" label="Project Mechanical & Electrical Engineer"
+                          id="projectMechanicalAndElectricalEngineer"
+                          v-model="editedProjectDetails.mechanicalAndElectricalEngineer"></v-text-field>
 
-                        </v-layout>
-                        <v-layout row>
+                      </v-layout>
+                      <v-layout row>
 
-                          <v-text-field name="projectManager" label="Project Manager" id="projectManager"
-                            v-model="editedProjectDetails.projectManager"></v-text-field>
+                        <v-text-field name="projectQuantitySurveyor" label="Project Quantity Surveyor"
+                          id="projectQuantitySurveyor" v-model="editedProjectDetails.projectQuantitySurveyor">
+                        </v-text-field>
 
-                        </v-layout>
-                        <v-layout row>
+                      </v-layout>
+                      <v-layout row>
 
-                          <v-text-field name="siteSafetyOfficer" label="Site Safety Officer" id="siteSafetyOfficerr"
-                            v-model="editedProjectDetails.siteSafetyOfficer">
-                          </v-text-field>
+                        <v-text-field name="projectManager" label="Project Manager" id="projectManager"
+                          v-model="editedProjectDetails.projectManager"></v-text-field>
 
-                        </v-layout>
-                        <v-layout row>
+                      </v-layout>
+                      <v-layout row>
 
-                          <v-text-field name="siteEngineer" label="Site Engineer" id="siteEngineer"
-                            v-model="editedProjectDetails.siteEngineer"></v-text-field>
+                        <v-text-field name="siteSafetyOfficer" label="Site Safety Officer" id="siteSafetyOfficerr"
+                          v-model="editedProjectDetails.siteSafetyOfficer">
+                        </v-text-field>
 
-                        </v-layout>
-                        <v-layout row>
+                      </v-layout>
+                      <v-layout row>
 
-                          <v-text-field name="projectSupervisorDesignProcess"
-                            label="Project H & S Supervisor Design Process" id="projectSupervisorDesignProcess"
-                            v-model="editedProjectDetails.projectSupervisorDesignProcess"></v-text-field>
+                        <v-text-field name="siteEngineer" label="Site Engineer" id="siteEngineer"
+                          v-model="editedProjectDetails.siteEngineer"></v-text-field>
 
-                        </v-layout>
-                        <v-layout row>
+                      </v-layout>
+                      <v-layout row>
 
-                          <v-text-field name="projectSupervisorConstruction" label="Project H & S Supervisor Construction"
-                            id="projectSupervisorConstruction"
-                            v-model="editedProjectDetails.projectSupervisorConstruction"></v-text-field>
+                        <v-text-field name="projectSupervisorDesignProcess"
+                          label="Project H & S Supervisor Design Process" id="projectSupervisorDesignProcess"
+                          v-model="editedProjectDetails.projectSupervisorDesignProcess"></v-text-field>
 
-                        </v-layout>
+                      </v-layout>
+                      <v-layout row>
 
-                        <v-layout row>
+                        <v-text-field name="projectSupervisorConstruction" label="Project H & S Supervisor Construction"
+                          id="projectSupervisorConstruction"
+                          v-model="editedProjectDetails.projectSupervisorConstruction"></v-text-field>
 
-                          <v-btn class="primary" :disabled="!formIsValid" type="submit">Update Project</v-btn>
+                      </v-layout>
 
-                        </v-layout>
-                      </form>
+                      <v-layout row>
 
-                  
+                        <v-btn class="primary" :disabled="!formIsValid" type="submit">Update Project</v-btn>
+
+                      </v-layout>
+                    </form>
+
+
 
 
                   </v-card-text>
@@ -228,118 +227,117 @@
                     <v-spacer></v-spacer>
                     <v-btn icon color="green">
                       <v-icon icon="mdi-plus"></v-icon>
-                    <v-dialog v-model="dialog" activator="parent">
-                      <v-card>
-                        <v-card-title>
-                          <span class="headline">Upload Project Drawings</span>
-                        </v-card-title>
-                        <v-card-text>
-                          <v-container>
+                      <v-dialog v-model="dialog" activator="parent">
+                        <v-card>
+                          <v-card-title>
+                            <span class="headline">Upload Project Drawings</span>
+                          </v-card-title>
+                          <v-card-text>
+                            <v-container>
 
-                            <v-layout row>
+                              <v-layout row>
 
-                              <v-file-input v-model="drawingFiles" label="Upload Drawing Files" filled multiple
-                                prepend-icon="mdi-camera"></v-file-input>
+                                <v-file-input v-model="drawingFiles" label="Upload Drawing Files" filled multiple
+                                  prepend-icon="mdi-camera"></v-file-input>
 
                                 <v-file-input ref="file" filled multiple prepend-icon="mdi-camera"
-                                v-on:change="handleFileUpload()"  
-                                type="file"></v-file-input>
-                                
+                                  v-on:change="handleFileUpload()" type="file"></v-file-input>
 
-                            </v-layout>
-                          </v-container>
-                        </v-card-text>
 
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn color="blue darken-1" @click="close">Cancel</v-btn>
-                          <v-btn color="blue darken-1" @click="uploadProjectDrawings">Save</v-btn>
-                        </v-card-actions>
-                      </v-card>
-                    </v-dialog>
+                              </v-layout>
+                            </v-container>
+                          </v-card-text>
+
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="blue darken-1" @click="close">Cancel</v-btn>
+                            <v-btn color="blue darken-1" @click="uploadProjectDrawings">Save</v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </v-dialog>
                     </v-btn>
                   </v-card-title>
                   <v-data-table :headers="drawingTableHeaders" :calculate-widths="true" :items="drawings"
                     :search="searchProjectDrawings">
                     <template v-slot:[`item.actionDownload`]="{ item }">
                       <v-btn icon="mdi-download" @click="downloadProjectDrawing(item)">
-                        
+
                       </v-btn>
                     </template>
                     <template v-slot:[`item.actionEdit`]="{ item }">
                       <v-btn icon="mdi-file-edit-outline" @click="editItem(item)">
-                        
+
                       </v-btn>
                     </template>
                     <template v-slot:[`item.actionDelete`]="{ item }">
                       <v-btn icon="mdi-delete-alert" @click="deleteProjectDrawing(item)">
-                        
+
                       </v-btn>
                     </template>
                   </v-data-table>
                 </v-card>
 
                 <v-btn>
-                <v-dialog v-model="projectDrawingMetaDataDialog" activator="parent">
-                  <v-card>
-                    <v-card-title>
-                      <span class="headline">Edit Project Drawing</span>
-                    </v-card-title>
-                    <v-card-text>
-                      <v-container>
-                        <v-layout row>
+                  <v-dialog v-model="projectDrawingMetaDataDialog" activator="parent">
+                    <v-card>
+                      <v-card-title>
+                        <span class="headline">Edit Project Drawing</span>
+                      </v-card-title>
+                      <v-card-text>
+                        <v-container>
+                          <v-layout row>
 
 
-                          <v-select v-model="editedItem.categoryId" :items="projectDrawingCategories" item-value="id"
-                            item-title="name" label="Drawing Category">
-                          </v-select>
+                            <v-select v-model="editedItem.categoryId" :items="projectDrawingCategories" item-value="id"
+                              item-title="name" label="Drawing Category">
+                            </v-select>
 
-                        </v-layout>
-                        <v-layout row>
+                          </v-layout>
+                          <v-layout row>
 
-                          <v-text-field v-model="editedItem.title" label="Title"></v-text-field>
+                            <v-text-field v-model="editedItem.title" label="Title"></v-text-field>
 
-                        </v-layout>
-                        <v-layout row>
+                          </v-layout>
+                          <v-layout row>
 
-                          <v-textarea name="description" label="Description" id="description"
-                            v-model="editedItem.description" required>
-                          </v-textarea>
+                            <v-textarea name="description" label="Description" id="description"
+                              v-model="editedItem.description" required>
+                            </v-textarea>
 
-                        </v-layout>
-                        <v-layout row>
+                          </v-layout>
+                          <v-layout row>
 
-                        </v-layout>
-                        <v-layout>
-                        </v-layout>
-                        <v-layout row>
-
-
-                          <v-select :items="drawingStatusTypes" v-model="editedItem.status" item-value="id"
-                            item-title="name" label="Status">
-                          </v-select>
+                          </v-layout>
+                          <v-layout>
+                          </v-layout>
+                          <v-layout row>
 
 
+                            <v-select :items="drawingStatusTypes" v-model="editedItem.status" item-value="id"
+                              item-title="name" label="Status">
+                            </v-select>
 
 
 
-                        </v-layout>
-                        <v-layout row>
 
-                          <v-text-field v-model="editedItem.revision" label="Revision"></v-text-field>
 
-                        </v-layout>
-                      </v-container>
-                    </v-card-text>
+                          </v-layout>
+                          <v-layout row>
 
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="blue darken-1" @click="closeProjectDrawingMetaDataDialog">Cancel</v-btn>
-                      <v-btn color="blue darken-1" @click="saveProjectDrawingMetaData">Save</v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </v-btn>
+                            <v-text-field v-model="editedItem.revision" label="Revision"></v-text-field>
+
+                          </v-layout>
+                        </v-container>
+                      </v-card-text>
+
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" @click="closeProjectDrawingMetaDataDialog">Cancel</v-btn>
+                        <v-btn color="blue darken-1" @click="saveProjectDrawingMetaData">Save</v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+                </v-btn>
               </v-window-item>
 
               <!--Schedules-->
@@ -483,12 +481,12 @@
                     :search="searchProjectRFIs">
                     <template v-slot:[`item.actionEdit`]="{ item }">
                       <v-btn icon="mdi-file-edit-outline" @click="openProjectRFIDialog(item)">
-                        
+
                       </v-btn>
                     </template>
                     <template v-slot:[`item.actionDelete`]="{ item }">
                       <v-btn icon="mdi-delete-alert" @click="deleteProjectRFI(item)">
-                        
+
                       </v-btn>
                     </template>
                   </v-data-table>
@@ -557,12 +555,12 @@
                     :search="searchProjectRooms">
                     <template v-slot:[`item.actionEdit`]="{ item }">
                       <v-btn icon="mdi-file-edit-outline" @click="openProjectRoomDialog(item)">
-                        
+
                       </v-btn>
                     </template>
                     <template v-slot:[`item.actionDelete`]="{ item }">
                       <v-btn icon="mdi-delete-alert" @click="deleteProjectRoom(item)">
-                       
+
                       </v-btn>
                     </template>
                   </v-data-table>
@@ -845,7 +843,7 @@
                     </template>
                     <template v-slot:[`item.actionDeleteTask`]="{ item }">
                       <v-btn icon="mdi-delete-alert" @click="deleteProjectTask(item)">
-                      
+
                       </v-btn>
                     </template>
                   </v-data-table>
@@ -920,12 +918,12 @@
                     </template>
                     <template v-slot:[`item.actionEditImageMetadata`]="{ item }">
                       <v-btn icon="mdi-file-edit-outline" @click="editProjectImageMetaData(item)">
-                      
+
                       </v-btn>
                     </template>
                     <template v-slot:[`item.actionDeleteImageMetadata`]="{ item }">
                       <v-btn icon="mdi-delete-alert" @click="deleteProjectImageMetaData(item)">
-                     
+
                       </v-btn>
                     </template>
                   </v-data-table>
@@ -1247,12 +1245,12 @@
                   <v-text-field v-model="searchProjectQuotations" label="Search Quotations" flat solo-inverted
                     hide-details clearable clear-icon="mdi-close-circle-outline"></v-text-field>
 
-                  <v-data-table :headers="projectQuotationTableHeaders" :calculate-widths="true" :items="projectQuotations"
-                    :search="searchProjectQuotations">
+                  <v-data-table :headers="projectQuotationTableHeaders" :calculate-widths="true"
+                    :items="projectQuotations" :search="searchProjectQuotations">
 
                     <template v-slot:[`item.actionDownloadProjectQuotation`]="{ item }">
                       <v-btn icon @click="downloadProjectQuotation(item)">
-                         <v-icon icon="mdi-download"></v-icon>
+                        <v-icon icon="mdi-download"></v-icon>
                       </v-btn>
                     </template>
 
@@ -1456,22 +1454,22 @@
                                                   <v-spacer></v-spacer>
                                                 </v-card-title>
                                                 <v-card-text>
-projectQuantitiesByRoom{{ projectQuantitiesByRoom1 }}
+                                                  projectQuantitiesByRoom{{ projectQuantitiesByRoom1 }}
                                                   <v-data-table :headers="projectRoomMeasureTableHeaders"
                                                     :calculate-widths="true" :items="projectQuantitiesByRoom1"
-                                                     :show-select="false" :search="searchProjectRooms">
+                                                    :show-select="false" :search="searchProjectRooms">
 
-                                                    <template v-slot:[`item`]="{item}">
+                                                    <template v-slot:[`item`]="{ item }">
                                                       {{ item.qty }}
                                                       <v-edit-dialog v-model="item.quantity" large persistent
-                                                        @save="saveMeasureQuantity(item)" @cancel="cancel"
-                                                        @open="open" @close="close">
+                                                        @save="saveMeasureQuantity(item)" @cancel="cancel" @open="open"
+                                                        @close="close">
                                                         <div>{{ item.qty }}</div>
                                                         <template v-slot:[`input`]>
                                                           <div class="mt-4 title">Update Quantity</div>
 
-                                                          <v-text-field v-model="item.quantity"
-                                                            label="Update Quantity" single-line autofocus>
+                                                          <v-text-field v-model="item.quantity" label="Update Quantity"
+                                                            single-line autofocus>
                                                           </v-text-field>
                                                         </template>
                                                       </v-edit-dialog>
@@ -1692,40 +1690,40 @@ projectQuantitiesByRoom{{ projectQuantitiesByRoom1 }}
                     </template>
 
                     <template v-slot:[`item.${contractRate}`]="props">
-                    
-                      <v-btn @click="contractDialog = true">{{ props.item.props.title.contractRate }}
-                      <v-dialog v-model="contractDialog" snall  persistent activator="parent"
-                        @save="saveContractRate(props.item.props.title.contractRate)" @cancel="cancel">
-                        <div>{{ props.item.props.title.contractRate }}</div>
-                      <v-text-field v-model="props.item.props.title.contractRate" :rules="[max25chars]" label="Edit" single-line
-                            counter autofocus></v-text-field>
-                        <template v-slot:[`input`]>
-                          <div class="mt-4 title">Update Contract Rate</div>
 
-                          <v-text-field v-model="props.item.props.title.contractRate" :rules="[max25chars]" label="Edit" single-line
-                            counter autofocus></v-text-field>
-                        </template>
-                      </v-dialog>
+                      <v-btn @click="contractDialog = true">{{ props.item.props.title.contractRate }}
+                        <v-dialog v-model="contractDialog" snall persistent activator="parent"
+                          @save="saveContractRate(props.item.props.title.contractRate)" @cancel="cancel">
+                          <div>{{ props.item.props.title.contractRate }}</div>
+                          <v-text-field v-model="props.item.props.title.contractRate" :rules="[max25chars]" label="Edit"
+                            single-line counter autofocus></v-text-field>
+                          <template v-slot:[`input`]>
+                            <div class="mt-4 title">Update Contract Rate</div>
+
+                            <v-text-field v-model="props.item.props.title.contractRate" :rules="[max25chars]" label="Edit"
+                              single-line counter autofocus></v-text-field>
+                          </template>
+                        </v-dialog>
                       </v-btn>
                     </template>
 
                     <template v-slot:[`item.materialCost`]="props">
                       <v-btn flat @click="materialCostDialog = true">
-                      {{ props.value }}
-                      <v-edit-dialog  v-model="materialCostDialog" large persistent
-                        @save="saveMaterialCost(props.item)" @cancel="cancel">
-                        <div>{{ props.raw }}</div>
-                        <template v-slot:[`input`]>
-                          <div class="mt-4 title">Update Material Cost</div>
+                        {{ props.value }}
+                        <v-edit-dialog v-model="materialCostDialog" large persistent @save="saveMaterialCost(props.item)"
+                          @cancel="cancel">
+                          <div>{{ props.raw }}</div>
+                          <template v-slot:[`input`]>
+                            <div class="mt-4 title">Update Material Cost</div>
 
-                          <v-text-field v-model="props.raw" :rules="[max25chars]" label="Edit" single-line
-                            counter autofocus></v-text-field>
-                        </template>
-                      </v-edit-dialog>
-                    </v-btn>
+                            <v-text-field v-model="props.raw" :rules="[max25chars]" label="Edit" single-line counter
+                              autofocus></v-text-field>
+                          </template>
+                        </v-edit-dialog>
+                      </v-btn>
                     </template>
 
-<!--                    <template v-slot:[`item.materialCost`]="props">
+                    <!--                    <template v-slot:[`item.materialCost`]="props">
                       <v-edit-dialog v-model="props.item.materialCost" large persistent
                         @save="saveMaterialCost(props.item)" @cancel="cancel">
                         <div>{{ props.item.materialCost }}</div>
@@ -1809,7 +1807,7 @@ projectQuantitiesByRoom{{ projectQuantitiesByRoom1 }}
                           </v-card-title>
                           <v-card-text>
                             <v-container>
-                              
+
                               <v-layout row>
 
                                 <v-select :items="procurementStatusTypes" v-model="editedProjectProcurementPackage.status"
@@ -2058,37 +2056,38 @@ projectQuantitiesByRoom{{ projectQuantitiesByRoom1 }}
                                     <v-spacer>
                                     </v-spacer>
                                     <v-btn>
-                                    <v-dialog v-model="projectProcurementPackageDrawingsDialog" activator="parent">
-                                     
-                                      <v-card>
-                                        <v-card-title>
-                                          <span class="Subtitle 2">Select Tender Drawings</span>
-                                          <v-spacer></v-spacer>
-                                          <v-text-field v-model="searchProjectDrawings" append-icon="search"
-                                            label="Search" single-line hide-details></v-text-field>
-                                          <v-spacer></v-spacer>
-                                        </v-card-title>
-                                        <v-card-text>
+                                      <v-dialog v-model="projectProcurementPackageDrawingsDialog" activator="parent">
 
-                                          <v-data-table :headers="drawingTableHeaders" :calculate-widths="true"
-                                            :items="drawings" :show-select="true"
-                                            v-model="editedProjectProcurementPackage.drawings"
-                                            :search="searchProjectDrawings">
-                                          </v-data-table>
+                                        <v-card>
+                                          <v-card-title>
+                                            <span class="Subtitle 2">Select Tender Drawings</span>
+                                            <v-spacer></v-spacer>
+                                            <v-text-field v-model="searchProjectDrawings" append-icon="search"
+                                              label="Search" single-line hide-details></v-text-field>
+                                            <v-spacer></v-spacer>
+                                          </v-card-title>
+                                          <v-card-text>
+
+                                            <v-data-table :headers="drawingTableHeaders" :calculate-widths="true"
+                                              :items="drawings" :show-select="true"
+                                              v-model="editedProjectProcurementPackage.drawings"
+                                              :search="searchProjectDrawings">
+                                            </v-data-table>
 
 
-                                        </v-card-text>
+                                          </v-card-text>
 
-                                        <v-card-actions>
-                                          <v-spacer></v-spacer>
-                                          <v-btn color="blue darken-1"
-                                            @click="projectProcurementPackageDrawingsDialog = false">Cancel
-                                          </v-btn>
-                                          <v-btn color="blue darken-1" @click="saveProjectProcurementPackage">Save</v-btn>
-                                        </v-card-actions>
-                                      </v-card>
-                                    </v-dialog>
-                                  </v-btn>
+                                          <v-card-actions>
+                                            <v-spacer></v-spacer>
+                                            <v-btn color="blue darken-1"
+                                              @click="projectProcurementPackageDrawingsDialog = false">Cancel
+                                            </v-btn>
+                                            <v-btn color="blue darken-1"
+                                              @click="saveProjectProcurementPackage">Save</v-btn>
+                                          </v-card-actions>
+                                        </v-card>
+                                      </v-dialog>
+                                    </v-btn>
 
                                   </v-card-title>
                                   <v-card-text>
@@ -2223,9 +2222,9 @@ projectQuantitiesByRoom{{ projectQuantitiesByRoom1 }}
                 <v-card>
                   <v-card-title></v-card-title>
 
-                    <v-data-table :headers="orderTableHeaders"  :calculate-widths="true" :items="orders" :search="search">
-                    </v-data-table>
-                  
+                  <v-data-table :headers="orderTableHeaders" :calculate-widths="true" :items="orders" :search="search">
+                  </v-data-table>
+
                 </v-card>
 
               </v-window-item>
@@ -2251,7 +2250,7 @@ projectQuantitiesByRoom{{ projectQuantitiesByRoom1 }}
                             <v-container>
                               <v-layout row>
 
-                                <v-select :items="customerListSelection" v-model="editedProjectCustomerInvoice.customerId"
+                                <v-select :items="customers" item-value="id" item-title="name" v-model="editedProjectCustomerInvoice.customerId"
                                   label="Select Customer" single>
                                 </v-select>
 
@@ -2328,8 +2327,8 @@ projectQuantitiesByRoom{{ projectQuantitiesByRoom1 }}
 
                               <v-layout row v-if="editedProjectCustomerInvoiceIndex < 0">
 
-                                <v-file-input v-model="editedProjectCustomerInvoice.invoiceFile" label="Upload Invoice"
-                                  filled prepend-icon="mdi-camera"></v-file-input>
+                                <v-file-input ref="projectCustomerInvoiceFile" label="Upload Invoice" filled
+                                  prepend-icon="mdi-camera"></v-file-input>
 
                               </v-layout>
 
@@ -2394,19 +2393,19 @@ projectQuantitiesByRoom{{ projectQuantitiesByRoom1 }}
                     :items="projectCustomerInvoices" :search="search">
                     <template v-slot:[`item.actionDownloadProjectInvoice`]="{ item }">
                       <v-btn icon="mdi-download" @click="downloadCustomerInvoice(item)">
-                        
+
                       </v-btn>
                     </template>
                     <template v-slot:[`item.actionEdit`]="{ item }">
                       <v-btn icon="mdi-file-edit-outline" @click="showProjectCustomerEditDialog(item)">
-                      
+
                       </v-btn>
                     </template>
 
 
                     <template v-slot:[`item.actionDelete`]="{ item }">
                       <v-btn icon="mdi-delete-alert" @click="deleteProjectCustomerInvoice(item)">
-                        
+
                       </v-btn>
                     </template>
                   </v-data-table>
@@ -2424,7 +2423,7 @@ projectQuantitiesByRoom{{ projectQuantitiesByRoom1 }}
                     </v-text-field>
                     <v-spacer></v-spacer>
                     <v-btn icon color="green">
-                <v-icon icon="mdi-plus"></v-icon>
+                      <v-icon icon="mdi-plus"></v-icon>
 
                       <v-dialog v-model="projectSubContractorInvoiceDialog" activator="parent">
 
@@ -2448,8 +2447,8 @@ projectQuantitiesByRoom{{ projectQuantitiesByRoom1 }}
 
 
                                 <v-select :items="invoiceStatusListSelection"
-                                  v-model="editedProjectSubContractorInvoice.status" item-value="id"
-                              item-title="name" label="Status" single></v-select>
+                                  v-model="editedProjectSubContractorInvoice.status" item-value="id" item-title="name"
+                                  label="Status" single></v-select>
                               </v-layout>
                               <v-layout row>
 
@@ -2578,23 +2577,23 @@ projectQuantitiesByRoom{{ projectQuantitiesByRoom1 }}
                     :items="projectSubContractorInvoices" :search="search">
                     <template v-slot:[`item.actionDownloadProjectInvoice`]="{ item }">
                       <v-btn icon="mdi-download" @click="downloadSubContractorInvoice(item)">
-                     
+
                       </v-btn>
                     </template>
                     <template v-slot:[`item.actionEdit`]="{ item }">
                       <v-btn icon="mdi-file-edit-outline" @click="showProjectSubContractorEditDialog(item)">
-                        
+
                       </v-btn>
                     </template>
                     <template v-slot:[`item.actionApproveProjectInvoice`]="{ item }">
                       <v-btn icon="mdi-payment" @click="approveProjectInvoicePayment(item)">
-                       
+
                       </v-btn>
                     </template>
 
                     <template v-slot:[`item.actionDelete`]="{ item }">
                       <v-btn icon="mdi-delete-alert" @click="deleteProjectSubContractorInvoice(item)">
-              
+
                       </v-btn>
                     </template>
                   </v-data-table>
@@ -2768,14 +2767,14 @@ projectQuantitiesByRoom{{ projectQuantitiesByRoom1 }}
                     </template>
                     <template v-slot:[`item.actionEdit`]="{ item }">
                       <v-btn icon="mdi-file-edit-outline" @click="showProjectSupplierEditDialog(item)">
-                      
+
                       </v-btn>
                     </template>
 
 
                     <template v-slot:[`item.actionDelete`]="{ item }">
                       <v-btn icon="mdi-delete-alert" @click="deleteProjectSupplierInvoice(item)">
-                     
+
                       </v-btn>
                     </template>
                   </v-data-table>
@@ -2925,13 +2924,13 @@ projectQuantitiesByRoom{{ projectQuantitiesByRoom1 }}
                     :search="search">
                     <template v-slot:[`item.actionEdit`]="{ item }">
                       <v-btn icon="mdi-file-edit-outline" @click="editProjectContact(item)">
-                       
+
                       </v-btn>
                     </template>
 
                     <template v-slot:[`item.actionDelete`]="{ item }">
                       <v-btn icon="mdi-delete-alert" @click="deleteProjectContact(item)">
-                        
+
                       </v-btn>
                     </template>
                   </v-data-table>
@@ -2960,7 +2959,7 @@ projectQuantitiesByRoom{{ projectQuantitiesByRoom1 }}
         </template>
       </v-snackbar>
 
-     
+
     </v-card>
 
 
@@ -3006,7 +3005,7 @@ export default {
       store.dispatch('projects/loadProjectBoQSummary', id)
       store.dispatch('projects/loadProjectBoQCategoryCosts', id)
       store.dispatch('projects/loadProjectRoomScheduleBoQ', id)
-      store.dispatch('lprojects/oadProjectCustomerInvoices', id)
+      store.dispatch('projects/loadProjectCustomerInvoices', id)
       store.dispatch('projects/loadProjectCustomerInvoiceSummary', id)
       store.dispatch('projects/loadProjectSubContractorInvoices', id)
       store.dispatch('projects/loadProjectSubContractorInvoiceSummary', id)
@@ -3863,8 +3862,8 @@ export default {
       return roots;
     });
     const projectQuantitiesByRoom = computed(() => { return store.getters['projects/loadedProjectRooms'] });
-    const projectQuantitiesByRoom1 = computed(() =>  projectQuantitiesByRoom.value.map(r => { return makeRoomQuantity(r.name, 0); }));
-    
+    const projectQuantitiesByRoom1 = computed(() => projectQuantitiesByRoom.value.map(r => { return makeRoomQuantity(r.name, 0); }));
+
     const orders = computed(() => { return store.getters['projects/loadedProjectOrders'] });
     const boQProducts = computed(() => { return store.getters['projects/loadedProjectProducts'] });
     const projectDrawingCategories = computed(() => { return store.getters['projects/loadedProjectDrawingCategories'] });
@@ -3877,9 +3876,7 @@ export default {
       return store.getters['suppliers/loadedSuppliers']
     });
     const customerListSelection = computed(() => {
-      return store.getters['customers/loadedCustomers'].map(function (item) {
-        return { text: item.name, value: item.id }
-      })
+      return store.getters['customers/loadedCustomers']
     });
     const supplierListSelection = computed(() => {
       return store.getters['suppliers/loadedSuppliers'].map(function (item) {
@@ -4058,7 +4055,7 @@ export default {
       store.dispatch('projects/downloadProjectDrawing', payload)
     });
     const downloadProjectQuotation = ((item) => {
-      
+
       const obj = projectQuotations.value.find(q => q.id == item.value)
       console.log(item.value)
       console.log(obj.type)
@@ -4098,8 +4095,8 @@ export default {
       store.dispatch('subcontractors/downloadSubContractorQuotation', item)
     });
     const editItem = ((item) => {
-      editedIndex.value = drawings.value.findIndex( d => d.id == item.value)
-      const dwg = drawings.value.find( d => d.id == item.value)
+      editedIndex.value = drawings.value.findIndex(d => d.id == item.value)
+      const dwg = drawings.value.find(d => d.id == item.value)
       Object.assign(editedItem, dwg)
       projectDrawingMetaDataDialog.value = true
     });
@@ -4661,11 +4658,11 @@ export default {
     });
     const closeProjectBoQItemMeasureDialog = (() => {
       projectBoQItemMeasureDialog.value = false
-     // var qty = measures.value.filter(m => m.quantityMeasured != null)
-     //   .map(m => parseInt(m.quantityMeasured)).reduce((sum, val) => sum + val, 0).toFixed(2)
+      // var qty = measures.value.filter(m => m.quantityMeasured != null)
+      //   .map(m => parseInt(m.quantityMeasured)).reduce((sum, val) => sum + val, 0).toFixed(2)
 
-     // editedBoQItem.quantity = qty
-     // editedBoQItem.measuredQuantity = qty
+      // editedBoQItem.quantity = qty
+      // editedBoQItem.measuredQuantity = qty
       //store.dispatch('projects/updateProjectBoQItem', editedBoQItem)
       console.log('XXXXX')
       console.log(editedBoQItem.measuredQuantity)
@@ -4712,12 +4709,12 @@ export default {
         editedProjectImageMetaDataIndex.value = -1
       }, 300)
     });
-    
+
     const closeProjectDrawingMetaDataDialog = (() => {
       projectDrawingMetaDataDialog.value = false
       //setTimeout(() => {
-        //Object.assign(editedProjectDrawingMetaData, defaultProjectDrawingMetadata)
-        //editedProjectDrawingMetaDataIndex.value = -1
+      //Object.assign(editedProjectDrawingMetaData, defaultProjectDrawingMetadata)
+      //editedProjectDrawingMetaDataIndex.value = -1
       //}, 300)
     });
     const closeBoQItemDialog = (() => {
@@ -4767,10 +4764,10 @@ export default {
           netAmount: editedProjectCustomerInvoice.netAmount,
           invoiceDate: editedProjectCustomerInvoice.invoiceDate,
           paymentDueDate: editedProjectCustomerInvoice.paymentDueDate,
-          invoiceFile: editedProjectCustomerInvoice.invoiceFile
+          invoiceFile: projectCustomerInvoiceFile.value
         }
         console.log(formData)
-        store.dispatch('projects/createCustomerInvoice', formData)
+        store.dispatch('customers/createCustomerInvoice', formData)
           .then(
             setTimeout(() => {
               store.dispatch('projects/loadProjectCustomerInvoices', id)
@@ -4911,8 +4908,8 @@ export default {
     });
     const showProjectSupplierEditDialog = ((item) => {
       console.log('Showing Edit Supplieer Invoice Dialog for operative with id ' + item.id)
-      editedProjectSupplierInvoiceIndex.value = projectSupplierInvoices.value.findIndex(s =>  s.id == item.value);
-      const obj = projectSupplierInvoices.value.find(s =>  s.id == item.value);
+      editedProjectSupplierInvoiceIndex.value = projectSupplierInvoices.value.findIndex(s => s.id == item.value);
+      const obj = projectSupplierInvoices.value.find(s => s.id == item.value);
       Object.assign(editedProjectSupplierInvoice, obj)
       projectSupplierInvoiceDialog.value = true
     });
@@ -5050,17 +5047,19 @@ export default {
 
 
     const file = ref(null)
+    const projectCustomerInvoiceFile = ref(null)
 
-        const handleFileUpload = async() => {
-           // debugger;
-            console.log("selected file",file.value.files)
-            //Upload to server
-        }
+    const handleFileUpload = async () => {
+      // debugger;
+      console.log("selected file", file.value.files)
+      //Upload to server
+    }
 
-       
+
     return {
       handleFileUpload,
-          file,
+      file,
+      projectCustomerInvoiceFile,
       title,
       projectQuantitiesByRoom1,
       openTreeNodes,
@@ -5369,12 +5368,12 @@ export default {
 
 function makeRoomQuantity(name, qty) {
 
-//const projectBoQMeasure = this.loadedProjectBoQItemMeasures;
-console.log("making room qty " + name);
-return {
-  name: name,
-  qty: qty
-};
+  //const projectBoQMeasure = this.loadedProjectBoQItemMeasures;
+  console.log("making room qty " + name);
+  return {
+    name: name,
+    qty: qty
+  };
 }
 
 
