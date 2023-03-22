@@ -2261,7 +2261,7 @@
                                 </v-text-field>
 
 
-                                <v-select :items="invoiceStatusListSelection"
+                                <v-select :items="invoiceStatusListSelection"  
                                   v-model="editedProjectCustomerInvoice.status" label="Status" single></v-select>
                               </v-layout>
                               <v-layout row>
@@ -2447,7 +2447,7 @@
 
 
                                 <v-select :items="invoiceStatusListSelection"
-                                  v-model="editedProjectSubContractorInvoice.status" item-value="id" item-title="name"
+                                  v-model="editedProjectSubContractorInvoice.status" 
                                   label="Status" single></v-select>
                               </v-layout>
                               <v-layout row>
@@ -2632,7 +2632,7 @@
                                 </v-text-field>
 
 
-                                <v-select :items="invoiceStatusListSelection"
+                                <v-select :items="invoiceStatusListSelection"  
                                   v-model="editedProjectSupplierInvoice.status" label="Status" single></v-select>
                               </v-layout>
                               <v-layout row>
@@ -3450,9 +3450,9 @@ export default {
       'COMPLETED'
     ];
     const invoiceStatusListSelection = [
-      { title: 'Un Paid', key: 'UNPAID' },
-      { title: 'Approved for Payment', key: 'APPROVED_FOR_PAYMENT' },
-      { title: 'Paid', key: 'PAID' }
+      { title: 'UNPAID', key: 'UNPAID' },
+      { title: 'APPROVED_FOR_PAYMENT', key: 'APPROVED_FOR_PAYMENT' },
+      { title: 'PAID', key: 'PAID' }
     ];
     const aclDialog = ref(false);
     const dialog5 = ref(false);
@@ -4077,7 +4077,8 @@ export default {
     const downloadCustomerInvoice = ((item) => {
       console.log('downloading customer invoice..')
       console.log(item)
-      store.dispatch('customers/downloadCustomerInvoice', item)
+      const obj = projectCustomerInvoices.value.find(i => i.id == item.value)
+      store.dispatch('customers/downloadCustomerInvoice', obj)
     });
     const downloadSubContractorInvoice = ((item) => {
       console.log('downloading subcontractor invoice..')
@@ -4743,7 +4744,7 @@ export default {
         }
         console.log('Updating project customer invoice details')
         console.log(formData)
-        store.dispatch('projects/updateCustomerInvoice', formData)
+        store.dispatch('customers/updateCustomerInvoice', formData)
           .then(
             setTimeout(() => {
               store.dispatch('projects/loadProjectCustomerInvoices', id)
@@ -4762,8 +4763,8 @@ export default {
           currency: editedProjectCustomerInvoice.currency,
           grossAmount: editedProjectCustomerInvoice.grossAmount,
           netAmount: editedProjectCustomerInvoice.netAmount,
-          invoiceDate: editedProjectCustomerInvoice.invoiceDate,
-          paymentDueDate: editedProjectCustomerInvoice.paymentDueDate,
+          invoiceDate: '2023-03-21',//editedProjectCustomerInvoice.invoiceDate,
+          paymentDueDate: '2023-03-21',//editedProjectCustomerInvoice.paymentDueDate,
           invoiceFile: projectCustomerInvoiceFile.value
         }
         console.log(formData)
@@ -4780,8 +4781,9 @@ export default {
     const showProjectCustomerEditDialog = ((item) => {
       console.log('Showing Edit Customer Invoice Dialog')
       console.log(item)
-      editedProjectCustomerInvoiceIndex.value = projectCustomerInvoices.value.indexOf(item)
-      Object.assign(editedProjectCustomerInvoice, item)
+      editedProjectCustomerInvoiceIndex.value = projectCustomerInvoices.value.findIndex(ci => ci.id == item.value)
+      const obj =  projectCustomerInvoices.value.find(ci => ci.id == item.value)
+      Object.assign(editedProjectCustomerInvoice, obj)
       projectCustomerInvoiceDialog.value = true
     });
     const closeProjectCustomerInvoiceDialog = (() => {
@@ -5334,6 +5336,7 @@ export default {
       deleteProjectTask,
       editBoQItem,
       saveProjectBoQItem,
+      projectCustomerInvoices,
       saveProjectCustomerInvoice,
       showProjectCustomerEditDialog,
       saveProjectSubContractorInvoice,
