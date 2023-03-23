@@ -433,7 +433,7 @@ const actions = {
 
         const formData = new FormData()
         var i = 0
-        var len = payload.quotationFile.files.length
+        var len = payload.invoiceFile.files.length
         for (; i < len;) {
             formData.append('invoiceFile', payload.invoiceFile.files[i])
             i++

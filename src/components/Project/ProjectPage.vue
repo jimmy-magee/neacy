@@ -2620,11 +2620,11 @@
                           <v-card-text>
                             <v-container>
                               <v-layout row>
-                                <!--
-                                  <v-select :items="supplierListSelection"
+                                
+                                  <v-select :items="suppliers" item-value="id" item-title="name" 
                                     v-model="editedProjectSupplierInvoice.supplierId" label="Select Supplier" single>
                                   </v-select>
--->
+
                               </v-layout>
                               <v-layout row>
 
@@ -2696,7 +2696,7 @@
 
                               <v-layout row v-if="editedProjectSubContractorInvoiceIndex < 0">
 
-                                <v-file-input v-model="editedProjectSubContractorInvoice.invoiceFile"
+                                <v-file-input ref="supplierInvoiceFile"
                                   label="Upload Invoice" filled prepend-icon="mdi-camera"></v-file-input>
 
                               </v-layout>
@@ -2758,8 +2758,7 @@
 
                   </v-layout>
                   <h3>Invoice Details</h3>
-                  Project Supplier Invoices {{ projectSupplierInvoices.value }}
-                  <v-data-table :headers="projectSupplierInvoiceTableHeaders" :items="projectSupplierInvoices.value"
+                  <v-data-table :headers="projectSupplierInvoiceTableHeaders" :items="projectSupplierInvoices"
                     :calculate-widths="true" :search="search">
                     <template v-slot:[`item.actionDownloadProjectInvoice`]="{ item }">
                       <v-btn icon="mdi-download" @click="downloadSupplierInvoice(item)">
@@ -3885,7 +3884,7 @@ export default {
         return { text: item.name, value: item.id }
       })
     });
-    const projectSupplierInvoices = (() => {
+    const projectSupplierInvoices = computed(() => {
       return store.getters['projects/loadedProjectSupplierInvoices']
     });
     const accessControlList = computed(() => {
@@ -4090,7 +4089,8 @@ export default {
     const downloadSupplierInvoice = ((item) => {
       console.log('downloading supplier invoice..')
       console.log(item)
-      store.dispatch('suppliers/downloadSupplierInvoice', item)
+      const obj = projectSupplierInvoices.value.find(i => i.id == item.value)
+      store.dispatch('suppliers/downloadSupplierInvoice', obj)
     });
     const downloadSubContractorQuotation = ((item) => {
       console.log('downloading item requested..')
@@ -4898,7 +4898,7 @@ export default {
           netAmount: editedProjectSupplierInvoice.netAmount,
           invoiceDate: editedProjectSupplierInvoice.invoiceDate,
           paymentDueDate: editedProjectSupplierInvoice.paymentDueDate,
-          invoiceFile: editedProjectSupplierInvoice.invoiceFile
+          invoiceFile: supplierInvoiceFile.value
         }
         console.log(formData)
         store.dispatch('suppliers/createSupplierInvoice', formData)
@@ -4927,37 +4927,18 @@ export default {
     });
     const approveProjectInvoicePayment = ((item) => {
       const obj = projectSubContractorInvoices.value.find(i => i.id == item.value)
-      const formData = {
-        invoiceId: item.id,
-        subContractorId: item.subContractorId,
-        projectId: id,
-        invoiceRef: item.invoiceRef
-      }
-      console.log('Approving project invoice for payment')
-      console.log(formData)
       store.dispatch('subcontractors/approveSubContractorInvoicePayment', obj)
       closeProjectSubContractorInvoiceDialog()
     });
     const deleteProjectSubContractorInvoice = ((item) => {
       console.log('Delete SubContractor Invoice Event Received..')
       const obj = projectSubContractorInvoices.value.find(i => i.id == item.value)
-      const formData = {
-        id: item.value,
-        subContractorId: item.subContractorId,
-        projectId: id,
-      }
-      console.log(formData)
       store.dispatch('subcontractors/deleteSubContractorInvoice', obj)
     });
     const deleteProjectSupplierInvoice = ((item) => {
       console.log('Delete Supplier Invoice Event Received..')
-      const formData = {
-        id: item.id,
-        supplierId: item.supplierId,
-        projectId: id,
-      }
-      console.log(formData)
-      store.dispatch('suppliers/deleteSupplierInvoice', formData)
+      const obj = projectSupplierInvoices.value.find(i => i.id == item.value)
+      store.dispatch('suppliers/deleteSupplierInvoice', obj)
     });
     const saveContractRate = ((item) => {
       //console.log('update BoQItem ContractRate ')
@@ -5054,6 +5035,7 @@ export default {
 
 
     const file = ref(null)
+    const supplierInvoiceFile = ref(null)
     const projectCustomerInvoiceFile = ref(null)
 
     const handleFileUpload = async () => {
@@ -5067,6 +5049,7 @@ export default {
       handleFileUpload,
       file,
       projectCustomerInvoiceFile,
+      supplierInvoiceFile,
       title,
       projectQuantitiesByRoom1,
       openTreeNodes,
