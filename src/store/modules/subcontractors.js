@@ -905,13 +905,7 @@ const actions = {
       })
   },
   approveSubContractorInvoicePayment({ commit }, payload) {
-    //console.log('Creating new payment for subcontractor  ' + payload.subContractorId + ' assigned to ' + payload.projectId)
-    console.log(payload)
-    console.log(' for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
-    //const formData = {
-    //  approvedBy: localStorage.authHeader
-    // }
-    webClient.post('/api/client/' + localStorage.clientId + '/subcontractors/' + payload.subContractorId + '/invoices/' + payload.invoiceId + '/payment/approval', payload)
+    webClient.post('/api/client/' + localStorage.clientId + '/subcontractors/' + payload.subContractorId + '/invoices/' + payload.id + '/payment/approval', payload)
       .then((response) => {
         const savedSubContractorPayment = response.data
         console.log(savedSubContractorPayment)
