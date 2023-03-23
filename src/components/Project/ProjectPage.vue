@@ -2434,8 +2434,8 @@
                           <v-card-text>
                             <v-container>
                               <v-layout row>
-
-                                <v-select :items="subContractorListSelection"
+                            
+                                <v-select :items="subContractors" item-value="id" item-title="name" 
                                   v-model="editedProjectSubContractorInvoice.subContractorId" label="Select SubContractor"
                                   single></v-select>
 
@@ -2511,7 +2511,7 @@
 
                               <v-layout row v-if="editedProjectSubContractorInvoiceIndex < 0">
 
-                                <v-file-input v-model="editedProjectSubContractorInvoice.invoiceFile"
+                                <v-file-input ref="subContractorInvoiceFile"
                                   label="Upload Invoice" filled prepend-icon="mdi-camera"></v-file-input>
 
                               </v-layout>
@@ -2586,7 +2586,7 @@
                       </v-btn>
                     </template>
                     <template v-slot:[`item.actionApproveProjectInvoice`]="{ item }">
-                      <v-btn icon="mdi-payment" @click="approveProjectInvoicePayment(item)">
+                      <v-btn icon="mdi-ok" @click="approveProjectInvoicePayment(item)">
 
                       </v-btn>
                     </template>
@@ -3060,6 +3060,7 @@ export default {
     const searchProjectRFIs = ref('');
     const searchProjectRooms = ref('');
     const searchSubContractors = ref('');
+
     const drawingUrl = ref('');
     const uploadFieldName = ref('');
     const uploadedFiles = reactive([]);
@@ -3390,6 +3391,7 @@ export default {
     const projectInvoicePaymentDueDateDialog = ref(false);
     const projectInvoicePaymentDueDateModal = ref(false);
     const editedProjectSubContractorInvoiceIndex = ref(-1);
+    const subContractorInvoiceFile = ref(null);
     const editedProjectSubContractorInvoice = reactive({
       id: '',
       projectId: id,
@@ -3868,7 +3870,7 @@ export default {
     const boQProducts = computed(() => { return store.getters['projects/loadedProjectProducts'] });
     const projectDrawingCategories = computed(() => { return store.getters['projects/loadedProjectDrawingCategories'] });
     const boQItemCategories = computed(() => { return store.getters['projects/loadedBoQItemCategories'] });
-    const subContractors = computed(() => { return store.getters['projects/loadedSubContractors'] });
+    const subContractors = computed(() => { return store.getters['subcontractors/loadedSubContractors'] });
     const users = computed(() => { return store.getters['users/loadedUsers'] });
     const userNames = computed(() => { return store.getters['users/loadedUsers'].map(u => u.username) });
 
@@ -4810,7 +4812,7 @@ export default {
         }
         console.log('Updating project invoice details')
         console.log(formData)
-        store.dispatch('projects/updateSubContractorInvoice', formData)
+        store.dispatch('subcontractors/updateSubContractorInvoice', formData)
           .then(
             setTimeout(() => {
               store.dispatch('projects/loadProjectSubContractorInvoices', id)
@@ -4831,7 +4833,7 @@ export default {
           netAmount: editedProjectSubContractorInvoice.netAmount,
           invoiceDate: editedProjectSubContractorInvoice.invoiceDate,
           paymentDueDate: editedProjectSubContractorInvoice.paymentDueDate,
-          invoiceFile: editedProjectSubContractorInvoice.invoiceFile
+          invoiceFile: subContractorInvoiceFile.value
         }
         console.log(formData)
         store.dispatch('subcontractors/createSubContractorInvoice', formData)
@@ -4846,8 +4848,9 @@ export default {
     });
     const showProjectSubContractorEditDialog = ((item) => {
       console.log('Showing Edit Invoice Dialog for operative with id ' + item.id)
-      editedProjectSubContractorInvoiceIndex.value = projectSubContractorInvoices.value.indexOf(item)
-      Object.assign(editedProjectSubContractorInvoice, item)
+      editedProjectSubContractorInvoiceIndex.value = projectSubContractorInvoices.value.findIndex(i => i.id == item.value)
+      const obj = projectSubContractorInvoices.value.find(i => i.id == item.value)
+      Object.assign(editedProjectSubContractorInvoice, obj)
       projectSubContractorInvoiceDialog.value = true
     });
     const closeProjectSubContractorInvoiceDialog = (() => {
@@ -4923,6 +4926,7 @@ export default {
       }, 300)
     });
     const approveProjectInvoicePayment = ((item) => {
+      const obj = projectSubContractorInvoices.value.find(i => i.id == item.value)
       const formData = {
         invoiceId: item.id,
         subContractorId: item.subContractorId,
@@ -4931,18 +4935,19 @@ export default {
       }
       console.log('Approving project invoice for payment')
       console.log(formData)
-      store.dispatch('subcontractors/approveSubContractorInvoicePayment', formData)
+      store.dispatch('subcontractors/approveSubContractorInvoicePayment', obj)
       closeProjectSubContractorInvoiceDialog()
     });
     const deleteProjectSubContractorInvoice = ((item) => {
       console.log('Delete SubContractor Invoice Event Received..')
+      const obj = projectSubContractorInvoices.value.find(i => i.id == item.value)
       const formData = {
-        id: item.id,
+        id: item.value,
         subContractorId: item.subContractorId,
         projectId: id,
       }
       console.log(formData)
-      store.dispatch('subcontractors/deleteSubContractorInvoice', formData)
+      store.dispatch('subcontractors/deleteSubContractorInvoice', obj)
     });
     const deleteProjectSupplierInvoice = ((item) => {
       console.log('Delete Supplier Invoice Event Received..')
@@ -5267,6 +5272,7 @@ export default {
       closeProjectDrawingMetaDataDialog,
       projectCustomerInvoiceSummary,
       projectSubContractorInvoiceSummary,
+      subContractorInvoiceFile,
       projectSupplierInvoiceSummary,
       closeProjectSubContractorInvoiceDialog,
       projectProcurementPackageSummary,
@@ -5301,6 +5307,7 @@ export default {
       downloadProjectDrawing,
       downloadProjectQuotation,
       downloadCustomerInvoice,
+      projectSubContractorInvoices,
       downloadSupplierInvoice,
       downloadSubContractorInvoice,
       downloadSubContractorQuotation,
@@ -5363,7 +5370,8 @@ export default {
       saveProjectBoQItemMeasure,
       deleteProjectBoQItemMeasure,
       closeProjectCustomerInvoiceDialog,
-      max25chars
+      max25chars,
+ 
 
     }
   }
