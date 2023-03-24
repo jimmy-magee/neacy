@@ -842,7 +842,7 @@
                           <v-layout row>
 
                             <v-select :items="projects" v-model="editedSubContractorInvoice.projectId" item-value="id"
-                              item-text="name" label="Select Project" single></v-select>
+                              item-title="name" label="Select Project" single></v-select>
 
                           </v-layout>
                           <v-layout row>
@@ -914,7 +914,7 @@
 
                           <v-layout row v-if="editedSubContractorInvoiceIndex < 0">
 
-                            <v-file-input v-model="editedSubContractorInvoice.invoiceFile" label="Upload Invoice" filled
+                            <v-file-input ref="invoiceFile" label="Upload Invoice" filled
                               prepend-icon="mdi-camera"></v-file-input>
 
                           </v-layout>
@@ -980,34 +980,23 @@
                   :items="subContractorInvoices" :search="search">
 
                   <template v-slot:[`item.actionDownloadSubContractorInvoice`]="{ item }">
-                    <v-btn icon @click="downloadSubContractorInvoice(item)">
-                      <v-icon>
-                        cloud_download
-                      </v-icon>
+                    <v-btn icon="mdi-download"  @click="downloadSubContractorInvoice(item)">
                     </v-btn>
                   </template>
 
                   <template v-slot:[`item.actionPaySubContractorInvoice`]="{ item }">
-                    <v-btn icon @click="approveSubContractorInvoicePayment(item)">
-                      <v-icon>
-                        payment
-                      </v-icon>
+                    <v-btn icon="mdi-payment" @click="approveSubContractorInvoicePayment(item)">
                     </v-btn>
                   </template>
 
                   <template v-slot:[`item.actionEditSubContractorInvoice`]="{ item }">
-                    <v-btn icon @click="showSubContractorInvoiceEditDialog(item)">
-                      <v-icon>
-                        edit
-                      </v-icon>
+                    <v-btn icon="mdi-file-edit-outline" @click="showSubContractorInvoiceEditDialog(item)">
                     </v-btn>
                   </template>
 
                   <template v-slot:[`item.actionDeleteSubContractorInvoice`]="{ item }">
-                    <v-btn icon @click="deleteSubContractorInvoice(item)">
-                      <v-icon>
-                        delete
-                      </v-icon>
+                    <v-btn icon="mdi-delete-alert" @click="deleteSubContractorInvoice(item)">
+                    
                     </v-btn>
                   </template>
 
@@ -1574,7 +1563,7 @@ export default {
     const subContractorPayments = computed(() => {
       return store.getters['subcontractors/loadedSubContractorPayments']
     });
-    const projects = computed(() => store.getters['projects/loadedProjects']);
+    const projects = computed(() => { return store.getters['projects/loadedProjects']  });
 
     //methods
 
@@ -1780,7 +1769,6 @@ export default {
     const saveContractRate = ((item) => {
       console.log('update SubContract BoQItem ContractRate ')
       console.log(item)
-
       store.dispatch('updateSubContractorProcurementPackageBillItemRate', item)
         .then(
           console.log('Updated SubContract BoQItem Rate successfully')
@@ -1803,7 +1791,7 @@ export default {
         }
         console.log('Updating subcontractor invoice details')
         console.log(formData)
-        store.dispatch('updateSubContractorInvoice', formData)
+        store.dispatch('subcontractors/updateSubContractorInvoice', formData)
           .then(
             setTimeout(() => {
               store.dispatch('loadSubContractorInvoiceSummary', id)
@@ -1822,10 +1810,10 @@ export default {
           netAmount: editedSubContractorInvoice.netAmount,
           invoiceDate: editedSubContractorInvoice.invoiceDate,
           paymentDueDate: editedSubContractorInvoice.paymentDueDate,
-          invoiceFile: editedSubContractorInvoice.invoiceFile
+          invoiceFile: invoiceFile.value
         }
         console.log(formData)
-        store.dispatch('createSubContractorInvoice', formData)
+        store.dispatch('subcontractors/createSubContractorInvoice', formData)
           .then(
             setTimeout(() => {
               store.dispatch('loadSubContractorInvoiceSummary', id)
@@ -1836,9 +1824,10 @@ export default {
       save()
     });
     const showSubContractorInvoiceEditDialog = ((item) => {
-      console.log('Showing Edit Invoice Dialog for operative with id ' + item.id)
-      editedSubContractorInvoiceIndex.value = subContractorInvoices.value.indexOf(item)
-      Object.assign(editedSubContractorInvoice, item)
+      console.log('Showing Edit Invoice Dialog  id ' + item.id)
+      editedSubContractorInvoiceIndex.value = subContractorInvoices.value.findIndex(i => i.id == item.value)
+      const obj = subContractorInvoices.value.find(i => i.id == item.value)
+      Object.assign(editedSubContractorInvoice, obj)
       subContractorInvoiceDialog.value = true
     });
     const closeSubContractorInvoiceDialog = (() => {
@@ -1849,15 +1838,8 @@ export default {
       }, 300)
     });
     const approveSubContractorInvoicePayment = ((item) => {
-      const formData = {
-        invoiceId: item.id,
-        subContractorId: id,
-        projectId: item.projectId,
-        invoiceRef: item.invoiceRef
-      }
-      console.log('Approving subcontractor invoice for payment')
-      console.log(formData)
-      store.dispatch('approveSubContractorInvoicePayment', formData)
+      const obj = subContractorInvoices.value.find(i => i.id == item.value)
+      store.dispatch('subcontractors/approveSubContractorInvoicePayment', obj)
       closeSubContractorInvoiceDialog()
       save()
     });
@@ -1875,18 +1857,12 @@ export default {
       }, 300)
     });
     const downloadSubContractorInvoice = ((item) => {
-      console.log('downloading item requested..')
-      console.log(item)
-      store.dispatch('downloadSubContractorInvoice', item)
+      const obj = subContractorInvoices.value.find(i => i.id == item.value)
+      store.dispatch('subcontractors/downloadSubContractorInvoice', obj)
     });
     const deleteSubContractorInvoice = ((item) => {
-      console.log('Delete SubContractorInvoice Event Received..')
-      const formData = {
-        id: item.id,
-        subContractorId: id
-      }
-      console.log(formData)
-      store.dispatch('deleteSubContractorInvoice', formData)
+      const obj = subContractorInvoices.value.find(i => i.id == item.value)
+      store.dispatch('subcontractors/deleteSubContractorInvoice', obj)
     });
     const saveSubContractorPayment = (() => {
       if (editedSubContractorPaymentIndex.value > -1) {
@@ -1973,6 +1949,7 @@ export default {
     const formIsValid = (() => {
       return true
     });
+    const invoiceFile = ref(null);
 
     watch(subContractor, (newValue, oldValue) => {
       console.log('computedProperty [ project ]  was ' + oldValue + '. Now it is ' + JSON.stringify(newValue) + '.')
@@ -1983,6 +1960,7 @@ export default {
     return {
       search,
       file,
+      invoiceFile,
       projects,
       editedProjectImageMetaData,
       projectImageMetaDataDialog,

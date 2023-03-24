@@ -891,7 +891,7 @@ const actions = {
     console.log('Loading all Payments with subcontractor id ' + payload)
     console.log('for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
 
-    webClient.get(`/api/client/` + localStorage.clientId + `/subcontractors/` + payload + '/payments')
+    webClient.get(`/api/resource/clients/` + localStorage.clientId + `/subcontractors/` + payload + '/payments')
       .then(response => {
         console.log('Received Subcontractor Payments from server.')
         console.log(response.data)
@@ -905,7 +905,7 @@ const actions = {
       })
   },
   approveSubContractorInvoicePayment({ commit }, payload) {
-    webClient.post('/api/client/' + localStorage.clientId + '/subcontractors/' + payload.subContractorId + '/invoices/' + payload.id + '/payment/approval', payload)
+    webClient.post('/api/resource/clients/' + localStorage.clientId + '/subcontractors/' + payload.subContractorId + '/invoices/' + payload.id + '/payment/approval', payload)
       .then((response) => {
         const savedSubContractorPayment = response.data
         console.log(savedSubContractorPayment)
@@ -925,7 +925,7 @@ const actions = {
     console.log('Updating SubContractor Payment ')
     console.log(payload)
     console.log(' for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
-    webClient.put(`/api/client/` + localStorage.clientId + `/subcontractors/` + payload.subContractorId + '/payments/' + payload.id, payload)
+    webClient.put(`/api/resource/clients/` + localStorage.clientId + `/subcontractors/` + payload.subContractorId + '/payments/' + payload.id, payload)
       .then((response) => {
         const savedSubContractorPayment = response.data
         console.log(savedSubContractorPayment)
@@ -943,7 +943,7 @@ const actions = {
   },
   deleteSubContractorPayment({ commit }, payload) {
     console.log('Delete SubContractor Payment ' + payload.id)
-    webClient.delete('/api/client/' + localStorage.clientId + '/subcontractors/' + payload.subContractorId + '/payments/' + payload.id)
+    webClient.delete('/api/resource/clients/' + localStorage.clientId + '/subcontractors/' + payload.subContractorId + '/payments/' + payload.id)
       .then((response) => {
         console.log('Deleted SubContractor Payment, response status = ' + response.status)
         commit('deleteSubContractorPayment', payload)

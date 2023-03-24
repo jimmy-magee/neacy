@@ -356,7 +356,7 @@
                     <v-card-actions>
                       <v-spacer></v-spacer>
                       <v-btn color="blue darken-1" @click="closeSupplierInvoiceDialog">Cancel</v-btn>
-                      <v-btn color="blue darken-1" @click="saveSupplierInvoiceX">Save</v-btn>
+                      <v-btn color="blue darken-1" @click="saveSupplierInvoice">Save</v-btn>
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
@@ -897,12 +897,14 @@ export default {
     const downloadSupplierInvoice = ((item) => {
       console.log('downloading item requested..')
       console.log(item)
-      store.dispatch('suppliers/downloadSupplierInvoice', item)
+      const obj = supplierInvoices.value.find(i => i.id == item.value)
+      store.dispatch('suppliers/downloadSupplierInvoice', obj)
     });
     const showSupplierInvoiceEditDialog = ((item) => {
       console.log('Showing Edit Invoice Dialog for operative with id ' + item.id)
       editedSupplierInvoiceIndex.value = supplierInvoices.value.findIndex(s => s.id == item.value)
-      Object.assign(editedSupplierInvoice, item)
+      const obj = supplierInvoices.value.find(i => i.id == item.value)
+      Object.assign(editedSupplierInvoice, obj)
       supplierInvoiceDialog.value = true
     });
     const closeSupplierInvoiceDialog = (() => {
