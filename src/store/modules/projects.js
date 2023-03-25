@@ -875,6 +875,29 @@ const actions = {
                 commit('setError', e, { root: true })
             })
     },
+    downloadProjectImage({ commit }, payload) {
+        const drawingUrl = '/api/resource/clients/' + localStorage.clientId + '/projects/' + payload.projectId + '/images/' + payload.id + '/download'
+        console.log('Downloading Imagte from url:')
+        console.log(payload)
+        axios({
+            baseURL: `/`,
+            url: drawingUrl,
+            method: 'GET',
+            responseType: 'blob',
+            headers: { 'Authorization': localStorage.authHeader }
+        }).then((response) => {
+            console.log('Received drawing from server:')
+            console.log(response.data)
+            const url = window.URL.createObjectURL(new Blob([response.data]))
+            const link = document.createElement('a')
+            link.href = url
+            link.setAttribute('download', payload.fileName) // or any other extension
+            document.body.appendChild(link)
+            link.click()
+        }).catch((error) => {
+            commit('setError', error, { root: true })
+        })
+    },
     setSelectedProjectBoQItem({ commit, dispatch }, payload) {
         console.log('Setting selected boq item ')
         console.log(payload)

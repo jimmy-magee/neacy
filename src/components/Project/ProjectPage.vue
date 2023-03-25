@@ -912,9 +912,9 @@
                   <v-data-table :headers="imageMetadataTableHeaders" :calculate-widths="true"
                     :items="projectImageMetadata" :search="search">
                     <template v-slot:[`item.image`]="{ item }">
-                      {{ projectId }}
-                      <v-img :src="`http://localhost:8080/api/resource/projects/${projectId}/images/${item.value}/download`"
-                        :lazy-src="`http://localhost:8080/api/resource/projects/${projectId}/images/${item.value}/download`"
+                   projectId :  {{ id }}
+                      <v-img :src="`http://localhost:8080/api/resource/clients/${clientId}/projects/${id}/images/${item.value}/download`"
+                        :lazy-src="`http://localhost:8080/api/resource/clients/${clientId}projects/${id}/images/${item.value}/download`"
                         aspect-ratio="1" class="grey lighten-2" max-width="400" max-height="300"></v-img>
                     </template>
                     <template v-slot:[`item.actionEditImageMetadata`]="{ item }">
@@ -1019,8 +1019,8 @@
 
                             <v-row justify="center">
                               <v-img
-                                :src="`http://localhost:8080/api/resource/projects/${editedProjectImageMetaData.projectId}/images/${editedProjectImageMetaData.id}/download`"
-                                :lazy-src="`http://localhost:8080/api/resource/projects/${editedProjectImageMetaData.projectId}/images/${editedProjectImageMetaData.id}/download`"
+                                :src="`http://localhost:8080/api/resource/clients/${clientId}/projects/${editedProjectImageMetaData.projectId}/images/${editedProjectImageMetaData.id}/download`"
+                                :lazy-src="`http://localhost:8080/api/resource/clients/${clientId}/projects/${editedProjectImageMetaData.projectId}/images/${editedProjectImageMetaData.id}/download`"
                                 aspect-ratio="1" class="grey lighten-2" max-width="700" max-height="600"></v-img>
                             </v-row>
 
@@ -4182,6 +4182,12 @@ export default {
       Object.assign(editedProjectImageMetaData, obj)
       projectImageMetaDataDialog.value = true
     });
+    const downloadProjectImage = ( (item) => {
+      const obj = projectImageMetadata.value.find( image => image.id == item.value )
+      console.log(obj)
+      store.dispatch('projects/downloadProjectImage', obj)
+
+    });
     const saveProjectTask = (() => {
       if (editedProjectTaskIndex.value > -1) {
         const formData = {
@@ -5055,8 +5061,11 @@ export default {
       //Upload to server
     }
 
+    const clientId = localStorage.clientId;
 
     return {
+      id,
+      clientId,
       handleFileUpload,
       file,
       projectCustomerInvoiceFile,
@@ -5266,6 +5275,7 @@ export default {
       closeProjectDrawingMetaDataDialog,
       projectCustomerInvoiceSummary,
       projectSubContractorInvoiceSummary,
+      downloadProjectImage,
       subContractorInvoiceFile,
       projectSupplierInvoiceSummary,
       closeProjectSubContractorInvoiceDialog,
