@@ -133,7 +133,7 @@
                         <v-layout row>
 
                           <v-select :items="projects" v-model="editedSupplierQuotation.projectId" item-value="id"
-                            item-text="name" label="Select Project" single></v-select>
+                            item-title="name" label="Select Project" single></v-select>
 
                         </v-layout>
                         <v-layout row>
@@ -238,7 +238,7 @@
 
               </v-layout>
               <h3>Quotation Details</h3>
-              <v-data-table :headers="showSupplierQuotationTableHeaders" dense :calculate-widths="true"
+              <v-data-table :headers="supplierQuotationTableHeaders" dense :calculate-widths="true"
                 :items="supplierQuotations" :search="search">
 
                 <template v-slot:[`item.actionDownloadSupplierQuotation`]="{ item }">
@@ -278,16 +278,12 @@
                     <v-card-text>
                       <v-container>
                         <v-layout row>
-
                           <v-select :items="projects" v-model="editedSupplierInvoice.projectId" item-title="name" item-value="id" label="Select Project"
                             single></v-select>
-
                         </v-layout>
                         <v-layout row>
 
                           <v-text-field v-model="editedSupplierInvoice.invoiceRef" label="Reference"></v-text-field>
-
-
 
                           <v-select :items="invoiceStatusListSelection" v-model="editedSupplierInvoice.status"
                             label="Status" single></v-select>
@@ -674,8 +670,6 @@ export default {
     });
     const formHasErrors = false;
     const supplierQuotationTableHeaders = [
-      { title: 'id', key: 'id', width: "0px", hide: true }, // ' d-none' hides the column but keeps the search ability
-      { title: 'fileName', key: 'fileName', width: "1%"}, // ' d-none' hides the column but keeps the search ability
       { title: 'Project', key: 'projectName' },
       { title: 'Ref', key: 'quotationRef' },
       { title: 'Gross', key: 'grossAmount' },
@@ -718,10 +712,6 @@ export default {
       status: ''
     });
 
-
-    const showSupplierQuotationTableHeaders = computed(() => {
-      return supplierQuotationTableHeaders.filter(h => !h.hide);
-    });
     const projects = computed(() => store.getters['projects/loadedProjects']);
 
     const productCategories = computed(() => { return store.getters['products/loadedProductCategories'] });
@@ -970,7 +960,6 @@ export default {
     const invoiceFile = ref(null)
 
     return {
-      showSupplierQuotationTableHeaders,
       file,
       invoiceFile,
       outerTab,

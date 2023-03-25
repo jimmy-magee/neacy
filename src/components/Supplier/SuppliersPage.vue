@@ -277,7 +277,6 @@ export default {
       deleteSupplier,
       close,
       onDismissed
-
     }
   }
 }
