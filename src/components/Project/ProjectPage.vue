@@ -792,8 +792,8 @@
 
                                       <template v-slot:item.image="{ item }">
                                           <v-img
-                                            :src="`http://neacy.io/api/resource/projects/${item.projectId}/images/${item.id}/download`"
-                                            :lazy-src="`http://neacy.io/api/resource/projects/${item.projectId}/images/${item.id}/download`"
+                                            :src="`http://localhost:8080/api/resource/projects/${item.projectId}/images/${item.id}/download`"
+                                            :lazy-src="`http://localhost:8080/api/resource/projects/${item.projectId}/images/${item.id}/download`"
                                             aspect-ratio="1"
                                             class="grey lighten-2"
                                             max-width="300"
@@ -912,8 +912,9 @@
                   <v-data-table :headers="imageMetadataTableHeaders" :calculate-widths="true"
                     :items="projectImageMetadata" :search="search">
                     <template v-slot:[`item.image`]="{ item }">
-                      <v-img :src="`http://neacy.io/api/resource/projects/${item.projectId}/images/${item.id}/download`"
-                        :lazy-src="`http://neacy.io/api/resource/projects/${item.projectId}/images/${item.id}/download`"
+                      {{ projectId }}
+                      <v-img :src="`http://localhost:8080/api/resource/projects/${projectId}/images/${item.value}/download`"
+                        :lazy-src="`http://localhost:8080/api/resource/projects/${projectId}/images/${item.value}/download`"
                         aspect-ratio="1" class="grey lighten-2" max-width="400" max-height="300"></v-img>
                     </template>
                     <template v-slot:[`item.actionEditImageMetadata`]="{ item }">
@@ -1019,8 +1020,8 @@
 
                             <v-row justify="center">
                               <v-img
-                                :src="`http://neacy.io/api/resource/projects/${editedProjectImageMetaData.projectId}/images/${editedProjectImageMetaData.id}/download`"
-                                :lazy-src="`http://neacy.io/api/resource/projects/${editedProjectImageMetaData.projectId}/images/${editedProjectImageMetaData.id}/download`"
+                                :src="`http://localhost:8080/api/resource/projects/${editedProjectImageMetaData.projectId}/images/${editedProjectImageMetaData.id}/download`"
+                                :lazy-src="`http://localhost:8080/api/resource/projects/${editedProjectImageMetaData.projectId}/images/${editedProjectImageMetaData.id}/download`"
                                 aspect-ratio="1" class="grey lighten-2" max-width="700" max-height="600"></v-img>
                             </v-row>
 
@@ -4177,8 +4178,9 @@ export default {
       store.dispatch('projects/deleteProjectSubContractorProcurementPackage', item)
     });
     const editProjectImageMetaData = ((item) => {
-      editedProjectImageMetaDataIndex.value = projectImageMetadata.value.indexOf(item)
-      Object.assign(editedProjectImageMetaData, item)
+      editedProjectImageMetaDataIndex.value = projectImageMetadata.value.findIndex( image => image.id == item.value )
+      const obj = projectImageMetadata.value.find( image => image.id == item.value )
+      Object.assign(editedProjectImageMetaData, obj)
       projectImageMetaDataDialog.value = true
     });
     const saveProjectTask = (() => {
@@ -4322,6 +4324,7 @@ export default {
       // }
       closeProjectImageMetaDataDialog()
     });
+
     const saveProjectImages = (() => {
 
       const formData = {
@@ -4333,6 +4336,17 @@ export default {
       console.log(formData)
 
       closeProjectImageDialog()
+    });
+    const deleteProjectImageMetaData = ((item) => {
+     
+      console.log('Deleting project image meta data')
+      
+      console.log(item.value)
+      const obj = projectImageMetadata.value.find( image => image.id == item.value )
+      store.dispatch('projects/deleteProjectImageMetaData', obj)
+
+      // }
+      closeProjectImageMetaDataDialog()
     });
     const openProjectAccessControlListDialog = (() => {
       selectedProjectUsers.value = accessControlList
@@ -5309,8 +5323,10 @@ export default {
       createProjectSubContractorProcurementPackage,
       saveProjectContact,
       saveProjectImageMetaData,
+      deleteProjectImageMetaData,
       saveProjectImages,
       openProjectAccessControlListDialog,
+      closeProjectImageMetaDataDialog,
       updateProjectAccessControlList,
       saveProjectDrawingMetaData,
       uploadProjectDrawings,

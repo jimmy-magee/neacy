@@ -951,6 +951,22 @@ const actions = {
                 commit('setError', e, { root: true })
             })
     },
+    deleteProjectImageMetaData({ commit }, payload) {
+
+        console.log('Deleteing project image for user ' + localStorage.authHeader + ' for project ' + payload.projectId + ' image file.. ' + payload.imageFiles)
+        console.log(payload)
+
+        return webClient.delete('/api/resource/clients/' + localStorage.clientId + '/projects/' + payload.projectId + '/images/' + payload.id, payload)
+            .then(response => {
+                console.log('Received saved image metadata from server')
+                console.log(response.data)
+                commit('updateProjectImageMetadata', response.data)
+            })
+            .catch(e => {
+                console.log(e)
+                commit('setError', e, { root: true })
+            })
+    },
     uploadProjectDrawings({ commit }, payload) {
         //console.log('Creating dwg' + payload + ' for user ' + getters.user.username + ':' + getters.user.password)
 
