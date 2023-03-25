@@ -992,7 +992,7 @@
                           <span>{{ projectImageFormTitle }}</span>
                         </v-card-title>
                         <v-card-text>
-                          <v-container>
+                
                             <v-layout row>
 
                               <v-text-field v-model="editedProjectImageMetaData.title" label="Title"></v-text-field>
@@ -1006,9 +1006,8 @@
 
                             </v-layout>
                             <v-layout row>
-
-                              <v-text-field v-model="editedProjectImageMetaData.location" label="Location">
-                              </v-text-field>
+                              <v-select :items="projectRoomsX" v-model="editedProjectImageMetaData.location" 
+                              label="Location" item-value="id" item-title="name"></v-select>
 
                             </v-layout>
                             <v-layout row>
@@ -1025,7 +1024,7 @@
                                 aspect-ratio="1" class="grey lighten-2" max-width="700" max-height="600"></v-img>
                             </v-row>
 
-                          </v-container>
+                      
                         </v-card-text>
 
                         <v-card-actions>
@@ -4344,8 +4343,6 @@ export default {
       console.log(item.value)
       const obj = projectImageMetadata.value.find( image => image.id == item.value )
       store.dispatch('projects/deleteProjectImageMetaData', obj)
-
-      // }
       closeProjectImageMetaDataDialog()
     });
     const openProjectAccessControlListDialog = (() => {

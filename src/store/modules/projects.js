@@ -114,6 +114,13 @@ const mutations = {
             ...state.loadedProjectImageMetadata.filter(element => element.id !== payload.id), payload
         ]
     },
+    deleteProjectImageMetadata(state, payload) {
+      
+        const index = state.loadedProjectImageMetadata.indexOf(payload)
+        console.log('Index of deleted project image is ' + index)
+        state.loadedProjectImageMetadata.splice(index, 1)
+        
+    },
     deleteProjectImage(state, payload) {
         console.log('Committing delete project image')
         console.log(payload)
@@ -960,7 +967,7 @@ const actions = {
             .then(response => {
                 console.log('Received saved image metadata from server')
                 console.log(response.data)
-                commit('updateProjectImageMetadata', response.data)
+                commit('deleteProjectImageMetadata', response.data)
             })
             .catch(e => {
                 console.log(e)
