@@ -36,6 +36,11 @@ const mutations = {
         console.log(payload)
         state.loadedSupplierProducts = payload
       },
+      updateSupplierProduct(state, payload) {
+        state.loadedSupplierProducts = [
+            ...state.loadedSupplierProducts.filter(u => u.id !== payload.id), payload
+        ]
+    },
     createSupplierProduct(state, payload) {
         state.loadedSupplierProducts.push(payload)
     },
@@ -244,6 +249,21 @@ const actions = {
                 console.log('Received new Supplier Product from server..')
                 console.log(response.data)
                 commit('createSupplierProduct', response.data)
+                commit('setLoading', false, { root: true })
+            })
+            .catch(error => {
+                commit('setError', error, { root: true })
+            })
+    },
+    updateSupplierProduct({ commit }, payload) {
+        commit('setLoading', true, { root: true })
+        console.log('Updating supplier product quotation ')
+        console.log(payload)
+        webClient.post(`/api/resource/clients/` + localStorage.clientId + `/suppliers/` + payload.supplierId + `/products/` + payload.id, payload)
+            .then(response => {
+                console.log('Received new Supplier Product from server..')
+                console.log(response.data)
+                commit('updateSupplierProduct', response.data)
                 commit('setLoading', false, { root: true })
             })
             .catch(error => {

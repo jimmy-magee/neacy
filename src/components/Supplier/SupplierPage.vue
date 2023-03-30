@@ -1021,7 +1021,7 @@ export default {
       } else {
         console.log('Updating  products')
         console.log(editedItem)
-        store.dispatch('products/updateProduct', editedItem)
+        store.dispatch('suppliers/updateSupplierProduct', editedItem)
       }
       close()
     });
