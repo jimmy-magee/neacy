@@ -225,6 +225,7 @@ const actions = {
                 console.log('Received saved Product from server..')
                 commit('createProduct', response.data)
                 commit('setLoading', false, { root: true })
+                return response.data
             })
             .catch(error => {
                 commit('setError', error, { root: true })
@@ -268,6 +269,7 @@ const actions = {
             console.error('Could not download the drawing from url ' + payload.id + ' from the backend.', error)
         })
     },
+    
     updateSupplierProductQuotation({ commit }, payload) {
         commit('setLoading', true, { root: true })
         console.log('Updating product quotation ')

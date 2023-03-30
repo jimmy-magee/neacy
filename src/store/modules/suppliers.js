@@ -5,6 +5,7 @@ const state = {
     loadedSupplier: null,
     loadedSupplierCategories: [],
     loadedSuppliers: [],
+    loadedSupplierProducts: [],
     loadedSupplierInvoiceSummary: null,
     loadedSupplierInvoices: [],
     loadedSupplierQuotations: [],
@@ -29,6 +30,20 @@ const mutations = {
     },
     setLoadedSupplier(state, payload) {
         state.loadedSupplier = payload
+    },
+    setLoadedSupplierProducts (state, payload) {
+        console.log('Set supplier products')
+        console.log(payload)
+        state.loadedSupplierProducts = payload
+      },
+    createSupplierProduct(state, payload) {
+        state.loadedSupplierProducts.push(payload)
+    },
+    deleteSupplierProduct(state, payload) {
+        console.log('Committing delete of Supplier Product')
+        console.log(payload)
+        const index = state.loadedSupplierProducts.findIndex( p => p.id == payload)
+        state.loadedSupplierProducts.splice(index, 1)
     },
     setLoadedSupplierQuotations(state, payload) {
         state.loadedSupplierQuotations = payload
@@ -200,6 +215,50 @@ const actions = {
             .then(response => {
                 console.log(response)
                 commit('deleteSupplier', payload)
+                commit('setLoading', false, { root: true })
+            })
+            .catch(error => {
+                commit('setError', error, { root: true })
+            })
+    },
+    loadSupplierProducts ({commit }, payload) {
+        commit('setLoading', true, { root: true })
+        console.log('Loading Supplier products for  [{' + payload + '}] for user with authorization token ' + localStorage.authHeader)
+        webClient.get(`/api/resource/clients/` + localStorage.clientId + `/suppliers/` + payload + `/products`)
+            .then(response => {
+              console.log('Received Supplier Products...')
+              console.log(response.data)
+              commit('setLoadedSupplierProducts', response.data)
+              commit('setLoading', false, { root: true })
+            })
+            .catch(error => {
+              commit('setError', error, { root: true })
+            })
+      },
+      createSupplierProduct({ commit }, payload) {
+        commit('setLoading', true, { root: true })
+        console.log('Creating supplier product quotation ')
+        console.log(payload)
+        webClient.post(`/api/resource/clients/` + localStorage.clientId + `/suppliers/` + payload.supplierId + `/products`, payload)
+            .then(response => {
+                console.log('Received new Supplier Product from server..')
+                console.log(response.data)
+                commit('createSupplierProduct', response.data)
+                commit('setLoading', false, { root: true })
+            })
+            .catch(error => {
+                commit('setError', error, { root: true })
+            })
+    },
+    deleteSupplierProduct({ commit }, payload) {
+        commit('setLoading', true, { root: true })
+        console.log('Deleting supplier product quotation ')
+        console.log(payload)
+        webClient.delete(`/api/resource/clients/` + localStorage.clientId + `/suppliers/` + payload.supplierId + `/products/` + payload.id)
+            .then(response => {
+                console.log('Received new Supplier Product from server..')
+                console.log(response.data)
+                commit('deleteSupplierProduct', payload.id)
                 commit('setLoading', false, { root: true })
             })
             .catch(error => {
@@ -519,6 +578,11 @@ const getters = {
     loadedSupplier(state) {
         return state.loadedSupplier
     },
+    loadedSupplierProducts (state) {
+        console.log('Get supplier products')
+        console.log(state.loadSupplierProducts)
+        return state.loadedSupplierProducts
+      },
     loadedSupplierQuotations(state) {
         return state.loadedSupplierQuotations.sort((A, B) => {
             return A.id > B.id

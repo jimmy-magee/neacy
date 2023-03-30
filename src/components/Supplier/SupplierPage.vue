@@ -431,31 +431,98 @@
         </v-window-item>
         <v-window-item value="outerTab-4">
           <v-card>
-            <v-data-table :headers="productTableHeaders" :items="supplierProducts" :search="search">
-              <!--
-              <template v-slot:[`item.cost`]="props">
-                <v-edit-dialog v-model="props.item.cost" large persistent @save="save(props.item)"
-                  @cancel="cancel" @open="open" @close="close">
-                  <div>{{ props.item.cost }}</div>
-                  <template v-slot:[`input`]>
-                    <div class="mt-4 title">Update Cost</div>
-                    <v-text-field v-model="props.item.cost" label="Edit" single-line counter autofocus></v-text-field>
-                  </template>
-                </v-edit-dialog>
-              </template>
+            <v-card-title>
+        Products
+        <v-spacer></v-spacer>
+        <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
+        <v-spacer></v-spacer>
+        <v-btn icon color="green">
+          <v-icon icon="mdi-plus"></v-icon>
+          <v-dialog v-model="dialog" activator="parent">
+           
+            <v-card>
+              <v-card-title>
+                <span class="headline">{{ productFormTitle }}</span>
+              </v-card-title>
+              <v-card-text>
+                <v-container>
 
-              <template v-slot:[`item.leadInTimeInDays`]="props">
-                <v-edit-dialog v-model="props.item.leadInTimeInDays" large persistent @save="save(props.item)"
-                  @cancel="cancel" @open="open" @close="close">
-                  <div>{{ props.item.leadInTimeInDays }}</div>
-                  <template v-slot:[`input`]>
-                    <div class="mt-4 title">Update Lead In Time</div>
-                    <v-text-field v-model="props.item.leadInTimeInDays" label="Edit" single-line counter autofocus>
-                    </v-text-field>
-                  </template>
-                </v-edit-dialog>
-              </template>
-            -->
+                  <v-layout wrap>
+                 
+                      <v-select v-model="editedItem.productCategoryId" :items="productCategories" item-value="id"
+                        item-title="name" label="Select Product Category">
+                      </v-select>
+                    
+                  </v-layout>
+
+                  <v-layout row>
+                    
+                      <v-text-field ref="nameField" v-model="editedItem.productName" label="Name"></v-text-field>
+                    
+                  </v-layout>
+
+                  <v-layout row>
+                    
+                      <v-text-field v-model="editedItem.productDescription" label="Description"></v-text-field>
+                    
+                  </v-layout>
+
+                  <v-layout row>
+                    
+                      <v-text-field v-model="editedItem.manufacturer" label="Manufacturer"></v-text-field>
+                    
+                  </v-layout>
+
+                  <v-layout row>
+                    
+                      <v-text-field v-model="editedItem.productCode" label="Product Code"></v-text-field>
+                    
+                  </v-layout>
+
+                  <v-layout row>
+                    
+                      <v-text-field v-model="editedItem.units" label="Units of Measurement"></v-text-field>
+                    
+                  </v-layout>
+
+                  <v-layout row>
+                    
+                    <v-text-field v-model="editedItem.cost" label="Cost"></v-text-field>
+                  
+                </v-layout>
+
+                <v-layout row>
+                    
+                    <v-text-field v-model="editedItem.leadInTimeInDays" label="Lead in Time(Days)"></v-text-field>
+                  
+                </v-layout>
+
+                </v-container>
+              </v-card-text>
+
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" @click.="close">Cancel</v-btn>
+                <v-btn color="blue darken-1" @click.="updateProduct">Save</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-btn>
+
+      </v-card-title>
+ 
+            <v-data-table :headers="productTableHeaders" :items="supplierProducts" :calculate-widths="true" :search="search">
+            
+              <template v-slot:[`item.actionEditSupplierProduct`]="{ item }">
+                  <v-btn icon @click="editSupplierProduct(item)">
+                    <v-icon icon="mdi-file-edit-outline"></v-icon>
+                  </v-btn>
+                </template>
+                <template v-slot:[`item.actionDeleteSupplierProduct`]="{ item }">
+                  <v-btn icon @click="deleteProduct(item)">
+                    <v-icon icon="mdi-delete-alert"></v-icon>
+                  </v-btn>
+                </template>
             </v-data-table>
           </v-card>
         </v-window-item>
@@ -552,6 +619,36 @@ export default {
       { title: 'Edit', align: 'left', key: 'actionEdit' },
       { title: 'Delete', align: 'left', key: 'actionDelete' }
     ];
+    const editedItem = reactive({
+      id: '',
+      clientId: localStorage.clientId,
+      supplierId: id,
+      productCategoryId: '',
+      productName: '',
+      productDescription: '',
+      manufacturer: '',
+      productCode: '',
+      standard: '',
+      imageUrl: '',
+      units: '',
+      cost: 0.0,
+      leadInTimeInDays: 5
+    });
+    const defaultItem = reactive({
+      id: '',
+      clientId: localStorage.clientId,
+      supplierId: id,
+      productCategoryId: '',
+      productName: '',
+      productDescription: '',
+      manufacturer: '',
+      productCode: '',
+      standard: '',
+      imageUrl: '',
+      units: '',
+      cost: 0.0,
+      leadInTimeInDays: 5
+    });
     const quotationTableHeaders = [
       {
         title: 'Name',
@@ -569,10 +666,17 @@ export default {
         sortable: true,
         key: 'productName'
       },
+      {
+        title: 'Description',
+        align: 'left',
+        sortable: true,
+        key: 'productDescription'
+      },
       { title: 'Units', key: 'units' },
       { title: 'Unit Cost', key: 'cost' },
-      { title: 'validTo', key: 'validTo' },
       { title: 'LeadInTimeInDays', key: 'leadInTimeInDays' },
+      { title: 'Edit', align: 'left', key: 'actionEditSupplierProduct' },
+      { title: 'Delete', align: 'left', key: 'actionDeleteSupplierProduct' }
     ];
     const orderTableHeaders = [
       {
@@ -596,27 +700,7 @@ export default {
     const search = ref('');
     const dialog = ref(false);
     const editedIndex = ref(-1);
-    const editedItem = {
-      id: '',
-      productCategoryId: '',
-      productCategoryName: '',
-      name: '',
-      description: '',
-      manufacturer: '',
-      productCode: '',
-      standard: '',
-      imageUrl: ''
-    };
-    const defaultItem = {
-      productCategoryId: '',
-      productCategoryName: '',
-      name: '',
-      description: '',
-      manufacturer: '',
-      productCode: '',
-      standard: '',
-      imageUrl: ''
-    };
+   
     const invoiceStatusListSelection = [
       { title: 'UNPAID', key: 'UNPAID' },
       { title: 'APPROVED_FOR_PAYMENT', key: 'APPROVED_FOR_PAYMENT' },
@@ -733,6 +817,8 @@ export default {
     const supplierInvoices = computed(() => { return store.getters['suppliers/loadedSupplierInvoices'] });
 
     const supplier = computed(() => { return store.getters['suppliers/loadedSupplier'] });
+
+    const productFormTitle = computed(() => editedIndex.value === -1 ? 'New Product' : 'Edit Product');
 
     const error = computed(() => {
       return store.getters.error
@@ -919,23 +1005,34 @@ export default {
       snackColor.value = 'info'
       snackText.value = 'Dialog opened'
     });
+    const editSupplierProduct = ((item) => {
+      console.log('Showing Edit Product Dialog  ' + item.value)
+      editedIndex.value = supplierProducts.value.findIndex(s => s.id == item.value)
+      const obj = supplierProducts.value.find(i => i.id == item.value)
+      Object.assign(editedItem, obj)
+      dialog.value = true
+    });
     const updateProduct = (() => {
 
       if (editedIndex.value === -1) {
         console.log('Creating products')
         console.log(editedItem)
-        store.dispatch('suppliers/createProduct', editedItem)
+        store.dispatch('suppliers/createSupplierProduct', editedItem)
       } else {
         console.log('Updating  products')
         console.log(editedItem)
-        store.dispatch('suppliers/updateProduct', editedItem)
+        store.dispatch('products/updateProduct', editedItem)
       }
       close()
     });
     const deleteProduct = ((item) => {
       console.log('Delete product Event Received..')
-      console.log(item)
-      store.dispatch('suppliers/deleteProduct', item)
+      console.log(item.value)
+      const formData = {
+        id: item.value,
+        supplierId: id,
+      }
+      store.dispatch('suppliers/deleteSupplierProduct', formData)
     });
     const close = (() => {
       dialog.value = false
@@ -960,6 +1057,7 @@ export default {
     const invoiceFile = ref(null)
 
     return {
+      id,
       file,
       invoiceFile,
       outerTab,
@@ -1006,6 +1104,7 @@ export default {
       supplierQuotation,
       supplierQuotations,
       supplierProducts,
+      productFormTitle,
       orders,
       supplierInvoiceSummary,
       error,
@@ -1025,6 +1124,7 @@ export default {
       save,
       cancel,
       open,
+      editSupplierProduct,
       updateProduct,
       deleteProduct,
       close,
