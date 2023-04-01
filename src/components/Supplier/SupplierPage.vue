@@ -207,7 +207,7 @@
                         </v-layout>
                         <v-layout row v-if="editedSupplierQuotationIndex < 0">
 
-                          <v-file-input ref="file"  label="Upload Quotation" filled
+                          <v-file-input ref="file" label="Upload Quotation" filled
                             prepend-icon="mdi-camera"></v-file-input>
 
                         </v-layout>
@@ -278,8 +278,8 @@
                     <v-card-text>
                       <v-container>
                         <v-layout row>
-                          <v-select :items="projects" v-model="editedSupplierInvoice.projectId" item-title="name" item-value="id" label="Select Project"
-                            single></v-select>
+                          <v-select :items="projects" v-model="editedSupplierInvoice.projectId" item-title="name"
+                            item-value="id" label="Select Project" single></v-select>
                         </v-layout>
                         <v-layout row>
 
@@ -432,97 +432,186 @@
         <v-window-item value="outerTab-4">
           <v-card>
             <v-card-title>
-        Products
-        <v-spacer></v-spacer>
-        <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
-        <v-spacer></v-spacer>
-        <v-btn icon color="green">
-          <v-icon icon="mdi-plus"></v-icon>
-          <v-dialog v-model="dialog" activator="parent">
-           
-            <v-card>
-              <v-card-title>
-                <span class="headline">{{ productFormTitle }}</span>
-              </v-card-title>
-              <v-card-text>
-                <v-container>
+              Products
+              <v-spacer></v-spacer>
+              <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
+              <v-spacer></v-spacer>
+              <v-btn icon color="green">
+                <v-icon icon="mdi-plus"></v-icon>
+                <v-dialog v-model="dialog" activator="parent">
 
-                  <v-layout wrap>
-                 
-                      <v-select v-model="editedItem.productCategoryId" :items="productCategories" item-value="id"
-                        item-title="name" label="Select Product Category">
-                      </v-select>
-                    
-                  </v-layout>
+                  <v-card>
+                    <v-card-title>
+                      <span class="headline">{{ productFormTitle }}</span>
+                    </v-card-title>
+                    <v-card-text>
+                      <v-container>
 
-                  <v-layout row>
-                    
-                      <v-text-field ref="nameField" v-model="editedItem.productName" label="Name"></v-text-field>
-                    
-                  </v-layout>
+                        <v-layout wrap>
 
-                  <v-layout row>
-                    
-                      <v-text-field v-model="editedItem.productDescription" label="Description"></v-text-field>
-                    
-                  </v-layout>
+                          <v-select v-model="editedItem.productCategoryId" :items="productCategories" item-value="id"
+                            item-title="name" label="Select Product Category">
+                          </v-select>
 
-                  <v-layout row>
-                    
-                      <v-text-field v-model="editedItem.manufacturer" label="Manufacturer"></v-text-field>
-                    
-                  </v-layout>
+                        </v-layout>
 
-                  <v-layout row>
-                    
-                      <v-text-field v-model="editedItem.productCode" label="Product Code"></v-text-field>
-                    
-                  </v-layout>
+                        <v-layout row>
 
-                  <v-layout row>
-                    
-                      <v-text-field v-model="editedItem.units" label="Units of Measurement"></v-text-field>
-                    
-                  </v-layout>
+                          <v-text-field ref="nameField" v-model="editedItem.productName" label="Name"></v-text-field>
 
-                  <v-layout row>
-                    
-                    <v-text-field v-model="editedItem.cost" label="Cost"></v-text-field>
-                  
-                </v-layout>
+                        </v-layout>
 
-                <v-layout row>
-                    
-                    <v-text-field v-model="editedItem.leadInTimeInDays" label="Lead in Time(Days)"></v-text-field>
-                  
-                </v-layout>
+                        <v-layout row>
 
-                </v-container>
-              </v-card-text>
+                          <v-text-field v-model="editedItem.productDescription" label="Description"></v-text-field>
 
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" @click.="close">Cancel</v-btn>
-                <v-btn color="blue darken-1" @click.="updateProduct">Save</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </v-btn>
+                        </v-layout>
 
-      </v-card-title>
- 
-            <v-data-table :headers="productTableHeaders" :items="supplierProducts" :calculate-widths="true" :search="search">
-            
+                        <v-layout row>
+
+                          <v-text-field v-model="editedItem.manufacturer" label="Manufacturer"></v-text-field>
+
+                        </v-layout>
+
+                        <v-layout row>
+
+                          <v-text-field v-model="editedItem.productCode" label="Product Code"></v-text-field>
+
+                        </v-layout>
+
+                        <v-layout row>
+
+                          <v-text-field v-model="editedItem.units" label="Units of Measurement"></v-text-field>
+
+                        </v-layout>
+
+                        <v-layout row>
+
+                          <v-text-field v-model="editedItem.cost" label="Cost"></v-text-field>
+
+                        </v-layout>
+
+                        <v-layout row>
+
+                          <v-text-field v-model="editedItem.leadInTimeInDays" label="Lead in Time(Days)"></v-text-field>
+
+                        </v-layout>
+
+                      </v-container>
+                    </v-card-text>
+
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="blue darken-1" @click.="close">Cancel</v-btn>
+                      <v-btn color="blue darken-1" @click.="updateProduct">Save</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </v-btn>
+              <v-dialog v-model="projectDialog">
+
+                <v-card>
+                  <v-card-title>
+                    <span class="headline">{{ projectFormTitle }}</span>
+                  </v-card-title>
+                  <v-card-text>
+                    <v-container>
+
+                      <v-layout wrap>
+
+                        <v-select v-model="boqItem.projectId" :items="projects" item-value="id" item-title="name"
+                          label="Select Project" aria-required="true">
+                        </v-select>
+
+                      </v-layout>
+                      <v-layout wrap>
+
+                        <v-select v-model="boqItem.categoryId" :items="boQItemCategories" item-value="id"
+                          item-title="name" label="Select Category" aria-required="true">
+                        </v-select>
+
+                      </v-layout>
+
+                      <v-layout row>
+
+                        <v-text-field v-model="boqItem.materialCosts" label="Product Costs"></v-text-field>
+
+                      </v-layout>
+
+
+                      <v-layout row>
+
+                        <v-text-field v-model="boqItem.materialMargin" label="Product Margin"></v-text-field>
+
+                      </v-layout>
+
+                      <v-layout row>
+
+                        <v-text-field v-model="boqItem.labourCosts" label="Labour Cost"></v-text-field>
+
+                      </v-layout>
+
+                      <v-layout row>
+
+                        <v-text-field v-model="boqItem.measuredQuantity" label="Quantity"></v-text-field>
+
+                      </v-layout>
+
+                      <v-layout row>
+
+                        <v-text-field v-model="boqItem.name" label="Name"></v-text-field>
+
+                      </v-layout>
+
+                      <v-layout row>
+
+                        <v-text-field v-model="boqItem.description" label="Description"></v-text-field>
+
+                      </v-layout>
+
+                      <v-layout row>
+
+                        <v-text-field v-model="boqItem.unit" label="Units of Measurement"></v-text-field>
+
+                      </v-layout>
+
+                      <v-layout row>
+
+                        <v-text-field v-model="boqItem.contractRate" label="Contract Rate"></v-text-field>
+
+                      </v-layout>
+
+
+                    </v-container>
+                  </v-card-text>
+
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" @click="closeProjectDialog">Cancel</v-btn>
+                    <v-btn color="blue darken-1" @click="addProductToProject">Save</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </v-card-title>
+
+            <v-data-table :headers="productTableHeaders" :items="supplierProducts" :calculate-widths="true"
+              :search="search">
+
+              <template v-slot:[`item.actionAddSupplierProductToProject`]="{ item }">
+                <v-btn icon @click="addSupplierProduct(item)">
+                  <v-icon icon="mdi-file-edit-outline"></v-icon>
+                </v-btn>
+              </template>
               <template v-slot:[`item.actionEditSupplierProduct`]="{ item }">
-                  <v-btn icon @click="editSupplierProduct(item)">
-                    <v-icon icon="mdi-file-edit-outline"></v-icon>
-                  </v-btn>
-                </template>
-                <template v-slot:[`item.actionDeleteSupplierProduct`]="{ item }">
-                  <v-btn icon @click="deleteProduct(item)">
-                    <v-icon icon="mdi-delete-alert"></v-icon>
-                  </v-btn>
-                </template>
+                <v-btn icon @click="editSupplierProduct(item)">
+                  <v-icon icon="mdi-file-edit-outline"></v-icon>
+                </v-btn>
+              </template>
+              <template v-slot:[`item.actionDeleteSupplierProduct`]="{ item }">
+                <v-btn icon @click="deleteProduct(item)">
+                  <v-icon icon="mdi-delete-alert"></v-icon>
+                </v-btn>
+              </template>
             </v-data-table>
           </v-card>
         </v-window-item>
@@ -557,7 +646,7 @@ export default {
 
     onMounted(() => {
       store.dispatch('projects/loadProjects')
-      store.dispatch('suppliers/loadSupplier', id)
+      store.dispatch('projects/loadBoQItemCategories', id)
       store.dispatch('suppliers/loadSupplier', id)
       store.dispatch('suppliers/loadSupplierProducts', id)
       store.dispatch('suppliers/loadSupplierQuotations', id)
@@ -619,6 +708,23 @@ export default {
       { title: 'Edit', align: 'left', key: 'actionEdit' },
       { title: 'Delete', align: 'left', key: 'actionDelete' }
     ];
+    const boqItem = reactive({
+      id: '',
+      clientId: localStorage.clientId,
+      projectId: '',
+      categoryId: '',
+      name: '',
+      description: '',
+      supplierId: id,
+      productId: '',
+      productQuotationId: '',
+      materialCosts: 0,
+      materialMargin: 0.2,
+      labourCosts: 0,
+      labourMargin: 0.1,
+      unit: '',
+      contractRate: 0.0,
+    });
     const editedItem = reactive({
       id: '',
       clientId: localStorage.clientId,
@@ -675,6 +781,7 @@ export default {
       { title: 'Units', key: 'units' },
       { title: 'Unit Cost', key: 'cost' },
       { title: 'LeadInTimeInDays', key: 'leadInTimeInDays' },
+      { title: 'Add', key: 'actionAddSupplierProductToProject' },
       { title: 'Edit', align: 'left', key: 'actionEditSupplierProduct' },
       { title: 'Delete', align: 'left', key: 'actionDeleteSupplierProduct' }
     ];
@@ -699,8 +806,9 @@ export default {
     ];
     const search = ref('');
     const dialog = ref(false);
+    const projectDialog = ref(false);
     const editedIndex = ref(-1);
-   
+
     const invoiceStatusListSelection = [
       { title: 'UNPAID', key: 'UNPAID' },
       { title: 'APPROVED_FOR_PAYMENT', key: 'APPROVED_FOR_PAYMENT' },
@@ -798,6 +906,8 @@ export default {
 
     const projects = computed(() => store.getters['projects/loadedProjects']);
 
+    const boQItemCategories = computed(() => { return store.getters['projects/loadedBoQItemCategories'] });
+
     const productCategories = computed(() => { return store.getters['products/loadedProductCategories'] });
 
     const supplierCategories = computed(() => { return store.getters['suppliers/loadedSupplierCategories'] });
@@ -819,6 +929,8 @@ export default {
     const supplier = computed(() => { return store.getters['suppliers/loadedSupplier'] });
 
     const productFormTitle = computed(() => editedIndex.value === -1 ? 'New Product' : 'Edit Product');
+
+    const projectFormTitle = 'Add Product to Project Form';
 
     const error = computed(() => {
       return store.getters.error
@@ -1005,12 +1117,36 @@ export default {
       snackColor.value = 'info'
       snackText.value = 'Dialog opened'
     });
+    const addSupplierProduct = ((item) => {
+      console.log('Showing Add Product to Project Dialog  Form' + item.value)
+      const obj = supplierProducts.value.find(i => i.id == item.value)
+      boqItem.name = "Supply & Fit " + obj.productName
+      boqItem.productId = obj.productId;
+      boqItem.productQuotationId = obj.id;
+      boqItem.description = obj.productDescription;
+      boqItem.unit = obj.units;
+      boqItem.materialCosts = obj.cost;
+
+      projectDialog.value = true
+    });
     const editSupplierProduct = ((item) => {
       console.log('Showing Edit Product Dialog  ' + item.value)
       editedIndex.value = supplierProducts.value.findIndex(s => s.id == item.value)
       const obj = supplierProducts.value.find(i => i.id == item.value)
       Object.assign(editedItem, obj)
       dialog.value = true
+    });
+    const addProductToProject = (() => {
+
+
+      boqItem.quantity = boqItem.measuredQuantity
+      
+
+      console.log('creating project boqItem')
+      console.log(boqItem)
+      store.dispatch('projects/createProjectBoQItem', boqItem)
+
+      closeProjectDialog()
     });
     const updateProduct = (() => {
 
@@ -1041,6 +1177,13 @@ export default {
         editedIndex.value = -1
       }, 300)
     });
+    const closeProjectDialog = (() => {
+      projectDialog.value = false
+      setTimeout(() => {
+        Object.assign(editedItem, defaultItem)
+        editedIndex.value = -1
+      }, 300)
+    });
     const onDismissed = (() => {
       store.dispatch('clearError')
     });
@@ -1059,6 +1202,13 @@ export default {
     return {
       id,
       file,
+      projectDialog,
+      boQItemCategories,
+      boqItem,
+      addSupplierProduct,
+      addProductToProject,
+      projectFormTitle,
+      closeProjectDialog,
       invoiceFile,
       outerTab,
       date,
