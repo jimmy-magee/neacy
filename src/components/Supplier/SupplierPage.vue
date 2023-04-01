@@ -447,7 +447,7 @@
                     <v-card-text>
                       <v-container>
 
-                        <v-layout wrap>
+                        <v-layout wrap v-if="editedIndex <= 0">
 
                           <v-select v-model="editedItem.productCategoryId" :items="productCategories" item-value="id"
                             item-title="name" label="Select Product Category">
@@ -455,31 +455,30 @@
 
                         </v-layout>
 
-                        <v-layout row>
-
+                        <v-layout row v-if="editedIndex <= 0">
                           <v-text-field ref="nameField" v-model="editedItem.productName" label="Name"></v-text-field>
 
                         </v-layout>
 
-                        <v-layout row>
+                        <v-layout row v-if="editedIndex <= 0">
 
                           <v-text-field v-model="editedItem.productDescription" label="Description"></v-text-field>
 
                         </v-layout>
 
-                        <v-layout row>
+                        <v-layout row v-if="editedIndex <= 0">
 
                           <v-text-field v-model="editedItem.manufacturer" label="Manufacturer"></v-text-field>
 
                         </v-layout>
 
-                        <v-layout row>
+                        <v-layout row v-if="editedIndex <= 0">
 
                           <v-text-field v-model="editedItem.productCode" label="Product Code"></v-text-field>
 
                         </v-layout>
 
-                        <v-layout row>
+                        <v-layout row v-if="editedIndex <= 0">
 
                           <v-text-field v-model="editedItem.units" label="Units of Measurement"></v-text-field>
 
