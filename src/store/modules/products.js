@@ -170,7 +170,7 @@ const actions = {
     loadProduct({ commit }, payload) {
         commit('setLoading', true, { root: true })
         console.log('Loading Product with id [{' + payload.id + '}] for user with authorization token ' + localStorage.authHeader)
-        webClient.get(`/api/resource/clients/` + localStorage.clientId + `/product/` + payload.id)
+        webClient.get(`/api/resource/clients/` + localStorage.clientId + `/products/` + payload)
             .then(response => {
                 console.log('Received Product...')
                 console.log(response.data)
@@ -204,22 +204,22 @@ const actions = {
              j++
           }
     */
-   /*
-        formData.append('name', payload.name)
-        formData.append('description', payload.description)
-        formData.append('productCategoryId', payload.productCategoryId)
-        formData.append('manufacturer', payload.manufacturer)
-        formData.append('productCode', payload.productCode)
-        formData.append('productStandard', payload.productStandard)
-        formData.append('units', payload.units)
+        /*
+             formData.append('name', payload.name)
+             formData.append('description', payload.description)
+             formData.append('productCategoryId', payload.productCategoryId)
+             formData.append('manufacturer', payload.manufacturer)
+             formData.append('productCode', payload.productCode)
+             formData.append('productStandard', payload.productStandard)
+             formData.append('units', payload.units)
+     
+     
+             return axios.create({
+                 baseURL: `/`,
+                 headers: { 'Authorization': localStorage.authHeader, 'Content-Type': 'multipart/form-data' }
+                 ///api/resource/clients/{clientId}/projects/{projectId}/drawings
+             })*/
 
-
-        return axios.create({
-            baseURL: `/`,
-            headers: { 'Authorization': localStorage.authHeader, 'Content-Type': 'multipart/form-data' }
-            ///api/resource/clients/{clientId}/projects/{projectId}/drawings
-        })*/
-        
         webClient.post(`/api/resource/clients/` + localStorage.clientId + `/products`, payload)
             .then(response => {
                 console.log('Received saved Product from server..')
@@ -269,7 +269,7 @@ const actions = {
             console.error('Could not download the drawing from url ' + payload.id + ' from the backend.', error)
         })
     },
-    
+
     updateSupplierProductQuotation({ commit }, payload) {
         commit('setLoading', true, { root: true })
         console.log('Updating product quotation ')
@@ -363,14 +363,7 @@ const getters = {
         })
     },
     loadedProduct(state) {
-
-        return (productId) => {
-            console.log('Load product ')
-            console.log(productId)
-            return state.loadedProducts.find((product) => {
-                return product.id === productId
-            })
-        }
+        return state.loadedProduct
     },
     loadedProductQuotations(state) {
         return state.loadedProductQuotations.sort((A, B) => {
