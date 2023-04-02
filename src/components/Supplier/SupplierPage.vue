@@ -16,7 +16,7 @@
         <v-tab value="outerTab-3">
           Product Invoices
         </v-tab>
-        <v-tab aria-valuemin="outerTab-5" v-if="userIsAuthenticatedAndHasRoleAdmin">
+        <v-tab value="outerTab-5" v-if="userIsAuthenticatedAndHasRoleAdmin">
           Product Orders
         </v-tab>
       </v-tabs>
