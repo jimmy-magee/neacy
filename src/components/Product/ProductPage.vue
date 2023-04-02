@@ -66,7 +66,40 @@
         <v-window-item value="technicalTab">
           <v-card>
             <v-card-title>
+              Drawings
+              <v-spacer></v-spacer>
+              <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
+              <v-spacer></v-spacer>
+              <v-btn icon color="green">
+                <v-icon icon="mdi-plus"></v-icon>
+                <v-dialog v-model="techDialog" activator="parent">
+                  <v-card>
+                    <v-card-title>
+                      <span class="headline">Upload Product Technical Documentation</span>
+                    </v-card-title>
+                    <v-card-text>
+                      <v-container>
 
+                        <v-layout row>
+
+                          <v-file-input ref="techFiles" filled multiple prepend-icon="mdi-camera"
+                            label="Upload Product Files" type="file"></v-file-input>
+
+
+                        </v-layout>
+                      </v-container>
+                    </v-card-text>
+
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="blue darken-1" @click="closeTechDialog">Cancel</v-btn>
+                      <v-btn color="blue darken-1" @click="uploadProductTechnicalDocs">Save</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </v-btn>
+            </v-card-title>
+            <v-card-text>
               <v-data-table :headers="productTechnicalDocTableHeaders" :items="product.productTechnicalDocuments"
                 :search="search">
                 <template v-slot:[`item.actionDownload`]="{ item }">
@@ -78,7 +111,7 @@
                 </template>
               </v-data-table>
 
-            </v-card-title>
+            </v-card-text>
           </v-card>
         </v-window-item>
         <v-window-item value="quotationsTab">
@@ -173,7 +206,7 @@
               </v-btn>
 
               projects:
-{{ projects }}
+              {{ projects }}
               <v-dialog v-model="projectDialog">
 
                 <v-card>
@@ -185,7 +218,7 @@
 
                       <v-layout wrap v-if="projects">
 
-                        <v-select :items="projects" v-model="boqItem.projectId"  item-value="id" item-title="name"
+                        <v-select :items="projects" v-model="boqItem.projectId" item-value="id" item-title="name"
                           label="Select Project" aria-required="true">
                         </v-select>
 
@@ -317,6 +350,8 @@ export default {
 
     const search = ref('');
     const dialog = ref(false);
+    const techDialog = ref(false);
+    const techFiles = ref(null);
     const formHasErrors = ref(false);
     const editedIndex = ref(-1);
     const outerTab = ref(null);
@@ -426,7 +461,16 @@ export default {
 
 
 
-
+    const uploadProductTechnicalDocs = (() => {
+      const formData = {
+        productId: id,
+        techFiles: techFiles.value
+      }
+      console.log('Uploading technical docs..')
+      console.log(formData)
+      store.dispatch('products/uploadProductTechnicalDocuments', formData);
+      closeTechDialog();
+    });
 
     const editProduct = ((item) => {
       console.log('Edit item..' + item)
@@ -472,11 +516,17 @@ export default {
     });
 
     const downloadProductTechnicalDocument = ((item) => {
-      console.log('Downloading item..' + item)
+      console.log('Downloading item..' + item.value)
       console.log(item)
-      editedIndex.value = products.value.findIndex(u => u.id == item)
-      const obj = products.value.find(u => u.id == item)
-      this.$store.dispatch('products/downloadProductTechnicalDocument', obj)
+      //editedIndex.value = productTechnicalDocuments.value.findIndex(u => u.id == item.value)
+      //const obj = products.value.find(u => u.id == item)
+      const formData = {
+        productId: id,
+        fileName: item.title,
+        id: item.value,
+      }
+      console.log(formData)
+      store.dispatch('products/downloadProductTechnicalDocument', formData)
     });
 
     const deleteProduct = ((productId) => {
@@ -541,6 +591,14 @@ export default {
       }, 300)
     });
 
+    const closeTechDialog = (() => {
+      techDialog.value = false
+      setTimeout(() => {
+        Object.assign(editedItem, defaultItem)
+        editedIndex.value = -1
+      }, 300)
+    });
+
     const close = (() => {
       dialog.value = false;
       setTimeout(() => {
@@ -554,6 +612,10 @@ export default {
     });
 
     return {
+      techDialog,
+      techFiles,
+      uploadProductTechnicalDocs,
+      closeTechDialog,
       projects,
       boqItem,
       boQItemCategories,

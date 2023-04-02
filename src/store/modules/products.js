@@ -245,6 +245,34 @@ const actions = {
                 commit('setError', error, { root: true })
             })
     },
+    uploadProductTechnicalDocuments({ commit }, payload) {
+        commit('setLoading', true, { root: true })
+        const formData = new FormData()
+
+        var i = 0;
+        var len = payload.techFiles.files.length
+        for (; i < len;) {
+            const file = payload.techFiles.files[i]
+            formData.append('fileParts', file)
+            console.log('Adding file  ' + file + 'to fileParts')
+            i++
+        }
+
+        return axios.create({
+            baseURL: `/`,
+            headers: { 'Authorization': localStorage.authHeader, 'Content-Type': 'multipart/form-data' }
+        }).post(`/api/resource/clients/` + localStorage.clientId + `/products/` + payload.productId + '/technical/docs/upload', formData)
+            .then(response => {
+                console.log('Received saved Technical Docs from server..')
+                commit('createProductTechnicalDocs', response.data)
+                commit('setLoading', false, { root: true })
+                return response.data
+            })
+            .catch(error => {
+                commit('setError', error, { root: true })
+                console.log('Error creating technical docs for product..');
+            })
+    },
     downloadProductTechnicalDocument({ commit }, payload) {
         const docUrl = '/api/resource/products/' + payload.productId + '/technical/docs/' + payload.id + '/download'
         console.log('Downloading Product Technical Doc from url:')
