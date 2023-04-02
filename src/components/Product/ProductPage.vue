@@ -205,8 +205,6 @@
                 </v-dialog>
               </v-btn>
 
-              projects:
-              {{ projects }}
               <v-dialog v-model="projectDialog">
 
                 <v-card>
