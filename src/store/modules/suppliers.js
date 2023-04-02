@@ -31,12 +31,12 @@ const mutations = {
     setLoadedSupplier(state, payload) {
         state.loadedSupplier = payload
     },
-    setLoadedSupplierProducts (state, payload) {
+    setLoadedSupplierProducts(state, payload) {
         console.log('Set supplier products')
         console.log(payload)
         state.loadedSupplierProducts = payload
-      },
-      updateSupplierProduct(state, payload) {
+    },
+    updateSupplierProduct(state, payload) {
         state.loadedSupplierProducts = [
             ...state.loadedSupplierProducts.filter(u => u.id !== payload.id), payload
         ]
@@ -47,7 +47,7 @@ const mutations = {
     deleteSupplierProduct(state, payload) {
         console.log('Committing delete of Supplier Product')
         console.log(payload)
-        const index = state.loadedSupplierProducts.findIndex( p => p.id == payload)
+        const index = state.loadedSupplierProducts.findIndex(p => p.id == payload)
         state.loadedSupplierProducts.splice(index, 1)
     },
     setLoadedSupplierQuotations(state, payload) {
@@ -135,7 +135,7 @@ const actions = {
                 commit('setError', error, { root: true })
             })
     },
-    updateSupplierCategory({ commit}, payload) {
+    updateSupplierCategory({ commit }, payload) {
         commit('setLoading', true, { root: true })
         webClient.post(`/api/resource/clients/` + localStorage.clientId + `/supplier_categories/` + payload.id, payload)
             .then(response => {
@@ -147,7 +147,7 @@ const actions = {
                 commit('setError', error, { root: true })
             })
     },
-    deleteSupplierCategory({ commit}, payload) {
+    deleteSupplierCategory({ commit }, payload) {
         commit('setLoading', true, { root: true })
         webClient.delete(`/api/resource/clients/` + localStorage.clientId + `/supplier_categories/` + payload)
             .then(response => {
@@ -226,21 +226,21 @@ const actions = {
                 commit('setError', error, { root: true })
             })
     },
-    loadSupplierProducts ({commit }, payload) {
+    loadSupplierProducts({ commit }, payload) {
         commit('setLoading', true, { root: true })
         console.log('Loading Supplier products for  [{' + payload + '}] for user with authorization token ' + localStorage.authHeader)
         webClient.get(`/api/resource/clients/` + localStorage.clientId + `/suppliers/` + payload + `/products`)
             .then(response => {
-              console.log('Received Supplier Products...')
-              console.log(response.data)
-              commit('setLoadedSupplierProducts', response.data)
-              commit('setLoading', false, { root: true })
+                console.log('Received Supplier Products...')
+                console.log(response.data)
+                commit('setLoadedSupplierProducts', response.data)
+                commit('setLoading', false, { root: true })
             })
             .catch(error => {
-              commit('setError', error, { root: true })
+                commit('setError', error, { root: true })
             })
-      },
-      createSupplierProduct({ commit }, payload) {
+    },
+    createSupplierProduct({ commit, dispatch }, payload) {
         commit('setLoading', true, { root: true })
         console.log('Creating supplier product quotation ')
         console.log(payload)
@@ -248,14 +248,33 @@ const actions = {
             .then(response => {
                 console.log('Received new Supplier Product from server..')
                 console.log(response.data)
+                console.log('Dispatching load product quotations ')
                 commit('createSupplierProduct', response.data)
                 commit('setLoading', false, { root: true })
+                dispatch('products/loadProductQuotations', payload.productId, { root: true })
             })
             .catch(error => {
                 commit('setError', error, { root: true })
             })
     },
-    updateSupplierProduct({ commit }, payload) {
+    createSupplierProductQuote({ commit, dispatch }, payload) {
+        commit('setLoading', true, { root: true })
+        console.log('Creating supplier product quotation ')
+        console.log(payload)
+        webClient.post(`/api/resource/clients/` + localStorage.clientId + `/suppliers/` + payload.supplierId + `/products/` + payload.productId +'/quote', payload)
+            .then(response => {
+                console.log('Received new Supplier Product from server..')
+                console.log(response.data)
+                console.log('Dispatching load product quotations ')
+                commit('createSupplierProduct', response.data)
+                commit('setLoading', false, { root: true })
+                dispatch('products/loadProductQuotations', payload.productId, { root: true })
+            })
+            .catch(error => {
+                commit('setError', error, { root: true })
+            })
+    },
+    updateSupplierProduct({ commit, dispatch }, payload) {
         commit('setLoading', true, { root: true })
         console.log('Updating supplier product quotation ')
         console.log(payload)
@@ -265,6 +284,7 @@ const actions = {
                 console.log(response.data)
                 commit('updateSupplierProduct', response.data)
                 commit('setLoading', false, { root: true })
+                dispatch('products/loadProductQuotations', payload.productId, { root: true })
             })
             .catch(error => {
                 commit('setError', error, { root: true })
@@ -285,7 +305,7 @@ const actions = {
                 commit('setError', error, { root: true })
             })
     },
-    updateSupplierProductQuotation({ commit  }, payload) {
+    updateSupplierProductQuotation({ commit }, payload) {
         commit('setLoading', true, { root: true })
         console.log('Updating product quotation ')
         console.log(payload)
@@ -412,7 +432,7 @@ const actions = {
             .then((response) => {
                 const savedSupplierQuotation = response.data
                 console.log(savedSupplierQuotation)
-                commit('updateSupplierQuotation',savedSupplierQuotation)
+                commit('updateSupplierQuotation', savedSupplierQuotation)
             })
             .catch((error) => {
                 commit('setLoading', false, { root: true })
@@ -598,11 +618,11 @@ const getters = {
     loadedSupplier(state) {
         return state.loadedSupplier
     },
-    loadedSupplierProducts (state) {
+    loadedSupplierProducts(state) {
         console.log('Get supplier products')
         console.log(state.loadSupplierProducts)
         return state.loadedSupplierProducts
-      },
+    },
     loadedSupplierQuotations(state) {
         return state.loadedSupplierQuotations.sort((A, B) => {
             return A.id > B.id

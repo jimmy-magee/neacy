@@ -84,11 +84,104 @@
         <v-window-item value="quotationsTab">
           <v-card>
             <v-card-title>
+        Supplier Prices
+        <v-spacer></v-spacer>
+        <v-text-field v-model="search" append-icon="mdi-search" label="Search" single-line hide-details></v-text-field>
+        <v-spacer></v-spacer>
+        <v-btn icon color="green">
+          <v-icon icon="mdi-plus"></v-icon>
+              <v-dialog v-model="dialog" activator="parent">
+
+                <v-card>
+                  <v-card-title>
+                    <span class="headline">{{ formTitle }}</span>
+                  </v-card-title>
+                  <v-card-text>
+                    <v-container>
+
+                      <v-layout wrap v-if="editedIndex <= 0">
+
+                        <v-select v-model="editedItem.productCategoryId" :items="productCategories" item-value="id"
+                          item-title="name" label="Select Product Category">
+                        </v-select>
+
+                      </v-layout>
+
+                      <v-layout row v-if="editedIndex <= 0">
+                        <v-text-field ref="nameField" v-model="editedItem.productName" label="Name"></v-text-field>
+
+                      </v-layout>
+
+                      <v-layout row v-if="editedIndex <= 0">
+
+                        <v-text-field v-model="editedItem.productDescription" label="Description"></v-text-field>
+
+                      </v-layout>
+
+                      <v-layout row v-if="editedIndex <= 0">
+
+                        <v-text-field v-model="editedItem.manufacturer" label="Manufacturer"></v-text-field>
+
+                      </v-layout>
+
+                      <v-layout row v-if="editedIndex <= 0">
+
+                        <v-text-field v-model="editedItem.productCode" label="Product Code"></v-text-field>
+
+                      </v-layout>
+
+                      <v-layout row v-if="editedIndex <= 0">
+
+                        <v-text-field v-model="editedItem.units" label="Units of Measurement"></v-text-field>
+
+                      </v-layout>
+
+                      <v-layout row>
+
+                        <v-select v-model="editedItem.supplierId" :items="suppliers" item-value="id" item-title="name"
+                          label="Select Supplier">
+                        </v-select>
+
+                      </v-layout>
+
+                      <v-layout row>
+
+                        <v-text-field v-model="editedItem.cost" label="Cost"></v-text-field>
+
+                      </v-layout>
+
+                      <v-layout row>
+
+                        <v-text-field v-model="editedItem.leadInTimeInDays" label="Lead in Time(Days)"></v-text-field>
+
+                      </v-layout>
+
+
+
+
+                    </v-container>
+                  </v-card-text>
+
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" @click.="close">Cancel</v-btn>
+                    <v-btn color="blue darken-1" @click.="updateSupplierProduct">Save</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+              </v-btn>
             </v-card-title>
             <v-data-table :headers="quotationTableHeaders" :items="quotations" :search="search">
               <template v-slot:[`item.actionOrderSupplierProduct`]="{ item }">
-                <v-btn text :to="'/products/' + item.id + '/order'">
+                <v-btn :to="'/products/' + item.value + '/order'">
                   <v-icon>miscellaneous_services</v-icon>
+                </v-btn>
+              </template>
+              <template v-slot:[`item.actionEditSupplierProduct`]="{ item }">
+                <v-btn icon @click="editSupplierProduct(item)">
+                  <v-icon>
+                    cloud_download
+                  </v-icon>
                 </v-btn>
               </template>
             </v-data-table>
@@ -124,6 +217,7 @@ export default {
     const id = route.params.id;
 
     onMounted(() => {
+      store.dispatch('suppliers/loadSuppliers')
       store.dispatch('products/loadProduct', id)
       store.dispatch('products/loadProductQuotations', id)
       store.dispatch('products/loadProductOrders', id)
@@ -143,25 +237,33 @@ export default {
     const defaultItem = reactive({
       productCategoryId: '',
       productCategoryName: '',
+      productId: id,
       name: '',
       description: '',
       manufacturer: '',
       productCode: '',
       standard: '',
       imageUrl: '',
-      units: ''
+      units: '',
+      supplierId: '',
+      cost: 0.0,
+      leadInTimeInDays: 5,
 
     });
     const editedItem = reactive({
       productCategoryId: '',
       productCategoryName: '',
+      productId: id,
       name: '',
       description: '',
       manufacturer: '',
       productCode: '',
       standard: '',
       imageUrl: '',
-      units: ''
+      units: '',
+      supplierId: '',
+      cost: 0.0,
+      leadInTimeInDays: 5,
 
     });
 
@@ -170,45 +272,47 @@ export default {
         title: 'Id',
         align: 'left',
         sortable: true,
-        value: 'id'
+        key: 'id'
       },
-      { title: 'Name', value: 'title' },
-      { title: 'Description', value: 'description' },
-      { title: 'Download', value: 'actionDownload' },
+      { title: 'Name', key: 'title' },
+      { title: 'Description', key: 'description' },
+      { title: 'Download', key: 'actionDownload' },
     ];
     const quotationTableHeaders = [
       {
         title: 'Supplier',
         align: 'left',
         sortable: true,
-        value: 'supplierName'
+        key: 'supplierName'
       },
-      { title: 'Cost', value: 'cost' },
-      { title: 'Lead In (Days)', value: 'leadInTimeInDays' },
-      { title: 'Order', align: 'left', value: 'actionOrderSupplierProduct' },
+      { title: 'Cost', key: 'cost' },
+      { title: 'Lead In (Days)', key: 'leadInTimeInDays' },
+      { title: 'Order', align: 'left', key: 'actionOrderSupplierProduct' },
+      { title: 'Add', align: 'left', key: 'actionEditSupplierProduct' },
     ];
     const orderTableHeaders = [
       {
         title: 'Project',
         align: 'left',
         sortable: true,
-        value: 'projectName'
+        key: 'projectName'
       },
       {
         title: 'Supplier',
         align: 'left',
         sortable: true,
-        value: 'supplierName'
+        key: 'supplierName'
       },
-      { title: 'Quantity', value: 'quantity' },
-      { title: 'Unit Cost', value: 'unitCost' },
-      { title: 'Total Cost', value: 'totalCost' },
-      { title: 'Delivery Date', value: 'deliveryDate' },
-      { title: 'Status', value: 'status' },
+      { title: 'Quantity', key: 'quantity' },
+      { title: 'Unit Cost', key: 'unitCost' },
+      { title: 'Total Cost', key: 'totalCost' },
+      { title: 'Delivery Date', key: 'deliveryDate' },
+      { title: 'Status', key: 'status' },
     ];
 
     const productCategories = computed(() => store.getters['products/loadedProductCategories']);
     const products = computed(() => store.getters['products/loadedProducts']);
+    const suppliers = computed(() => { return store.getters['suppliers/loadedSuppliers'] });
     const product = computed(() => store.getters['products/loadedProduct']);
     const quotations = computed(() => store.getters['products/loadedProductQuotations']);
     const orders = computed(() => store.getters['products/loadedProductOrders']);
@@ -226,6 +330,8 @@ export default {
     const userIsAuthenticatedAndHasRoleAdmin = computed(() => {
       return store.getters['users/userIsAuthenticatedAndHasRoleAdmin']
     });
+
+
 
     const editProduct = ((item) => {
       console.log('Edit item..' + item)
@@ -249,12 +355,33 @@ export default {
       close()
     });
 
+    const updateSupplierProduct = (() => {
+      if (editedIndex.value === -1) {
+        console.log('Creating Product')
+        console.log(editedItem)
+        store.dispatch('suppliers/createSupplierProductQuote', editedItem)
+      } else {
+        console.log('Updating Product')
+        console.log(editedItem)
+        store.dispatch('suppliers/updateSupplierProduct', editedItem)
+      }
+      close()
+    });
+
+    const editSupplierProduct = ((item) => {
+      console.log('Showing Edit Product Dialog  ' + item.value)
+      editedIndex.value = quotations.value.findIndex(s => s.id == item.value)
+      const obj = quotations.value.find(i => i.id == item.value)
+      Object.assign(editedItem, obj)
+      dialog.value = true
+    });
+
     const downloadProductTechnicalDocument = ((item) => {
       console.log('Downloading item..' + item)
       console.log(item)
       editedIndex.value = products.value.findIndex(u => u.id == item)
       const obj = products.value.find(u => u.id == item)
-      this.$store.dispatch('downloadProductTechnicalDocument', obj)
+      this.$store.dispatch('products/downloadProductTechnicalDocument', obj)
     });
 
     const deleteProduct = ((productId) => {
@@ -275,13 +402,16 @@ export default {
       store.dispatch('clearError', { root: true })
     });
 
-    return { 
+    return {
       productCategories,
       products,
+      suppliers,
       product,
       productTechnicalDocTableHeaders,
       quotations,
+      updateSupplierProduct,
       quotationTableHeaders,
+      editSupplierProduct,
       orders,
       orderTableHeaders,
       search,
@@ -305,7 +435,8 @@ export default {
       updateProduct,
       deleteProduct,
       close,
-      onDismissed }
+      onDismissed
+    }
   }
 }
 </script>
