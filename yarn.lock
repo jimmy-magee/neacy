@@ -5897,10 +5897,10 @@ vue@^3.2.13:
     "@vue/server-renderer" "3.2.47"
     "@vue/shared" "3.2.47"
 
-vuetify@^3.1.9:
-  version "3.1.10"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.1.10.tgz#95f5d88eb587fdda079970a4c6a0fa66b9387426"
-  integrity sha512-TFugKhjYO+xktnexHcs/vdsqtq+MZk8MDLbSJX9vMsA58LPwO4atdBbWhQ1Pf8q1jPISpxDF6njjsZHPQQsHCA==
+vuetify@^3.1.12:
+  version "3.1.12"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.1.12.tgz#f3b8a61d176cbfd876f7208ece21e4a1e434ec6a"
+  integrity sha512-6SOMWzNtziDdi/Noeg0l9Q5o20amIuqmj9V5W8fV1nCNdQUZsi6mt9iN+UcfjqwAaALS/z5Nbd4v5OJxy8M4Rw==
 
 vuex@^4.1.0:
   version "4.1.0"

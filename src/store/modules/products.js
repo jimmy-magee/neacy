@@ -8,6 +8,7 @@ const state = {
     loadedProduct: null,
     loadedProductQuotations: [],
     loadedProductOrders: [],
+    loadedProductTechnicalDocs: [],
 }
 const mutations = {
     setLoadedProductCategoryTree(state, payload) {
@@ -35,6 +36,22 @@ const mutations = {
     setLoadedProduct(state, payload) {
         state.loadedProduct = payload
     },
+    setLoadedProductTechnicalDocs(state, payload) {
+        state.loadedProductTechnicalDocs = payload
+    },
+    createProductTechnicalDocs(state, payload) {
+        state.loadedProductTechnicalDocs.push(payload)
+    },
+    updateProductTechnicalDocs(state, payload) {
+        state.loadedProductTechnicalDocs = [
+            ...state.loadedProductTechnicalDocs.filter(u => u.id !== payload.id), payload
+        ]
+    },
+    deleteProductTechnicalDocs(state, payload) {
+        const index = state.loadedProductTechnicalDocs.findIndex(p => p.id == payload)
+        console.log('Index of deleted product technical doc is ' + index)
+        state.loadedProductTechnicalDocs.splice(index, 1)
+    },
     setLoadedProductQuotations(state, payload) {
         state.loadedProductQuotations = payload
     },
@@ -50,7 +67,7 @@ const mutations = {
         ]
     },
     deleteProduct(state, payload) {
-        const index = state.loadedProducts.indexOf(payload)
+        const index = state.loadedProducts.findIndex(p => p.id == payload)
         console.log('Index of deleted product is ' + index)
         state.loadedProducts.splice(index, 1)
     },
@@ -245,6 +262,20 @@ const actions = {
                 commit('setError', error, { root: true })
             })
     },
+    loadProductTechnicalDocs({ commit }, payload) {
+        commit('setLoading', true, { root: true })
+        
+        return webClient.get(`/api/resource/clients/` + localStorage.clientId + `/products/` + payload + '/technical/docs')
+            .then(response => {
+                console.log('Received product Technical Docs from server..')
+                commit('setLoadedProductTechnicalDocs', response.data)
+                commit('setLoading', false, { root: true })
+            })
+            .catch(error => {
+                commit('setError', error, { root: true })
+                console.log('Error retrieving technical docs for productId..' + payload);
+            })
+    },
     uploadProductTechnicalDocuments({ commit }, payload) {
         commit('setLoading', true, { root: true })
         const formData = new FormData()
@@ -392,6 +423,9 @@ const getters = {
     },
     loadedProduct(state) {
         return state.loadedProduct
+    },
+    loadedProductTechnicalDocs(state) {
+        return state.loadedProductTechnicalDocs
     },
     loadedProductQuotations(state) {
         return state.loadedProductQuotations.sort((A, B) => {

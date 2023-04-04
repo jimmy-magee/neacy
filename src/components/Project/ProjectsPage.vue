@@ -8,9 +8,9 @@
     </v-layout>
     -->
 
-    <v-layout row wrap>
+    <v-layout row>
 
-      <v-card>
+      <v-card width="100%">
         <v-card-title>
         Projects
         <v-spacer></v-spacer>

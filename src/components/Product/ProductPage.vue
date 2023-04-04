@@ -20,29 +20,38 @@
         <v-window-item value="detailsTab">
           <v-card>
             <v-card-title>
+
+
+
+
             </v-card-title>
             <v-card-text>
-              <v-row v-if="product">
+       
+
+              <v-row >
                 Product :
-                {{ product.name }}
+                {{ editedProduct.name }}
               </v-row>
-              <v-row v-if="product">
-                {{ product.description }}
+              <v-row>
+                {{ editedProduct.description }}
               </v-row>
+              <!--
               <v-row v-if="product">
-                <v-btn icon :href="product.url" target="_blank">
+                <v-btn icon :href="editProduct.url" target="_blank">
                   <v-icon>window</v-icon> Website
                 </v-btn>
               </v-row>
-              <v-row v-if="product">
-                {{ product.manufacturer }}
+              -->
+              <v-row>
+                {{ editedProduct.manufacturer }}
               </v-row>
-              <v-row v-if="product">
+              <!--
+              <v-row v-if="product.images">
                 <v-carousel :continuous="false" :cycle="false" :show-arrows="true" delimiter-icon="mdi-minus"
                   height="500px" show-arrows-on-hover>
                   <v-carousel-item v-for="(image, i) in product.productImages" :key="i">
-                    <v-sheet :color="colors[i]" height="100%" tile>
-                      <v-row class="fill-height" align="center" justify="center">
+                  
+                      <v-row class="fill-height" justify="center">
                         <div class="display-3">
                           <v-img
                             :src="`http://localhost:8080/api/resource/products/${product.id}/images/${image.id}/download`"
@@ -54,11 +63,11 @@
                         </div>
                       </v-row>
 
-                    </v-sheet>
+              
                   </v-carousel-item>
                 </v-carousel>
               </v-row>
-
+-->
 
             </v-card-text>
           </v-card>
@@ -66,7 +75,7 @@
         <v-window-item value="technicalTab">
           <v-card>
             <v-card-title>
-              Drawings
+              Product Documentation
               <v-spacer></v-spacer>
               <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
               <v-spacer></v-spacer>
@@ -100,8 +109,7 @@
               </v-btn>
             </v-card-title>
             <v-card-text>
-              <v-data-table :headers="productTechnicalDocTableHeaders" :items="product.productTechnicalDocuments"
-                :search="search">
+              <v-data-table :headers="productTechnicalDocTableHeaders" :items="productTechnicalDocs" :search="search">
                 <template v-slot:[`item.actionDownload`]="{ item }">
                   <v-btn icon @click="downloadProductTechnicalDocument(item)">
                     <v-icon>
@@ -133,42 +141,6 @@
                     <v-card-text>
                       <v-container>
 
-                        <v-layout wrap v-if="editedIndex <= 0">
-
-                          <v-select v-model="editedItem.productCategoryId" :items="productCategories" item-value="id"
-                            item-title="name" label="Select Product Category">
-                          </v-select>
-
-                        </v-layout>
-
-                        <v-layout row v-if="editedIndex <= 0">
-                          <v-text-field ref="nameField" v-model="editedItem.productName" label="Name"></v-text-field>
-
-                        </v-layout>
-
-                        <v-layout row v-if="editedIndex <= 0">
-
-                          <v-text-field v-model="editedItem.productDescription" label="Description"></v-text-field>
-
-                        </v-layout>
-
-                        <v-layout row v-if="editedIndex <= 0">
-
-                          <v-text-field v-model="editedItem.manufacturer" label="Manufacturer"></v-text-field>
-
-                        </v-layout>
-
-                        <v-layout row v-if="editedIndex <= 0">
-
-                          <v-text-field v-model="editedItem.productCode" label="Product Code"></v-text-field>
-
-                        </v-layout>
-
-                        <v-layout row v-if="editedIndex <= 0">
-
-                          <v-text-field v-model="editedItem.units" label="Units of Measurement"></v-text-field>
-
-                        </v-layout>
 
                         <v-layout row>
 
@@ -189,9 +161,6 @@
                           <v-text-field v-model="editedItem.leadInTimeInDays" label="Lead in Time(Days)"></v-text-field>
 
                         </v-layout>
-
-
-
 
                       </v-container>
                     </v-card-text>
@@ -322,7 +291,7 @@
 </template>
 
 <script>
-import { computed, ref, reactive, onMounted } from 'vue';
+import { computed, ref, reactive, onMounted, watch } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 
@@ -331,7 +300,6 @@ export default {
     const store = useStore();
 
     const route = useRoute();
-    //const router = useRouter();
 
     const id = route.params.id;
 
@@ -341,6 +309,7 @@ export default {
       store.dispatch('projects/loadProjects')
       store.dispatch('projects/loadBoQItemCategories', id)
       store.dispatch('products/loadProduct', id);
+      store.dispatch('products/loadProductTechnicalDocs', id);
       store.dispatch('products/loadProductQuotations', id);
       store.dispatch('products/loadProductOrders', id);
     });
@@ -357,6 +326,31 @@ export default {
     const snack = ref(false);
     const snackColor = ref('');
     const snackText = ref('');
+
+    const defaultProduct = reactive({
+      productCategoryId: '',
+      productCategoryName: '',
+      productId: id,
+      name: '',
+      description: '',
+      manufacturer: '',
+      productCode: '',
+      standard: '',
+      imageUrl: '',
+      units: ''
+    });
+    const editedProduct = reactive({
+      productCategoryId: '',
+      productCategoryName: '',
+      productId: id,
+      name: '',
+      description: '',
+      manufacturer: '',
+      productCode: '',
+      standard: '',
+      imageUrl: '',
+      units: ''
+    });
 
     const defaultItem = reactive({
       productCategoryId: '',
@@ -394,8 +388,6 @@ export default {
     const productTechnicalDocTableHeaders = [
       {
         title: 'Id',
-        align: 'left',
-        sortable: true,
         key: 'id'
       },
       { title: 'Name', key: 'title' },
@@ -440,6 +432,7 @@ export default {
     const products = computed(() => store.getters['products/loadedProducts']);
     const suppliers = computed(() => { return store.getters['suppliers/loadedSuppliers'] });
     const product = computed(() => store.getters['products/loadedProduct']);
+    const productTechnicalDocs = computed(() => store.getters['products/loadedProductTechnicalDocs']);
     const quotations = computed(() => store.getters['products/loadedProductQuotations']);
     const orders = computed(() => store.getters['products/loadedProductOrders']);
     const error = computed(() => {
@@ -475,7 +468,7 @@ export default {
       console.log(item)
       editedIndex.value = products.value.findIndex(u => u.id == item)
       const obj = products.value.find(u => u.id == item)
-      Object.assign(editedItem, obj)
+      Object.assign(editedProduct, obj)
       dialog.value = true
     });
 
@@ -609,7 +602,18 @@ export default {
       store.dispatch('clearError', { root: true })
     });
 
+    watch(product, (newValue, oldValue) => {
+      console.log('computedProperty was ' + oldValue + '. Now it is ' + JSON.stringify(newValue) + '.')
+      console.log('setting edited customer..')
+      const rawObject = JSON.parse(JSON.stringify(newValue))
+      Object.assign(editedProduct, rawObject);
+      console.log(editedProduct)
+    })
+
     return {
+      editedProduct,
+      defaultProduct,
+      productTechnicalDocs,
       techDialog,
       techFiles,
       uploadProductTechnicalDocs,
