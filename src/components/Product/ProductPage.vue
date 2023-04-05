@@ -111,16 +111,43 @@
             <v-card-text>
               <v-data-table :headers="productTechnicalDocTableHeaders" :items="productTechnicalDocs" :search="search">
                 <template v-slot:[`item.actionDownload`]="{ item }">
-                  <v-btn icon @click="downloadProductTechnicalDocument(item)">
-                    <v-icon>
-                      cloud_download
-                    </v-icon>
+                  <v-btn icon="mdi-download" @click="downloadProductTechnicalDocument(item)">
+                 
+                  </v-btn>
+                </template>
+                <template v-slot:[`item.actionEditTechnicalDoc`]="{ item }">
+                  <v-btn icon="mdi-file-edit-outline" @click="editProductTechnicalDoc(item)">
+                
                   </v-btn>
                 </template>
               </v-data-table>
 
             </v-card-text>
           </v-card>
+
+          <v-dialog v-model="productTechnicalDocDialog">
+                  <v-card>
+                    <v-card-title>
+                      <span class="headline">Edit Product Technical Documentation</span>
+                    </v-card-title>
+                    <v-card-text>
+         
+                        <v-layout row>
+                          <v-text-field v-model="editedProductTechnicalDoc.title" label="Name"></v-text-field>
+                        </v-layout>
+                        <v-layout row>
+                          <v-text-field v-model="editedProductTechnicalDoc.description" label="Description"></v-text-field>
+                        </v-layout>
+    
+                    </v-card-text>
+
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="blue darken-1" @click="closeProductTechnicalDocDialog">Cancel</v-btn>
+                      <v-btn color="blue darken-1" @click="updateProductTechnicalDoc">Save</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
         </v-window-item>
         <v-window-item value="quotationsTab">
           <v-card>
@@ -318,6 +345,7 @@ export default {
     const search = ref('');
     const dialog = ref(false);
     const techDialog = ref(false);
+    const productTechnicalDocDialog =  ref(false);
     const techFiles = ref(null);
     const formHasErrors = ref(false);
     const editedIndex = ref(-1);
@@ -326,6 +354,7 @@ export default {
     const snack = ref(false);
     const snackColor = ref('');
     const snackText = ref('');
+  
 
     const defaultProduct = reactive({
       productCategoryId: '',
@@ -385,14 +414,24 @@ export default {
 
     });
 
+    const defaultProductTechnicalDoc = reactive({
+      id: '',
+      title: '',
+      description: '',
+    });
+
+    const editedProductTechnicalDoc = reactive({
+      id: '',
+      title: '',
+      description: '',
+    });
+
     const productTechnicalDocTableHeaders = [
-      {
-        title: 'Id',
-        key: 'id'
-      },
+   
       { title: 'Name', key: 'title' },
       { title: 'Description', key: 'description' },
       { title: 'Download', key: 'actionDownload' },
+      { title: 'Edit', key: 'actionEditTechnicalDoc' },
     ];
     const quotationTableHeaders = [
       {
@@ -506,11 +545,29 @@ export default {
       dialog.value = true
     });
 
+    const editProductTechnicalDoc = ((item) => {
+      console.log('Showing Edit Product Technical Doc Dialog  ' + item.value);
+      const obj = productTechnicalDocs.value.find(i => i.id == item.value);
+      Object.assign(editedProductTechnicalDoc, obj);
+      productTechnicalDocDialog.value = true;
+    });
+
+    const updateProductTechnicalDoc = ( () => {
+      console.log(editedProductTechnicalDoc);
+      store.dispatch('products/updateProductTechnicalDocument', editedProductTechnicalDoc);
+      closeProductTechnicalDocDialog();
+    });
+
+    const closeProductTechnicalDocDialog = ( () => {
+      productTechnicalDocDialog.value = false;
+      setTimeout(() => {
+        Object.assign(editedProductTechnicalDoc, defaultProductTechnicalDoc)
+      }, 300)
+    });
+
     const downloadProductTechnicalDocument = ((item) => {
       console.log('Downloading item..' + item.value)
       console.log(item)
-      //editedIndex.value = productTechnicalDocuments.value.findIndex(u => u.id == item.value)
-      //const obj = products.value.find(u => u.id == item)
       const formData = {
         productId: id,
         fileName: item.title,
@@ -614,6 +671,13 @@ export default {
       editedProduct,
       defaultProduct,
       productTechnicalDocs,
+      productTechnicalDocTableHeaders,
+      defaultProductTechnicalDoc,
+      editedProductTechnicalDoc,
+      productTechnicalDocDialog,
+      editProductTechnicalDoc,
+      updateProductTechnicalDoc,
+      closeProductTechnicalDocDialog,
       techDialog,
       techFiles,
       uploadProductTechnicalDocs,
@@ -630,7 +694,7 @@ export default {
       products,
       suppliers,
       product,
-      productTechnicalDocTableHeaders,
+      
       quotations,
       updateSupplierProduct,
       quotationTableHeaders,

@@ -4593,9 +4593,13 @@ export default {
     });
     const deleteProjectBoQItem = ((item) => {
       console.log('onDelete BoQItem Event Received..')
-      console.log(item)
+      console.log(item.value)
+      const formData = {
+        projectId: id,
+        id: item.value
+      }
       // const index = drawings.indexOf(item)
-      store.dispatch('projects/deleteProjectBoQItem', item)
+      store.dispatch('projects/deleteProjectBoQItem', formData)
       // confirm('Are you sure you want to delete drawing ' + $event.title + ' from the project register?') && drawings.splice(index, 1)
     });
     // https://stackoverflow.com/questions/43002417/arrays-javascript-filter-array-of-objects-using-input-search

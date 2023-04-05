@@ -42,7 +42,7 @@ const mutations = {
     createProductTechnicalDocs(state, payload) {
         state.loadedProductTechnicalDocs.push(payload)
     },
-    updateProductTechnicalDocs(state, payload) {
+    updateProductTechnicalDoc(state, payload) {
         state.loadedProductTechnicalDocs = [
             ...state.loadedProductTechnicalDocs.filter(u => u.id !== payload.id), payload
         ]
@@ -274,6 +274,20 @@ const actions = {
             .catch(error => {
                 commit('setError', error, { root: true })
                 console.log('Error retrieving technical docs for productId..' + payload);
+            })
+    },
+    updateProductTechnicalDocument({ commit }, payload) {
+        commit('setLoading', true, { root: true })
+        
+        return webClient.post(`/api/resource/clients/` + localStorage.clientId + `/products/` + payload.productId + '/technical/docs/' + payload.id, payload)
+            .then(response => {
+                console.log('Received updated product Technical Docs from server..')
+                commit('updateProductTechnicalDoc', response.data)
+                commit('setLoading', false, { root: true })
+            })
+            .catch(error => {
+                commit('setError', error, { root: true })
+                console.log('Error updating technical docs for productId..' + payload);
             })
     },
     uploadProductTechnicalDocuments({ commit }, payload) {

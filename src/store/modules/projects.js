@@ -131,7 +131,7 @@ const mutations = {
     deleteProjectBoQItem(state, payload) {
         console.log('Committing delete project boq item')
         console.log(payload)
-        const index = state.loadedProjectBoQ.indexOf(payload)
+        const index = state.loadedProjectBoQ.findIndex(b => b.id == payload.id)
         console.log('Index of deleted item is ' + index)
         state.loadedProjectBoQ.splice(index, 1)
     },
