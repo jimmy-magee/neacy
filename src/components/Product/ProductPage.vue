@@ -5,6 +5,9 @@
         <v-tab value="detailsTab">
           Product Details
         </v-tab>
+        <v-tab value="imagesTab">
+          Images
+        </v-tab>
         <v-tab value="technicalTab">
           Technical Details
         </v-tab>
@@ -45,32 +48,118 @@
               <v-row>
                 {{ editedProduct.manufacturer }}
               </v-row>
-              <!--
-              <v-row v-if="product.images">
+            <!--              <v-row v-if="editedProduct.productImages">
                 <v-carousel :continuous="false" :cycle="false" :show-arrows="true" delimiter-icon="mdi-minus"
                   height="500px" show-arrows-on-hover>
-                  <v-carousel-item v-for="(image, i) in product.productImages" :key="i">
+                  <v-carousel-item v-for="(image, i) in editedProduct.productImages" :key="i">
                   
                       <v-row class="fill-height" justify="center">
                         <div class="display-3">
                           <v-img
-                            :src="`http://localhost:8080/api/resource/products/${product.id}/images/${image.id}/download`"
-                            :lazy-src="`http://localhost:8080/api/resource/products/${product.id}/images/${image.id}/download`"
-                            aspect-ratio="2" height="500px" width="700px">
+                            :src="`http://localhost:8080/api/resource/products/${id}/images/${image.id}/download`"
+                            :lazy-src="`http://localhost:8080/api/resource/products/${id}/images/${image.id}/download`"
+                            aspect-ratio="2" height="500px" width="750px">
 
                           </v-img>
-                          {{ image.title }}
+                         
                         </div>
+                 
                       </v-row>
 
               
                   </v-carousel-item>
                 </v-carousel>
+
               </v-row>
--->
+                -->
+
+
 
             </v-card-text>
           </v-card>
+        </v-window-item>
+        <v-window-item value="imagesTab">
+          <v-card>
+            <v-card-title>
+              Product Images
+              <v-spacer></v-spacer>
+              <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
+              <v-spacer></v-spacer>
+              <v-btn icon color="green">
+                <v-icon icon="mdi-plus"></v-icon>
+                <v-dialog v-model="imageDialog" activator="parent">
+                  <v-card>
+                    <v-card-title>
+                      <span class="headline">Upload Image</span>
+                    </v-card-title>
+                    <v-card-text>
+                      <v-container>
+                        <v-layout row>
+
+                          <v-file-input ref="imageFiles" filled multiple prepend-icon="mdi-camera"
+                            label="Upload Image Files" type="file"></v-file-input>
+
+                        </v-layout>
+                      </v-container>
+                    </v-card-text>
+
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="blue darken-1" @click="closeImageDialog">Cancel</v-btn>
+                      <v-btn color="blue darken-1" @click="uploadProductImages">Save</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </v-btn>
+            </v-card-title>
+            <v-card-text>
+              <v-data-table :headers="productImageTableHeaders" :calculate-widths="true"
+                    :items="editedProduct.productImages" :search="search">
+                    <template v-slot:[`item.image`]="{ item }">
+                      projectId : {{ id }}
+                      <v-img
+                        :src="`http://localhost:8080/api/resource/products/${id}/images/${item.value}/download`"
+                        :lazy-src="`http://localhost:8080/api/resource/products/${id}/images/${item.value}/download`"
+                        aspect-ratio="1" class="grey lighten-2" max-width="400" max-height="300"></v-img>
+                    </template>
+                    <template v-slot:[`item.actionEditImageMetadata`]="{ item }">
+                      <v-btn icon="mdi-file-edit-outline" @click="editProductImage(item)">
+
+                      </v-btn>
+                    </template>
+                    <template v-slot:[`item.actionDeleteImageMetadata`]="{ item }">
+                      <v-btn icon="mdi-delete-alert" @click="deleteProductImage(item)">
+
+                      </v-btn>
+                    </template>
+                  </v-data-table>
+
+            </v-card-text>
+          </v-card>
+
+          <v-dialog v-model="productTechnicalDocDialog">
+                  <v-card>
+                    <v-card-title>
+                      <span class="headline">Edit Product Technical Documentation</span>
+                    </v-card-title>
+                    <v-card-text>
+         
+                        <v-layout row>
+                          <v-text-field v-model="editedProductTechnicalDoc.title" label="Name"></v-text-field>
+                        </v-layout>
+                        <v-layout row>
+                          <v-text-field v-model="editedProductTechnicalDoc.description" label="Description"></v-text-field>
+                        </v-layout>
+    
+                    </v-card-text>
+
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="blue darken-1" @click="closeProductTechnicalDocDialog">Cancel</v-btn>
+                      <v-btn color="blue darken-1" @click="updateProductTechnicalDoc">Save</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
         </v-window-item>
         <v-window-item value="technicalTab">
           <v-card>
@@ -330,6 +419,8 @@ export default {
 
     const id = route.params.id;
 
+    const clientId = localStorage.clientId;
+
     onMounted(() => {
       console.log('dispactching actions..')
       store.dispatch('suppliers/loadSuppliers');
@@ -346,6 +437,8 @@ export default {
     const dialog = ref(false);
     const techDialog = ref(false);
     const productTechnicalDocDialog =  ref(false);
+    const imageFiles = ref(null);
+    const imageDialog = ref(false);
     const techFiles = ref(null);
     const formHasErrors = ref(false);
     const editedIndex = ref(-1);
@@ -433,6 +526,15 @@ export default {
       { title: 'Download', key: 'actionDownload' },
       { title: 'Edit', key: 'actionEditTechnicalDoc' },
     ];
+
+    const productImageTableHeaders = [
+      { title: 'Title', key: 'title' },
+      { title: 'Description', key: 'description' },
+      { title: 'Image', key: 'image' },
+      { title: 'Edit', align: 'left', key: 'actionEditImageMetadata' },
+      { title: 'Delete', align: 'left', key: 'actionDeleteImageMetadata' }
+    ];
+    
     const quotationTableHeaders = [
       {
         title: 'Supplier',
@@ -500,6 +602,17 @@ export default {
       console.log(formData)
       store.dispatch('products/uploadProductTechnicalDocuments', formData);
       closeTechDialog();
+    });
+
+    const uploadProductImages = (() => {
+      const formData = {
+        productId: id,
+        imageFiles: imageFiles.value
+      }
+      console.log('Uploading product images..')
+      console.log(formData)
+      store.dispatch('products/uploadProductImages', formData);
+      closeImageDialog();
     });
 
     const editProduct = ((item) => {
@@ -639,6 +752,10 @@ export default {
       }, 300)
     });
 
+    const closeImageDialog = (() => {
+      imageDialog.value = false
+    });
+
     const closeTechDialog = (() => {
       techDialog.value = false
       setTimeout(() => {
@@ -668,6 +785,8 @@ export default {
     })
 
     return {
+      id,
+      clientId,
       editedProduct,
       defaultProduct,
       productTechnicalDocs,
@@ -680,8 +799,12 @@ export default {
       closeProductTechnicalDocDialog,
       techDialog,
       techFiles,
+      imageDialog,
+      imageFiles,
+      uploadProductImages,
       uploadProductTechnicalDocs,
       closeTechDialog,
+      closeImageDialog,
       projects,
       boqItem,
       boQItemCategories,
@@ -694,7 +817,7 @@ export default {
       products,
       suppliers,
       product,
-      
+      productImageTableHeaders,
       quotations,
       updateSupplierProduct,
       quotationTableHeaders,

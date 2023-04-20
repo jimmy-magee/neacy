@@ -28,7 +28,7 @@
                   <v-layout wrap>
 
                     <v-select v-model="editedItem.productCategoryIdList" :items="productCategories" multiple
-                      item-value="id" item-text="name" label="Select Product Categories">
+                      item-key="id" item-title="name" label="Select Product Categories">
                     </v-select>
 
                   </v-layout>
@@ -231,7 +231,7 @@ export default {
 
     const updateSupplier = (() => {
       if (editedIndex.value === -1) {
-        console.log('Creating  suppliers')
+        console.log('Creating  supplier')
         console.log(editedItem)
         store.dispatch('suppliers/createSupplier', editedItem)
       } else {

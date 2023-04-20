@@ -40,7 +40,10 @@ const mutations = {
         state.loadedProductTechnicalDocs = payload
     },
     createProductTechnicalDocs(state, payload) {
-        state.loadedProductTechnicalDocs.push(payload)
+        console.log('Adding technical docs')
+        console.log(payload)
+        payload.map(i =>  state.loadedProductTechnicalDocs.push(i));
+       
     },
     updateProductTechnicalDoc(state, payload) {
         state.loadedProductTechnicalDocs = [
@@ -290,6 +293,34 @@ const actions = {
                 console.log('Error updating technical docs for productId..' + payload);
             })
     },
+    uploadProductImages({ commit }, payload) {
+        commit('setLoading', true, { root: true })
+        const formData = new FormData()
+
+        var i = 0;
+        var len = payload.imageFiles.files.length
+        for (; i < len;) {
+            const file = payload.imageFiles.files[i]
+            formData.append('fileParts', file)
+            console.log('Adding file  ' + file + 'to fileParts')
+            i++
+        }
+
+        return axios.create({
+            baseURL: `/`,
+            headers: { 'Authorization': localStorage.authHeader, 'Content-Type': 'multipart/form-data' }
+        }).post(`/api/resource/clients/` + localStorage.clientId + `/products/` + payload.productId + '/images', formData)
+            .then(response => {
+                console.log('Received saved product images from server..')
+                commit('createProductImages', response.data)
+                commit('setLoading', false, { root: true })
+                return response.data
+            })
+            .catch(error => {
+                commit('setError', error, { root: true })
+                console.log('Error storing images for product..');
+            })
+    },
     uploadProductTechnicalDocuments({ commit }, payload) {
         commit('setLoading', true, { root: true })
         const formData = new FormData()
@@ -306,7 +337,7 @@ const actions = {
         return axios.create({
             baseURL: `/`,
             headers: { 'Authorization': localStorage.authHeader, 'Content-Type': 'multipart/form-data' }
-        }).post(`/api/resource/clients/` + localStorage.clientId + `/products/` + payload.productId + '/technical/docs/upload', formData)
+        }).post(`/api/resource/clients/` + localStorage.clientId + `/products/` + payload.productId + '/docs/upload', formData)
             .then(response => {
                 console.log('Received saved Technical Docs from server..')
                 commit('createProductTechnicalDocs', response.data)

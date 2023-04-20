@@ -67,9 +67,13 @@ export default {
         sortable: true,
         key: 'name'
       },
+     
       { title: 'Description', key: 'description' },
       { title: 'Address', key: 'address' },
       { title: 'Customer', key: 'customerName' },
+      { title: 'ContractValue', key: 'contractValue'},
+      { title: 'Duration', key: 'contractDuration'},
+      { title: 'LADs', key: 'contractLADs'},
       { title: 'Mechanical And ElectricalEngineer', key: 'mechanicalAndElectricalEngineer' },
       { title: 'Architect', key: 'architect' },
       { title: 'Client Quantity Surveryor', key: 'clientQuantitySurveyor' },

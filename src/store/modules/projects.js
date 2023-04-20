@@ -5,6 +5,7 @@ const state = {
     loadedBoQItemCategories: [],
     loadedProjects: [],
     loadProject: null,
+    loadedProjectProducts: [],
     loadedProjectOrders: [],
     loadedProjectStatusList: [],
     loadedProjectContacts: [],
@@ -33,6 +34,7 @@ const state = {
     loadedProjectBoQ: [],
     loadedProjectBoQSummary: null,
     selectedProjectBoQItem: null,
+    loadedProjectValuations: [],
     loadedProjectBoQItemMeasures: [],
     loadedProjectBoQCategoryCosts: [],
     loadedProjectRoomScheduleBoQ: [],
@@ -109,6 +111,14 @@ const mutations = {
             console.log(payload[i]);
         }
     },
+    bulkUpdateProjectSpaceImages(state, payload) {
+        console.log('Adding project space images ')
+        console.log(payload)
+        for (var i = 0; i < payload.length; i++) {
+            state.loadedProjectSpaceImageMetadata.push(payload[i])
+            console.log(payload[i]);
+        }
+    },
     updateProjectImageMetadata(state, payload) {
         state.loadedProjectImageMetadata = [
             ...state.loadedProjectImageMetadata.filter(element => element.id !== payload.id), payload
@@ -124,7 +134,7 @@ const mutations = {
     deleteProjectImage(state, payload) {
         console.log('Committing delete project image')
         console.log(payload)
-        const index = state.loadedProjectImages.indexOf(payload)
+        const index = state.loadedProjectImages.findIndex(i => i.id == payload)
         console.log('Index of deleted project image is ' + index)
         state.loadedProjectImages.splice(index, 1)
     },
@@ -236,6 +246,10 @@ const mutations = {
         console.log('Setting project bill item measures' + payload)
         state.loadedProjectBoQItemMeasures = payload
     },
+    setLoadedProjectValuations(state, payload) {
+        console.log('Setting project valuations' + payload)
+        state.loadedProjectValuations = payload
+    },
     createProjectBoQItemMeasure(state, payload) {
         state.loadedProjectBoQItemMeasures.push(payload)
     },
@@ -246,6 +260,9 @@ const mutations = {
     setLoadedProjectRoomScheduleBoQ(state, payload) {
         //console.log('Setting project bill of quantites category costs' + payload)
         state.loadedProjectRoomScheduleBoQ = payload
+    },
+    setLoadedProjectProducts(state, payload) {
+        state.loadedProjectProducts = payload
     },
     setLoadedProjectOrders(state, payload) {
         state.loadedProjectOrders = payload
@@ -522,7 +539,7 @@ const actions = {
     },
     deleteProject({ commit }, payload) {
         console.log('Delete Project Contact' + payload.id)
-        webClient.delete('/api/client/' + localStorage.clientId + '/projects/' + payload.id)
+        webClient.delete('/api/resource/clients/' + localStorage.clientId + '/projects/' + payload.id)
             .then((response) => {
                 console.log('Deleted project , response status = ' + response.status)
                 commit('deleteProject', payload)
@@ -534,7 +551,7 @@ const actions = {
     loadProjectTasks({ commit }, payload) {
         commit('setLoading', true, { root: true })
         console.log('Loading all Projects Tasks for user with authorization token ' + localStorage.authHeader)
-        webClient.get(`/api/client/` + localStorage.clientId + `/projects/` + payload + '/tasks')
+        webClient.get(`/api/resource/clients/` + localStorage.clientId + `/projects/` + payload + '/tasks')
             .then(response => {
                 console.log('Received Project Tasks')
                 console.log(response.data)
@@ -550,7 +567,7 @@ const actions = {
         console.log('Creating Project Task ')
         console.log(payload)
         console.log(' for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
-        webClient.post('/api/client/' + localStorage.clientId + '/projects/' + payload.projectId + '/tasks', payload)
+        webClient.post('/api/resource/clients/' + localStorage.clientId + '/projects/' + payload.projectId + '/tasks', payload)
             .then((response) => {
                 const savedProjectTask = response.data
                 console.log(savedProjectTask)
@@ -570,7 +587,7 @@ const actions = {
         console.log('Updating Project Task ')
         console.log(payload)
         console.log(' for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
-        webClient.post('/api/client/' + localStorage.clientId + '/projects/' + payload.projectId + '/tasks/' + payload.id, payload)
+        webClient.post('/api/resource/clients/' + localStorage.clientId + '/projects/' + payload.projectId + '/tasks/' + payload.id, payload)
             .then((response) => {
                 const savedProjectTask = response.data
                 console.log(savedProjectTask)
@@ -588,7 +605,7 @@ const actions = {
     },
     deleteProjectTask({ commit }, payload) {
         console.log('Delete Project Task' + payload.id)
-        webClient.delete('/api/client/' + localStorage.clientId + '/projects/' + payload.projectId + '/tasks/' + payload.id)
+        webClient.delete('/api/resource/clients/' + localStorage.clientId + '/projects/' + payload.projectId + '/tasks/' + payload.id)
             .then((response) => {
                 console.log('Deleted project drawing, response status = ' + response.status)
                 commit('deleteProjectTask', payload)
@@ -898,6 +915,29 @@ const actions = {
             commit('setError', error, { root: true })
         })
     },
+    downloadProjectValuation({ commit }, payload) {
+        const drawingUrl = '/api/resource/clients/' + localStorage.clientId + '/projects/' + payload.projectId + '/valuations/' + payload.id + '/download'
+        console.log('Downloading Project Valuation from url:')
+        console.log(payload)
+        axios({
+            baseURL: `/`,
+            url: drawingUrl,
+            method: 'GET',
+            responseType: 'blob',
+            headers: { 'Authorization': localStorage.authHeader }
+        }).then((response) => {
+            console.log('Received project valuation from server:')
+            console.log(response.data)
+            const url = window.URL.createObjectURL(new Blob([response.data]))
+            const link = document.createElement('a')
+            link.href = url
+            link.setAttribute('download', payload.fileName) // or any other extension
+            document.body.appendChild(link)
+            link.click()
+        }).catch((error) => {
+            commit('setError', error, { root: true })
+        })
+    },
     setSelectedProjectBoQItem({ commit, dispatch }, payload) {
         console.log('Setting selected boq item ')
         console.log(payload)
@@ -919,6 +959,20 @@ const actions = {
                 console.log('Received bill item measures from server.. ')
                 console.log(items)
                 commit('setLoadedProjectBoQItemMeasures', items)
+                commit('setLoading', false, { root: true })
+            })
+            .catch(e => {
+                commit('setError', e, { root: true })
+            })
+    },
+    loadProjectProducts({ commit }, payload) {
+        commit('setLoading', true, { root: true })
+        console.log('Loading Product orders for  [{' + payload + '}] for user with authorization token ' + localStorage.authHeader)
+        webClient.get(`/api/resource/clients/` + localStorage.clientId + `/projects/` + payload + `/products`)
+            .then(response => {
+                console.log('Received Project Orders...')
+                console.log(response.data)
+                commit('setLoadedProjectProducts', response.data)
                 commit('setLoading', false, { root: true })
             })
             .catch(e => {
@@ -1104,6 +1158,82 @@ const actions = {
                 console.log('Received saved project images')
                 console.log(response.data)
                 commit('bulkUpdateProjectImages', response.data)
+            })
+            .catch(e => {
+                console.log(e)
+                commit('setError', e, { root: true })
+            })
+    },
+    uploadProjectSpaceImages({ commit }, payload) {
+        console.log('Uploading images for user ' + localStorage.authHeader + ' to project ' + payload.projectId + ' number of image files are ' + payload.imageFiles.length)
+        console.log(payload.imageFiles)
+        const formData = new FormData()
+        var i = 0
+        var len = payload.imageFiles.files.length
+        for (; i < len;) {
+            const file = payload.imageFiles.files[i]
+            formData.append('fileParts', file)
+            i++
+        }
+        console.log('Uploading Project Images to server ')
+        console.log(payload)
+        console.log(' for user with token ' + localStorage.authHeader)
+
+        return axios.create({
+            baseURL: `/`,
+            headers: { 'Authorization': localStorage.authHeader, 'Content-Type': 'multipart/form-data' }
+        }).post('/api/resource/clients/' + localStorage.clientId + '/projects/' + payload.projectId + '/space/'+payload.locationId+'/images', formData)
+            .then(response => {
+                console.log('Received saved project space images')
+                console.log(response.data)
+                commit('bulkUpdateProjectSpaceImages', response.data)
+            })
+            .catch(e => {
+                console.log(e)
+                commit('setError', e, { root: true })
+            })
+    },
+    loadProjectValuations({ commit }, payload) {
+        commit('setLoading', true, { root: true })
+        commit('setLoadedProjectValuations', [])
+        console.log('Loading project valuations for user ' + localStorage.authHeader + ' for project ' + payload)
+
+        webClient.get(`/api/resource/clients/` + localStorage.clientId + '/projects/' + payload + '/valuations')
+            .then(response => {
+                const items = response.data
+                console.log('Received project valuations from server ')
+                console.log(items)
+                commit('setLoadedProjectValuations', items)
+                commit('setLoading', false, { root: true })
+            })
+            .catch(e => {
+                console.log('errror getting project valuations')
+                console.log(e)
+
+            })
+    },
+    bulkUploadProjectValuations({ commit }, payload) {
+        console.log('Uploading valuation for user ' + localStorage.authHeader + ' to project ' + payload.projectId + ' number of image files are ' + payload.valuationFiles.length)
+        console.log(payload.valuationFiles)
+        const formData = new FormData()
+        var i = 0
+        var len = payload.valuationFiles.files.length
+        for (; i < len;) {
+            const file = payload.valuationFiles.files[i]
+            formData.append('fileParts', file)
+            i++
+        }
+      
+        console.log(' for user with token ' + localStorage.authHeader)
+
+        return axios.create({
+            baseURL: `/`,
+            headers: { 'Authorization': localStorage.authHeader, 'Content-Type': 'multipart/form-data' }
+        }).post('/api/resource/clients/' + localStorage.clientId + '/projects/' + payload.projectId + '/valuations', formData)
+            .then(response => {
+                console.log('Received saved project valuations')
+                console.log(response.data)
+                commit('setLoadedProjectValuations', response.data)
             })
             .catch(e => {
                 console.log(e)
@@ -1810,8 +1940,9 @@ const getters = {
             return taskA.anticipatedStartDate > taskB.anticipatedStartDate
         })
     },
-
-
+    loadedProjectValuations(state) {
+        return state.loadedProjectValuations
+    },
     loadedProjectImageMetadata(state) {
         return state.loadedProjectImageMetadata.sort((imageA, imageB) => {
             return imageA.id > imageB.id
@@ -1858,7 +1989,9 @@ const getters = {
             return A.id > B.id
         })
     },
-
+    loadedProjectProducts(state) {
+        return state.loadedProjectProducts
+    },
     loadedProjectStatusList(state) {
         return state.loadedProjectStatusList
     },

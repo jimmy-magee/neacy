@@ -103,7 +103,7 @@
                       <v-layout row>
 
                         <v-select v-model="editedProjectDetails.customerId" :items="customers" item-value="id"
-                          item-text="name" label="Project Client">
+                          item-title="name" label="Project Client">
                         </v-select>
 
                       </v-layout>
@@ -553,6 +553,11 @@
 
                   <v-data-table :headers="projectRoomTableHeaders" :calculate-widths="true" :items="projectRoomsX"
                     :search="searchProjectRooms">
+                    <template v-slot:[`item.actionView`]="{ item }">
+                      <v-btn icon="mdi-file-edit-outline" @click="viewProjectRoom(item)">
+
+                      </v-btn>
+                    </template>
                     <template v-slot:[`item.actionEdit`]="{ item }">
                       <v-btn icon="mdi-file-edit-outline" @click="openProjectRoomDialog(item)">
 
@@ -912,8 +917,9 @@
                   <v-data-table :headers="imageMetadataTableHeaders" :calculate-widths="true"
                     :items="projectImageMetadata" :search="search">
                     <template v-slot:[`item.image`]="{ item }">
-                   projectId :  {{ id }}
-                      <v-img :src="`http://localhost:8080/api/resource/clients/${clientId}/projects/${id}/images/${item.value}/download`"
+                      projectId : {{ id }}
+                      <v-img
+                        :src="`http://localhost:8080/api/resource/clients/${clientId}/projects/${id}/images/${item.value}/download`"
                         :lazy-src="`http://localhost:8080/api/resource/clients/${clientId}projects/${id}/images/${item.value}/download`"
                         aspect-ratio="1" class="grey lighten-2" max-width="400" max-height="300"></v-img>
                     </template>
@@ -992,39 +998,39 @@
                           <span>{{ projectImageFormTitle }}</span>
                         </v-card-title>
                         <v-card-text>
-                
-                            <v-layout row>
 
-                              <v-text-field v-model="editedProjectImageMetaData.title" label="Title"></v-text-field>
+                          <v-layout row>
 
-                            </v-layout>
-                            <v-layout row>
+                            <v-text-field v-model="editedProjectImageMetaData.title" label="Title"></v-text-field>
 
-                              <v-textarea name="description" label="Description" id="description"
-                                v-model="editedProjectImageMetaData.description" required>
-                              </v-textarea>
+                          </v-layout>
+                          <v-layout row>
 
-                            </v-layout>
-                            <v-layout row>
-                              <v-select :items="projectRoomsX" v-model="editedProjectImageMetaData.location" 
+                            <v-textarea name="description" label="Description" id="description"
+                              v-model="editedProjectImageMetaData.description" required>
+                            </v-textarea>
+
+                          </v-layout>
+                          <v-layout row>
+                            <v-select :items="projectRoomsX" v-model="editedProjectImageMetaData.location"
                               label="Location" item-value="id" item-title="name"></v-select>
 
-                            </v-layout>
-                            <v-layout row>
+                          </v-layout>
+                          <v-layout row>
 
-                              <v-text-field v-model="editedProjectImageMetaData.categoryId" label="Category">
-                              </v-text-field>
+                            <v-text-field v-model="editedProjectImageMetaData.categoryId" label="Category">
+                            </v-text-field>
 
-                            </v-layout>
+                          </v-layout>
 
-                            <v-row justify="center">
-                              <v-img
-                                :src="`http://localhost:8080/api/resource/clients/${clientId}/projects/${editedProjectImageMetaData.projectId}/images/${editedProjectImageMetaData.id}/download`"
-                                :lazy-src="`http://localhost:8080/api/resource/clients/${clientId}/projects/${editedProjectImageMetaData.projectId}/images/${editedProjectImageMetaData.id}/download`"
-                                aspect-ratio="1" class="grey lighten-2" max-width="700" max-height="600"></v-img>
-                            </v-row>
+                          <v-row justify="center">
+                            <v-img
+                              :src="`http://localhost:8080/api/resource/clients/${clientId}/projects/${editedProjectImageMetaData.projectId}/images/${editedProjectImageMetaData.id}/download`"
+                              :lazy-src="`http://localhost:8080/api/resource/clients/${clientId}/projects/${editedProjectImageMetaData.projectId}/images/${editedProjectImageMetaData.id}/download`"
+                              aspect-ratio="1" class="grey lighten-2" max-width="700" max-height="600"></v-img>
+                          </v-row>
 
-                      
+
                         </v-card-text>
 
                         <v-card-actions>
@@ -1277,7 +1283,7 @@
                     <v-text-field v-model="searchProjectBoQ" append-icon="search" label="Search" single-line
                       hide-details></v-text-field>
                     <v-spacer></v-spacer>
-                    <v-btn icon color="green" @click="dialogBoQItem.value = true">
+                    <v-btn icon color="green" @click="openBoQItemDialog">
                       <v-icon icon="mdi-plus"></v-icon>
                       <v-dialog v-model="dialogBoQItem" activator="parent">
 
@@ -1680,15 +1686,120 @@
 
                   </v-layout>
 
+
+
                   <v-data-table :headers="boqTableHeaders" :items="boq" :search="searchProjectBoQ" show-select>
+                    <!--
                     <template v-slot:[`item.${quantity}`]="{ item }">
                       {{ item }}
                       {{ (item.props.title.quantity * item.contractRate).toFixed(2) }}
                     </template>
                     <template v-slot:[`item.totalDelivered`]="{ item }">
                       {{ (item.quantityDeliveredToDate * item.contractRate).toFixed(2) }}
+                    </template> -->
+
+
+                    <template v-slot:item="{ item }">
+
+                      <tr>
+
+                        <td>{{ item.columns.ref }}</td>
+                        <td>{{ item.columns.category }}</td>
+                        <td>{{ item.columns.name }}</td>
+                        <td>
+                          {{ item.columns.quantity }}
+
+                        </td>
+                        <td><v-btn class="text-none text-subtitle-1" variant="flat" @click="editBoQItemUnits(item)">{{
+                          item.columns.unit }}
+
+
+
+                            <v-dialog v-model="boqItemUnitsDialog" v-overlay="false" width="250" origin="overlap">
+                              <v-card>
+                                <v-card-text>
+                                  {{ item.columns.quantity }}
+                                </v-card-text>
+                                <v-card-actions>
+                                  <v-btn color="primary" block @click="boqItemUnitsDialog = false">Close Dialog</v-btn>
+                                  <v-btn color="primary" block @click="boqItemUnitsDialog = false">{{ item.unit }}</v-btn>
+                                </v-card-actions>
+                              </v-card>
+                            </v-dialog>
+                            <v-dialog v-model="dialog" persistent width="1024">
+                              <template v-slot:activator="{ props }">
+                                <v-btn color="primary" v-bind="props">
+                                  Open Dialog
+                                </v-btn>
+                              </template>
+                              <v-card>
+                                <v-card-title>
+                                  <span class="text-h5">User Profile</span>
+                                </v-card-title>
+                                <v-card-text>
+                                  <v-container>
+                                    <v-row>
+                                      <v-col cols="12" sm="6" md="4">
+                                        <v-text-field label="Legal first name*" required></v-text-field>
+                                      </v-col>
+                                      <v-col cols="12" sm="6" md="4">
+                                        <v-text-field label="Legal middle name"
+                                          hint="example of helper text only on focus"></v-text-field>
+                                      </v-col>
+                                      <v-col cols="12" sm="6" md="4">
+                                        <v-text-field label="Legal last name*" hint="example of persistent helper text"
+                                          persistent-hint required></v-text-field>
+                                      </v-col>
+                                      <v-col cols="12">
+                                        <v-text-field label="Email*" required></v-text-field>
+                                      </v-col>
+                                      <v-col cols="12">
+                                        <v-text-field label="Password*" type="password" required></v-text-field>
+                                      </v-col>
+                                      <v-col cols="12" sm="6">
+                                        <v-select :items="['0-17', '18-29', '30-54', '54+']" label="Age*"
+                                          required></v-select>
+                                      </v-col>
+                                      <v-col cols="12" sm="6">
+                                        <v-autocomplete
+                                          :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
+                                          label="Interests" multiple></v-autocomplete>
+                                      </v-col>
+                                    </v-row>
+                                  </v-container>
+                                  <small>*indicates required field</small>
+                                </v-card-text>
+                                <v-card-actions>
+                                  <v-spacer></v-spacer>
+                                  <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
+                                    Close
+                                  </v-btn>
+                                  <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
+                                    Save
+                                  </v-btn>
+                                </v-card-actions>
+                              </v-card>
+                            </v-dialog>
+                          </v-btn></td>
+                        <td>{{ item.columns.materialCost }}</td>
+                        <td>{{ item.columns.labourCost }}</td>
+
+                        <td>{{ item.columns.contractRate }}</td>
+                        <td>{{ item.columns.contractRate * item.columns.quantity }}</td>
+                        <td>
+                          <v-btn icon @click="editBoQItem(item)">
+                            <v-icon icon="mdi-file-edit-outline"></v-icon>
+                          </v-btn>
+
+                        </td>
+                      </tr>
+
+
                     </template>
 
+
+
+                    <!--  
                     <template v-slot:[`item.${contractRate}`]="props">
 
                       <v-btn @click="contractDialog = true">{{ props.item.props.title.contractRate }}
@@ -1722,8 +1833,7 @@
                         </v-edit-dialog>
                       </v-btn>
                     </template>
-
-                    <!--                    <template v-slot:[`item.materialCost`]="props">
+                  <template v-slot:[`item.materialCost`]="props">
                       <v-edit-dialog v-model="props.item.materialCost" large persistent
                         @save="saveMaterialCost(props.item)" @cancel="cancel">
                         <div>{{ props.item.materialCost }}</div>
@@ -1736,7 +1846,7 @@
                       </v-edit-dialog>
                     </template>
 -->
-
+                    <!--
                     <template v-slot:[`item.labourCost`]="props">
                       <v-edit-dialog v-model="props.item.labourCost" large persistent @save="saveLabourCost(props.item)"
                         @cancel="cancel">
@@ -1773,7 +1883,7 @@
                         </template>
                       </v-edit-dialog>
                     </template>
-
+               
                     <template v-slot:[`item.actionEditBoQItem`]="{ item }">
                       <v-btn icon @click="editBoQItem(item)">
                         <v-icon icon="mdi-file-edit-outline"></v-icon>
@@ -1783,7 +1893,7 @@
                       <v-btn icon @click="deleteProjectBoQItem(item)">
                         <v-icon icon="mdi-delete-alert"></v-icon>
                       </v-btn>
-                    </template>
+                    </template>   -->
                   </v-data-table>
                 </v-card>
 
@@ -2229,6 +2339,176 @@
 
               </v-window-item>
 
+              <v-window-item value="financeTab-4">
+
+                <v-card>
+                  <v-card-title>
+                    <v-spacer></v-spacer>
+                    <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
+                    </v-text-field>
+                    <v-spacer></v-spacer>
+                    <v-btn icon color="green">
+                      <v-icon icon="mdi-plus"></v-icon>
+                      <v-dialog v-model="projectValuationDialog" activator="parent">
+
+                        <v-card>
+                          <v-card-title>
+                            <span>Valuation Details</span>
+                          </v-card-title>
+                          <v-card-text>
+                            <v-container>
+
+                              <v-layout row>
+
+
+                                <v-select :items="invoiceStatusListSelection"
+                                  v-model="editedProjectCustomerInvoice.status" label="Status" single></v-select>
+                              </v-layout>
+                              <v-layout row>
+
+                                <v-textarea name="description" label="Description" id="description"
+                                  v-model="editedProjectValuation.description" required>
+                                </v-textarea>
+
+                              </v-layout>
+                              <v-layout row>
+
+                                <v-text-field v-model="editedProjectValuation.currency" label="Currency">
+                                </v-text-field>
+
+
+                                <v-text-field v-model="editedProjectValuation.grossAmount"
+                                  label="Gross Amount"></v-text-field>
+
+
+                                <v-text-field v-model="editedProjectValuation.netAmount" label="Net Amount">
+                                </v-text-field>
+
+                              </v-layout>
+
+
+                              <v-layout row>
+
+                                <v-dialog ref="projectCustomerInvoiceDateDialog" v-model="projectCustomerInvoiceDateModal"
+                                  persistent width="50%" activator="parent">
+                                  <template v-slot:activator="{ on }">
+                                    <v-text-field v-model="editedProjectCustomerInvoice.invoiceDate" label="Date Issued"
+                                      prepend-icon="event" readonly v-on="on"></v-text-field>
+                                  </template>
+                                  <v-date-picker v-model="editedProjectCustomerInvoice.invoiceDate" scrollable>
+                                    <v-spacer></v-spacer>
+                                    <v-btn text color="primary" @click="projectCustomerInvoiceDateModal = false">
+                                      Cancel</v-btn>
+                                    <v-btn text color="primary"
+                                      @click="$refs.projectCustomerInvoiceDateDialog.save(date)">OK</v-btn>
+                                  </v-date-picker>
+                                </v-dialog>
+
+
+                                <v-dialog ref="projectCustomerInvoicePaymentDueDateDialog"
+                                  v-model="projectCustomerInvoicePaymentDueDateModal" persistent width="50%"
+                                  activator="parent">
+                                  <template v-slot:activator="{ on }">
+                                    <v-text-field v-model="editedProjectCustomerInvoice.paymentDueDate"
+                                      label="Payment Due Date" prepend-icon="event" readonly v-on="on">
+                                    </v-text-field>
+                                  </template>
+                                  <v-date-picker v-model="editedProjectCustomerInvoice.paymentDueDate" scrollable>
+                                    <v-spacer></v-spacer>
+                                    <v-btn text color="primary"
+                                      @click="projectCustomerInvoicePaymentDueDateModal = false">Cancel</v-btn>
+                                    <v-btn text color="primary"
+                                      @click="$refs.projectCustomerInvoicePaymentDueDateDialog.save(date)">OK
+                                    </v-btn>
+                                  </v-date-picker>
+                                </v-dialog>
+
+                              </v-layout>
+
+                              <v-layout row v-if="editedProjectValuationIndex < 0">
+
+                                <v-file-input ref="projectValuationFiles" label="Upload Valuation" filled
+                                  prepend-icon="mdi-camera"></v-file-input>
+
+                              </v-layout>
+
+                            </v-container>
+                          </v-card-text>
+
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="blue darken-1" @click="closeProjectValuationDialog">Cancel
+                            </v-btn>
+                            <v-btn color="blue darken-1" @click="saveProjectValuation">Save</v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </v-dialog>
+                    </v-btn>
+                  </v-card-title>
+                  <h3>Valuation Summary</h3>
+                  <v-layout row v-if="projectCustomerInvoiceSummary">
+
+                    <v-text-field v-model="projectCustomerInvoiceSummary.totalInvoiceCount" label="Valuation Count"
+                      readonly></v-text-field>
+
+
+                    <v-text-field v-model="projectCustomerInvoiceSummary.invoicesGrossAmountTotal"
+                      label="Valuation Total Gross" readonly></v-text-field>
+
+
+                    <v-text-field v-model="projectCustomerInvoiceSummary.invoicesNetAmountTotal"
+                      label="Valuation Total Net" readonly></v-text-field>
+
+                  </v-layout>
+                  <v-layout row v-if="projectCustomerInvoiceSummary">
+
+                    <v-text-field v-model="projectCustomerInvoiceSummary.unPaidInvoicesCount"
+                      label="Valuation Count (Not Paid)" readonly></v-text-field>
+
+
+                    <v-text-field v-model="projectCustomerInvoiceSummary.unPaidInvoicesGrossAmount"
+                      label="Valuation Total Gross (Not Paid)" readonly></v-text-field>
+
+
+                    <v-text-field v-model="projectCustomerInvoiceSummary.unPaidInvoicesNetAmount"
+                      label="Valuation Total Net (Not Paid)" readonly></v-text-field>
+
+                  </v-layout>
+                  <v-layout row v-if="projectCustomerInvoiceSummary">
+
+                    <v-text-field v-model="projectCustomerInvoiceSummary.paidInvoicesCount" label="Valuation Count (Paid)"
+                      readonly></v-text-field>
+
+
+                    <v-text-field v-model="projectCustomerInvoiceSummary.paidInvoicesGrossAmount"
+                      label="Valuation Total Gross (Paid)" readonly></v-text-field>
+
+
+                    <v-text-field v-model="projectCustomerInvoiceSummary.paidInvoicesNetAmount"
+                      label="Valuation Total Net (Paid)" readonly></v-text-field>
+
+                  </v-layout>
+                  <h3>Valuation Details</h3>
+
+                  <v-data-table :headers="projectValuationTableHeaders" :calculate-widths="true"
+                    :items="projectValuations" :search="search">
+                    <template v-slot:[`item.actionDownloadProjectValuation`]="{ item }">
+                      <v-btn icon="mdi-download" @click="downloadProjectValuation(item)">
+                      </v-btn>
+                    </template>
+                    <template v-slot:[`item.actionEdit`]="{ item }">
+                      <v-btn icon="mdi-file-edit-outline" @click="showProjectValuationEditDialog(item)">
+                      </v-btn>
+                    </template>
+                    <template v-slot:[`item.actionDelete`]="{ item }">
+                      <v-btn icon="mdi-delete-alert" @click="deleteProjectValuation(item)">
+                      </v-btn>
+                    </template>
+                  </v-data-table>
+                </v-card>
+
+              </v-window-item>
+
 
               <v-window-item value="financeTab-7">
 
@@ -2250,8 +2530,8 @@
                             <v-container>
                               <v-layout row>
 
-                                <v-select :items="customers" item-value="id" item-title="name" v-model="editedProjectCustomerInvoice.customerId"
-                                  label="Select Customer" single>
+                                <v-select :items="customers" item-value="id" item-title="name"
+                                  v-model="editedProjectCustomerInvoice.customerId" label="Select Customer" single>
                                 </v-select>
 
                               </v-layout>
@@ -2261,7 +2541,7 @@
                                 </v-text-field>
 
 
-                                <v-select :items="invoiceStatusListSelection"  
+                                <v-select :items="invoiceStatusListSelection"
                                   v-model="editedProjectCustomerInvoice.status" label="Status" single></v-select>
                               </v-layout>
                               <v-layout row>
@@ -2434,8 +2714,8 @@
                           <v-card-text>
                             <v-container>
                               <v-layout row>
-                            
-                                <v-select :items="subContractors" item-value="id" item-title="name" 
+
+                                <v-select :items="subContractors" item-value="id" item-title="name"
                                   v-model="editedProjectSubContractorInvoice.subContractorId" label="Select SubContractor"
                                   single></v-select>
 
@@ -2447,8 +2727,7 @@
 
 
                                 <v-select :items="invoiceStatusListSelection"
-                                  v-model="editedProjectSubContractorInvoice.status" 
-                                  label="Status" single></v-select>
+                                  v-model="editedProjectSubContractorInvoice.status" label="Status" single></v-select>
                               </v-layout>
                               <v-layout row>
 
@@ -2511,8 +2790,8 @@
 
                               <v-layout row v-if="editedProjectSubContractorInvoiceIndex < 0">
 
-                                <v-file-input ref="subContractorInvoiceFile"
-                                  label="Upload Invoice" filled prepend-icon="mdi-camera"></v-file-input>
+                                <v-file-input ref="subContractorInvoiceFile" label="Upload Invoice" filled
+                                  prepend-icon="mdi-camera"></v-file-input>
 
                               </v-layout>
 
@@ -2620,10 +2899,10 @@
                           <v-card-text>
                             <v-container>
                               <v-layout row>
-                                
-                                  <v-select :items="suppliers" item-value="id" item-title="name" 
-                                    v-model="editedProjectSupplierInvoice.supplierId" label="Select Supplier" single>
-                                  </v-select>
+
+                                <v-select :items="suppliers" item-value="id" item-title="name"
+                                  v-model="editedProjectSupplierInvoice.supplierId" label="Select Supplier" single>
+                                </v-select>
 
                               </v-layout>
                               <v-layout row>
@@ -2632,7 +2911,7 @@
                                 </v-text-field>
 
 
-                                <v-select :items="invoiceStatusListSelection"  
+                                <v-select :items="invoiceStatusListSelection"
                                   v-model="editedProjectSupplierInvoice.status" label="Status" single></v-select>
                               </v-layout>
                               <v-layout row>
@@ -2696,8 +2975,8 @@
 
                               <v-layout row v-if="editedProjectSubContractorInvoiceIndex < 0">
 
-                                <v-file-input ref="supplierInvoiceFile"
-                                  label="Upload Invoice" filled prepend-icon="mdi-camera"></v-file-input>
+                                <v-file-input ref="supplierInvoiceFile" label="Upload Invoice" filled
+                                  prepend-icon="mdi-camera"></v-file-input>
 
                               </v-layout>
 
@@ -2780,7 +3059,6 @@
                 </v-card>
 
               </v-window-item>
-
 
             </v-window>
 
@@ -3001,6 +3279,8 @@ export default {
       store.dispatch('projects/loadProjectProcurementPackages', id)
       store.dispatch('projects/loadProjectProcurementPackageSummary', id)
       store.dispatch('projects/loadProjectBoQItems', id)
+      store.dispatch('projects/loadProjectValuations', id)
+      store.dispatch('projects/loadProjectProducts', id)
       store.dispatch('projects/loadProjectBoQSummary', id)
       store.dispatch('projects/loadProjectBoQCategoryCosts', id)
       store.dispatch('projects/loadProjectRoomScheduleBoQ', id)
@@ -3116,6 +3396,7 @@ export default {
     const projectRoomTableHeaders = [
       { title: 'Id', key: 'id' },
       { title: 'Room Name', key: 'name' },
+      { title: 'View', align: 'left', key: 'actionView' },
       { title: 'Edit', align: 'left', key: 'actionEdit' },
       { title: 'Delete', align: 'left', key: 'actionDelete' }
     ];
@@ -3147,7 +3428,13 @@ export default {
         title: 'Product',
         align: 'left',
         sortable: true,
-        key: 'productName'
+        key: 'name'
+      },
+      {
+        title: 'Description',
+        align: 'left',
+        sortable: true,
+        key: 'description'
       },
       {
         title: 'Supplier',
@@ -3284,7 +3571,7 @@ export default {
       { title: 'AnticipatedCompletionDate', key: 'anticipatedCompletionDate', align: ' d-none' },
       { title: 'ActualStartDate', key: 'actualStartDate', align: ' d-none' },
       { title: 'ActualCompletionDate', key: 'actualCompletionDate', align: ' d-none' },
-      { title: 'Status', key: 'status' },
+      { title: 'Status', key: 'status', sortable: true },
       { title: 'Edit', align: 'left', key: 'actionEditTask' },
       { title: 'Delete', align: 'left', key: 'actionDeleteTask' }
     ];
@@ -3309,6 +3596,18 @@ export default {
       { title: 'Payment', key: 'paymentDueDate', width: "125px" },
       { title: 'Download', align: 'left', key: 'actionDownloadProjectInvoice' },
       { title: 'Approve', align: 'left', key: 'actionApproveProjectInvoice' },
+      { title: 'Edit', align: 'left', key: 'actionEdit' },
+      { title: 'Delete', align: 'left', key: 'actionDelete' }
+    ];
+    const projectValuationTableHeaders = [
+      { title: 'Title', key: 'title' },
+      { title: 'Description', key: 'description' },
+      { title: 'Status', key: 'status' },
+      { title: 'Gross', key: 'grossAmount', width: 150 },
+      { title: 'Net', key: 'netAmount', width: 150 },
+      { title: 'Issued', key: 'invoiceDate', width: "125px" },
+      { title: 'Payment', key: 'paymentDueDate', width: "125px" },
+      { title: 'Download', align: 'left', key: 'actionDownloadProjectValuation' },
       { title: 'Edit', align: 'left', key: 'actionEdit' },
       { title: 'Delete', align: 'left', key: 'actionDelete' }
     ];
@@ -3350,12 +3649,41 @@ export default {
     ];
     const projectRFIDialog = ref(false);
     const projectRoomDialog = ref(false);
+    const projectValuationDialog = ref(false);
     const projectCustomerInvoiceDialog = ref(false);
     const projectCustomerInvoicePaymentDialog = ref(false);
     const projectCustomerInvoiceDateDialog = ref(false);
     const projectCustomerInvoiceDateModal = ref(false);
     const projectCustomerInvoicePaymentDueDateDialog = ref(false);
     const projectCustomerInvoicePaymentDueDateModal = ref(false);
+
+    const editedProjectValuationIndex = ref(-1);
+    const editedProjectValuation = reactive({
+      id: '',
+      projectId: id,
+      customerId: '',
+      invoiceRef: '',
+      description: '',
+      currency: '',
+      netAmount: '',
+      valuationDate: null,
+      paymentDueDate: null,
+      valuationFile: null,
+      status: ''
+    });
+    const defaultProjectValuation = reactive({
+      customerId: '',
+      projectId: id,
+      invoiceRef: '',
+      description: '',
+      currency: '',
+      netAmount: '',
+      valuationDate: null,
+      paymentDueDate: null,
+      valuationFile: null,
+      status: ''
+    });
+
     const editedProjectCustomerInvoiceIndex = ref(-1);
     const editedProjectCustomerInvoice = reactive({
       id: '',
@@ -3896,6 +4224,9 @@ export default {
     const projectTasks = computed(() => {
       return store.getters['projects/loadedProjectTasks']
     });
+    const projectValuations = computed(() => {
+      return store.getters['projects/loadedProjectValuations']
+    });
     const projectImageMetadata = computed(() => {
       return store.getters['projects/loadedProjectImageMetadata']
     });
@@ -3989,6 +4320,9 @@ export default {
       return store.getters['loading', { root: true }]
     });
 
+    const openBoQItemDialog = (() => {
+      dialogBoQItem.value = true;
+    });
 
     const reloadBoQItems = (() => {
       searchProjectBoQ.value = '';
@@ -4075,6 +4409,12 @@ export default {
         store.dispatch('suppliers/downloadSupplierQuotation', obj)
       }
     });
+    const downloadProjectValuation = ((item) => {
+      console.log('downloading project valuation..')
+      console.log(item)
+      const obj = projectValuations.value.find(i => i.id == item.value)
+      store.dispatch('projects/downloadProjectValuation', obj)
+    });
     const downloadCustomerInvoice = ((item) => {
       console.log('downloading customer invoice..')
       console.log(item)
@@ -4126,8 +4466,9 @@ export default {
       }, 300)
     });
     const editProjectTask = ((item) => {
-      editedProjectTaskIndex.value = projectTasks.value.indexOf(item)
-      Object.assign(editedProjectTask, item)
+      editedProjectTaskIndex.value = projectTasks.value.findIndex(t => t.id == item.value);
+      const obj = projectTasks.value.find(t => t.id == item.value);
+      Object.assign(editedProjectTask, obj)
       selectedProjectTaskImageMeta.value = []
       console.log("Selected Task image metadata is ")
       console.log(editedProjectTask.imageMetaData)
@@ -4177,13 +4518,13 @@ export default {
       store.dispatch('projects/deleteProjectSubContractorProcurementPackage', item)
     });
     const editProjectImageMetaData = ((item) => {
-      editedProjectImageMetaDataIndex.value = projectImageMetadata.value.findIndex( image => image.id == item.value )
-      const obj = projectImageMetadata.value.find( image => image.id == item.value )
+      editedProjectImageMetaDataIndex.value = projectImageMetadata.value.findIndex(image => image.id == item.value)
+      const obj = projectImageMetadata.value.find(image => image.id == item.value)
       Object.assign(editedProjectImageMetaData, obj)
       projectImageMetaDataDialog.value = true
     });
-    const downloadProjectImage = ( (item) => {
-      const obj = projectImageMetadata.value.find( image => image.id == item.value )
+    const downloadProjectImage = ((item) => {
+      const obj = projectImageMetadata.value.find(image => image.id == item.value)
       console.log(obj)
       store.dispatch('projects/downloadProjectImage', obj)
 
@@ -4258,7 +4599,7 @@ export default {
           actualCompletionDate: editedProjectProcurementPackage.actualCompletionDate,
           closeingDateForTenderReturn: editedProjectProcurementPackage.closeingDateForTenderReturn,
           status: editedProjectProcurementPackage.status,
-          boQItemIds: editedProjectProcurementPackage.value.billItems.filter(x => x != null).map(x => x.id),
+          boQItemIds: editedProjectProcurementPackage.billItems.filter(x => x != null).map(x => x.id),
           drawingIds: editedProjectProcurementPackage.drawings.filter(x => x != null).map(x => x.id),
           imageIds: editedProjectProcurementPackage.images.filter(x => x != null).map(x => x.id)
         }
@@ -4343,11 +4684,11 @@ export default {
       closeProjectImageDialog()
     });
     const deleteProjectImageMetaData = ((item) => {
-     
+
       console.log('Deleting project image meta data')
-      
+
       console.log(item.value)
-      const obj = projectImageMetadata.value.find( image => image.id == item.value )
+      const obj = projectImageMetadata.value.find(image => image.id == item.value)
       store.dispatch('projects/deleteProjectImageMetaData', obj)
       closeProjectImageMetaDataDialog()
     });
@@ -4457,6 +4798,17 @@ export default {
     const deleteProjectRoom = ((item) => {
       store.dispatch('projects/deleteProjectRoom', item.value)
     });
+    const viewProjectRoom = ((item) => {
+      // editedProjectRoomIndex.value = projectRoomsX.value.findIndex(r => r.id == item.value)
+      const obj = projectRoomsX.value.find(r => r.id == item.value);
+      // Object.assign(editedProjectRoom, obj)
+      console.log(item)
+
+      console.log("edited Project Room = ");
+
+      console.log(editedProjectRoom)
+      router.push('/projects/' + id + '/space/' + obj.id);
+    });
     const openProjectRoomDialog = ((item) => {
       editedProjectRoomIndex.value = projectRoomsX.value.findIndex(r => r.id == item.value)
       const obj = projectRoomsX.value.find(r => r.id == item.value);
@@ -4480,8 +4832,8 @@ export default {
     const deleteProjectTask = ((item) => {
       console.log('onDeleteDrawing Event Received..')
       console.log(item)
-      // const index = projectTasks.indexOf(item)
-      store.dispatch('projects/deleteProjectTask', item)
+      const obj = projectTasks.value.find(t => t.id == item.value);
+      store.dispatch('projects/deleteProjectTask', obj)
       // confirm('Are you sure you want to delete drawing ' + $event.title + ' from the project register?') && drawings.splice(index, 1)
     });
     const deleteProjectProcurementPackage = ((item) => {
@@ -4515,6 +4867,15 @@ export default {
         editedBoQItem.actualCompletionDate = actualCompletionDate
       }
       dialogBoQItem.value = true
+    });
+    const editBoQItemUnits = ((item) => {
+      console.log('item is ')
+      console.log(item)
+      // store.dispatch('projects/setSelectedProjectBoQItem', item)
+      //editedBoQItemIndex.value = boq.value.findIndex(boq => boq.id == item.value)
+      //const obj = boq.value.find(boq => boq.id == item.value)
+      //Object.assign(editedBoQItem, obj)
+      boqItemUnitsDialog.value = true
     });
     const saveProjectBoQItem = (() => {
       //  const packageId = projectProcurementPackages.filter(x => x.name == editedBoQItem.procurementPackage).map(y => y.id)
@@ -4805,7 +5166,7 @@ export default {
       console.log('Showing Edit Customer Invoice Dialog')
       console.log(item)
       editedProjectCustomerInvoiceIndex.value = projectCustomerInvoices.value.findIndex(ci => ci.id == item.value)
-      const obj =  projectCustomerInvoices.value.find(ci => ci.id == item.value)
+      const obj = projectCustomerInvoices.value.find(ci => ci.id == item.value)
       Object.assign(editedProjectCustomerInvoice, obj)
       projectCustomerInvoiceDialog.value = true
     });
@@ -5042,6 +5403,24 @@ export default {
       return { name: name, qty: qty };
     });
 
+    const projectValuationFiles = ref(null);
+
+    const closeProjectValuationDialog = (() => {
+
+      projectValuationDialog.value = false;
+    });
+
+    const saveProjectValuation = (() => {
+      console.log('Uploading valuation files')
+      console.log(projectValuationFiles.value.files)
+      const formData = {
+        projectId: id,
+        valuationFiles: projectValuationFiles.value
+      }
+      store.dispatch('projects/bulkUploadProjectValuations', formData)
+      projectValuationDialog.value = false;
+    });
+
 
 
     watch(projectRoomScheduleBoQ, (newValue, oldValue) => {
@@ -5067,15 +5446,23 @@ export default {
 
     const clientId = localStorage.clientId;
 
+    const boqItemUnitsDialog = ref(false);
+
+    const selectedBoQItems = ref([]);
+
     return {
       id,
       clientId,
+      selectedBoQItems,
       handleFileUpload,
+      editBoQItemUnits,
+      boqItemUnitsDialog,
       file,
       projectCustomerInvoiceFile,
       supplierInvoiceFile,
       title,
       projectQuantitiesByRoom1,
+      openBoQItemDialog,
       openTreeNodes,
       snack,
       snackColor,
@@ -5371,6 +5758,7 @@ export default {
       saveQuantityDeliveredToDate,
       save,
       projectRoomsX,
+      viewProjectRoom,
       cancel,
       onDismissed,
       deleteProjectBoQItem,
@@ -5381,7 +5769,16 @@ export default {
       deleteProjectBoQItemMeasure,
       closeProjectCustomerInvoiceDialog,
       max25chars,
- 
+      projectValuationDialog,
+      projectValuationFiles,
+      closeProjectValuationDialog,
+      saveProjectValuation,
+      projectValuations,
+      projectValuationTableHeaders,
+      downloadProjectValuation,
+      editedProjectValuationIndex,
+      editedProjectValuation,
+      defaultProjectValuation,
 
     }
   }
