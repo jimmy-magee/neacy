@@ -187,7 +187,7 @@ const actions = {
                 commit('setError', e, { root: true })
             })
     },
-    createSupplier({ commit, dispatch }, payload) {
+    createSupplier({ commit }, payload) {
         commit('setLoading', true, { root: true })
         webClient.post(`/api/resource/clients/` + localStorage.clientId + `/suppliers`, payload)
             .then(response => {
@@ -195,7 +195,7 @@ const actions = {
                 commit('createSupplier', response.data)
                 commit('setLoading', false, { root: true })
             }).then(
-                dispatch('loadSuppliers')
+                //dispatch('loadSuppliers')
             )
             .catch(error => {
                 commit('setError', error, { root: true })

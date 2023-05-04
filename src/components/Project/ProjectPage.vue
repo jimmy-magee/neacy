@@ -102,8 +102,7 @@
                       </v-layout>
                       <v-layout row>
 
-                        <v-select v-model="editedProjectDetails.customerId" :items="customers" item-value="id"
-                          item-title="name" label="Project Client">
+                        <v-select v-model="editedProjectDetails.customerId" :items="customers" item-value="id" item-title="name" label="Project Client">
                         </v-select>
 
                       </v-layout>
@@ -1703,13 +1702,16 @@
 
                       <tr>
 
+                        <td><v-checkbox></v-checkbox></td>
                         <td>{{ item.columns.ref }}</td>
-                        <td>{{ item.columns.category }}</td>
+                        <td>{{ item.columns.categoryName }}</td>
                         <td>{{ item.columns.name }}</td>
                         <td>
                           {{ item.columns.quantity }}
-
                         </td>
+                        <td>{{ item.columns.unit }}</td>
+                        
+              <!--
                         <td><v-btn class="text-none text-subtitle-1" variant="flat" @click="editBoQItemUnits(item)">{{
                           item.columns.unit }}
 
@@ -1726,6 +1728,7 @@
                                 </v-card-actions>
                               </v-card>
                             </v-dialog>
+
                             <v-dialog v-model="dialog" persistent width="1024">
                               <template v-slot:activator="{ props }">
                                 <v-btn color="primary" v-bind="props">
@@ -1780,7 +1783,7 @@
                                 </v-card-actions>
                               </v-card>
                             </v-dialog>
-                          </v-btn></td>
+                          </v-btn></td>-->
                         <td>{{ item.columns.materialCost }}</td>
                         <td>{{ item.columns.labourCost }}</td>
 
@@ -1790,7 +1793,11 @@
                           <v-btn icon @click="editBoQItem(item)">
                             <v-icon icon="mdi-file-edit-outline"></v-icon>
                           </v-btn>
-
+                        </td>
+                        <td>
+                          <v-btn icon @click="deleteBoQItem(item)">
+                            <v-icon icon="mdi-delete-alert"></v-icon>
+                          </v-btn>
                         </td>
                       </tr>
 
@@ -2339,7 +2346,7 @@
 
               </v-window-item>
 
-              <v-window-item value="financeTab-4">
+              <v-window-item value="financeTab-4" v-if="userIsAuthenticatedAndHasRoleAdmin">
 
                 <v-card>
                   <v-card-title>
@@ -2362,7 +2369,7 @@
 
 
                                 <v-select :items="invoiceStatusListSelection"
-                                  v-model="editedProjectCustomerInvoice.status" label="Status" single></v-select>
+                                  v-model="editedProjectValuation.status" label="Status" single></v-select>
                               </v-layout>
                               <v-layout row>
 
@@ -2510,7 +2517,7 @@
               </v-window-item>
 
 
-              <v-window-item value="financeTab-7">
+              <v-window-item value="financeTab-7" v-if="userIsAuthenticatedAndHasRoleAdmin">
 
                 <v-card>
                   <v-card-title>
@@ -2694,7 +2701,7 @@
 
               </v-window-item>
 
-              <v-window-item value="financeTab-8">
+              <v-window-item value="financeTab-8" v-if="userIsAuthenticatedAndHasRoleAdmin">
 
                 <v-card>
                   <v-card-title>
@@ -2880,7 +2887,7 @@
 
               </v-window-item>
 
-              <v-window-item value="financeTab-9">
+              <v-window-item value="financeTab-9" v-if="userIsAuthenticatedAndHasRoleAdmin">
 
                 <v-card>
                   <v-card-title>
@@ -3605,8 +3612,8 @@ export default {
       { title: 'Status', key: 'status' },
       { title: 'Gross', key: 'grossAmount', width: 150 },
       { title: 'Net', key: 'netAmount', width: 150 },
-      { title: 'Issued', key: 'invoiceDate', width: "125px" },
-      { title: 'Payment', key: 'paymentDueDate', width: "125px" },
+      { title: 'Created', key: 'createdAt', width: "125px" },
+      { title: 'Issued', key: 'issued', width: "125px" },
       { title: 'Download', align: 'left', key: 'actionDownloadProjectValuation' },
       { title: 'Edit', align: 'left', key: 'actionEdit' },
       { title: 'Delete', align: 'left', key: 'actionDelete' }
@@ -3665,6 +3672,7 @@ export default {
       invoiceRef: '',
       description: '',
       currency: '',
+      grossAmount: '',
       netAmount: '',
       valuationDate: null,
       paymentDueDate: null,
@@ -3677,6 +3685,7 @@ export default {
       invoiceRef: '',
       description: '',
       currency: '',
+      grossAmount: '',
       netAmount: '',
       valuationDate: null,
       paymentDueDate: null,
@@ -5415,6 +5424,10 @@ export default {
       console.log(projectValuationFiles.value.files)
       const formData = {
         projectId: id,
+        description: editedProjectValuation.description,
+        status: editedProjectValuation.status,
+        grossAmount: editedProjectValuation.grossAmount,
+        netAmount: editedProjectValuation.netAmount,
         valuationFiles: projectValuationFiles.value
       }
       store.dispatch('projects/bulkUploadProjectValuations', formData)

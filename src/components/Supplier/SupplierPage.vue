@@ -7,17 +7,18 @@
         <v-tab value="outerTab-1">
           Supplier Details
         </v-tab>
-        <v-tab value="outerTab-2" v-if="userIsAuthenticatedAndHasRoleAdmin">
-          Quotations
-        </v-tab>
+        
         <v-tab value="outerTab-4" v-if="userIsAuthenticatedAndHasRoleAdmin">
           Products
         </v-tab>
-        <v-tab value="outerTab-3">
-          Product Invoices
+        <v-tab value="outerTab-2" v-if="userIsAuthenticatedAndHasRoleAdmin">
+          Quotations
         </v-tab>
         <v-tab value="outerTab-5" v-if="userIsAuthenticatedAndHasRoleAdmin">
-          Product Orders
+          Orders
+        </v-tab>
+        <v-tab value="outerTab-3" v-if="userIsAuthenticatedAndHasRoleAdmin">
+          Invoices
         </v-tab>
       </v-tabs>
       <v-window v-model="outerTab">

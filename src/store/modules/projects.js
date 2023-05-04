@@ -250,6 +250,10 @@ const mutations = {
         console.log('Setting project valuations' + payload)
         state.loadedProjectValuations = payload
     },
+    createProjectValuations(state, payload) {
+        console.log('Concat project valuations' + payload)
+        state.loadedProjectValuations = [...state.loadedProjectValuations, ...payload]
+    },
     createProjectBoQItemMeasure(state, payload) {
         state.loadedProjectBoQItemMeasures.push(payload)
     },
@@ -1219,10 +1223,16 @@ const actions = {
         var i = 0
         var len = payload.valuationFiles.files.length
         for (; i < len;) {
-            const file = payload.valuationFiles.files[i]
-            formData.append('fileParts', file)
-            i++
+            const file = payload.valuationFiles.files[i];
+            formData.append('fileParts', file);
+            i++;
         }
+        
+        formData.append('grossAmount', payload.grossAmount);
+        formData.append('netAmount', payload.netAmount);
+        formData.append('status', payload.status);
+        formData.append('description', payload.description);
+        formData.append('currency', 'euro');
       
         console.log(' for user with token ' + localStorage.authHeader)
 
@@ -1233,7 +1243,7 @@ const actions = {
             .then(response => {
                 console.log('Received saved project valuations')
                 console.log(response.data)
-                commit('setLoadedProjectValuations', response.data)
+                commit('createProjectValuations', response.data)
             })
             .catch(e => {
                 console.log(e)

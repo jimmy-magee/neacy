@@ -20,22 +20,22 @@
                   <v-layout wrap>
 
                     <v-select v-model="editedItem.supplierCategoryId" :items="supplierCategories" item-key="id"
-                      item-title="name" label="Select Supplier Category">
+                      item-title="name" label="Select Supplier Category" required>
                     </v-select>
 
                   </v-layout>
 
                   <v-layout wrap>
 
-                    <v-select v-model="editedItem.productCategoryIdList" :items="productCategories" multiple
-                      item-key="id" item-title="name" label="Select Product Categories">
+                    <v-select v-model="editedItem.productCategoryList" :items="productCategories" multiple
+                      item-value="id" item-title="name" label="Select Product Categories">
                     </v-select>
 
                   </v-layout>
 
                   <v-layout row>
 
-                    <v-text-field v-model="editedItem.name" label="Name"></v-text-field>
+                    <v-text-field v-model="editedItem.name" label="Name" required></v-text-field>
 
                   </v-layout>
 
@@ -244,7 +244,7 @@ export default {
     const deleteSupplier = ((item) => {
       console.log('Delete supplier Event Received..')
       console.log(item)
-      store.dispatch('suppliers/deleteSupplier', item)
+      store.dispatch('suppliers/deleteSupplier', item.value)
     });
     const close = (() => {
       dialog.value = false;
