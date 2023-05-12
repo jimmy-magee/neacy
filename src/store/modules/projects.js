@@ -200,6 +200,11 @@ const mutations = {
     setLoadedProjectProcurementPackage(state, payload) {
         state.loadedProjectProcurementPackage = payload
     },
+    setLoadedProjectSubContractorProcurementPackages (state, payload) {
+        console.log('Setting Loaded Project SubContractor Procurement Packages ')
+        console.log(payload)
+        state.loadedProjectSubContractorProcurementPackages = payload
+      },
     setLoadedProjectQuotationSummary(state, payload) {
         state.loadedProjectQuotationSummary = payload
     },
@@ -252,7 +257,7 @@ const mutations = {
     },
     createProjectValuations(state, payload) {
         console.log('Concat project valuations' + payload)
-        state.loadedProjectValuations = [...state.loadedProjectValuations, ...payload]
+        state.loadedProjectValuations = [...state.loadedProjectValuations, ...payload]  
     },
     createProjectBoQItemMeasure(state, payload) {
         state.loadedProjectBoQItemMeasures.push(payload)
@@ -373,6 +378,9 @@ const mutations = {
     deleteBoQItemCategory(state, payload) {
         const index = state.loadedBoQItemCategories.indexOf(payload)
         state.loadedBoQItemCategories.splice(index, 1)
+    },
+    createProjectSubContractorProcurementPackage (state, payload) {
+        state.loadedProjectSubContractorProcurementPackages.push(payload)
     },
 
 }
@@ -1365,6 +1373,23 @@ const actions = {
                 console.log('Received project procurement pacakges from server ')
                 console.log(items)
                 commit('setLoadedProjectProcurementPackages', items)
+                commit('setLoading', false, { root: true })
+            })
+            .catch(e => {
+                commit('setError', e, { root: true })
+            })
+    },
+    loadProjectProcurementPackageById({ commit }, payload) {
+        commit('setLoading', true, { root: true })
+        commit('setLoadedProjectProcurementPackage', {})
+        console.log('Loading project procurement package by id for user ' + localStorage.authHeader + ' for project ' + payload.projectId)
+
+        webClient.get(`/api/resource/clients/` + localStorage.clientId + `/projects/` + payload.projectId + '/procurement/' + payload.id)
+            .then(response => {
+                const procurementPackage = response.data
+                console.log('Received project procurement pacakge from server ')
+                console.log(procurementPackage)
+                commit('setLoadedProjectProcurementPackage', procurementPackage)
                 commit('setLoading', false, { root: true })
             })
             .catch(e => {

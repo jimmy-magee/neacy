@@ -633,14 +633,15 @@
 
                           Description:
                           <p class="text-justify">
-                            {{ editedSubContractorProjectProcurementPackage.packageDescription }}
+                            {{ editedSubContractorProjectProcurementPackage.description }}
                           </p>
                           <br>
 
                           <v-expansion-panels>
+
                             <v-expansion-panel>
-                              <v-expansion-panel-header>Bill of Quantities</v-expansion-panel-header>
-                              <v-expansion-panel-content>
+                              <v-expansion-panel-title>Bill of Quantities</v-expansion-panel-title>
+                              <v-expansion-panel-text>
                                 <v-card>
                                   <v-card-title>
                                     <v-text-field v-model="searchTenderBillItems" append-icon="search" label="Search"
@@ -650,7 +651,7 @@
                                     <v-card-text>
                                       <v-data-table :headers="subContractorProjectProcurementPackageBillItemsTableHeaders"
                                         :calculate-widths="true"
-                                        :items="editedSubContractorProjectProcurementPackage.billItems"
+                                        :items="editedSubContractorProjectProcurementPackage.value.billItems"
                                         :search="searchTenderBillItems">
                                         <template v-slot:[`item.total`]="{ item }">
                                           {{ item.quantity * item.rate }}
@@ -672,12 +673,12 @@
                                     </v-card-text>
                                   </v-card-text>
                                 </v-card>
-                              </v-expansion-panel-content>
+                              </v-expansion-panel-text>
                             </v-expansion-panel>
 
                             <v-expansion-panel>
-                              <v-expansion-panel-header>Project Drawings Schedule</v-expansion-panel-header>
-                              <v-expansion-panel-content>
+                              <v-expansion-panel-title>Project Drawings Schedule</v-expansion-panel-title>
+                              <v-expansion-panel-text>
                                 <v-card>
                                   <v-card-title>
                                     <v-text-field v-model="searchTenderDrawings" append-icon="search" label="Search"
@@ -687,7 +688,7 @@
 
                                     <v-data-table :headers="subContractorProjectProcurementPackageDrawingsTableHeaders"
                                       :calculate-widths="true"
-                                      :items="editedSubContractorProjectProcurementPackage.drawings"
+                                      :items="editedSubContractorProjectProcurementPackage.value.drawings"
                                       :search="searchTenderDrawings">
                                       <template v-slot:[`item.actionDownload`]="{ item }">
                                         <v-btn icon @click="downloadProjectDrawing(item)">
@@ -699,12 +700,13 @@
                                     </v-data-table>
                                   </v-card-text>
                                 </v-card>
-                              </v-expansion-panel-content>
+                              </v-expansion-panel-text>
                             </v-expansion-panel>
                             <br>
+                           
                             <v-expansion-panel>
-                              <v-expansion-panel-header>Project Images</v-expansion-panel-header>
-                              <v-expansion-panel-content>
+                              <v-expansion-panel-title>Project Images</v-expansion-panel-title>
+                              <v-expansion-panel-text>
                                 <v-card>
                                   <v-card-title>
                                     <v-text-field v-model="searchTenderImages" append-icon="search" label="Search"
@@ -714,7 +716,7 @@
 
                                     <v-data-table :headers="subContractorProjectProcurementPackageImagesTableHeaders"
                                       :calculate-widths="true"
-                                      :items="editedSubContractorProjectProcurementPackage.images"
+                                      :items="editedSubContractorProjectProcurementPackage.value.images"
                                       :search="searchTenderImages">
 
                                       <template v-slot:[`item.imageUrl`]="{ item }">
@@ -732,10 +734,10 @@
                                     </v-data-table>
                                   </v-card-text>
                                 </v-card>
-                              </v-expansion-panel-content>
+                              </v-expansion-panel-text>
                             </v-expansion-panel>
-
-                          </v-expansion-panels>
+ <!---->
+                          </v-expansion-panels> 
                         </v-card-text>
                       </v-card>
 
@@ -1296,7 +1298,8 @@ export default {
       subContractorId: id,
       projectId: '',
       projectProcurementPackageId: '',
-      billItems: null,
+      billItems: [],
+      drawings: [],
       description: '',
       status: ''
     });
@@ -1304,7 +1307,8 @@ export default {
       subContractorId: id,
       projectId: '',
       projectProcurementPackageId: '',
-      billItems: null,
+      billItems: [],
+      drawings: [],
       description: '',
       status: ''
     });
@@ -1758,9 +1762,9 @@ export default {
         )
     });
     const showSubContractorProjectProcurementPackage = ((item) => {
-      console.log('Showing Edit SubContractorProjectProcurementPackageBillItems Dialog for procurement package with id ' + item.id)
-      editedSubContractorProjectProcurementPackageIndex.value = subContractorProjectProcurementPackages.value.indexOf(item)
-      Object.assign(editedSubContractorProjectProcurementPackage, item)
+      console.log('Showing Edit SubContractorProjectProcurementPackageBillItems Dialog for procurement package with id ' + item.value)
+      editedSubContractorProjectProcurementPackage.value = subContractorProjectProcurementPackages.value.find(sb => sb.id == item.value)
+      //Object.assign(editedSubContractorProjectProcurementPackage, item)
       showSubContractorProjectProcurementPackageDialog.value = true
     });
     const closeSubContractorProjectProcurementPackageDialog = (() => {

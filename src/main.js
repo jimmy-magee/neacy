@@ -88,6 +88,16 @@ const routes = [
     component: () => import(/* webpackChunkName: "projectPage" */ './components/Project/ProjectPage.vue'),
   },
   {
+    path: '/projects/:projectId/procurement',
+    name: 'ProjectProcurementPackagesPage',
+    component: () => import(/* webpackChunkName: "projectPage" */ './components/Project/Procurement/ProjectProcurementPackagesPage.vue'),
+  },
+  {
+    path: '/projects/:projectId/procurement/:id',
+    name: 'ProjectProcurementPage',
+    component: () => import(/* webpackChunkName: "projectPage" */ './components/Project/Procurement/ProjectProcurementPage.vue'),
+  },
+  {
     path: '/projects/:projectId/space/:id',
     name: 'ProjectSpacePage',
     component: () => import(/* webpackChunkName: "projectPage" */ './components/Project/ProjectSpacePage.vue'),

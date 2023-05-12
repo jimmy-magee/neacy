@@ -236,11 +236,9 @@
 
                               <v-layout row>
 
-                                <v-file-input v-model="drawingFiles" label="Upload Drawing Files" filled multiple
-                                  prepend-icon="mdi-camera"></v-file-input>
-
-                                <v-file-input ref="file" filled multiple prepend-icon="mdi-camera"
-                                  v-on:change="handleFileUpload()" type="file"></v-file-input>
+                            
+                                <v-file-input ref="file" filled multiple prepend-icon="mdi-camera" label="Upload Drawing Files"
+                                  v-on:change="handleFileUpload()"></v-file-input>
 
 
                               </v-layout>
@@ -1906,7 +1904,7 @@
 
               </v-window-item>
 
-              <v-window-item value="financeTab-2">
+              <v-window-item value="financeTab-2" v-if="userIsAuthenticatedAndHasRoleAdmin">
 
                 <v-card>
                   <v-card-title>
@@ -2322,7 +2320,7 @@
 
               </v-window-item>
 
-              <v-window-item value="financeTab-31">
+              <v-window-item value="financeTab-31" v-if="userIsAuthenticatedAndHasRoleAdmin">
 
                 <v-card>
                   <v-card-title></v-card-title>
