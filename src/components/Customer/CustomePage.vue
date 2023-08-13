@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
 
     <v-card>
       <v-card-title>
@@ -16,7 +16,7 @@
             Customer Details
           </v-tab>
           <v-tab  value="two">
-            Quotations
+            Tenders
           </v-tab>
           <v-tab value="three">
             Contracts
@@ -147,10 +147,10 @@
                 <v-text-field v-model="search" append-icon="search" label="Search" single-line
                   hide-details></v-text-field>
                 <v-spacer></v-spacer>
-                <v-dialog v-model="customerQuotationDialog">
-                  <template v-slot:[`activator`]="{ on }">
-                    <v-btn absolute right fab dark color="indigo" v-on="on"><v-icon dark>add</v-icon></v-btn>
-                  </template>
+                <v-btn absolute right fab dark color="indigo" v-on="on"><v-icon dark>add</v-icon>
+                  
+                <v-dialog v-model="customerQuotationDialog" activator="parent">
+                 
                   <v-card>
                     <v-card-title>
                       <span>Quotation Details</span>
@@ -249,6 +249,7 @@
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
+              </v-btn>
               </v-card-title>
               <v-card-text>
                 <h3>Quotation Summary</h3>
@@ -654,10 +655,7 @@
           </v-window-item>
 
         </v-window>
-        {{ customer }}
-        <br>
-        editedCustomer: {{ editedCustomer }}
-
+        
       </v-card-text>
     </v-card>
 

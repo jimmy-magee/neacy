@@ -6,6 +6,7 @@
       <v-card-title>
         Users
         <v-spacer></v-spacer>
+
         <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
         <v-spacer></v-spacer>
         <v-btn color="green">
@@ -27,7 +28,7 @@
                   <v-layout row>
 
                     <v-select :items="clients" v-model="editedItem.clientId" label="Client" item-value="id"
-                      item-text="name"></v-select>
+                      item-title="name"></v-select>
 
                   </v-layout>
 
@@ -39,7 +40,7 @@
 
                   <v-layout row v-if="editedItem.roles.includes('ROLE_SUBCONTRACTOR')">
 
-                    <v-select :items="subContractors" v-model="editedItem.companyId" item-value="id" item-text="name"
+                    <v-select :items="subContractors" v-model="editedItem.companyId" item-value="id" item-title="name"
                       label="Company"></v-select>
 
                   </v-layout>
@@ -54,7 +55,7 @@
                   <v-layout row
                     v-if="!editedItem.roles.includes('ROLE_SUBCONTRACTOR') && !editedItem.roles.includes('ROLE_SUPPLIER')">
 
-                    <v-select :items="clients" v-model="editedItem.companyId" item-value="id" item-text="name"
+                    <v-select :items="clients" v-model="editedItem.companyId" item-value="id" item-title="name"
                       label="Company"></v-select>
 
                   </v-layout>

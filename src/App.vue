@@ -15,23 +15,27 @@
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action>
-          <v-list-item-content>{{ item.title }}</v-list-item-content>
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
         <v-list-item v-if="userIsAuthenticated" @click="onLogout">
           <v-list-item-action>
             <v-icon>exit_to_app</v-icon>
           </v-list-item-action>
-          <v-list-item-content>Logout</v-list-item-content>
+          <v-list-item-title>Logout</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
     <v-main>
-      
+
       <v-container fluid>
-        <v-fade-transition mode="out-in">
-          <router-view></router-view>
-        </v-fade-transition>
+
+        <router-view v-slot="{ Component }">
+          <transition>
+            <component :is="Component" />
+          </transition>
+        </router-view>
+
       </v-container>
     </v-main>
 
@@ -91,6 +95,7 @@ export default {
           //{icon: 'api', title: 'Product Quotations', link: '/products_quotation_form'},
 
           //{icon: 'bar_chart', title: 'Cashflows', link: '/cashflows'},
+          { icon: 'settings', title: 'Employees', link: '/employees' },
           { icon: 'settings', title: 'Customers', link: '/customers' },
           //{icon: 'attach_money', title: 'Clients', link: '/admin/clients'},
           { icon: 'assignment', title: 'Drawing Categories', link: '/drawing_categories' },
@@ -99,17 +104,17 @@ export default {
           { icon: 'assignment', title: 'Supplier Categories', link: '/supplier_categories' },
           { icon: 'assignment', title: 'Product Categories', link: '/product_categories' },
           { icon: 'supervised_user_circle', title: 'Users', link: '/admin/users' },
-          
+
         ]
       }
       return menuItems;
     });
 
     const onLogout = () => {
-          store.dispatch('users/logout')
-          .then(
-              router.push('/signin')
-          )
+      store.dispatch('users/logout')
+        .then(
+          router.push('/signin')
+        )
     };
 
 

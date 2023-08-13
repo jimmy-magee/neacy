@@ -39,15 +39,16 @@
                 <v-layout row>
 
                   <v-select :items="supplierCategories" v-model="editedSupplier.supplierCategoryId" label="Category"
-                    item-value="id" item-text="name" required></v-select>
+                    item-value="id" item-title="name" required></v-select>
 
                 </v-layout>
 
                 <v-layout wrap>
 
                   <v-select v-model="editedSupplier.productCategoryList" :items="productCategories" multiple
-                    item-value="id" item-text="name" label="Select Product Categories">
+                    item-value="id" item-title="name" label="Select Product Categories">
                   </v-select>
+                  
 
                 </v-layout>
                 <v-layout row>
@@ -647,6 +648,8 @@ export default {
     onMounted(() => {
       store.dispatch('projects/loadProjects')
       store.dispatch('projects/loadBoQItemCategories', id)
+      store.dispatch('suppliers/loadSupplierCategories')
+      store.dispatch('products/loadProductCategories')
       store.dispatch('suppliers/loadSupplier', id)
       store.dispatch('suppliers/loadSupplierProducts', id)
       store.dispatch('suppliers/loadSupplierQuotations', id)
@@ -664,7 +667,7 @@ export default {
     const snackText = ref('');
     const editedSupplier = reactive({
       id: '',
-      supplierCategoryId: '',
+      supplierCategoryId: [],
       productCategoryList: [],
       name: '',
       description: '',

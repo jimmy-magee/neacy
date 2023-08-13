@@ -148,12 +148,6 @@ export default {
 
     const supplierTableHeaders = [
       {
-        title: 'Id',
-        align: 'left',
-        sortable: true,
-        key: 'id'
-      },
-      {
         title: 'Category',
         align: 'left',
         sortable: true,

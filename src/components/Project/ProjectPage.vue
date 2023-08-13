@@ -102,7 +102,8 @@
                       </v-layout>
                       <v-layout row>
 
-                        <v-select v-model="editedProjectDetails.customerId" :items="customers" item-value="id" item-title="name" label="Project Client">
+                        <v-select v-model="editedProjectDetails.customerId" :items="customers" item-value="id"
+                          item-title="name" label="Project Client">
                         </v-select>
 
                       </v-layout>
@@ -236,9 +237,9 @@
 
                               <v-layout row>
 
-                            
-                                <v-file-input ref="file" filled multiple prepend-icon="mdi-camera" label="Upload Drawing Files"
-                                  v-on:change="handleFileUpload()"></v-file-input>
+
+                                <v-file-input ref="file" filled multiple prepend-icon="mdi-camera"
+                                  label="Upload Drawing Files" v-on:change="handleFileUpload()"></v-file-input>
 
 
                               </v-layout>
@@ -1457,30 +1458,52 @@
                                                   <v-spacer></v-spacer>
                                                 </v-card-title>
                                                 <v-card-text>
-                                                  projectQuantitiesByRoom{{ projectQuantitiesByRoom1 }}
+
                                                   <v-data-table :headers="projectRoomMeasureTableHeaders"
                                                     :calculate-widths="true" :items="projectQuantitiesByRoom1"
                                                     :show-select="false" :search="searchProjectRooms">
 
-                                                    <template v-slot:[`item`]="{ item }">
-                                                      {{ item.qty }}
-                                                      <v-edit-dialog v-model="item.quantity" large persistent
-                                                        @save="saveMeasureQuantity(item)" @cancel="cancel" @open="open"
-                                                        @close="close">
-                                                        <div>{{ item.qty }}</div>
-                                                        <template v-slot:[`input`]>
-                                                          <div class="mt-4 title">Update Quantity</div>
 
-                                                          <v-text-field v-model="item.quantity" label="Update Quantity"
-                                                            single-line autofocus>
-                                                          </v-text-field>
-                                                        </template>
-                                                      </v-edit-dialog>
+                                                    <template v-slot:[`item.qty`]="{ item }">
+
+                                                      <v-btn flat @click="openMeasureDialog(item)"> {{ item.value.qty }} </v-btn>
+                                                        <v-overlay v-model="measureDialog" contained location-strategy="connected" height="200px" width="300px">
+                                                          <v-card>
+                                                            <v-card-title>
+                                                              <span>Update Quantity</span>
+                                                            </v-card-title>
+                                                            <v-card-text>
+
+                                                              <v-layout row>
+
+                                                                <v-text-field v-model="measureDialogTextFieldValue"
+                                                                  label="Update Quantity" single-line autofocus>
+                                                                </v-text-field>
+                                                                <template v-slot:[`input`]>
+                                                                  <h1>{{ item.value.qty }}</h1>
+                                                                  <div class="mt-4 title">Update Quantity</div>
+
+                                                                  <v-text-field v-model="item.value.qty"
+                                                                    label="Update Quantity" single-line autofocus>
+                                                                  </v-text-field>
+                                                                </template>
+                                                              </v-layout>
+
+                                                            </v-card-text>
+                                                            <v-card-actions>
+                                                              <v-btn @click="measureDialog = false">Cancel</v-btn>
+                                                              <v-btn @click="saveMeasureQuantity(item)">Save</v-btn>
+                                                            </v-card-actions>
+                                                          </v-card>
+
+                                                        </v-overlay>
+                                                     
+                                                      
                                                     </template>
 
-
-
                                                   </v-data-table>
+
+
                                                 </v-card-text>
                                               </v-card>
 
@@ -1708,8 +1731,8 @@
                           {{ item.columns.quantity }}
                         </td>
                         <td>{{ item.columns.unit }}</td>
-                        
-              <!--
+
+                        <!--
                         <td><v-btn class="text-none text-subtitle-1" variant="flat" @click="editBoQItemUnits(item)">{{
                           item.columns.unit }}
 
@@ -2366,8 +2389,8 @@
                               <v-layout row>
 
 
-                                <v-select :items="invoiceStatusListSelection"
-                                  v-model="editedProjectValuation.status" label="Status" single></v-select>
+                                <v-select :items="invoiceStatusListSelection" v-model="editedProjectValuation.status"
+                                  label="Status" single></v-select>
                               </v-layout>
                               <v-layout row>
 
@@ -3407,7 +3430,7 @@ export default {
     ];
     const projectRoomMeasureTableHeaders = [
       { title: 'Space', key: 'name' },
-      { title: 'Quantity', key: 'quantity', default: 0 },
+      { title: 'Quantity', key: 'qty', default: 0 },
     ];
     const projectBoQCategoryCostsTableHeaders = [
       { title: 'Category', key: 'category' },
@@ -5343,6 +5366,11 @@ export default {
       store.dispatch('projects/updateProjectBoQItem', item)
       //console.log('Updated BoQItem Quantity successfully')
     });
+    const openMeasureDialog = ((item) => {
+      measureDialog.value = true;
+      measureDialogTextFieldValue.value = item.value.qty
+      console.log(item.value.name)
+    });
     const saveMeasureQuantity = ((item) => {
       console.log('Save Measured Quantity called')
       console.log(item)
@@ -5384,6 +5412,7 @@ export default {
         snackText.value = 'Data saved'
       )
     });
+
     const save = (() => {
       console.log('Save Called')
       snack.value = true
@@ -5461,7 +5490,13 @@ export default {
 
     const selectedBoQItems = ref([]);
 
+    const measureDialog = ref(false);
+
+    const measureDialogTextFieldValue = ref(0);
+
     return {
+      measureDialog,
+      measureDialogTextFieldValue,
       id,
       clientId,
       selectedBoQItems,
@@ -5764,6 +5799,7 @@ export default {
       saveContractRate,
       saveMaterialCost,
       saveLabourCost,
+      openMeasureDialog,
       saveMeasureQuantity,
       saveQuantity,
       saveQuantityDeliveredToDate,

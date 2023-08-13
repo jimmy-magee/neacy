@@ -1924,9 +1924,7 @@ const getters = {
         })
     },
     loadedProjectSubContractorProcurementPackages(state) {
-        return state.loadedProjectSubContractorProcurementPackages.sort((A, B) => {
-            return A.id > B.id
-        })
+        return state.loadedProjectSubContractorProcurementPackages
     },
     loadedProjectRooms(state) {
         return state.loadedProjectRooms
