@@ -163,6 +163,8 @@
                                                     <v-layout row>
 
                                                         <v-select :items="projectListSelection"
+                                                            item-title="name"
+                                                            item-value="id"
                                                             v-model="editedEmployeeQuotation.projectId"
                                                             label="Select Project" single></v-select>
 
@@ -1038,9 +1040,9 @@ export default {
         const employeePaymentsReceivedSummary = computed(() => store.getters['employees/loadedEmployeePaymentsReceivedSummary']);
         const employeePaymentsReceived = computed(() => store.getters['employees/loadedEmployeePaymentsReceived']);
         
-        const projects = computed(() => store.getters['projects/loadedProject']);
+        const projects = computed(() => store.getters['projects/loadedProjects']);
 
-        const projectListSelection = projects.value;
+        const projectListSelection = [];
         
         /*
         .forEach(function (item) {
@@ -1055,6 +1057,15 @@ export default {
             save()
         };
 
+        watch(projects, (newValue, oldValue) => {
+            console.log('projects computedProperty was ' + oldValue + '. Now it is ' + JSON.stringify(newValue) + '.')
+            console.log('setting projects list..')
+            const rawObject = JSON.parse(JSON.stringify(newValue))
+            console.log(rawObject)
+            Object.assign(projectListSelection, rawObject);
+            console.log(projectListSelection)
+        })
+
         watch(employee, (newValue, oldValue) => {
             console.log('computedProperty was ' + oldValue + '. Now it is ' + JSON.stringify(newValue) + '.')
             console.log('setting edited employee..')
@@ -1062,6 +1073,8 @@ export default {
             Object.assign(editedEmployee, rawObject);
             console.log(editedEmployee)
         })
+
+        
 
 
 
