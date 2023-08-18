@@ -16,7 +16,7 @@
                         Employee Details
                     </v-tab>
                     <v-tab value="two">
-                        Tenders
+                        Projects
                     </v-tab>
                     <v-tab value="three">
                         Contracts
@@ -1037,12 +1037,16 @@ export default {
 
         const employeePaymentsReceivedSummary = computed(() => store.getters['employees/loadedEmployeePaymentsReceivedSummary']);
         const employeePaymentsReceived = computed(() => store.getters['employees/loadedEmployeePaymentsReceived']);
+        
         const projects = computed(() => store.getters['projects/loadedProject']);
 
-        const projectListSelection = projects;//.map(function (item) {
-        //   console.log("Project selection list adding " + item.id)
-        //   return { text: item.name, value: item.id }
-        // })
+        const projectListSelection = projects.value;
+        
+        /*
+        .forEach(function (item) {
+           console.log("Project selection list adding " + item.id)
+          return { text: item.name, value: item.id }
+     })*/
 
         const onUpdateEmployee = () => {
             console.log('Update Employee Event Received..')
@@ -1092,6 +1096,8 @@ export default {
             date,
             search,
             defaultEmployeeQuotation,
+            editedEmployeeQuotation,
+            editedEmployeeQuotationIndex,
             employeeQuotationTableHeaders,
             employeeQuotationDialog,
             employeeQuotationDateDialog,

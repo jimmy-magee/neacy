@@ -66,49 +66,7 @@
                           </v-text-field>
   
                       </v-layout>
-                      <v-layout row>
-             
-                          <v-text-field name="employeeHeadOfficeTelephoneNumber" label="Head Office TelephoneNumber"
-                            id="employeeHeadOfficeTelephoneNumber" v-model="editedEmployee.headOfficeTelephoneNumber">
-                          </v-text-field>
-              
-                      </v-layout>
-                      <v-layout row>
-             
-                          <v-text-field name="employeeCompanyRegistrationNumber" label="Company Registration Number"
-                            id="employeeCompanyRegistrationNumber" v-model="editedEmployee.companyRegistrationNumber">
-                          </v-text-field>
-           
-                      </v-layout>
-                      <v-layout row>
-              
-                          <v-text-field name="employeeVatNumber" label="Company Vat Number" id="employeeVatNumber"
-                            v-model="editedEmployee.vatNumber">
-                          </v-text-field>
-   
-                      </v-layout>
-                      <v-layout row>
-      
-                          <v-text-field name="employeeBillingName" label="Billing Name" id="employeeBillingName"
-                            v-model="editedEmployee.billingName">
-                          </v-text-field>
-          
-                      </v-layout>
-                      <v-layout row>
-                 
-                          <v-text-field name="employeeBillingAddress" label="Billing Address" id="employeeBillingAddress"
-                            v-model="editedEmployee.billingAddress">
-                          </v-text-field>
-             
-                      </v-layout>
-                      <v-layout row>
-                   
-                          <v-text-field name="employeeBillingEmail" label="Billing Email" id="employeeBillingEmail"
-                            v-model="editedEmployee.billingEmail">
-                          </v-text-field>
-            
-                      </v-layout>
-         
+                      
   
                 </v-container>
               </v-card-text>

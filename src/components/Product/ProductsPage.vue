@@ -226,6 +226,10 @@ export default {
       store.dispatch('clearError', { root: true })
     });
 
+    const formValidationError = computed(() => {
+      return store.getters.formValidationError
+    });
+
     return {
       productCategories,
       products,
@@ -241,6 +245,7 @@ export default {
       error,
       userIsAuthenticatedAndHasRoleAdmin,
       editProduct,
+      formValidationError,
       updateProduct,
       deleteProduct,
       close,
