@@ -162,10 +162,8 @@
                                                 <v-container>
                                                     <v-layout row>
 
-                                                        <v-select :items="projectListSelection"
-                                                            item-title="name"
-                                                            item-value="id"
-                                                            v-model="editedEmployeeQuotation.projectId"
+                                                        <v-select :items="projectListSelection" item-title="name"
+                                                            item-value="id" v-model="editedEmployeeQuotation.projectId"
                                                             label="Select Project" single></v-select>
 
                                                     </v-layout>
@@ -205,9 +203,14 @@
                                                         <v-text-field v-model="editedEmployeeQuotation.netAmount"
                                                             label="Net Amount"></v-text-field>
 
-                                                    </v-layout>
-
+                                                    </v-layout>picker:
+{{ picker }}
                                                     <v-layout row>
+                                                        <v-button @click="saveDate">Click handler test</v-button>
+                                                            <v-date-picker v-show="true" ok-text="ole" 
+                                                            v-model="picker"
+                                                            input-mode="keyboard"></v-date-picker>
+                                                        
                                                         <!--             
                               <v-dialog ref="employeeQuotationDateDialog" v-model="employeeQuotationDateModal"
                                 v-modal="date" persistent width="50%">
@@ -639,15 +642,15 @@
                             <v-card-text>
                                 <h3>Payment Summary</h3>
                                 <v-layout row v-if="employeePaymentSummary">
-                                    
-                                        <v-text-field v-model="employeePaymentSummary.totalPaymentCount"
-                                            label="Payments Submitted" readonly></v-text-field>
-                                   
+
+                                    <v-text-field v-model="employeePaymentSummary.totalPaymentCount"
+                                        label="Payments Submitted" readonly></v-text-field>
+
                                 </v-layout>
                                 <v-layout row v-else>
-                                    
-                                        <span>Payment Count 0</span>
-                                    
+
+                                    <span>Payment Count 0</span>
+
                                 </v-layout>
                                 <h3>Payment Details</h3>
                                 <v-data-table :headers="employeePaymentTableHeaders" :calculate-widths="true"
@@ -807,6 +810,9 @@ export default {
             quotationFile: null,
             status: ''
         });
+        const saveDate = () => {
+            console.log('save Date !!!');
+        }
         const saveEmployeeQuotation = () => {
             if (editedEmployeeQuotationIndex.value > -1) {
                 const formData = {
@@ -1039,16 +1045,10 @@ export default {
 
         const employeePaymentsReceivedSummary = computed(() => store.getters['employees/loadedEmployeePaymentsReceivedSummary']);
         const employeePaymentsReceived = computed(() => store.getters['employees/loadedEmployeePaymentsReceived']);
-        
+
         const projects = computed(() => store.getters['projects/loadedProjects']);
 
         const projectListSelection = [];
-        
-        /*
-        .forEach(function (item) {
-           console.log("Project selection list adding " + item.id)
-          return { text: item.name, value: item.id }
-     })*/
 
         const onUpdateEmployee = () => {
             console.log('Update Employee Event Received..')
@@ -1059,7 +1059,7 @@ export default {
 
         watch(projects, (newValue, oldValue) => {
             console.log('projects computedProperty was ' + oldValue + '. Now it is ' + JSON.stringify(newValue) + '.')
-            console.log('setting projects list..')
+            //console.log('setting projects list..')
             const rawObject = JSON.parse(JSON.stringify(newValue))
             console.log(rawObject)
             Object.assign(projectListSelection, rawObject);
@@ -1074,7 +1074,7 @@ export default {
             console.log(editedEmployee)
         })
 
-        
+        const picker = ref(new Date().toISOString().substr(0, 10));
 
 
 
@@ -1119,6 +1119,8 @@ export default {
             employeeQuotationDateReceivedModal,
             showEmployeeQuotationEditDialog,
             closeEmployeeQuotationDialog,
+            saveDate,
+            picker,
             saveEmployeeQuotation,
             downloadEmployeeQuotation,
             deleteEmployeeQuotation,
