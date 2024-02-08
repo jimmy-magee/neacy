@@ -28,7 +28,7 @@ const mutations = {
     updateCustomer(state, payload) {
         state.loadedCustomers = [
             ...state.loadedCustomers.filter(element => element.id !== payload.id), payload
-        ]
+        ].sort()
     },
     deleteCustomer(state, payload) {
         console.log('Committing delete Customer')
@@ -132,6 +132,8 @@ const actions = {
             })
     },
     updateCustomer({ commit }, payload) {
+        console.log('Updating Customer')
+        console.log(payload)
         commit('setLoading', true, { root: true })
         payload.clientId = localStorage.clientId
         console.log('Updating Customer for user with authorization token ' + localStorage.authHeader + ' . Payload = ')

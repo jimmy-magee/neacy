@@ -1502,6 +1502,7 @@ const actions = {
                     ...savedProjectBoQItemMeasure,
                     id: savedProjectBoQItemMeasure.id
                 })
+                
             }).catch((error) => {
                 commit('setLoading', false, { root: true })
                 commit('setError', error, { root: true })
@@ -1509,7 +1510,7 @@ const actions = {
                 console.log(error)
             })
     },
-    updateProjectBoQItemMeasure({ commit }, payload) {
+    updateProjectBoQItemMeasure({ commit, dispatch }, payload) {
         console.log('Updating Project BoQItem Measure')
         console.log(payload)
         console.log(' for user with token ' + localStorage.authHeader)
@@ -1522,6 +1523,12 @@ const actions = {
                     ...updatedProjectBoQItemMeasure,
                     id: updatedProjectBoQItemMeasure.id
                 })
+                const parameters = {
+                    'projectId': payload.projectId,
+                    'boQItemId': payload.boQItemId
+                }
+                dispatch('loadProjectBoQItemMeasures', parameters)
+                
             }).catch((error) => {
                 commit('setLoading', false, { root: true })
                 commit('setError', error)

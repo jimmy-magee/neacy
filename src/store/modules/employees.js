@@ -6,8 +6,8 @@ import axios from 'axios';
 const state = {
     loadedEmployees: [],
     loadedEmployee: null,
-    loadedEmployeeQuotationSummary: null,
-    loadedEmployeeQuotations: [],
+    loadedEmployeeProjectSummary: null,
+    loadedEmployeeProjects: [],
     loadedEmployeeInvoiceSummary: null,
     loadedEmployeeInvoices: [],
     loadedEmployeePaymentSummary: null,
@@ -37,25 +37,25 @@ const mutations = {
         console.log('Index of deleted item is ' + index)
         state.loadedEmployees.splice(index, 1)
     },
-    setLoadedEmployeeQuotationSummary(state, payload) {
-        state.loadedEmployeeQuotationSummary = payload
+    setLoadedEmployeeProjectSummary(state, payload) {
+        state.loadedEmployeeProjectSummary = payload
     },
-    setLoadedEmployeeQuotations(state, payload) {
-        state.loadedEmployeeQuotations = payload
+    setLoadedEmployeeProjects(state, payload) {
+        state.loadedEmployeeProjects = payload
     },
-    createEmployeeQuotation(state, payload) {
-        state.loadedEmployeeQuotations.push(payload)
+    createEmployeeProject(state, payload) {
+        state.loadedEmployeeProjects.push(payload)
     },
-    updateEmployeeQuotation(state, payload) {
-        state.loadedEmployeeQuotations = [
-            ...state.loadedEmployeeQuotations.filter(element => element.id !== payload.id), payload
+    updateEmployeeProject(state, payload) {
+        state.loadedEmployeeProjects = [
+            ...state.loadedEmployeeProjects.filter(element => element.id !== payload.id), payload
         ]
     },
-    deleteEmployeeQuotation(state, payload) {
-        console.log('Committing delete of Employee Quotation')
+    deleteEmployeeProject(state, payload) {
+        console.log('Committing delete of Employee Project')
         console.log(payload)
-        const index = state.loadedEmployeeQuotations.indexOf(payload)
-        state.loadedEmployeeQuotations.splice(index, 1)
+        const index = state.loadedEmployeeProjects.indexOf(payload)
+        state.loadedEmployeeProjects.splice(index, 1)
     },
     setLoadedEmployeeInvoiceSummary(state, payload) {
         state.loadedEmployeeInvoiceSummary = payload
@@ -169,23 +169,23 @@ const actions = {
                 console.log(error)
             })
     },
-    createEmployeeQuotation({ commit }, payload) {
-        //console.log('Creating new quotation for employee  ' + payload.subContractorId + ' assigned to ' + payload.projectId)
+    createEmployeeProject({ commit }, payload) {
+        //console.log('Creating new project for employee  ' + payload.subContractorId + ' assigned to ' + payload.projectId)
         console.log(payload)
         console.log(' for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
 
         const formData = new FormData()
-        formData.append('quotationFile', payload.quotationFile)
+        formData.append('projectFile', payload.projectFile)
         formData.append('subContractrorId', payload.subContractorId)
         formData.append('clientId', localStorage.clientId)
         formData.append('projectId', payload.projectId)
         formData.append('packageId', payload.packageId)
-        formData.append('quotationRef', payload.quotationRef)
+        formData.append('projectRef', payload.projectRef)
         formData.append('description', payload.description)
         formData.append('currency', payload.currency)
         formData.append('grossAmount', payload.grossAmount)
         formData.append('netAmount', payload.netAmount)
-        formData.append('quotationDate', payload.quotationDate)
+        formData.append('projectDate', payload.projectDate)
         console.log('Multipart Form Data is ')
         for (var p of formData) {
             console.log('Appended Form Data part ' + p)
@@ -193,65 +193,65 @@ const actions = {
         axios.create({
             baseURL: `/`,
             headers: { 'Authorization': localStorage.authHeader, 'Content-Type': 'multipart/form-data' }
-        }).post('/api/client/' + localStorage.clientId + '/employees/' + payload.employeeId + '/quotations', formData)
+        }).post('/api/client/' + localStorage.clientId + '/employees/' + payload.employeeId + '/projects', formData)
             .then((response) => {
-                const savedEmployeeQuotation = response.data
-                console.log(savedEmployeeQuotation)
-                commit('createEmployeeQuotation', {
-                    ...savedEmployeeQuotation,
-                    id: savedEmployeeQuotation.id
+                const savedEmployeeProject = response.data
+                console.log(savedEmployeeProject)
+                commit('createEmployeeProject', {
+                    ...savedEmployeeProject,
+                    id: savedEmployeeProject.id
                 })
             })
             .catch((error) => {
                 commit('setLoading', false, { root: true })
                 commit('setError', error, { root: true })
-                console.log('Oops error creating Employee Quotation ' + error.message)
+                console.log('Oops error creating Employee Project ' + error.message)
                 console.log(error)
             })
     },
-    updateEmployeeQuotation({ commit }, payload) {
-        console.log('Updating Employee Quotation ')
+    updateEmployeeProject({ commit }, payload) {
+        console.log('Updating Employee Project ')
         console.log(payload)
         console.log(' for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
-        webClient.put(`/api/client/` + localStorage.clientId + `/employees/` + payload.subContractorId + '/quotations/' + payload.id, payload)
+        webClient.put(`/api/client/` + localStorage.clientId + `/employees/` + payload.subContractorId + '/projects/' + payload.id, payload)
             .then((response) => {
-                const savedEmployeeQuotation = response.data
-                console.log(savedEmployeeQuotation)
-                commit('updateEmployeeQuotation', {
-                    ...savedEmployeeQuotation,
-                    id: savedEmployeeQuotation.id
+                const savedEmployeeProject = response.data
+                console.log(savedEmployeeProject)
+                commit('updateEmployeeProject', {
+                    ...savedEmployeeProject,
+                    id: savedEmployeeProject.id
                 })
             })
             .catch((error) => {
                 commit('setLoading', false, { root: true })
                 commit('setError', error, { root: true })
-                console.log('Oops error updating Employee Quotation ' + error.message)
+                console.log('Oops error updating Employee Project ' + error.message)
                 console.log(error)
             })
     },
-    deleteEmployeeQuotation({ commit }, payload) {
-        console.log('Delete Employee Quotation ' + payload.id)
-        webClient.delete('/api/client/' + localStorage.clientId + '/employees/' + payload.subContractorId + '/quotations/' + payload.id)
+    deleteEmployeeProject({ commit }, payload) {
+        console.log('Delete Employee Project ' + payload.id)
+        webClient.delete('/api/client/' + localStorage.clientId + '/employees/' + payload.subContractorId + '/projects/' + payload.id)
             .then((response) => {
-                console.log('Deleted Employee Quotation, response status = ' + response.status)
-                commit('deleteEmployeeQuotation', payload)
+                console.log('Deleted Employee Project, response status = ' + response.status)
+                commit('deleteEmployeeProject', payload)
             })
             .catch((error) => {
                 commit('setLoading', false, { root: true })
                 commit('setError', error, { root: true })
             })
     },
-    loadEmployeeQuotationSummary({ commit }, payload) {
+    loadEmployeeProjectSummary({ commit }, payload) {
         commit('setLoading', true, { root: true })
         console.log('Loading all employee invoices ' + payload)
         console.log('for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
 
-        webClient.get(`/api/client/` + localStorage.clientId + `/employees/` + payload + '/quotations/summary')
+        webClient.get(`/api/client/` + localStorage.clientId + `/employees/` + payload + '/projects/summary')
             .then(response => {
-                console.log('Received employee Quotation Summary from server.')
+                console.log('Received employee Project Summary from server.')
                 console.log(response.data)
                 const data = response.data
-                commit('setLoadedEmployeeQuotationSummary', data)
+                commit('setLoadedEmployeeProjectSummary', data)
                 commit('setLoading', false, { root: true })
             })
             .catch(error => {
@@ -259,17 +259,17 @@ const actions = {
                 commit('setError', error, { root: true })
             })
     },
-    loadEmployeeQuotations({ commit }, payload) {
+    loadEmployeeProjects({ commit }, payload) {
         commit('setLoading', true, { root: true })
-        console.log('Loading all Quotations with employee id ' + payload)
+        console.log('Loading all Projects with employee id ' + payload)
         console.log('for user with token ' + localStorage.authHeader + ' with client id ' + localStorage.clientId)
 
-        webClient.get(`/api/client/` + localStorage.clientId + `/employees/` + payload + '/quotations')
+        webClient.get(`/api/client/` + localStorage.clientId + `/employees/` + payload + '/projects')
             .then(response => {
-                console.log('Received employee Quotations from server.')
+                console.log('Received employee Projects from server.')
                 console.log(response.data)
                 const data = response.data
-                commit('setLoadedEmployeeQuotations', data)
+                commit('setLoadedEmployeeProjects', data)
                 commit('setLoading', false, { root: true })
             })
             .catch(error => {
@@ -277,26 +277,26 @@ const actions = {
                 commit('setError', error, { root: true })
             })
     },
-    downloadEmployeeQuotation({ commit }, payload) {
-        console.log('Downloading Employee quotation from url:')
-        console.log(payload.quotationFileUrl)
+    downloadEmployeeProject({ commit }, payload) {
+        console.log('Downloading Employee project from url:')
+        console.log(payload.projectFileUrl)
         axios({
             baseURL: `/`,
-            url: payload.quotationFileUrl,
+            url: payload.projectFileUrl,
             method: 'GET',
             responseType: 'blob',
             headers: { 'Authorization': localStorage.authHeader }
         }).then((response) => {
-            console.log('Received employee quotation from server:')
+            console.log('Received employee project from server:')
             console.log(response.data)
             const url = window.URL.createObjectURL(new Blob([response.data]))
             const link = document.createElement('a')
             link.href = url
-            const index = payload.quotationFileUrl.lastIndexOf('/') + 1
-            const lastIndex = payload.quotationFileUrl.length
-            const filename = payload.quotationFileUrl.substring(index, lastIndex)
+            const index = payload.projectFileUrl.lastIndexOf('/') + 1
+            const lastIndex = payload.projectFileUrl.length
+            const filename = payload.projectFileUrl.substring(index, lastIndex)
             console.log('last index of / is ' + index)
-            console.log('lenght of file path is ' + payload.quotationFileUrl.length)
+            console.log('lenght of file path is ' + payload.projectFileUrl.length)
             console.log('filename is  ' + filename)
             link.setAttribute('download', filename) // or any other extension
             document.body.appendChild(link)
@@ -454,15 +454,15 @@ const getters = {
     loadedEmployee(state) {
         return state.loadedEmployee;
     },
-    loadedEmployeeQuotations(state) {
-        return state.loadedEmployeeQuotations.sort((userA, userB) => {
-            return userA.quotationDate > userB.quotationDate
+    loadedEmployeeProjects(state) {
+        return state.loadedEmployeeProjects.sort((userA, userB) => {
+            return userA.projectDate > userB.projectDate
         })
     },
-    loadedEmployeeQuotation(state) {
-        return (quotationId) => {
-            return state.loadedEmployeeQuotations.find((quote) => {
-                return quote.id === quotationId
+    loadedEmployeeProject(state) {
+        return (projectId) => {
+            return state.loadedEmployeeProjects.find((quote) => {
+                return quote.id === projectId
             })
         }
     },
@@ -481,8 +481,8 @@ const getters = {
     loadedEmployeePayments(state) {
         return state.loadedEmployeePayments
     },
-    loadedEmployeeQuotationSummary(state) {
-        return state.loadedSubContractorQuotationSummary
+    loadedEmployeeProjectSummary(state) {
+        return state.loadedSubContractorProjectSummary
     },
     loadedEmployeeInvoiceSummary(state) {
         return state.loadedEmployeeInvoiceSummary

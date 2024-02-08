@@ -82,8 +82,8 @@
                     <template v-slot:[`item.image`]="{ item }">
                       projectId : {{ id }}
                       <v-img
-                        :src="`http://localhost:8080/api/resource/clients/${clientId}/projects/${id}/images/${item.value}/download`"
-                        :lazy-src="`http://localhost:8080/api/resource/clients/${clientId}projects/${id}/images/${item.value}/download`"
+                        :src="`http://localhost:8080/api/resource/clients/${clientId}/projects/${projectId}/images/${item.value}/download`"
+                        :lazy-src="`http://localhost:8080/api/resource/clients/${clientId}projects/${projectId}/images/${item.value}/download`"
                         aspect-ratio="1" class="grey lighten-2" max-width="400" max-height="300"></v-img>
                     </template>
                     <template v-slot:[`item.actionEditImageMetadata`]="{ item }">

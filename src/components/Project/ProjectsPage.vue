@@ -25,7 +25,7 @@
           
           <v-data-table :headers="projectTableHeaders" :items="projects" :search="search">
             <template v-slot:[`item.actionEdit`]="{ item }">
-              <v-btn icon="mdi-file-edit-outline" @click="editProject(item.value)">
+              <v-btn icon="mdi-file-edit-outline" @click="editProject(item)">
               </v-btn>
             </template>
             <!--
@@ -100,13 +100,16 @@ export default {
     const error = computed(() => store.getters['error', { root: true }]);
     const userIsAuthenticatedAndHasRoleAdmin = computed(() => store.getters['users/userIsAuthenticatedAndHasRoleAdmin']);
 
-    const editProject = ((id) => {
-      console.log('Edit item ' + id)
-      editedIndex.value = projects.value.findIndex(sc => sc.id == id)
-      const obj = projects.value.find(sc => sc.id == id)
+    const editProject = ((selectedRow) => {
+      console.log('Edit item ' + selectedRow)
+      console.log(selectedRow.id)
+      editedIndex.value = projects.value.findIndex(sc => sc.id == selectedRow.id)
+      const obj = projects.value.find(sc => sc.id == selectedRow.id)
       Object.assign(editedItem, obj)
       dialog.value = true
-      router.push('projects/' + id)
+      console.log("navigating to project details page")
+      console.log(editedItem)
+      router.push('/projects/' + selectedRow.id)
     });
 
     const updateProject = (() => {

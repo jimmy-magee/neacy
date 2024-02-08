@@ -1,5 +1,7 @@
 <template>
+  
   <v-container fluid>
+  
     <v-card>
       <v-card-title>
         Customer Details
@@ -149,6 +151,7 @@
       </v-card-text>
     </v-card>
   </v-container>
+
 </template>
 
 <script>
