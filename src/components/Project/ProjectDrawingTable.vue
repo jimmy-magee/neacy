@@ -11,7 +11,7 @@
         hide-details
       ></v-text-field>
       <v-spacer></v-spacer>
-      <v-btn icon color="green">
+      <v-btn icon color="green" class="float-right">
         <v-icon icon="mdi-plus"></v-icon>
         <v-dialog v-model="dialog" activator="parent">
           <v-card>
@@ -259,9 +259,10 @@ const uploadProjectDrawings = () => {
 };
 const deleteProjectDrawing = (item) => {
   console.log("onDeleteDrawing Event Received..");
+  console.log(item);  
   const formData = {
     projectId: projectId,
-    id: item.value,
+    id: item.id,
   };
   console.log(formData);
   // const index = drawings.indexOf(item)

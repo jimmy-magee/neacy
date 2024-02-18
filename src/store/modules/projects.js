@@ -79,8 +79,8 @@ const mutations = {
         ]
     },
     deleteProjectRoom(state, payload) {
-        const index = state.loadedProjectRooms.indexOf(payload)
-        console.log('Index of deleted item is ' + index)
+        const index = state.loadedProjectRooms.map(obj => obj.id).indexOf(payload.id)
+        console.log('Index of deleted room schedule id  is ' + index)
         state.loadedProjectRooms.splice(index, 1)
     },
     addProjectDrawing(state, payload) {
@@ -99,7 +99,7 @@ const mutations = {
     deleteProjectDrawing(state, payload) {
         console.log('Committing delete project drawing')
         console.log(payload)
-        const index = state.loadedProjectDrawings.indexOf(payload)
+        const index = state.loadedProjectDrawings.map(e => e.id).indexOf(payload);
         console.log('Index of deleted item is ' + index)
         state.loadedProjectDrawings.splice(index, 1)
     },
@@ -1118,7 +1118,7 @@ const actions = {
         webClient.delete('/api/resource/clients/' + localStorage.clientId + '/projects/' + payload.projectId + '/drawings/' + payload.id)
             .then((response) => {
                 console.log('Deleted project drawing, response status = ' + response.status)
-                commit('deleteProjectDrawing', payload)
+                commit('deleteProjectDrawing', payload.id)
             })
             .catch((error) => {
                 commit('setError', error, { root: true })

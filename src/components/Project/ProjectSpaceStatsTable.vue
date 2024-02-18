@@ -11,7 +11,7 @@
         hide-details
       ></v-text-field>
       <v-spacer></v-spacer>
-      <v-btn icon color="green">
+      <v-btn icon color="green" class="float-right">
         <v-icon icon="mdi-plus"></v-icon>
         <v-dialog v-model="projectRoomDialog" activator="parent">
           <v-card>
@@ -145,7 +145,9 @@ const saveOrUpdateProjectRoom = () => {
 };
 
 const deleteProjectRoom = (item) => {
-  store.dispatch("projects/deleteProjectRoom", item.value);
+  console.log('Delete Project Room ')
+  console.log(item)
+  store.dispatch("projects/deleteProjectRoom", item);
 };
 
 const viewProjectRoom = (item) => {
