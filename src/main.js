@@ -1,6 +1,6 @@
 /* eslint-disable vue/multi-word-component-names */
 /* eslint-disable no-undef */
-import { createApp } from 'vue'
+import { createApp, computed } from 'vue'
 import App from './App.vue'
 import '@/assets/styles.scss';
 import { createRouter, createWebHistory } from 'vue-router'
@@ -142,18 +142,18 @@ import ProjectBoQTakeOffTable from '@/components/Project/ProjectBoQTakeOffTable.
 const routes = [
   {
     path: '/',
-    name: 'User',
+    name: 'HomePage',
     component: () => import(/* webpackChunkName: "signin" */ './components/HelloWorld.vue')
   },
   {
     path: '/signin',
-    name: 'signin component',
+    name: 'SignInPage',
     //component: User
     component: () => import(/* webpackChunkName: "signin" */ './components/User/SigninForm.vue')
   },
   {
     path: '/signup',
-    name: 'SignupComponent',
+    name: 'SignupPage',
     component: () => import(/* webpackChunkName: "signupForm" */ './components/User/SignupForm.vue'),
   },
   {
@@ -183,27 +183,27 @@ const routes = [
   },
   {
     path: '/supplier_categories',
-    name: 'Supplier Categories Page',
+    name: 'SupplierCategoriesPage',
     component: () => import(/* webpackChunkName: "supplierCategoryPage" */ './components/Supplier/SupplierCategories.vue'),
   },
   {
     path: '/suppliers',
-    name: 'Suppliers',
+    name: 'SuppliersPage',
     component: () => import(/* webpackChunkName: "suppliersPage" */ './components/Supplier/SuppliersPage.vue'),
   },
   {
     path: '/subcontractor_categories',
-    name: 'SubContractor Categories Page',
+    name: 'SubContractorCategoriesPage',
     component: () => import(/* webpackChunkName: "subContractorCategoryPage" */ './components/SubContractor/SubContractorCategories.vue'),
   },
   {
     path: '/subcontractors',
-    name: 'SubContractors',
+    name: 'SubContractorsPage',
     component: () => import(/* webpackChunkName: "subcontractorsPage" */ './components/SubContractor/SubContractorsPage.vue'),
   },
   {
     path: '/subcontractors/:id',
-    name: 'SubContractor',
+    name: 'SubContractorPage',
     component: () => import(/* webpackChunkName: "subcontractorPage" */ './components/SubContractor/SubContractorPage.vue'),
   },
   {
@@ -218,7 +218,7 @@ const routes = [
   },
   {
     path: '/projects/new',
-    name: 'ProjectForm',
+    name: 'ProjectFormPage',
     component: () => import(/* webpackChunkName: "createProject" */ './components/Project/CreateProject.vue'),
   },
   {
@@ -243,7 +243,7 @@ const routes = [
   },
   {
     path: '/drawing_categories',
-    name: 'Drawing Categories Page',
+    name: 'DrawingCategoriesPage',
     component: () => import(/* webpackChunkName: "drawingCategoryPage" */ './components/Drawing/DrawingCategories.vue'),
   },
   {
@@ -280,6 +280,24 @@ const router = createRouter({
   routes, // short for `routes: routes`
 });
 
+
+router.beforeEach(async (to, from) => {
+  console.log('checking route to ');
+  console.log(to);
+  console.log('from ');
+  console.log(from);
+  console.log(userIsAuthenticated);
+  if (
+    // make sure the user is authenticated
+    !userIsAuthenticated.value &&
+    // ❗️ Avoid an infinite redirect
+    to.name !== 'SignInPage'
+  ) {
+    // redirect the user to the login page
+    return { name: 'SignInPage' }
+  }
+})
+
 const vuetify = createVuetify({
   theme: {
     defaultTheme: "dark",
@@ -299,9 +317,10 @@ const vuetify = createVuetify({
   directives,
 });
 
-
 const app = createApp(App).use(store).use(router).use(vuetify);
 
+const userIsAuthenticated = computed(() => store.getters['users/userIsAuthenticatedAndHasRoleUser']);
+    
 app.use(PrimeVue, { ripple: true });
 app.use(ToastService);
 app.use(DialogService);

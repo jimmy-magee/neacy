@@ -4,7 +4,7 @@
       <v-btn icon color="green" class="float-right">
         <v-icon icon="mdi-plus"></v-icon>
         <v-dialog v-model="projectBoQItemMeasureDialog" activator="parent">
-          <v-card>
+          <v-card max-width="50%">
             <v-card-text>
               <v-container>
                 <v-layout row>
@@ -23,18 +23,34 @@
                       ></v-text-field>
 
                       <v-spacer></v-spacer>
+                      <div>
+                        <v-text-field
+                        v-model="measuredQuantity"
+                        label="Measured Quantity"
+                        prepend-inner-icon="mdi-camera"
+                        variant="outlined"
+                        single-line
+                        hide-details
+                      ></v-text-field>
+                      <v-btn @click="bulkUpdateProjectBoQItemMeasures">Apply</v-btn>
+                    </div>
                     </v-card-title>
                     <v-card-text>
                       <v-data-table
                         :headers="projectRoomMeasureTableHeaders"
                         :calculate-widths="true"
                         :items="projectTakeOffQuantities"
-                        :show-select="false"
+                        show-select
+                        v-model="selected"
+                        return-object
                         :search="searchProjectRoomMeasures"
                       >
-                        <template v-slot:[`item.qty`]="{ item }">
+                    
+                      <template v-slot:[`item.quantityMeasured`]="{ item }">
+                     
                           <v-btn variant="flat" border="0"
-                            >{{ item.qty }}
+                            >{{ item.quantityMeasured }}
+                             
                             <v-menu
                               ref="menu"
                               activator="parent"
@@ -51,8 +67,8 @@
                                       style="min-width: 400px; max-width: 400px"
                                     >
                                       <v-text-field
-                                        label="Quantity"
-                                        v-model="item.qty"
+                                        label="Quantity Measured"
+                                        v-model="item.quantityMeasured"
                                       ></v-text-field>
                                     </v-card-text>
                                     <v-card-actions>
@@ -71,8 +87,9 @@
                               </v-list>
                             </v-menu>
                           </v-btn>
-                        </template>
+                        </template> 
                       </v-data-table>
+                      selected: {{ selected }}
                     </v-card-text>
                   </v-card>
                 </v-layout>
@@ -138,7 +155,7 @@
                   .reduce((sum, val) => sum + val, 0)
                   .toFixed(2)
               }}
-              {{ emitUpdateTotalMeasuredQuantityEvent() }}
+              {{ emitTotalMeasuredQuantityUpdateEvent() }}
             </th>
             <th class="title"></th>
             <th class="title"></th>
@@ -150,7 +167,7 @@
 </template>
 
 <script setup>
-import { computed, defineEmits, ref, reactive, onMounted } from "vue";
+import { computed, ref, defineEmits, reactive, onMounted } from "vue";
 import { useStore } from "vuex";
 
 //eslint-disable-next-line
@@ -159,7 +176,8 @@ const { projectId, boQItemId } = defineProps(["projectId", "boQItemId"]);
 const store = useStore();
 
 const emit = defineEmits(["update:measuredQuantityTotal"]);
-
+const selected = ref([]);
+const measuredQuantity = ref(0);
 onMounted(() => {
   console.log(
     "Loading boq take off for project id " + projectId + ", boqItemId :" + boQItemId
@@ -178,17 +196,17 @@ const projectTakeOffQuantities = computed(() =>
     console.log("Processing space " + r.name);
     var existing = false;
     var id = null;
-    var qty = 0;
+    var measuredQuantity = 0;
     // check for a previous measurement of the space
     measures.value.map((m) => {
       if (m.roomScheduleId == r.id) {
         console.log("Setting room measured qty to " + m.quantityMeasured);
         existing = true;
         id = m.id;
-        qty = m.quantityMeasured;
+        measuredQuantity = m.quantityMeasured;
       }
     });
-    return makeRoomQuantity(existing, id, r.id, r.name, qty);
+    return makeRoomQuantity(existing, id, r.id, r.name, measuredQuantity);
   })
 );
 
@@ -198,39 +216,29 @@ const projectRooms = computed(() => {
 
 // invoked from boq item measure table
 const updateProjectBoQItemMeasure = (item) => {
-  console.log("updat BoQItemMeasure Event Received..");
+  console.log("update BoQItemMeasure Event Received..");
   console.log(item);
   store.dispatch("projects/updateProjectBoQItemMeasure", item);
-  //emitUpdateTotalMeasuredQuantityEvent();
 };
 
-const saveOrUpdateProjectBoQItemMeasure = (item) => {
-  console.log("onSave BoQItemMeasure Event Received..");
-  console.log(item);
-  editedBoQItemMeasure.roomScheduleId = item.roomScheduleId;
-  editedBoQItemMeasure.quantityMeasured = item.qty;
-  editedBoQItemMeasure.projectId = projectId;
-  editedBoQItemMeasure.boQItemId = boQItemId;
-  if (!item.existing) {
-    store.dispatch("projects/createProjectBoQItemMeasure", editedBoQItemMeasure);
-    //.then(emitUpdateTotalMeasuredQuantityEvent());
-  } else {
-    editedBoQItemMeasure.id = item.id;
-    store.dispatch("projects/updateProjectBoQItemMeasure", editedBoQItemMeasure);
-    //.then(emitUpdateTotalMeasuredQuantityEvent());
+const bulkUpdateProjectBoQItemMeasures = () => {
+  console.log("update BoQItemMeasure Event Received..");
+  let uqrm = selected.value.map(rm => {
+    console.log("Updated rm "+ rm.roomName + "with quantity measured "+ measuredQuantity.value)
+      rm.quantityMeasured = measuredQuantity.value;
+      return rm;
+   })
+   console.log(uqrm);
+  console.log(selected);
+  let payload = {
+    projectId: projectId,
+    boQItemId: boQItemId,
+    measures: selected.value,
   }
-};
-const deleteProjectBoQItemMeasure = (item) => {
-  console.log("onDelete BoQItemMeasure Event Received..");
-  console.log(item);
-  store.dispatch("projects/deleteProjectBoQItemMeasure", item).then(
-    setTimeout(() => {
-      emitUpdateTotalMeasuredQuantityEvent();
-    }, 300)
-  );
+  store.dispatch("projects/bulkUpdateProjectBoQItemMeasures", payload);
 };
 
-const emitUpdateTotalMeasuredQuantityEvent = () => {
+const emitTotalMeasuredQuantityUpdateEvent = () => {
   var qty = 0;
   qty = measures.value
     .filter((m) => m.quantityMeasured != null)
@@ -240,21 +248,36 @@ const emitUpdateTotalMeasuredQuantityEvent = () => {
   emit("update:measuredQuantityTotal", qty);
   console.log("Emit update total measured qty now is " + qty);
 };
+
 const closeProjectBoQItemMeasureDialog = () => {
   projectBoQItemMeasureDialog.value = false;
-  // var qty = measures.value.filter(m => m.quantityMeasured != null)
-  //   .map(m => parseInt(m.quantityMeasured)).reduce((sum, val) => sum + val, 0).toFixed(2)
-
-  // editedBoQItem.quantity = qty
-  // editedBoQItem.measuredQuantity = qty
-  //store.dispatch('projects/updateProjectBoQItem', editedBoQItem)
-  console.log("XXXXX");
-  //console.log(editedBoQItem.measuredQuantity);
   setTimeout(() => {
-    Object.assign(editedBoQItemMeasure, defaultBoQItemMeasure);
-    editedBoQItemMeasureIndex.value = -1;
+    selected.value = [];
+    //Object.assign(editedBoQItemMeasure, defaultBoQItemMeasure);
+    //editedBoQItemMeasureIndex.value = -1;
   }, 300);
 };
+
+const saveOrUpdateProjectBoQItemMeasure = (item) => {
+  console.log("onSave BoQItemMeasure Event Received..");
+  console.log(item);
+  editedBoQItemMeasure.roomScheduleId = item.roomScheduleId;
+  editedBoQItemMeasure.quantityMeasured = item.quantityMeasured;
+  editedBoQItemMeasure.projectId = projectId;
+  editedBoQItemMeasure.boQItemId = boQItemId;
+  if (!item.existing) {
+    store.dispatch("projects/createProjectBoQItemMeasure", editedBoQItemMeasure);
+    //.then(emitTotalMeasuredQuantityUpdateEvent());
+  } else {
+    editedBoQItemMeasure.id = item.id;
+    store.dispatch("projects/updateProjectBoQItemMeasure", editedBoQItemMeasure);
+    //.then(emitTotalMeasuredQuantityUpdateEvent());
+  }
+};
+
+
+
+
 /*
 const openMeasureDialog = (item) => {
   console.log("Opening measure dialog..");
@@ -286,7 +309,7 @@ const saveMeasureQuantity = (item) => {
     );
 };*/
 const menu = ref(null);
-const editedBoQItemMeasureIndex = ref(-1);
+
 const editedBoQItemMeasure = reactive({
   id: "",
   projectId: "",
@@ -299,23 +322,23 @@ const editedBoQItemMeasure = reactive({
   drawings: [],
   comments: "",
 });
-const defaultBoQItemMeasure = reactive({
-  projectId: "",
-  boQItemId: "",
-  name: "",
-  description: "",
-  quantity: "",
-  unit: "",
-  drawings: [],
-  roomScheduleId: "",
-  comments: "",
-});
+
+
+const deleteProjectBoQItemMeasure = (item) => {
+  console.log("onDelete BoQItemMeasure Event Received..");
+  console.log(item);
+  store.dispatch("projects/deleteProjectBoQItemMeasure", item).then(
+    setTimeout(() => {
+      emitTotalMeasuredQuantityUpdateEvent();
+    }, 300)
+  );
+};
 const projectRoomMeasureTableHeaders = [
   { title: "Id", key: "id", align: " d-none" },
   { title: "Room Schedule Id", key: "roomScheduleId", align: " d-none" },
   { title: "Existing", key: "existing", align: " d-none" },
   { title: "Space", key: "roomName" },
-  { title: "Quantity", key: "qty", default: 0 },
+  { title: "Quantity", key: "quantityMeasured", default: 0 },
 ];
 const projectBoQItemMeasureDialog = ref(false);
 const searchBoQItemMeasures = ref("");
@@ -341,7 +364,7 @@ function makeRoomQuantity(existing, id, roomScheduleId, roomName, qty) {
     roomScheduleId: roomScheduleId,
     existing: existing,
     roomName: roomName,
-    qty: qty,
+    quantityMeasured: qty,
   };
 }
 </script>

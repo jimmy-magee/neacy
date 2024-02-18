@@ -222,9 +222,12 @@ const downloadProjectDrawing = (item) => {
 };
 
 const editItem = (item) => {
+  console.log(item);
   editedIndex.value = drawings.value.findIndex((d) => d.id == item.value);
-  const dwg = drawings.value.find((d) => d.id == item.value);
+  const dwg = drawings.value.find((d) => d.id == item.id);
   Object.assign(editedItem, dwg);
+  console.log('Edited Drawings is')
+  console.log(editedItem)
   projectDrawingMetaDataDialog.value = true;
 };
 

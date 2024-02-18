@@ -150,7 +150,7 @@ const deleteProjectRoom = (item) => {
 
 const viewProjectRoom = (item) => {
   // editedProjectRoomIndex.value = projectRoomsX.value.findIndex(r => r.id == item.value)
-  const obj = projectRoomsX.value.find((r) => r.id == item.value);
+  const obj = projectRoomsX.value.find((r) => r.id == item.id);
   // Object.assign(editedProjectRoom, obj)
   console.log(item);
 
@@ -162,7 +162,7 @@ const viewProjectRoom = (item) => {
 
 const openProjectRoomDialog = (item) => {
   editedProjectRoomIndex.value = projectRoomsX.value.findIndex((r) => r.id == item.value);
-  const obj = projectRoomsX.value.find((r) => r.id == item.value);
+  const obj = projectRoomsX.value.find((r) => r.id == item.id);
   Object.assign(editedProjectRoom, obj);
   console.log(item);
 

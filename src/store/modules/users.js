@@ -151,7 +151,7 @@ const actions = {
         })
             .post('/auth/login', payload)
             .then(response => {
-                const authHeader = response.headers['authorization'] // response.headers('Lemon-Authorization')
+                const authHeader = response.headers['authorization']
                 //console.log('Authorization received: ' + authHeader)
                 if (authHeader) {
                     localStorage.authHeader = 'Bearer ' + authHeader
@@ -209,7 +209,7 @@ const getters = {
         return state.user !== null && state.user !== undefined
     },
     userIsAuthenticatedAndHasRoleUser(state) {
-        // console.log('checking is user authenticated and has role USER')
+         console.log('checking is user authenticated and has role USER')
         if (state.user == null || state.user == undefined) {
             return false
         }

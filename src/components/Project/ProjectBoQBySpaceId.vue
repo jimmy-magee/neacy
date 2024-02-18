@@ -1,96 +1,54 @@
 <template>
   <v-card>
-    <v-card-title>
-      <v-spacer></v-spacer>
-      <v-text-field
-        v-model="searchRoomScheduleBoQTreeView"
-        append-icon="search"
-        label="Search"
-        single-line
-        hide-details
-      >
-      </v-text-field>
-      <!--
-    <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details>
-    </v-text-field>
-  -->
-    </v-card-title>
-    <h3>Room Schedule BoQ</h3>
-
-    <!--
-  <v-card
-    class="mx-auto"
-    max-width="500"
-  >
-    <v-sheet class="pa-4 primary lighten-2">
-      <v-text-field
-        v-model="search"
-        label="Search Company Directory"
-        dark
-        flat
-        solo-inverted
-        hide-details
-        clearable
-        clear-icon="mdi-close-circle-outline"
-      ></v-text-field>
-      <v-checkbox
-        v-model="caseSensitive"
-        dark
-        hide-details
-        label="Case sensitive search"
-      ></v-checkbox>
-    </v-sheet>
-    <v-card-text>
-      <v-treeview
-        :items="items"
-        :search="search"
-        :filter="filter"
-        :open.sync="open"
-      >
-        <template v-slot:prepend="{ item }">
-          <v-icon
-            v-if="item.children"
-            v-text="`mdi-${item.id === 1 ? 'home-variant' : 'folder-network'}`"
-          ></v-icon>
-        </template>
-      </v-treeview>
-    </v-card-text>
-  </v-card>
-  -->
-    <!-- :items="filteredProjectRoomScheduleBoQ" -->
-    <v-treeview
-      :items="filteredProjectRoomScheduleBoQ"
-      v-model="openTreeNodes"
-      :filter="filter"
-      :search="searchRoomScheduleBoQTreeView"
+    <v-data-table
+      :headers="projectRoomScheduleBoQTableHeaders"
+      :calculate-widths="true"
+      :items="projectRoomScheduleBoQ"
+      :custom-filter="filterRoomScheduleBoQ"
+      v-model:search="searchRoomScheduleBoQ"
+      :group-by="groupBy"
     >
-      <template v-slot:[`prepend`]="{ item }">
-        <v-icon v-if="item.children"> room </v-icon>
-        <v-icon v-if="!item.children"> settings </v-icon>
+      <template v-slot:top>
+        <v-text-field
+          v-model="searchRoomScheduleBoQ"
+          label="Search"
+          class="pa-2"
+        ></v-text-field>
       </template>
 
-      <template v-slot:[`label`]="{ item }">
-        <p v-if="item.children">{{ item.roomName }} : {{ item.cost }}</p>
-
-        <p v-if="!item.children">
-          {{ item.boqItemName }} : {{ item.quantity }} :
-          {{ item.boqItemContractRate }}
-        </p>
+      <template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">
+        <tr>
+          <td :colspan="columns.length">
+            <VBtn
+              size="small"
+              variant="text"
+              :icon="isGroupOpen(item) ? '$expand' : '$next'"
+              @click="toggleGroup(item)"
+            ></VBtn>
+            {{ item.value }}
+          </td>
+          <td>{{ item.items.length }}</td>
+          <td>
+            <v-chip color="green">€ {{ calculateTotalSpaceCosts(item.items) }}</v-chip>
+          </td>
+        </tr>
       </template>
-    </v-treeview>
 
-    <!--
-  <v-data-table :headers="projectRoomScheduleBoQTableHeaders" :calculate-widths="true"
-    :items="projectRoomScheduleBoQ"
-    :search="searchRoomScheduleBoQ"
-    group-by="roomName">
-
-  </v-data-table>
-  -->
+      <template v-slot:item="{ item }">
+        <tr>
+          <td></td>
+          <td>{{ item.boqItemName }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.unit }}</td>
+          <td>{{ item.boqItemContractRate }}</td>
+          <td>{{ calculateTotalCost(item.boqItemContractRate, item.quantity) }}</td>
+        </tr>
+      </template>
+    </v-data-table>
   </v-card>
 </template>
 <script setup>
-import { computed, ref, defineProps, reactive, watch, onMounted } from "vue";
+import { computed, ref, defineProps, watch, onMounted } from "vue";
 import { useStore } from "vuex";
 
 //eslint-disable-next-line
@@ -98,10 +56,40 @@ const { projectId } = defineProps(["projectId"]);
 
 const store = useStore();
 
+const searchRoomScheduleBoQ = ref("");
+
+const filterRoomScheduleBoQ = (value, query, item) => {
+ 
+  return item.raw.roomName.toLowerCase().indexOf(query) !== -1;
+  /*
+  return value != null &&
+          query != null &&
+          typeof value === 'string' &&
+          value.toString().toLocaleUpperCase().indexOf(query) !== -1*/
+};
+
+const calculateTotalCost = (rate, qty) => {
+  return (rate * qty).toFixed(2);
+};
+const groupBy = [
+  {
+    key: "roomName",
+    order: "asc",
+  },
+];
+
 onMounted(() => {
   console.log("Loading room schedule boq for project id " + projectId);
   store.dispatch("projects/loadProjectRoomScheduleBoQ", projectId);
 });
+
+const calculateTotalSpaceCosts = (items) => {
+  return items
+    .reduce(function (acc, obj) {
+      return acc + obj.raw.quantity * obj.raw.boqItemContractRate;
+    }, 0.0)
+    .toFixed(2);
+};
 
 /*
 const boQByRoomScheduleList = computed(() => {
@@ -112,23 +100,18 @@ const boQByRoomScheduleList = computed(() => {
 
 */
 /*
-*/
-const searchRoomScheduleBoQTreeView = ref("");
-const openTreeNodes = reactive([]);
-const filteredProjectRoomScheduleBoQ = [];
-/*
-const projectRoomScheduleBoQTableHeaders = [
-  { title: "Room Name", key: "roomName" },
-  { title: "Category", key: "boqItemCategory" },
-  { title: "Name", key: "boqItemName" },
+ */
+//const searchRoomScheduleBoQTreeView = ref("");
+//const openTreeNodes = reactive([]);
 
+const projectRoomScheduleBoQTableHeaders = [
+  { title: "Name", key: "boqItemName" },
   { title: "Quantity", key: "quantity" },
-  { title: "Unit", key: "unit", default: 0 },
+  { title: "Unit", key: "unit" },
   { title: "Cost", key: "boqItemContractRate" },
-  { title: "Cost", key: "cost" },
-  { title: "BoQ", key: "boqItems" },
+  { title: "Total" },
 ];
-*/
+
 const projectRoomScheduleBoQ = computed(() => {
   return store.getters["projects/loadedProjectRoomScheduleBoQ"];
 });
@@ -141,8 +124,6 @@ watch(projectRoomScheduleBoQ, (newValue, oldValue) => {
       JSON.stringify(newValue) +
       "."
   );
-  filteredProjectRoomScheduleBoQ.value = newValue;
+  //filteredProjectRoomScheduleBoQ.value = newValue;
 });
-
-
 </script>

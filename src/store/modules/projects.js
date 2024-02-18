@@ -1510,6 +1510,34 @@ const actions = {
                 console.log(error)
             })
     },
+    bulkUpdateProjectBoQItemMeasures({ commit, dispatch }, payload) {
+        console.log('Bulk Updating Project BoQItem Measures')
+        console.log(payload)
+        //console.log(' for user with token ' + localStorage.authHeader)
+
+        webClient.post(`/api/resource/clients/` + localStorage.clientId + `/projects/` + payload.projectId + `/boqitems/` + payload.boQItemId + `/measures`, payload)
+            .then((response) => {
+                const updatedProjectBoQItemMeasure = response.data
+                console.log(updatedProjectBoQItemMeasure)
+                commit('updateProjectBoQItemMeasure', {
+                    ...updatedProjectBoQItemMeasure,
+                    id: updatedProjectBoQItemMeasure.id
+                })
+                
+                const parameters = {
+                    'projectId': payload.projectId,
+                    'boQItemId': payload.boQItemId
+                }
+                
+                dispatch('loadProjectBoQItemMeasures', parameters)
+                
+            }).catch((error) => {
+                commit('setLoading', false, { root: true })
+                commit('setError', error)
+                console.log('Oops ' + error.message)
+                console.log(error)
+            })
+    },
     updateProjectBoQItemMeasure({ commit, dispatch }, payload) {
         console.log('Updating Project BoQItem Measure')
         console.log(payload)
