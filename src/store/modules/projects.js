@@ -125,11 +125,11 @@ const mutations = {
         ]
     },
     deleteProjectImageMetadata(state, payload) {
-      
+
         const index = state.loadedProjectImageMetadata.indexOf(payload)
         console.log('Index of deleted project image is ' + index)
         state.loadedProjectImageMetadata.splice(index, 1)
-        
+
     },
     deleteProjectImage(state, payload) {
         console.log('Committing delete project image')
@@ -200,11 +200,11 @@ const mutations = {
     setLoadedProjectProcurementPackage(state, payload) {
         state.loadedProjectProcurementPackage = payload
     },
-    setLoadedProjectSubContractorProcurementPackages (state, payload) {
+    setLoadedProjectSubContractorProcurementPackages(state, payload) {
         console.log('Setting Loaded Project SubContractor Procurement Packages ')
         console.log(payload)
         state.loadedProjectSubContractorProcurementPackages = payload
-      },
+    },
     setLoadedProjectQuotationSummary(state, payload) {
         state.loadedProjectQuotationSummary = payload
     },
@@ -257,7 +257,7 @@ const mutations = {
     },
     createProjectValuations(state, payload) {
         console.log('Concat project valuations' + payload)
-        state.loadedProjectValuations = [...state.loadedProjectValuations, ...payload]  
+        state.loadedProjectValuations = [...state.loadedProjectValuations, ...payload]
     },
     createProjectBoQItemMeasure(state, payload) {
         state.loadedProjectBoQItemMeasures.push(payload)
@@ -302,6 +302,17 @@ const mutations = {
     createProjectBoQItem(state, payload) {
         state.loadedProjectBoQ.push(payload)
     },
+    createProjectBoQItems(state, payload) {
+        let i = 0;
+        for (; i < payload.length;) {
+            //var file = payload.drawingFiles.files[i]
+            //console.log('Adding file ' + i)
+            //console.log(file)
+            state.loadedProjectBoQ.push(payload[i]);
+            i++
+        }
+
+    },
     createProjectTask(state, payload) {
         state.loadedProjectTasks.push(payload)
     },
@@ -313,7 +324,7 @@ const mutations = {
     deleteProjectTask(state, payload) {
         console.log('Committing delete project task')
         console.log(payload)
-        const index = state.loadedProjectTasks.indexOf(payload)
+        const index = state.loadedProjectTasks.map(t => t.id).indexOf(payload)
         console.log('Index of deleted task is ' + index)
         state.loadedProjectTasks.splice(index, 1)
     },
@@ -379,7 +390,7 @@ const mutations = {
         const index = state.loadedBoQItemCategories.indexOf(payload)
         state.loadedBoQItemCategories.splice(index, 1)
     },
-    createProjectSubContractorProcurementPackage (state, payload) {
+    createProjectSubContractorProcurementPackage(state, payload) {
         state.loadedProjectSubContractorProcurementPackages.push(payload)
     },
 
@@ -1098,6 +1109,47 @@ const actions = {
                 commit('setError', e, { root: true })
             })
     },
+
+    uploadProjectBoQCsvFile({ commit, dispatch }, payload) {
+        //console.log('Creating dwg' + payload + ' for user ' + getters.user.username + ':' + getters.user.password)
+
+        console.log('Creating project drawings for user ' + localStorage.authHeader + ' for project ' + payload.projectId + ' number o drawing files are ' + payload.boQCsvFiles.length)
+        console.log(payload.boQCsvFiles)
+        const formData = new FormData()
+        var i = 0
+        var len = payload.boQCsvFiles.files.length
+        for (; i < len;) {
+            //var file = payload.drawingFiles.files[i]
+            //console.log('Adding file ' + i)
+            //console.log(file)
+            formData.append('fileParts', payload.boQCsvFiles.files[i])
+            i++
+        }
+
+        formData.append('projectId', payload.projectId)
+        //formData.append('userId', getters['u)
+        console.log(formData)
+
+        return axios.create({
+            baseURL: `/`,
+            headers: { 'Authorization': localStorage.authHeader, 'Content-Type': 'multipart/form-data' }
+            ///api/resource/clients/{clientId}/projects/{projectId}/drawings
+        }).post('/api/resource/clients/' + localStorage.clientId + '/projects/' + payload.projectId + '/boqitems/upload/csv', formData)
+            .then(response => {
+                console.log('Received saved project boqitems')
+                console.log(response.data)
+                commit('createProjectBoQItems', response.data)
+            })
+            .then(
+                setTimeout(() => {
+                    dispatch('loadProjectBoQSummary', payload.projectId)
+                }, 150)
+            )
+            .catch(e => {
+                console.log(e)
+                commit('setError', e, { root: true })
+            })
+    },
     updateProjectDrawingMetaData({ commit }, payload) {
         console.log('Update Project Drawing' + payload.id)
         // /api/resource/clients/{clientId}/projects/{projectId}/drawings/{drawingId}
@@ -1194,7 +1246,7 @@ const actions = {
         return axios.create({
             baseURL: `/`,
             headers: { 'Authorization': localStorage.authHeader, 'Content-Type': 'multipart/form-data' }
-        }).post('/api/resource/clients/' + localStorage.clientId + '/projects/' + payload.projectId + '/space/'+payload.locationId+'/images', formData)
+        }).post('/api/resource/clients/' + localStorage.clientId + '/projects/' + payload.projectId + '/space/' + payload.locationId + '/images', formData)
             .then(response => {
                 console.log('Received saved project space images')
                 console.log(response.data)
@@ -1235,13 +1287,13 @@ const actions = {
             formData.append('fileParts', file);
             i++;
         }
-        
+
         formData.append('grossAmount', payload.grossAmount);
         formData.append('netAmount', payload.netAmount);
         formData.append('status', payload.status);
         formData.append('description', payload.description);
         formData.append('currency', 'euro');
-      
+
         console.log(' for user with token ' + localStorage.authHeader)
 
         return axios.create({
@@ -1313,8 +1365,8 @@ const actions = {
                     dispatch('loadProjectBoQSummary', payload.projectId)
                     dispatch('loadProjectBoQCategoryCosts', payload.projectId)
                     dispatch('loadProjectProcurementPackageSummary', payload.projectId)
-                 }, 150)
-              )
+                }, 150)
+            )
             .catch((error) => {
                 commit('setLoading', false, { root: true })
                 commit('setError', error, { root: true })
@@ -1336,8 +1388,8 @@ const actions = {
             }).then(
                 setTimeout(() => {
                     dispatch('loadProjectBoQSummary', payload.projectId)
-                    dispatch('loadProjectBoQCategoryCosts', payload.projectId)
-                    dispatch('loadProjectProcurementPackageSummary', payload.projectId)
+                    //dispatch('loadProjectBoQCategoryCosts', payload.projectId)
+                    //dispatch('loadProjectProcurementPackageSummary', payload.projectId)
                 }, 150)
             ).catch((error) => {
                 commit('setLoading', false, { root: true })
@@ -1346,7 +1398,7 @@ const actions = {
                 console.log(error)
             })
     },
-    deleteProjectBoQItem({ commit }, payload) {
+    deleteProjectBoQItem({ commit, dispatch }, payload) {
         console.log('Deleting item from Project BoQ')
         console.log(payload)
         console.log(' for user with token ' + localStorage.authHeader)
@@ -1355,6 +1407,11 @@ const actions = {
             .then(() => {
                 commit('deleteProjectBoQItem', payload)
             })
+            .then(
+                setTimeout(() => {
+                    dispatch('loadProjectBoQSummary', payload.projectId)
+                }, 150)
+            )
             .catch((error) => {
                 commit('setLoading', false, { root: true })
                 commit('setError', error, { root: true })
@@ -1502,7 +1559,7 @@ const actions = {
                     ...savedProjectBoQItemMeasure,
                     id: savedProjectBoQItemMeasure.id
                 })
-                
+
             }).catch((error) => {
                 commit('setLoading', false, { root: true })
                 commit('setError', error, { root: true })
@@ -1523,14 +1580,14 @@ const actions = {
                     ...updatedProjectBoQItemMeasure,
                     id: updatedProjectBoQItemMeasure.id
                 })
-                
+
                 const parameters = {
                     'projectId': payload.projectId,
                     'boQItemId': payload.boQItemId
                 }
-                
+
                 dispatch('loadProjectBoQItemMeasures', parameters)
-                
+
             }).catch((error) => {
                 commit('setLoading', false, { root: true })
                 commit('setError', error)
@@ -1556,7 +1613,7 @@ const actions = {
                     'boQItemId': payload.boQItemId
                 }
                 dispatch('loadProjectBoQItemMeasures', parameters)
-                
+
             }).catch((error) => {
                 commit('setLoading', false, { root: true })
                 commit('setError', error)

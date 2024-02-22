@@ -419,35 +419,39 @@
           </v-card>
         </v-dialog>
       </v-btn>
+      <v-btn icon color="orange" @click="openUploadBoQCsvFileDialog()" class="float-right" >
+        <v-icon icon="mdi-upload"></v-icon>
+        <v-dialog v-model="uploadBoQCsvFileDialog" >
+          <v-card>
+            <v-card-title>
+              <span class="headline">Upload Project BoQ Csv Files</span>
+            </v-card-title>
+            <v-card-text>
+              <v-container>
+                <v-layout row>
+                  <v-file-input
+                    ref="file"
+                    filled
+                    multiple
+                    prepend-icon="mdi-camera"
+                    label="Upload BoQ Csv Files"
+                    v-on:change="handleFileUpload()"
+                  ></v-file-input>
+                </v-layout>
+              </v-container>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" @click="closeUploadBoQCsvFileDialog">Cancel</v-btn>
+              <v-btn color="blue darken-1" @click="uploadProjectBoQItemCsvFile">Save</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-btn>
     </v-card-title>
     <v-card-text>
-      <v-layout row v-if="projectBoQSummary">
-        <v-text-field
-          v-model="projectBoQSummary.totalNumberOfBillItems"
-          label="Total Bill Items"
-        >
-        </v-text-field>
-
-        <v-text-field v-model="projectBoQSummary.totalGrossValue" label="Contract Value">
-        </v-text-field>
-      </v-layout>
-      <v-layout row v-if="projectBoQSummary">
-        <v-text-field
-          v-model="projectBoQSummary.certifiedToDateAmount"
-          label="Amount Certified (to date)"
-        ></v-text-field>
-
-        <v-text-field
-          v-model="projectBoQSummary.claimedToDateAmount"
-          label="Amount Claimed (to date)"
-        ></v-text-field>
-
-        <v-text-field
-          v-model="projectBoQSummary.paidToDateAmount"
-          label="Amount Paid (to date)"
-        >
-        </v-text-field>
-      </v-layout>
+      <project-boq-summary-panel :projectId="projectId"></project-boq-summary-panel>
 
       <v-data-table
         :headers="boqTableHeaders"
@@ -756,6 +760,26 @@ const boQItemCategories = computed(() => {
   return store.getters["projects/loadedBoQItemCategories"];
 });
 
+const file = ref();
+const handleFileUpload = async () => {
+  console.log("selected file", file.value.files);
+  //Upload to server
+};
+const uploadBoQCsvFileDialog = ref(false);
+
+const uploadProjectBoQItemCsvFile = () => {
+ 
+  const formData = {
+    projectId: projectId,
+    boQCsvFiles: file.value,
+  };
+  store.dispatch("projects/uploadProjectBoQCsvFile", formData);
+  console.log("Uploading project boq csv file");
+  console.log(formData);
+  closeUploadBoQCsvFileDialog();
+
+};
+
 const openNewBoQItemFormDialog = () => {
   //editedBoQItem = defaultBoQItem;
   Object.assign(editedBoQItem, defaultBoQItem);
@@ -766,6 +790,14 @@ const openNewBoQItemFormDialog = () => {
   editedBoQItemIndex.value = -1;
   dialogBoQItem.value = true;
 };
+
+const openUploadBoQCsvFileDialog = () => {
+  uploadBoQCsvFileDialog.value = true;
+}
+
+const closeUploadBoQCsvFileDialog = () => {
+  uploadBoQCsvFileDialog.value = false;
+}
 
 const closeBoQItemDialog = () => {
   dialogBoQItem.value = false;
@@ -901,7 +933,7 @@ const deleteProjectBoQItem = (item) => {
   console.log(item.value);
   const formData = {
     projectId: projectId,
-    id: item.value,
+    id: item.id,
   };
   store.dispatch("projects/deleteProjectBoQItem", formData);
   // confirm('Are you sure you want to delete drawing ' + $event.title + ' from the project register?') && drawings.splice(index, 1)

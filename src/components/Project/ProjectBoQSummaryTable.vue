@@ -2,8 +2,13 @@
   <v-card>
     <v-card-title>
       <h4>BoQ Summary</h4>
+      <v-btn icon color="blue" @click="reloadProjectBoQItems" class="float-right">
+        <v-icon icon="mdi-cached"></v-icon>
+      </v-btn>
+
     </v-card-title>
-    
+    <project-boq-summary-panel :projectId="projectId"></project-boq-summary-panel>
+
 
     <v-data-table
       :headers="boqTableHeaders"
@@ -70,6 +75,11 @@ onMounted(() => {
 const boq = computed(() => {
   return store.getters["projects/loadedProjectBoQ"];
 });
+
+const reloadProjectBoQItems = () => {
+  search.value = "";
+  store.dispatch("projects/loadProjectBoQItems", projectId);
+};
 
 const calculateTotalCost = (rate, qty) => {
   return (rate * qty).toFixed(2);

@@ -1,5 +1,7 @@
 <template>
   <v-card>
+    <project-boq-summary-panel :projectId="projectId"></project-boq-summary-panel>
+
     <v-data-table
       :headers="projectRoomScheduleBoQTableHeaders"
       :calculate-widths="true"

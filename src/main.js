@@ -138,6 +138,7 @@ import ProjectBoQProductsTable from '@/components/Project/ProjectBoQProductsTabl
 import ProjectOrdersTable from '@/components/Project/ProjectOrdersTable.vue';
 import ProjectAccessControlTable from '@/components/Project/ProjectAccessControlTable.vue';
 import ProjectBoQTakeOffTable from '@/components/Project/ProjectBoQTakeOffTable.vue';
+import ProjectBoQSummaryPanel from '@/components/Project/ProjectBoQSummaryPanel.vue';
 
 const routes = [
   {
@@ -429,6 +430,7 @@ app.component('app-alert', AlertCmp);
 app.component('date-picker', DatePicker);
 app.component('drawing-category-table', DrawingCategoryTable);
 app.component('project-boq-summary-table', ProjectBoQSummaryTable);
+app.component('project-boq-summary-panel', ProjectBoQSummaryPanel);
 
 app.component('project-boq-table', ProjectBoQTable);
 app.component('project-boq-takeoff-table', ProjectBoQTakeOffTable);

@@ -393,8 +393,8 @@ const closeProjectTaskDialog = () => {
 const deleteProjectTask = (item) => {
   console.log("onDeleteDrawing Event Received..");
   console.log(item);
-  const obj = projectTasks.value.find((t) => t.id == item.value);
-  store.dispatch("projects/deleteProjectTask", obj);
+  //const obj = projectTasks.value.find((t) => t.id == item.id);
+  store.dispatch("projects/deleteProjectTask", item);
   // confirm('Are you sure you want to delete drawing ' + $event.title + ' from the project register?') && drawings.splice(index, 1)
 };
 
