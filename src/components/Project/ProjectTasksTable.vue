@@ -332,13 +332,13 @@ const defaultProjectTask = reactive({
 });
 
 const editProjectTask = (item) => {
-  editedProjectTaskIndex.value = projectTasks.value.findIndex((t) => t.id == item.value);
-  const obj = projectTasks.value.find((t) => t.id == item.value);
+  editedProjectTaskIndex.value = projectTasks.value.findIndex((t) => t.id == item.id);
+  const obj = projectTasks.value.find((t) => t.id == item.id);
   Object.assign(editedProjectTask, obj);
-  selectedProjectTaskImageMeta.value = [];
-  console.log("Selected Task image metadata is ");
-  console.log(editedProjectTask.imageMetaData);
-  selectedProjectTaskImageMeta.value = editedProjectTask.imageMetaData;
+  //selectedProjectTaskImageMeta.value = [];
+  console.log("Selected Task  is ");
+  console.log(editedProjectTask);
+  //selectedProjectTaskImageMeta.value = editedProjectTask.imageMetaData;
   projectTaskDialog.value = true;
 };
 
