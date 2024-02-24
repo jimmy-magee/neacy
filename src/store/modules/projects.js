@@ -34,6 +34,7 @@ const state = {
     loadedProjectBoQ: [],
     loadedProjectBoQSummary: null,
     selectedProjectBoQItem: null,
+    loadedCategoryBoQItems: [],
     loadedProjectValuations: [],
     loadedProjectBoQItemMeasures: [],
     loadedProjectBoQCategoryCosts: [],
@@ -378,6 +379,10 @@ const mutations = {
     setLoadedBoQItemCategories(state, payload) {
         state.loadedBoQItemCategories = payload
     },
+    setLoadedCategoryBoQItems (state, payload) {
+        console.log('Setting selected category bill items' + payload)
+        state.loadedCategoryBoQItems = payload
+      },
     createBoQItemCategory(state, payload) {
         state.loadedBoQItemCategories.push(payload)
     },
@@ -1329,6 +1334,25 @@ const actions = {
 
             })
     },
+    loadBoQItemsByCategory ({commit}, payload) {
+        commit('setLoading', true)
+        commit('setLoadedCategoryBoQItems', [])
+        console.log('Loading project bill of quantities for user ' + localStorage.authHeader + ' for project ' + payload)
+  
+        webClient.get(`/api/resource/clients/` + localStorage.clientId + '/boqitems/category/' + payload )
+            .then(response => {
+              const items = response.data
+              console.log('Received bill of quantites items by category from server ')
+              console.log(items)
+              commit('setLoadedCategoryBoQItems', items)
+              commit('setLoading', false)
+            })
+            .catch(e => {
+              console.log('errror getting category boqitems')
+              console.log(e)
+              this.errors.push(e)
+            })
+      },
     loadProjectBoQSummary({ commit }, payload) {
         commit('setLoading', true, { root: true })
         console.log('Loading all project boq ' + payload)
@@ -1998,6 +2022,11 @@ const getters = {
             return A.ref > B.ref
         })
     },
+    loadedCategoryBoQItems (state) {
+        return state.loadedCategoryBoQItems.sort((A, B) => {
+          return A.name > B.name
+        })
+      },
     loadedProjectBoQItem(state) {
         return (itemId) => {
             console.log('loadedProjectBoQItem lookup  ' + itemId)

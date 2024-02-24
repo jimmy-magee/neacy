@@ -810,6 +810,7 @@ const reloadProjectBoQItems = () => {
 };
 
 const loadBoQItemsByCategory = (categoryId) => {
+  console.log('Loading boq items for category '+categoryId);
   return store.dispatch("projects/loadBoQItemsByCategory", categoryId);
 };
 
