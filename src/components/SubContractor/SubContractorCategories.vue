@@ -50,12 +50,12 @@
 
       <v-data-table :headers="subContractorCategoryTableHeaders" :items="subContractorCategories" :search="search">
         <template v-slot:[`item.actionEdit`]="{ item }">
-          <v-btn  icon="mdi-file-edit-outline" @click="editSubContractorCategory(item.value)">
+          <v-btn  icon="mdi-file-edit-outline" @click="editSubContractorCategory(item.id)">
     
           </v-btn>
         </template>
         <template v-slot:[`item.actionDelete`]="{ item }">
-          <v-btn  icon="mdi-delete-alert" @click="deleteSubContractorCategory(item.value)">
+          <v-btn  icon="mdi-delete-alert" @click="deleteSubContractorCategory(item.id)">
          
           </v-btn>
         </template>
@@ -81,6 +81,12 @@ export default {
     });
 
     const subContractorCategoryTableHeaders = [
+      {
+        title: 'ID',
+        align: ' d-none',
+        sortable: true,
+        key: 'id'
+      },
       {
         title: 'Name',
         align: 'left',
