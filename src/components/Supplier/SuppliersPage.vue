@@ -105,17 +105,17 @@
         
         <template v-slot:[`item.actionView`]="{ item }">
   
-          <v-btn icon="mdi-view-compact" @click="viewSupplier(item)">
+          <v-btn icon="mdi-view-compact" @click="viewSupplier(item.id)">
     
           </v-btn>
         </template>
         <template v-slot:[`item.actionEdit`]="{ item }">
-          <v-btn icon="mdi-file-edit-outline" @click="editSupplier(item)">
+          <v-btn icon="mdi-file-edit-outline" @click="editSupplier(item.id)">
 
           </v-btn>
         </template>
         <template v-slot:[`item.actionDelete`]="{ item }">
-          <v-btn icon="mdi-delete-alert" @click="deleteSupplier(item)">
+          <v-btn icon="mdi-delete-alert" @click="deleteSupplier(item.id)">
     
           </v-btn>
         </template>
@@ -147,6 +147,12 @@ export default {
     });
 
     const supplierTableHeaders = [
+      {
+        title: 'ID',
+        align: ' d-none',
+        sortable: true,
+        key: 'id'
+      },
       {
         title: 'Category',
         align: 'left',
@@ -208,17 +214,17 @@ export default {
     const error = computed(() => store.getters['error', { root: true }]);
     const userIsAuthenticatedAndHasRoleAdmin = computed(() => store.getters['users/userIsAuthenticatedAndHasRoleAdmin']);
 
-    const viewSupplier = ((item) => {
-      router.push('/suppliers/'+item.value)
+    const viewSupplier = ((id) => {
+      router.push('/suppliers/'+id)
     });
 
-    const editSupplier = ((item) => {
+    const editSupplier = ((id) => {
       console.log('Edit suppliers')
-      console.log(item.value)
+      console.log(id)
 
-      editedIndex.value  = suppliers.value.findIndex(s =>  s.id == item.value);
+      editedIndex.value  = suppliers.value.findIndex(s =>  s.id == id);
       console.log(editedIndex.value)
-      const obj  = suppliers.value.find(s =>  s.id == item.value);
+      const obj  = suppliers.value.find(s =>  s.id == id);
       Object.assign(editedItem, obj)
       dialog.value = true
     });
