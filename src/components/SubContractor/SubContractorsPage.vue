@@ -127,17 +127,17 @@
         <v-data-table :headers="subContractorTableHeaders" :calculate-widths="true" :items="subContractors"
           :search="search">
           <template v-slot:[`item.actionEditSubContractor`]="{ item }">
-            <v-btn icon="mdi-file-edit-outline" @click="showSubContractorEditDialog(item)">
+            <v-btn icon="mdi-file-edit-outline" @click="showSubContractorEditDialog(item.id)">
          
             </v-btn>
           </template>
 
           <template v-slot:[`item.actionShowSubContractorDetails`]="{ item }">
-            <v-btn icon="mdi-view-compact" @click="showSubContractorDetails(item)">
+            <v-btn icon="mdi-view-compact" @click="showSubContractorDetails(item.id)">
             </v-btn>
           </template>
           <template v-slot:[`item.actionDeleteSubContractor`]="{ item }">
-            <v-btn icon="mdi-delete-alert" @click="deleteSubContractor(item)">
+            <v-btn icon="mdi-delete-alert" @click="deleteSubContractor(item.id)">
             </v-btn>
           </template>
         </v-data-table>
@@ -217,6 +217,12 @@ export default {
       bankAccountNumber: ''
     });
     const subContractorTableHeaders = [
+      {
+        title: 'ID',
+        align: ' d-none',
+        sortable: true,
+        key: 'id'
+      },
       { title: 'Category', key: 'subContractorCategoryName' },
       { title: 'Name', key: 'name' },
       { title: 'Description', key: 'description' },
@@ -235,15 +241,15 @@ export default {
       return store.getters['subcontractors/loadedSubContractors'];
     });
 
-    const showSubContractorDetails = ((subContractor) => {
-      console.log('Navigate to SubContractor Details for subcontractorId ' + subContractor.value)
-      router.push('/subcontractors/' + subContractor.value)
+    const showSubContractorDetails = ((id) => {
+      console.log('Navigate to SubContractor Details for subcontractorId ' + id);
+      router.push('/subcontractors/' + id)
     });
-    const showSubContractorEditDialog = ((item) => {
-      console.log('Showing Edit SubContractor Dialog for subcontractorId ' + item.value)
-      editedSubContractorIndex.value = subContractors.value.findIndex(s => s.id == item.value)
+    const showSubContractorEditDialog = ((id) => {
+      console.log('Showing Edit SubContractor Dialog for subcontractorId ' + id)
+      editedSubContractorIndex.value = subContractors.value.findIndex(s => s.id == id)
       console.log("index value is " + editedSubContractorIndex.value)
-      const obj  = subContractors.value.find(s =>  s.id == item.value);
+      const obj  = subContractors.value.find(s =>  s.id == id);
       console.log(obj)
       Object.assign(editedSubContractor, obj)
       subContractorDialog.value = true
@@ -272,10 +278,10 @@ export default {
       closeSubContractorDialog()
       save()
     });
-    const deleteSubContractor = ((item) => {
+    const deleteSubContractor = ((id) => {
       console.log('Delete SubContractor Event Received..')
-      console.log(item.value)
-      const obj = subContractors.value.find(s => s.id == item.value)
+      console.log(id)
+      const obj = subContractors.value.find(s => s.id == id)
       store.dispatch('subcontractors/deleteSubContractor', obj)
     });
     const save = (() => {
