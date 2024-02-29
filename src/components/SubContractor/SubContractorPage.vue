@@ -593,19 +593,19 @@
                   :items="subContractorQuotations" :search="search">
 
                   <template v-slot:[`item.actionDownloadSubContractorQuotation`]="{ item }">
-                    <v-btn icon="mdi-download" @click="downloadSubContractorQuotation(item)">
+                    <v-btn icon="mdi-download" @click="downloadSubContractorQuotation(item.id)">
 
                     </v-btn>
                   </template>
 
                   <template v-slot:[`item.actionEditSubContractorQuotation`]="{ item }">
-                    <v-btn icon="mdi-file-edit-outline" @click="showSubContractorQuotationEditDialog(item)">
+                    <v-btn icon="mdi-file-edit-outline" @click="showSubContractorQuotationEditDialog(item.id)">
 
                     </v-btn>
                   </template>
 
                   <template v-slot:[`item.actionDeleteSubContractorQuotation`]="{ item }">
-                    <v-btn icon="mdi-delete-alert" @click="deleteSubContractorQuotation(item)">
+                    <v-btn icon="mdi-delete-alert" @click="deleteSubContractorQuotation(item.id)">
 
                     </v-btn>
                   </template>
@@ -1348,6 +1348,12 @@ export default {
       { title: 'Total', key: 'total' },
     ];
     const subContractorQuotationTableHeaders = [
+      {
+        title: 'ID',
+        align: ' d-none',
+        sortable: true,
+        key: 'id'
+      },
       { title: 'Project', key: 'projectName' },
       { title: 'Ref', key: 'quotationRef' },
       { title: 'Gross', key: 'grossAmount' },
@@ -1727,10 +1733,10 @@ export default {
       closeSubContractorQuotationDialog()
       save()
     });
-    const showSubContractorQuotationEditDialog = ((item) => {
-      console.log('Showing Edit Quotation Dialog for operative with id ' + item.value)
-      editedSubContractorQuotationIndex.value = subContractorQuotations.value.findIndex(q => q.id == item.value)
-      const obj = subContractorQuotations.value.find(q => q.id == item.value)
+    const showSubContractorQuotationEditDialog = ((id) => {
+      console.log('Showing Edit Quotation Dialog for operative with id ' + id)
+      editedSubContractorQuotationIndex.value = subContractorQuotations.value.findIndex(q => q.id == id)
+      const obj = subContractorQuotations.value.find(q => q.id == id)
       Object.assign(editedSubContractorQuotation, obj)
       subContractorQuotationDialog.value = true
     });
@@ -1741,15 +1747,15 @@ export default {
         editedSubContractorQuotationIndex.value = -1;
       }, 300)
     });
-    const downloadSubContractorQuotation = ((item) => {
+    const downloadSubContractorQuotation = ((id) => {
       console.log('downloading item requested..')
-      const obj = subContractorQuotations.value.find(q => q.id == item.value)
+      const obj = subContractorQuotations.value.find(q => q.id == id)
       store.dispatch('subcontractors/downloadSubContractorQuotation', obj)
     });
-    const deleteSubContractorQuotation = ((item) => {
+    const deleteSubContractorQuotation = ((id) => {
       console.log('Delete SubContractorQuotation Event Received..')
       const formData = {
-        id: item.value,
+        id: id,
         subContractorId: id
       }
       console.log(formData)
