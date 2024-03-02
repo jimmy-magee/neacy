@@ -111,7 +111,7 @@ const downloadProjectQuotation = (id) => {
   console.log(obj);
   if (obj.type == "SubContractor") {
     const payload = {
-      supplierId: obj.companyId,
+      subContractorId: obj.companyId,
       id: obj.id,
       fileName: obj.fileName,
     };
@@ -121,7 +121,12 @@ const downloadProjectQuotation = (id) => {
   }
   if (obj.type == "Supplier") {
     console.log("downloading project quotation requested..");
-    store.dispatch("suppliers/downloadSupplierQuotation", obj);
+    const payload = {
+      supplierId: obj.companyId,
+      id: obj.id,
+      fileName: obj.fileName,
+    };
+    store.dispatch("suppliers/downloadSupplierQuotation", payload);
   }
 };
 </script>
