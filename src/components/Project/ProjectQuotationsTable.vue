@@ -106,8 +106,9 @@ const projectQuotations = computed(() => {
 });
 
 const downloadProjectQuotation = (id) => {
+  console.log("download quotation ")
   const obj = projectQuotations.value.find((q) => q.id == id);
-  console.log(id);
+  console.log(obj);
   if (obj.type == "SubContractor") {
     const payload = {
       supplierId: obj.companyId,
