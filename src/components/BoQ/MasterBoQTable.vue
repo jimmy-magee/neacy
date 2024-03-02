@@ -472,13 +472,15 @@
   </v-card>
 </template>
 <script setup>
-import { computed, ref, reactive, onMounted } from "vue";
+import { computed, defineEmits, ref, reactive, onMounted } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
 
 //eslint-disable-next-line
 const { projectId } = defineProps(["projectId"]);
+
+const emit = defineEmits(["update:modelValuex"]);
 
 
 const searchMasterBoQ = ref("");
@@ -605,6 +607,7 @@ const addSelectedMasterBoQItemsToProject = () => {
       
     console.log(editedBoQItem);
   });
+  emit("update:modelValue");
 };
 
 const saveOrUpdateMasterBoQItem = () => {

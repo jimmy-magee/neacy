@@ -634,7 +634,7 @@
           </v-card>
         </v-dialog>
         <v-dialog v-model="addBoQItemDialog">
-        <master-boq-table :projectId="projectId"></master-boq-table>
+        <master-boq-table :projectId="projectId" @update:modelValue="addBoQItemDialog = false"></master-boq-table>
         </v-dialog>
 </template>
 <script setup>
