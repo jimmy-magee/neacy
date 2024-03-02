@@ -946,8 +946,6 @@ const saveOrUpdateProjectBoQItem = () => {
   closeBoQItemDialog();
 };
 
-
-
 const deleteProjectBoQItem = (item) => {
   console.log("onDelete BoQItem Event Received..");
   console.log(item.value);

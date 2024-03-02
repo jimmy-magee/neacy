@@ -89,8 +89,9 @@
                           </v-btn>
                         </template> 
                       </v-data-table>
-                      selected: {{ selected }}
+                
                     </v-card-text>
+                    {{ selected }}
                   </v-card>
                 </v-layout>
               </v-container>
@@ -236,6 +237,7 @@ const bulkUpdateProjectBoQItemMeasures = () => {
     measures: selected.value,
   }
   store.dispatch("projects/bulkUpdateProjectBoQItemMeasures", payload);
+  selected.value = [];
 };
 
 const emitTotalMeasuredQuantityUpdateEvent = () => {

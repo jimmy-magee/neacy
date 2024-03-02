@@ -7,6 +7,7 @@ import employees from './modules/employees';
 import products from './modules/products';
 import suppliers from './modules/suppliers';
 import subcontractors from './modules/subcontractors';
+import masterboq from './modules/masterboq'
 
 const debug = process.env.NODE_ENV !== 'production'
 
@@ -15,6 +16,7 @@ export default createStore({
   modules: {
     users,
     employees,
+    masterboq,
     projects,
     products,
     suppliers,
