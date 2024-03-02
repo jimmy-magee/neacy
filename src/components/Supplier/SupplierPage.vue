@@ -244,15 +244,15 @@
                 :items="supplierQuotations" :search="search">
 
                 <template v-slot:[`item.actionDownloadSupplierQuotation`]="{ item }">
-                  <v-btn icon="mdi-download" @click="downloadSupplierQuotation(item)"></v-btn>
+                  <v-btn icon="mdi-download" @click="downloadSupplierQuotation(item.id)"></v-btn>
                 </template>
 
                 <template v-slot:[`item.actionEditSupplierQuotation`]="{ item }">
-                  <v-btn icon="mdi-file-edit-outline" @click="editSupplierQuotation(item)"> </v-btn>
+                  <v-btn icon="mdi-file-edit-outline" @click="editSupplierQuotation(item.id)"> </v-btn>
                 </template>
 
                 <template v-slot:[`item.actionDeleteSupplierQuotation`]="{ item }">
-                  <v-btn icon="mdi-delete-alert" @click="deleteSupplierQuotation(item)"></v-btn>
+                  <v-btn icon="mdi-delete-alert" @click="deleteSupplierQuotation(item.id)"></v-btn>
                 </template>
 
               </v-data-table>
@@ -865,6 +865,12 @@ export default {
     });
     const formHasErrors = false;
     const supplierQuotationTableHeaders = [
+      {
+        title: 'ID',
+        align: ' d-none',
+        sortable: true,
+        key: 'id'
+      },
       { title: 'Project', key: 'projectName' },
       { title: 'Ref', key: 'quotationRef' },
       { title: 'Gross', key: 'grossAmount' },
@@ -1019,15 +1025,15 @@ export default {
         editedSupplierQuotationIndex.value = -1
       }, 300)
     });
-    const downloadSupplierQuotation = ((item) => {
+    const downloadSupplierQuotation = ((id) => {
       console.log('downloading item requested..')
-      const obj = supplierQuotations.value.find(q => q.id == item.value)
+      const obj = supplierQuotations.value.find(q => q.id == id)
       store.dispatch('suppliers/downloadSupplierQuotation', obj)
     });
-    const deleteSupplierQuotation = ((item) => {
+    const deleteSupplierQuotation = ((id) => {
       console.log('Delete SupplierQuotation Event Received..')
       const formData = {
-        id: item.value,
+        id: id,
         supplierId: id
       }
       console.log(formData)
