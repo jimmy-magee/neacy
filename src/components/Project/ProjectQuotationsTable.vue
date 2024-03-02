@@ -17,7 +17,7 @@
       :search="searchProjectQuotations"
     >
       <template v-slot:[`item.actionDownloadProjectQuotation`]="{ item }">
-        <v-btn icon @click="downloadProjectQuotation(item)">
+        <v-btn icon @click="downloadProjectQuotation(item.id)">
           <v-icon icon="mdi-download"></v-icon>
         </v-btn>
       </template>
@@ -40,6 +40,12 @@ onMounted(() => {
 });
 
 const projectQuotationTableHeaders = [
+  {
+    title: "ID",
+    align: " d-none",
+    sortable: true,
+    key: "id",
+  },
   { title: "Comapny", key: "companyName" },
   { title: "Type", key: "type" },
   { title: "Ref", key: "quotationRef" },
@@ -99,10 +105,9 @@ const projectQuotations = computed(() => {
   return store.getters["projects/loadedProjectQuotations"];
 });
 
-const downloadProjectQuotation = (item) => {
-  const obj = projectQuotations.value.find((q) => q.id == item.value);
-  console.log(item.value);
-  console.log(obj.type);
+const downloadProjectQuotation = (id) => {
+  const obj = projectQuotations.value.find((q) => q.id == id);
+  console.log(id);
   if (obj.type == "SubContractor") {
     const payload = {
       supplierId: obj.companyId,
