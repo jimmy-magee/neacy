@@ -226,13 +226,12 @@
 
           <v-window-item value="three">
             <v-tabs v-model="buildTab" show-arrows>
-              <v-tab value="buildTab-1"> Project Plan </v-tab>
-              <v-tab value="buildTab-2"> Gallery </v-tab>
+              <v-tab value="buildTab-1"> Tasks </v-tab>
+              <v-tab value="buildTab-2"> Photos </v-tab>
               <v-tab value="buildTab-3"> Health and Safety </v-tab>
             </v-tabs>
 
             <v-window v-model="buildTab">
-              <!-- Project Details -->
 
               <v-window-item value="buildTab-1">
                 <project-tasks-table :projectId="id"></project-tasks-table>

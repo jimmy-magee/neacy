@@ -42,6 +42,8 @@ import ProjectAccessControlTable from '@/components/Project/ProjectAccessControl
 import ProjectBoQTakeOffTable from '@/components/Project/ProjectBoQTakeOffTable.vue';
 import ProjectBoQSummaryPanel from '@/components/Project/ProjectBoQSummaryPanel.vue';
 
+import MasterBoQTable from '@/components/BoQ/MasterBoQTable.vue';
+
 const routes = [
   {
     path: '/',
@@ -63,7 +65,7 @@ const routes = [
     path: '/pages/empty',
     name: 'EmptyPage',
     component: () => import('./views/pages/EmptyPage.vue'),
-},
+  },
   {
     path: '/customers/:customerId',
     name: 'CustomerPage',
@@ -190,6 +192,9 @@ router.beforeEach(async (to, from) => {
   console.log('from ');
   console.log(from);
   console.log(userIsAuthenticated);
+if(to.fullPath == '/signup' || to.fullPath == '/') {
+  return true;
+}
   if (
     // make sure the user is authenticated
     !userIsAuthenticated.value &&
@@ -223,7 +228,7 @@ const vuetify = createVuetify({
 const app = createApp(App).use(store).use(router).use(vuetify);
 
 const userIsAuthenticated = computed(() => store.getters['users/userIsAuthenticatedAndHasRoleUser']);
-    
+
 
 //app.component('BlockViewer', BlockViewer);
 app.component('CustomersTable', CustomersTable);
@@ -234,6 +239,7 @@ app.component('date-picker', DatePicker);
 app.component('drawing-category-table', DrawingCategoryTable);
 app.component('project-boq-summary-table', ProjectBoQSummaryTable);
 app.component('project-boq-summary-panel', ProjectBoQSummaryPanel);
+app.component('master-boq-table', MasterBoQTable);
 
 app.component('project-boq-table', ProjectBoQTable);
 app.component('project-boq-takeoff-table', ProjectBoQTakeOffTable);

@@ -35,6 +35,8 @@ const formattedDate = computed(() => {
 });
 
 watch(modelValue, (newDate) => {
+  console.log('Selected date is');
+  console.log(newDate)
   selectedDate.value = newDate;
 });
 
