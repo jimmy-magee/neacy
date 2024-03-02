@@ -195,7 +195,7 @@
       </v-data-table>
       selectedBoQItems :
       {{ selectedBoQItems }}
-      <v-btn>Next</v-btn>
+      <v-btn @click="addSelectedMasterBoQItemsToProject()">Next</v-btn>
       <v-dialog v-model="masterBoQItemDialog">
         <v-card class="overflow-y-auto" max-height="650">
           <v-card-title>
@@ -477,6 +477,10 @@ import { useStore } from "vuex";
 
 const store = useStore();
 
+//eslint-disable-next-line
+const { projectId } = defineProps(["projectId"]);
+
+
 const searchMasterBoQ = ref("");
 const masterBoQTableHeaders = [
   { title: "Id", key: "id", align: " d-none" },
@@ -497,6 +501,31 @@ const masterBoQTableHeaders = [
 ];
 
 const editedBoQItemIndex = ref(-1);
+const defaultBoQItem = reactive({
+  id: "",
+  procurementPackageId: "",
+  categoryId: "",
+  categoryName: "",
+  category: "",
+  ref: "",
+  name: "",
+  description: "",
+  quantity: 0.0,
+  measuredQuantity: 0.0,
+  unit: "",
+  contractRate: 0.0,
+  subContractRate: 0.0,
+  productId: "",
+  supplierId: "",
+  productQuotationId: "",
+  materialCost: 0.0,
+  materialMargin: 0.0,
+  labourCosts: 0.0,
+  labourMargin: 0.0,
+  plantCost: 0.0,
+  plantMargin: 0.0,
+  subContractorQuotations: [],
+});
 const editedBoQItem = reactive({
   id: "",
   procurementPackageId: "",
@@ -563,7 +592,19 @@ const editMasterBoQItemDialog = (item) => {
 };
 
 const closeMasterBoQItemDialog = () => {
+    Object.assign(editedBoQItem, defaultBoQItem)
   masterBoQItemDialog.value = false;
+};
+
+const addSelectedMasterBoQItemsToProject = () => {
+  selectedBoQItems.value.map( item => {
+    Object.assign(editedBoQItem, item)
+    editedBoQItem.projectId = projectId;
+    editedBoQItem.quantity = 0.00;
+    store.dispatch("projects/createProjectBoQItem", editedBoQItem)
+      
+    console.log(editedBoQItem);
+  });
 };
 
 const saveOrUpdateMasterBoQItem = () => {
