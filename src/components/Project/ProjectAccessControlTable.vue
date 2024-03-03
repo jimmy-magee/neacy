@@ -13,14 +13,14 @@
       </v-text-field>
       <v-spacer></v-spacer>
       <v-btn
-        absolute
-        right
+        class="float-right"
         fab
         dark
         color="indigo"
         @click="openProjectAccessControlListDialog"
       >
-        <v-dialog v-model="aclDialog" activator="parent">
+        Update
+        <v-dialog v-model="aclDialog">
           <v-card>
             <v-card-title>
               <span class="headline">Update Project AccessControlList</span>
@@ -37,9 +37,9 @@
                   v-model="selectedProjectUsers"
                 >
                 </v-data-table>
-              </v-container>
-            </v-card-text>
-
+              </v-container> </v-card-text
+            >selectedProjectUsers
+            {{ selectedProjectUsers }}
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" @click="closeProjectAccessControlListDialog"
@@ -110,16 +110,29 @@ const aclDialog = ref(false);
 const search = ref("");
 
 const openProjectAccessControlListDialog = () => {
-  selectedProjectUsers.value = accessControlList;
+  var filteredUsernames = users.value
+    .map((u) => u.username)
+    .filter((value) => accessControlList.value.map((x) => x.username).includes(value));
+
+  selectedProjectUsers.value = users.value.filter(u => u.username != null)
+  .map((u) => {
+    if (filteredUsernames.includes(u.username)) {
+      return u;
+    }
+  });
+  console.log("Selected users");
+  console.log(selectedProjectUsers.value);
+  aclDialog.value = true;
+  //Object.assign(selectedProjectUsers.value, accessControlList.value);
 };
 const updateProjectAccessControlList = () => {
   const formData = {
     projectId: projectId,
-    usernames: selectedProjectUsers.value,
+    usernames: selectedProjectUsers.value.filter(u => u != null),
   };
-  console.log(selectedProjectUsers.value)
-console.log(formData)
-  //store.dispatch("projects/updateProjectAccessControlList", formData);
+  console.log(selectedProjectUsers.value);
+  console.log(formData);
+  store.dispatch("projects/updateProjectAccessControlList", formData);
   // console.log('Updating project control list')
   // console.log(formData)
   closeProjectAccessControlListDialog();
