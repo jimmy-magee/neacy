@@ -32,7 +32,7 @@
                   :calculate-widths="true"
                   :items="users"
                   :search="search"
-                  item-key="username"
+                  return-object
                   show-select
                   v-model="selectedProjectUsers"
                 >
@@ -53,23 +53,24 @@
         </v-dialog>
       </v-btn>
     </v-card-title>
-    <v-data-table
-      :headers="accessControlListHeaders"
-      :calculate-widths="true"
-      :items="accessControlList"
-      :search="search"
-    >
-    </v-data-table>
+    <v-card-text>
+      <v-data-table
+        :headers="accessControlListHeaders"
+        :calculate-widths="true"
+        :items="accessControlList"
+        :search="search"
+      >
+      </v-data-table>
+    </v-card-text>
   </v-card>
 </template>
 <script setup>
-import { computed, ref,  onMounted } from "vue";
+import { computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
 
 //eslint-disable-next-line
 const { projectId } = defineProps(["projectId"]);
 
-const project = ref(null);
 const store = useStore();
 
 onMounted(() => {
@@ -79,6 +80,10 @@ onMounted(() => {
 
 const users = computed(() => {
   return store.getters["users/loadedUsers"];
+});
+
+const project = computed(() => {
+  return store.getters["projects/loadedProject"];
 });
 
 const accessControlList = computed(() => {
@@ -100,30 +105,30 @@ const accessControlListHeaders = [
   },
 ];
 
-const selectedProjectUsers = [];
+const selectedProjectUsers = ref([]);
 const aclDialog = ref(false);
-const search = ref('');
-
+const search = ref("");
 
 const openProjectAccessControlListDialog = () => {
-      selectedProjectUsers.value = accessControlList;
-    };
-    const updateProjectAccessControlList = () => {
-      const formData = {
-        projectId: projectId,
-        usernames: selectedProjectUsers,
-      };
+  selectedProjectUsers.value = accessControlList;
+};
+const updateProjectAccessControlList = () => {
+  const formData = {
+    projectId: projectId,
+    usernames: selectedProjectUsers.value,
+  };
+  console.log(selectedProjectUsers.value)
+console.log(formData)
+  //store.dispatch("projects/updateProjectAccessControlList", formData);
+  // console.log('Updating project control list')
+  // console.log(formData)
+  closeProjectAccessControlListDialog();
+};
 
-      store.dispatch("projects/updateProjectAccessControlList", formData);
-      // console.log('Updating project control list')
-      // console.log(formData)
-      closeProjectAccessControlListDialog();
-    };
-
-    const closeProjectAccessControlListDialog = () => {
-      aclDialog.value = false;
-      setTimeout(() => {
-        selectedProjectUsers.value = [];
-      }, 300);
-    };
+const closeProjectAccessControlListDialog = () => {
+  aclDialog.value = false;
+  setTimeout(() => {
+    selectedProjectUsers.value = [];
+  }, 300);
+};
 </script>

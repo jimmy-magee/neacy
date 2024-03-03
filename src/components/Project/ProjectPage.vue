@@ -374,7 +374,7 @@ import { useRoute } from "vue-router";
       console.log("Loading project " + id);
       store.dispatch("projects/loadProjectStatusList");
     });
-
+    const userIsAuthenticatedAndHasRoleProjectAdmin = computed(() => store.getters['users/userIsAuthenticatedAndHasRoleProjectAdmin']);
     const snack = ref(false);
     const snackColor = ref("");
     const snackText = ref("");
