@@ -73,393 +73,144 @@
         <template v-slot:[`item.actionDelete`]="{ item }">
           <v-btn icon="mdi-delete-alert" @click="deleteMasterBoQItem(item)"></v-btn>
         </template>
-        <!--
-        <template v-slot:item="{ item }">
-          <tr>
-            <td><v-checkbox-btn></v-checkbox-btn></td>
-            <td>{{ item.ref }}</td>
-            <td>{{ item.categoryName }}</td>
-            <td>{{ item.name }}</td>
-            <td>{{ item.unit }}</td>
-            <td>
-              {{ item.materialCost }}
-              <v-menu
-                ref="menu"
-                activator="parent"
-                :close-on-click="false"
-                :close-on-content-click="false"
-              >
-                <v-list>
-                  <v-list-item>
-                    <v-list-item-title>
-                      {{ item.name }}
-                    </v-list-item-title>
-                    <v-card>
-                      <v-card-text style="min-width: 400px; max-width: 400px">
-                        <v-text-field
-                          label="Material Cost"
-                          v-model="item.materialCost"
-                        ></v-text-field>
-                      </v-card-text>
-                      <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="grey darken-2" @click="cancel()" dark>CANCEL</v-btn>
-                        <v-btn color="primary" @click="updateBoQItem(item)">OK</v-btn>
-                      </v-card-actions>
-                    </v-card>
-                  </v-list-item>
-                </v-list>
-              </v-menu>
-            </td>
-            <td>
-              <v-btn variant="flat" border="0"
-                >{{ item.labourCost }}
-                <v-menu
-                  ref="menu"
-                  activator="parent"
-                  :close-on-click="false"
-                  :close-on-content-click="false"
-                >
-                  <v-list>
-                    <v-list-item>
-                      <v-list-item-title>
-                        {{ item.name }}
-                      </v-list-item-title>
-                      <v-card>
-                        <v-card-text style="min-width: 400px; max-width: 400px">
-                          <v-text-field
-                            label="Labour Cost"
-                            v-model="item.labourCost"
-                          ></v-text-field>
-                        </v-card-text>
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn color="grey darken-2" @click="cancel()" dark
-                            >CANCEL</v-btn
-                          >
-                          <v-btn color="primary" @click="updateBoQItem(item)">OK</v-btn>
-                        </v-card-actions>
-                      </v-card>
-                    </v-list-item>
-                  </v-list>
-                </v-menu>
-              </v-btn>
-            </td>
-            <td>
-              <v-btn variant="flat" border="0" ref="button"
-                >{{ item.contractRate }}
-                <v-menu
-                  ref="menu"
-                  activator="parent"
-                  :close-on-click="false"
-                  :close-on-content-click="false"
-                >
-                  <v-list>
-                    <v-list-item>
-                      <v-list-item-title>
-                        {{ item.name }}
-                      </v-list-item-title>
-                      <v-card>
-                        <v-card-text style="min-width: 400px; max-width: 400px">
-                          <v-text-field
-                            label="Contract Rate"
-                            v-model="item.contractRate"
-                          ></v-text-field>
-                        </v-card-text>
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn color="grey darken-2" @click="cancel()" dark
-                            >CANCEL</v-btn
-                          >
-                          <v-btn color="primary" @click="updateBoQItem(item)">OK</v-btn>
-                        </v-card-actions>
-                      </v-card>
-                    </v-list-item>
-                  </v-list>
-                </v-menu>
-              </v-btn>
-            </td>
-            <td>
-              <v-btn icon @click="editBoQItem(item)">
-                <v-icon icon="mdi-file-edit-outline"></v-icon>
-              </v-btn>
-            </td>
-            <td>
-              <v-btn icon @click="deleteMasterBoQItem(item)">
-                <v-icon icon="mdi-delete-alert"></v-icon>
-              </v-btn>
-            </td>
-          </tr>
-        </template>
-        -->
       </v-data-table>
-      selectedBoQItems :
-      {{ selectedBoQItems }}
-      <v-btn @click="addSelectedMasterBoQItemsToProject()">Next</v-btn>
+
+      <v-btn
+        class="float-right"
+        color="green"
+        :disabled="selectedBoQItems.length == 0"
+        @click="addSelectedMasterBoQItemsToProject()"
+        >Add To Project</v-btn
+      >
       <v-dialog v-model="masterBoQItemDialog">
-        <v-card class="overflow-y-auto" max-height="650">
-          <v-card-title>
-            <span>BoQ Item</span>
-          </v-card-title>
-          <v-card-text>
-            <v-layout row>
-              <v-select
-                :items="boQItemCategories"
-                v-model="editedBoQItem.categoryId"
-                item-value="id"
-                item-title="name"
-                label="BoQ Item Category"
-                v-on:change="loadBoQItemsByCategory"
-              ></v-select>
-            </v-layout>
+        <v-card>
+          <v-tabs dark v-model="tabs">
+            <v-tab value="Details">Details</v-tab>
+            <v-tab value="Documentation">Documentation</v-tab>
+            <v-tab value="Materials" v-if="editedBoQItem.id != null">Materials</v-tab>
+            <v-tab value="Labour" v-if="editedBoQItem.id != null">Labour</v-tab>
+            <v-tab value="Plant" v-if="editedBoQItem.id != null">Plant</v-tab>
+          </v-tabs>
+          <v-window v-model="tabs">
+            <v-window-item value="Details">
+              <v-card class="overflow-y-auto" max-height="650">
+                <v-card-title>
+                  <span>Master BoQ Item</span>
+                </v-card-title>
+                <v-card-text>
 
-            <v-layout row>
-              
-              <v-text-field
-                name="name"
-                label="Name"
-                id="name"
-                v-model="editedBoQItem.name"
-                required
-              ></v-text-field>
-            </v-layout>
+                  <v-layout row>
+                    <v-select
+                      :items="boQItemCategories"
+                      v-model="editedBoQItem.categoryId"
+                      item-value="id"
+                      item-title="name"
+                      label="BoQ Item Category"
+                     ></v-select>
+                  </v-layout>
 
-            <v-layout row>
-              <v-textarea
-                name="description"
-                label="Description"
-                id="description"
-                v-model="editedBoQItem.description"
-              ></v-textarea>
-            </v-layout>
-            <!--
-                <v-layout row>
-                  <v-text-field
-                    name="productId"
-                    label="Product"
-                    id="productId"
-                    v-model="editedBoQItem.productId"
-                  ></v-text-field>
-                </v-layout>
+                  <v-layout row>
+                    <v-text-field
+                      name="name"
+                      label="Name"
+                      id="name"
+                      v-model="editedBoQItem.name"
+                      required
+                    ></v-text-field>
+                  </v-layout>
 
-                <v-layout row>
-                  <v-text-field
-                    name="productName"
-                    label="Product Name"
-                    id="productName"
-                    v-model="editedBoQItem.productName"
-                  ></v-text-field>
-                </v-layout>
+                  <v-layout row>
+                    <v-textarea
+                      name="description"
+                      label="Description"
+                      id="description"
+                      v-model="editedBoQItem.description"
+                    ></v-textarea>
+                  </v-layout>
 
-                <v-layout row>
-                  <v-text-field
-                    name="supplierId"
-                    label="Supplier"
-                    id="supplier"
-                    v-model="editedBoQItem.supplierName"
-                  ></v-text-field>
-                </v-layout>
+                  <v-layout row>
+                    <v-text-field
+                      name="contractRate"
+                      label="Contract Rate"
+                      id="contractRate"
+                      v-model="editedBoQItem.contractRate"
+                    >
+                    </v-text-field>
+                    <v-spacer></v-spacer>
 
-                <v-layout row>
-                  <v-text-field
-                    name="productQuotationDate"
-                    label="Quote Date"
-                    id="productQuotationDate"
-                    v-model="editedBoQItem.productQuotationDate"
-                  ></v-text-field>
-                </v-layout>
+                    <v-text-field
+                      name="unit"
+                      label="Unit"
+                      id="contract_units"
+                      v-model="editedBoQItem.unit"
+                      required
+                    ></v-text-field>
+                  </v-layout>
 
-                <v-layout row>
-                  <v-text-field
-                    name="productQuotationCost"
-                    label="Quote"
-                    id="productQuotationCost"
-                    v-model="editedBoQItem.supplierCost"
-                  ></v-text-field>
-                </v-layout>
--->
-            <!--
+                  <v-layout row>
+                    <v-text-field
+                      name="materialCost"
+                      label="Material Cost"
+                      id="materialCost"
+                      v-model="editedBoQItem.materialCost"
+                      required
+                    ></v-text-field>
 
-                    <v-layout row>
-                      
+                    <v-spacer></v-spacer>
 
-                      <v-text-field
-                        name="labourMargin"
-                        label="Labour Magin"
-                        id="labourMargin"
-                        v-model="editedBoQItem.labourMargin"
-                        required
-                      ></v-text-field>
-                      <v-text-field
-                        name="materialMargin"
-                        label="Material Magin"
-                        id="materialMargin"
-                        v-model="editedBoQItem.materialMargin"
-                        required
-                      ></v-text-field>
-
-                      <v-spacer></v-spacer>
-                    </v-layout>
--->
-            <v-layout row>
-       
-              <v-text-field
-                name="contractRate"
-                label="Contract Rate"
-                id="contractRate"
-                v-model="editedBoQItem.contractRate"
-              >
-              </v-text-field>
-              <v-spacer></v-spacer>
-
-              <v-text-field
-                name="unit"
-                label="Unit"
-                id="contract_units"
-                v-model="editedBoQItem.unit"
-                required
-              ></v-text-field>
-            </v-layout>
-
-            <v-layout row>
-                      <v-text-field
-                        name="materialCost"
-                        label="Material Cost"
-                        id="materialCost"
-                        v-model="editedBoQItem.materialCost"
-                        required
-                      ></v-text-field>
-
-    <v-spacer></v-spacer>
-
-                      <v-text-field
-                        name="labourCost"
-                        label="Labour Cost"
-                        id="labourCost"
-                        v-model="editedBoQItem.labourCost"
-                        required
-                      ></v-text-field>
-                      
-                    </v-layout>
-            <!--
-                    <v-layout row>
-                      <v-text-field
-                        name="measuredQuantity"
-                        label="Measured Quantity"
-                        id="measured_quantity"
-                        v-model="editedBoQItem.measuredQuantity"
-                        required
-                      >
-                      </v-text-field>
-
-                      <v-spacer></v-spacer>
-
-                      <v-text-field
-                        name="unit"
-                        label="unit"
-                        id="measured_units"
-                        v-model="editedBoQItem.unit"
-                        required
-                      ></v-text-field>
-                     
-                    </v-layout>
- -->
-            <!--
-                    <v-layout row>
-                      <v-text-field
-                        name="contractRate"
-                        label="Contract Rate"
-                        id="contractRate"
-                        v-model="editedBoQItem.contractRate"
-                      >
-                      </v-text-field>
-
-                      <v-spacer></v-spacer>
-
-                      <v-text-field
-                        name="subContractRate"
-                        label="SubContract Rate"
-                        id="subContractRate"
-                        v-model="editedBoQItem.subContractRate"
-                      >
-                      </v-text-field>
-                    
-                    </v-layout>
-
-     -->
-
-            <v-layout row>
-              <!--
-                      <date-picker
-                        label="Start Date"
-                        v-model="date"
-                        v-on:update:modelValue="save"
-                        color="primary"
-                      ></date-picker>
-                      -->
-            </v-layout>
-            <!--
-                  <v-dialog ref="boQItemAnticipatedStartDateDialog"
-                    v-model="boQItemAnticipatedStartDateModal" persistent width="290px">
-                    <template v-slot:activator="{ on }">
-                      <v-text-field v-model="editedBoQItem.anticipatedStartDate"
-                        label="Anticipated Start Date" prepend-icon="event" readonly v-on="on">
-                      </v-text-field>
-                    </template>
-                    <v-date-picker v-model="editedBoQItem.anticipatedStartDate" scrollable>
-                      <v-spacer></v-spacer>
-                      <v-btn text color="primary" @click="boQItemAnticipatedStartDateModal = false">
-                        Cancel</v-btn>
-                      <v-btn text color="primary"
-                        @click="save(date)">OK</v-btn>
-                    </v-date-picker>
-                  </v-dialog>
-
-
+                    <v-text-field
+                      name="labourCost"
+                      label="Labour Cost"
+                      id="labourCost"
+                      v-model="editedBoQItem.labourCost"
+                      required
+                    ></v-text-field>
+                  </v-layout>
+                </v-card-text>
+                <v-card-actions>
                   <v-spacer></v-spacer>
-
-                </v-layout>
-              <v-layout row>
-                  <v-dialog ref="boQItemAnticipatedCompletionDateDialog" activator="parent"
-                    v-model="boQItemAnticipatedCompletionDateModal" persistent width="290px">
-                    <template v-slot:activator="{ on }">
-                      <v-text-field v-model="editedBoQItem.anticipatedCompletionDate"
-                        label="Anticipated Completion Date" prepend-icon="event" readonly v-on="on">
-                      </v-text-field>
-                    </template>
-                    <v-date-picker v-model="editedBoQItem.anticipatedCompletionDate" scrollable>
-                      <v-spacer></v-spacer>
-                      <v-btn text color="primary"
-                        @click="boQItemAnticipatedCompletionDateModal = false">Cancel</v-btn>
-                      <v-btn text color="primary"
-                        @click="save(date);boQItemAnticipatedCompletionDateModal = false">OK</v-btn>
-                    </v-date-picker>
-                  </v-dialog>
-
-                </v-layout>
-               
-                <v-layout v-if="editedBoQItem.quotations">
-                  <v-card>
-                    <v-card-title> SubContractor Quotations </v-card-title>
-                    <v-card-text>
-                      <v-data-table
-                        :headers="boqItemQuotationTableHeaders"
-                        :items="editedBoQItem.subContractorQuotations"
-                        :search="search"
-                      >
-                      </v-data-table>
-                    </v-card-text>
-                  </v-card>
-                </v-layout>
-                 -->
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" @click="closeMasterBoQItemDialog()"
-              >Cancel</v-btn
-            >
-            <v-btn color="blue darken-1" @click="saveOrUpdateMasterBoQItem">Save</v-btn>
-          </v-card-actions>
+                  <v-btn color="blue darken-1" @click="closeMasterBoQItemDialog()"
+                    >Cancel</v-btn
+                  >
+                  <v-btn color="blue darken-1" @click="saveOrUpdateMasterBoQItem"
+                    >Save</v-btn
+                  >
+                </v-card-actions>
+              </v-card>
+            </v-window-item>
+            <v-window-item value="Documentation">
+              <v-card class="overflow-y-auto" height="650">
+                <v-card-title>
+                  <span>Documentation</span>
+                </v-card-title>
+                <v-card-text> </v-card-text>
+              </v-card>
+            </v-window-item>
+            <v-window-item value="Materials">
+              <v-card class="overflow-y-auto" height="650">
+                <v-card-title>
+                  <span>Materials</span>
+                </v-card-title>
+                <v-card-text> </v-card-text>
+              </v-card>
+            </v-window-item>
+            <v-window-item value="Labour">
+              <v-card class="overflow-y-auto" height="650">
+                <v-card-title>
+                  <span>Labour</span>
+                </v-card-title>
+                <v-card-text> </v-card-text>
+              </v-card>
+            </v-window-item>
+            <v-window-item value="Plant">
+              <v-card class="overflow-y-auto" height="650">
+                <v-card-title>
+                  <span>Plant</span>
+                </v-card-title>
+                <v-card-text> </v-card-text>
+              </v-card>
+            </v-window-item>
+          </v-window>
         </v-card>
       </v-dialog>
       <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
@@ -480,10 +231,10 @@ const store = useStore();
 //eslint-disable-next-line
 const { projectId } = defineProps(["projectId"]);
 
-const emit = defineEmits(["update:modelValuex"]);
-
+const emit = defineEmits(["update:modelValue"]);
 
 const searchMasterBoQ = ref("");
+const tabs = ref(null);
 const masterBoQTableHeaders = [
   { title: "Id", key: "id", align: " d-none" },
   { title: "Ref", key: "ref" },
@@ -588,23 +339,23 @@ const openMasterBoQItemDialog = () => {
 
 const editMasterBoQItemDialog = (item) => {
   editedBoQItemIndex.value = masterBoQ.value.findIndex((bi) => bi.id == item.id);
-  Object.assign(editedBoQItem, item)
-  console.log(editedBoQItem)
+  Object.assign(editedBoQItem, item);
+  console.log(editedBoQItem);
   masterBoQItemDialog.value = true;
 };
 
 const closeMasterBoQItemDialog = () => {
-    Object.assign(editedBoQItem, defaultBoQItem)
+  Object.assign(editedBoQItem, defaultBoQItem);
   masterBoQItemDialog.value = false;
 };
 
 const addSelectedMasterBoQItemsToProject = () => {
-  selectedBoQItems.value.map( item => {
-    Object.assign(editedBoQItem, item)
+  selectedBoQItems.value.map((item) => {
+    Object.assign(editedBoQItem, item);
     editedBoQItem.projectId = projectId;
-    editedBoQItem.quantity = 0.00;
-    store.dispatch("projects/createProjectBoQItem", editedBoQItem)
-      
+    editedBoQItem.quantity = 0.0;
+    store.dispatch("projects/createProjectBoQItem", editedBoQItem);
+
     console.log(editedBoQItem);
   });
   emit("update:modelValue");
