@@ -124,7 +124,7 @@
   </v-card>
 </template>
 <script setup>
-import { computed, ref, reactive, onMounted, toRaw } from "vue";
+import { computed, ref, reactive, onMounted } from "vue";
 import { useStore } from "vuex";
 
 // eslint-disable-next-line
@@ -208,13 +208,12 @@ const projectDrawingCategories = computed(() => {
 
 const downloadProjectDrawing = (item) => {
   console.log("downloading item requested..");
-  console.log(toRaw(item));
   console.log("for project id");
-  console.log(item.value);
+  console.log(item.id);
   console.log(item.title);
   const payload = {
     projectId: projectId,
-    id: item.value,
+    id: item.id,
     fileName: item.title,
   };
   console.log(payload);
