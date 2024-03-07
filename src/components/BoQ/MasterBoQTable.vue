@@ -395,6 +395,12 @@ const saveOrUpdateMasterBoQItem = () => {
       unit: editedBoQItem.unit,
       contractRate: editedBoQItem.contractRate,
       subContractRate: editedBoQItem.subContractRate,
+      materialCost: editedBoQItem.materialCost,
+      materialMargin: editedBoQItem.materialMargin,
+      labourCost: editedBoQItem.labourCost,
+      labourMargin: editedBoQItem.labourMargin,
+      plantCost: editedBoQItem.plantCost,
+      plantMargin: editedBoQItem.plantMargin,
     };
     store.dispatch("masterboq/createMasterBoQItem", formData);
   }
