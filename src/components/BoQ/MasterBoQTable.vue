@@ -4,7 +4,7 @@
       Rates
       <v-spacer></v-spacer>
 
-      <v-btn icon color="green" @click="openMasterBoQItemDialog``()" class="float-right">
+      <v-btn icon color="green" @click="openMasterBoQItemDialog()" class="float-right">
         <v-icon icon="mdi-plus"></v-icon>
       </v-btn>
       <v-spacer></v-spacer>

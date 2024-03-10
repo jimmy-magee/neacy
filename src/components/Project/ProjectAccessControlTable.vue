@@ -38,8 +38,8 @@
                 >
                 </v-data-table>
               </v-container> </v-card-text
-            >selectedProjectUsers
-            {{ selectedProjectUsers }}
+            >
+            
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" @click="closeProjectAccessControlListDialog"
