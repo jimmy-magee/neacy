@@ -237,12 +237,11 @@ const searchMasterBoQ = ref("");
 const tabs = ref(null);
 const masterBoQTableHeaders = [
   { title: "Id", key: "id", align: " d-none" },
-  { title: "Ref", key: "ref" },
   {
     title: "Category",
     align: "left",
     sortable: true,
-    key: "categoryId",
+    key: "categoryName",
   },
   { title: "Name", key: "name" },
   { title: "Unit", key: "unit" },
